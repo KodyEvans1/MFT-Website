@@ -1,0 +1,7 @@
+# Do not activate without explicit approval and Search Console validation.
+# /home-1 / 301
+# /new-page /individual-therapy 301
+# /new-page-1 /premarital-counseling 301
+# /new-page-2 /couples-retreat 301
+# /new-page-4 /online-therapy-oak-harbor-wa 301
+# /new-page-47 /sonia-hassan 301

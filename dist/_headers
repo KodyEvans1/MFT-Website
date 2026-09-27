@@ -1,0 +1,11 @@
+/*
+  X-Robots-Tag: noindex, nofollow
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: SAMEORIGIN
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+  Content-Security-Policy: default-src 'self'; img-src 'self' https://images.squarespace-cdn.com data:; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; connect-src 'self'; frame-src 'none'; base-uri 'self'; form-action 'self' https://ops.mft.care https://marriagefamilytherapy.clientsecure.me
+
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable

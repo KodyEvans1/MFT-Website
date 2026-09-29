@@ -2,7 +2,8 @@
 
 Production-candidate static site for `mft.care`, built for Netlify. The site is
 staging-safe by default and does not collect clinical, intake, appointment, or
-insurance-member information.
+insurance-member information. The Marriage.Reset access form is deliberately
+limited to two email addresses and two required confirmations.
 
 ## Local build
 
@@ -26,10 +27,25 @@ verification cannot be preserved through DNS or the current method.
 
 - Appointment and insurance workflows remain at `ops.mft.care`.
 - Existing-client access remains in SimplePractice.
-- No Webflow, Netlify, or repository form stores sensitive client information.
+- The Marriage.Reset access-request form uses Netlify Forms and asks only for two
+  email addresses. It must not be expanded to collect names, relationship details,
+  assessment answers, clinical information, insurance information, or emergencies.
+- Before accepting production submissions, approve the privacy notice, access roles,
+  retention/deletion schedule, email process, consent language, and vendor terms.
 - Clinician, insurance, approach, and availability claims require final review.
 - The couples-retreat page stays noindex until dates, location, offering, and
   availability are confirmed.
+
+## Marriage.Reset access requests
+
+After deployment, open the site in Netlify, go to **Forms**, and enable form
+detection. Trigger a new deploy after enabling it. Submit one test using non-client
+addresses, confirm that `marriage-reset-access` appears in the Forms dashboard,
+confirm the success page loads, then delete the test submission.
+
+Configure form notifications only to an approved M.F.T. account. Establish a short
+retention period and delete fulfilled requests regularly. Do not place assessment
+answers or relationship details in Netlify Forms or notification emails.
 
 ## Updating content
 

@@ -6,10 +6,10 @@ the new site.
 
 ## Current build
 
-The repository generates 63 content pages and a custom 404 page. Sixty-one
-content pages are included in the production sitemap. Two pages remain held out
-of indexing: the Couples Retreat page and the legacy Oak Harbor page at
-`/new-page-4`.
+The repository generates 65 content and utility pages plus a custom 404 page.
+Sixty-two pages are included in the production sitemap. Three pages remain held
+out of indexing: the Couples Retreat page, the legacy Oak Harbor page at
+`/new-page-4`, and the Marriage.Reset submission confirmation page.
 
 The production-intended architecture includes:
 
@@ -28,6 +28,31 @@ security headers, redirect review files, a mobile navigation system, and a
 staging-safe noindex default.
 
 ## Launch blockers
+
+### Marriage.Reset assessment access
+
+The build now includes `/marriage-reset-assessment/`, a noindex confirmation page,
+and a Netlify access-request form limited to two email addresses. The submitting
+partner must confirm permission to provide the other address, and both required
+confirmations explain that the assessment is not therapy, diagnosis, crisis support,
+or emergency care.
+
+Before accepting real submissions:
+
+- approve the visible program copy and confirm that assessment access is free;
+- enable Netlify form detection and test with non-client email addresses;
+- decide who may access submissions and receive notifications;
+- approve how each partner receives a separate assessment invitation;
+- approve a privacy notice and a short retention/deletion schedule;
+- confirm the vendor arrangement is appropriate for this use with the practice's
+  privacy, compliance, and legal advisors;
+- never add names, narratives, assessment responses, clinical information,
+  insurance information, or emergency details to this form;
+- delete the test request and regularly delete fulfilled production requests.
+
+Netlify states that Forms submissions are stored in its database and recommends
+active export/deletion management for PII. The current form should therefore be
+treated as a temporary invitation queue, not an intake or assessment record.
 
 ### Repository access
 
@@ -163,6 +188,7 @@ tablet, and mobile sizes and test:
 
 The local validation checks one H1 per page, unique titles and descriptions,
 unique canonicals, valid JSON-LD, complete internal navigation targets, image alt
-attributes, absence of public forms, absence of known stale copy strings, sitemap
-coverage, and required Netlify files. The ZIP and repository should be rebuilt
+attributes, restriction of the sole public form to the approved two-email access
+request, absence of known stale copy strings, sitemap coverage, and required
+Netlify files. The ZIP and repository should be rebuilt
 and these checks rerun after any content or URL change.

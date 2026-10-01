@@ -3,6 +3,7 @@ const path=require('path');
 const ROOT=path.resolve(__dirname,'..');
 const DIST=path.join(ROOT,'dist');
 const SITE='https://www.mft.care';
+for(const asset of ['mft-logo.svg','mft-logo-white.svg']) fs.copyFileSync(path.join(ROOT,'src','assets',asset),path.join(DIST,'assets',asset));
 
 const bookingMap={
   '/':'homepage',

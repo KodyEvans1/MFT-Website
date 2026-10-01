@@ -24,6 +24,7 @@ for (const file of htmlFiles) {
   const normalized=file.split(path.sep).join('/');
   const isAssessmentForm=normalized.endsWith('/marriage-reset-assessment/index.html');
   const isAssessmentThanks=normalized.endsWith('/marriage-reset-assessment/thanks/index.html');
+  const isAdLanding=normalized.includes('/lp/google/');
   if (count(h,/<h1[ >]/g)!==1) errors.push(`${file}: expected one H1`);
   if (count(h,/<title>/g)!==1) errors.push(`${file}: expected one title`);
   if (!is404 && count(h,/name="description"/g)!==1) errors.push(`${file}: expected one description`);
@@ -31,6 +32,7 @@ for (const file of htmlFiles) {
   if (!is404 && count(h,/type="application\/ld\+json"/g)!==1) errors.push(`${file}: expected one JSON-LD block`);
   if (is404 && !/noindex/.test(h)) errors.push(`${file}: 404 must be noindex`);
   if (isAssessmentThanks && !/noindex/.test(h)) errors.push(`${file}: assessment confirmation must be noindex`);
+  if (isAdLanding && !/noindex,nofollow/.test(h)) errors.push(`${file}: paid-search landing page must be noindex,nofollow`);
   const title=(h.match(/<title>(.*?)<\/title>/)||[])[1];
   const desc=(h.match(/name="description" content="(.*?)"/)||[])[1];
   const canonical=(h.match(/rel="canonical" href="(.*?)"/)||[])[1];
@@ -55,6 +57,9 @@ for (const file of htmlFiles) {
   const json=(h.match(/<script type="application\/ld\+json">(.*?)<\/script>/)||[])[1];
   if (json) try { JSON.parse(json); } catch (e) { errors.push(`${file}: invalid JSON-LD ${e.message}`); }
   if (/Maritain|free virtual free virtual|2024 retreat|kody-evans\.clientsecure/.test(h)) errors.push(`${file}: known stale or incorrect text`);
+  if (/How we can help|Care begins with understanding what matters now|At a glance|A clear place to begin|Related information|Continue exploring/.test(h)) errors.push(`${file}: obsolete generic section copy found`);
+  if (/brand-logo-slot|brand-mark/.test(h)) errors.push(`${file}: temporary logo mark found`);
+  if (isAdLanding && !/source=google_ads/.test(h)) errors.push(`${file}: paid-search booking source is missing`);
   const forms=count(h,/<form\b/gi);
   if (forms && !isAssessmentForm) errors.push(`${file}: unexpected public form found`);
   if (isAssessmentForm) {
@@ -70,10 +75,11 @@ for (const file of htmlFiles) {
 
 const sitemap=fs.readFileSync(path.join(DIST,'sitemap.xml'),'utf8');
 const sitemapUrls=[...sitemap.matchAll(/<loc>(.*?)<\/loc>/g)].map(x=>x[1]);
-if (sitemapUrls.length!==62) errors.push(`sitemap: expected 62 URLs, found ${sitemapUrls.length}`);
+if (sitemapUrls.length!==63) errors.push(`sitemap: expected 63 URLs, found ${sitemapUrls.length}`);
 if (new Set(sitemapUrls).size!==sitemapUrls.length) errors.push('sitemap: duplicate URLs');
+if (sitemapUrls.some(url=>url.includes('/lp/google/'))) errors.push('sitemap: paid-search landing pages must not be included');
 const inventory=fs.readFileSync(path.join(DIST,'page-inventory.csv'),'utf8').trim().split('\n');
-if (inventory.length!==66) errors.push(`inventory: expected header plus 65 rows, found ${inventory.length}`);
+if (inventory.length!==70) errors.push(`inventory: expected header plus 69 rows, found ${inventory.length}`);
 for (const required of ['robots.txt','_headers','_redirects','llms.txt','404.html','page-inventory.csv']) if (!fs.existsSync(path.join(DIST,required))) errors.push(`missing ${required}`);
 
 const result={htmlFiles:htmlFiles.length,contentPages:htmlFiles.length-1,uniqueTitles:titles.size,uniqueDescriptions:descriptions.size,uniqueCanonicals:canonicals.size,sitemapUrls:sitemapUrls.length,errors};

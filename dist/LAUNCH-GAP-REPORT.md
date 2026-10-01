@@ -1,25 +1,38 @@
 # M.F.T. Netlify Launch Gap Report
 
-Prepared September 26, 2026. This report identifies what is built, what remains
+Updated September 30, 2026. This report identifies what is built, what remains
 unverified, and what must be repaired or approved before `mft.care` is pointed to
 the new site.
 
 ## Current build
 
-The repository generates 65 content and utility pages plus a custom 404 page.
-Sixty-two pages are included in the production sitemap. Three pages remain held
+The repository generates 69 content and utility pages plus a custom 404 page.
+Sixty-three pages are included in the production sitemap. Six pages remain held
 out of indexing: the Couples Retreat page, the legacy Oak Harbor page at
-`/new-page-4`, and the Marriage.Reset submission confirmation page.
+`/new-page-4`, the Marriage.Reset submission confirmation page, and three
+paid-search landing pages under `/lp/google/`.
 
 The production-intended architecture includes:
 
-- 11 core, navigation, statewide, and directory pages
+- 12 core, navigation, statewide, consultation, and directory pages
 - 8 service and program pages
 - 5 clinician profiles
 - 13 city, county, and legacy-location pages
 - 10 concern guides
 - 12 therapy-approach guides
 - 4 practical resources
+- 3 noindex paid-search landing pages
+
+The consultation architecture appears in primary navigation, page heroes,
+service pages, concern pages, clinician pages, location pages, resources, and
+the footer. It offers a free 10-minute fit and logistics consultation, an
+extended 30-minute consultation, and a 53-minute initial diagnostic session as
+the standard direct start for individual therapy.
+
+The services hub now compares audiences, service focus, clinicians, and
+approaches. The team directory can be filtered by audience and includes Charlene
+Brister as Clinical Manager with her current public-site photograph. Generic
+repeated sections have been replaced with page-specific decision support.
 
 Every content page includes a unique title, description, H1, canonical, Open
 Graph metadata, breadcrumb navigation, crawlable internal links, and JSON-LD.
@@ -54,16 +67,29 @@ Netlify states that Forms submissions are stored in its database and recommends
 active export/deletion management for PII. The current form should therefore be
 treated as a temporary invitation queue, not an intake or assessment record.
 
-### Repository access
+### Paid-search attribution and conversion measurement
 
-The connected GitHub repository was not available in the agent workspace and no
-GitHub credential or repository tool was exposed. The build is complete locally,
-but it has not been pushed into the repository named “MFT website.” Provide the
-repository URL or mount the repository before treating GitHub deployment as done.
+Three purpose-built Google Ads landing pages are included and intentionally
+excluded from navigation, indexing, and the sitemap. Scheduling links pass a
+first-party `source=google_ads`, page origin, and intent. Browser code also
+preserves `gclid`, `gbraid`, `wbraid`, standard UTM values, and common ValueTrack
+parameters when a visitor continues to `ops.mft.care`.
+
+This creates campaign-specific routes and preserves click identifiers, but it
+does not by itself prove a conversion. Before spending against these pages:
+
+- provide and approve the Google tag or Google Analytics measurement ID;
+- decide which consent and privacy behavior applies;
+- configure Google Ads auto-tagging and final URLs for the correct `/lp/google/`
+  page;
+- make the operations app retain source and click parameters through signup;
+- emit a successful self-scheduling event only after booking is completed;
+- configure cross-domain measurement between `www.mft.care` and `ops.mft.care`;
+- test with a non-client booking and confirm the event in Google Ads or Analytics.
 
 ### Image ownership and hosting
 
-The build references five clinician portraits and two office images using the
+The build references six staff portraits and two office images using the
 current Squarespace CDN URLs. These URLs were observed on the public M.F.T. site,
 but the original image files could not be downloaded through the agent network.
 Before Squarespace is disabled:
@@ -74,9 +100,12 @@ Before Squarespace is disabled:
 - confirm crops, alt text, orientation, and mobile rendering;
 - replace the current remote Squarespace URLs.
 
-The current build uses a text wordmark because the approved heart logo file was
-not available. It also uses conservative system fonts because the exact licensed
-brand font files were not available.
+The current build uses a clean text wordmark because the approved original logo
+file was not available. The temporary square mark has been removed rather than
+guessing or redrawing the logo. Supply an approved transparent SVG or
+high-resolution PNG to replace the wordmark and generate a favicon. The site
+uses conservative system fonts because the exact licensed brand font files were
+not available.
 
 ### Clinical and professional review
 
@@ -93,6 +122,9 @@ The site keeps appointment and insurance actions outside the public site at
 agent network could not exercise the operations portal. Test all three workflows
 in a normal browser using non-clinical test data. Confirm whether appointment and
 insurance actions need distinct paths rather than the shared operations homepage.
+Also confirm the exact scheduling routes and operating rules for the free 10-minute
+consultation, the price and availability of the 30-minute consultation, and the
+53-minute initial diagnostic session.
 
 No insurance carrier list is published in the new build. The current public site
 shows carrier names, but participation may vary by clinician, service, and plan.
@@ -173,15 +205,17 @@ tablet, and mobile sizes and test:
 
 1. Push this repository to the connected GitHub project and let Netlify build it.
 2. Keep `SITE_INDEXING_ENABLED` unset or false during review.
-3. Replace the remote image URLs and add the approved logo and favicon.
-4. Complete owner, clinician, insurance, location, legal, and workflow reviews.
-5. Resolve the two held pages and approve every required redirect.
-6. Run hosted desktop, mobile, accessibility, link, schema, and workflow tests.
-7. Protect the `ops.mft.care` DNS records and SSL configuration during cutover.
-8. Confirm rollback access to the current site.
-9. Point the primary domain only after explicit launch approval.
-10. Set `SITE_INDEXING_ENABLED=true`, deploy again, and verify the public result.
-11. Check the existing Search Console property, sitemap processing, and priority
+3. Add the approved logo and favicon; replace remote images with owned copies.
+4. Confirm consultation pricing, routes, availability, and operations-app signup.
+5. Add approved measurement and consent configuration, then test cross-domain conversions.
+6. Complete owner, clinician, insurance, location, legal, and workflow reviews.
+7. Resolve the two held pages and approve every required redirect.
+8. Run hosted desktop, mobile, accessibility, link, schema, and workflow tests.
+9. Protect the `ops.mft.care` DNS records and SSL configuration during cutover.
+10. Confirm rollback access to the current site.
+11. Point the primary domain only after explicit launch approval.
+12. Set `SITE_INDEXING_ENABLED=true`, deploy again, and verify the public result.
+13. Check the existing Search Console property, sitemap processing, and priority
     URLs after launch. Monitor redirects, 404s, indexing, and external workflows.
 
 ## Automated verification completed

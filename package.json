@@ -3,9 +3,11 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build": "node src/build.js",
+    "build": "node src/build.js && node src/enhance.js",
     "test": "node src/validate.js",
     "check": "npm run build && npm run test"
   },
-  "engines": { "node": ">=20" }
+  "engines": {
+    "node": ">=20"
+  }
 }

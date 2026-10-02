@@ -159,6 +159,10 @@ for(const x of allEntities){(byType[x.meta.type]??=[]).push(x.e)}
 const generated=[];
 for(const {key,meta,e} of allEntities) generated.push(generate(meta.type,e,byType[meta.type],meta));
 
+
+const stylePath=path.join(DIST,'assets','styles.css');
+fs.appendFileSync(stylePath,`\n.clinician-match-section{background:#fff}.clinician-match-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;margin-top:2rem}.clinician-match-grid a,.clinician-match-note{display:grid;gap:.3rem;padding:1.25rem;background:#edf4f1;border-radius:16px;text-decoration:none}.clinician-match-grid b{font:500 1.25rem var(--serif)}.clinician-match-grid span{color:#456866}.clinician-match-grid small{color:#617b79}.clinician-match-note{max-width:720px}.seo-entity+.purpose-panel{border-top:1px solid var(--line)}@media(max-width:700px){.clinician-match-grid{grid-template-columns:1fr}}\n`);
+
 const issues=[];
 for(let i=0;i<generated.length;i++){
   for(let j=i+1;j<generated.length;j++){

@@ -1,0 +1,152 @@
+{
+  "version": 1,
+  "note": "Derived from current site profile data. Empty/limited modality arrays are intentional until clinician-specific training/use is verified.",
+  "clinicians": [
+    {
+      "slug": "kody-evans-bio",
+      "name": "Kody Evans, LMFT",
+      "credential": "Licensed Marriage & Family Therapist; Founder & Clinical Director",
+      "populations": [
+        "adults",
+        "individuals",
+        "couples",
+        "families",
+        "men"
+      ],
+      "concerns": [
+        "relationships",
+        "marriage",
+        "adhd",
+        "anxiety",
+        "depression",
+        "family-conflict",
+        "parenting",
+        "life-transitions",
+        "self-esteem",
+        "stress",
+        "divorce",
+        "discernment"
+      ],
+      "modalities": [],
+      "status": "current"
+    },
+    {
+      "slug": "dr-nolan",
+      "name": "Dr. Taylor Nolan",
+      "credential": "Ph.D.; LMHC (WA); LCPC (MT); Certified Sexologist",
+      "populations": [
+        "adults",
+        "individuals",
+        "couples",
+        "partners"
+      ],
+      "concerns": [
+        "relationships",
+        "intimacy",
+        "sex",
+        "anxiety",
+        "life-transitions",
+        "self-esteem",
+        "identity",
+        "body-image",
+        "grief",
+        "stress",
+        "personal-growth"
+      ],
+      "modalities": [
+        "person-centered-therapy",
+        "sex-therapy"
+      ],
+      "status": "current"
+    },
+    {
+      "slug": "emily-johnsrud-bio",
+      "name": "Emily Johnsrud",
+      "credential": "Licensed Marriage and Family Therapist Associate (LMFTA)",
+      "populations": [
+        "children",
+        "teens",
+        "adults",
+        "couples",
+        "families"
+      ],
+      "concerns": [
+        "anxiety",
+        "depression",
+        "relationships",
+        "life-transitions",
+        "trauma",
+        "grief",
+        "emotion-regulation",
+        "family-stress"
+      ],
+      "modalities": [],
+      "status": "current"
+    },
+    {
+      "slug": "gary-ashley",
+      "name": "Gary Ashley",
+      "credential": "Licensed Mental Health Counselor Associate (LMHCA)",
+      "populations": [
+        "children",
+        "teens",
+        "adults",
+        "individuals",
+        "couples",
+        "men"
+      ],
+      "concerns": [
+        "anxiety",
+        "depression",
+        "trauma",
+        "ptsd",
+        "grief",
+        "relationships",
+        "divorce",
+        "life-transitions",
+        "self-esteem",
+        "stress",
+        "mens-issues",
+        "faith"
+      ],
+      "modalities": [
+        "person-centered-therapy",
+        "strengths-based-therapy",
+        "cognitive-behavioral-therapy-cbt",
+        "motivational-interviewing",
+        "gottman-method-couples-therapy"
+      ],
+      "status": "current"
+    },
+    {
+      "slug": "new-page-47",
+      "name": "Sonia Hassan",
+      "credential": "Licensed Social Work Associate Independent Clinical (LSWAIC)",
+      "populations": [
+        "teens",
+        "adults",
+        "older-adults",
+        "couples",
+        "caregivers"
+      ],
+      "concerns": [
+        "anxiety",
+        "grief",
+        "life-transitions",
+        "stress",
+        "emotional-adjustment",
+        "caregiver-stress",
+        "chronic-pain"
+      ],
+      "modalities": [],
+      "status": "current"
+    }
+  ],
+  "staff": [
+    {
+      "name": "Charlene Brister",
+      "role": "Clinical Manager",
+      "status": "current"
+    }
+  ]
+}

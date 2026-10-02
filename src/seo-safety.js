@@ -32,9 +32,10 @@ function sitemapUrls(xml) {
 }
 function fileForUrl(dist, url) {
   const parsed = new URL(url);
-  if (parsed.origin !== SITE || parsed.search || parsed.hash || !parsed.pathname.endsWith('/'))
+  if (parsed.origin !== SITE || parsed.search || parsed.hash || parsed.username || parsed.password)
     throw new Error(`Invalid sitemap URL: ${url}`);
-  const slug = parsed.pathname.slice(1, -1);
+  // Keep the existing canonical spelling; both /about and /about/ map to its file.
+  const slug = parsed.pathname.slice(1).replace(/\/$/, '');
   if (slug) assertSlug(slug);
   return path.join(dist, slug, 'index.html');
 }

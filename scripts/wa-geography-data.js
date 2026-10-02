@@ -12,7 +12,7 @@ function text(s) {
 function validatePlace(e, kind) {
   if (!e || e.kind !== kind || !/^53\d{5}$/.test(e.geoid || '') || e.state !== 'WA')
     throw new Error(`Invalid Washington geography identity: ${e?.geoid}`);
-  if (!e.name || !e.censusName || !e.source || !['city', 'town', 'CDP'].includes(e.placeType))
+  if (!e.name || !e.censusName || !e.source || !['city', 'town', 'cdp'].includes(String(e.placeType).toLowerCase()))
     throw new Error(`Missing source fields: ${e.geoid}`);
   if (!Number.isFinite(e.latitude) || Math.abs(e.latitude) > 90 ||
       !Number.isFinite(e.longitude) || Math.abs(e.longitude) > 180)

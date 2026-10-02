@@ -163,17 +163,35 @@ for(const {key,meta,e} of allEntities) generated.push(generate(meta.type,e,byTyp
 const stylePath=path.join(DIST,'assets','styles.css');
 fs.appendFileSync(stylePath,`\n.clinician-match-section{background:#fff}.clinician-match-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;margin-top:2rem}.clinician-match-grid a,.clinician-match-note{display:grid;gap:.3rem;padding:1.25rem;background:#edf4f1;border-radius:16px;text-decoration:none}.clinician-match-grid b{font:500 1.25rem var(--serif)}.clinician-match-grid span{color:#456866}.clinician-match-grid small{color:#617b79}.clinician-match-note{max-width:720px}.seo-entity+.purpose-panel{border-top:1px solid var(--line)}@media(max-width:700px){.clinician-match-grid{grid-template-columns:1fr}}\n`);
 
-const issues=[];
+let similarityFlagCount=0;
+const similarityFlagsSample=[];
+const approvedSimilarityFlags=[];
 for(let i=0;i<generated.length;i++){
   for(let j=i+1;j<generated.length;j++){
     if(generated[i].type!==generated[j].type) continue;
     const s=similaritySets(generated[i].tokenSet,generated[j].tokenSet);
-    if(s>=REG.strategy.similarityThreshold) issues.push({a:generated[i].slug,b:generated[j].slug,type:generated[i].type,similarity:Number(s.toFixed(3))});
+    if(s>=REG.strategy.similarityThreshold){
+      similarityFlagCount++;
+      const flag={a:generated[i].slug,b:generated[j].slug,type:generated[i].type,similarity:Number(s.toFixed(3))};
+      if(generated[i].status==='approved'||generated[j].status==='approved') approvedSimilarityFlags.push(flag);
+      else if(similarityFlagsSample.length<250) similarityFlagsSample.push(flag);
+    }
   }
 }
 const counts={};
 for(const g of generated){counts[g.type]=(counts[g.type]||0)+1}
-const report={generatedDraftPages:generated.length,counts,approved:generated.filter(x=>x.status==='approved').length,draft:generated.filter(x=>x.status!=='approved').length,similarityThreshold:REG.strategy.similarityThreshold,similarityFlags:issues,publicationRule:REG.strategy.publicationRule,targetIndexablePages:REG.strategy.targetIndexablePages};
+const report={
+  generatedDraftPages:generated.length,
+  counts,
+  approved:generated.filter(x=>x.status==='approved').length,
+  draft:generated.filter(x=>x.status!=='approved').length,
+  similarityThreshold:REG.strategy.similarityThreshold,
+  similarityFlagCount,
+  similarityFlagsSample,
+  approvedSimilarityFlags,
+  publicationRule:REG.strategy.publicationRule,
+  targetIndexablePages:REG.strategy.targetIndexablePages
+};
 fs.mkdirSync(path.join(DIST,'reports'),{recursive:true});
 fs.writeFileSync(path.join(DIST,'reports','seo-expansion.json'),JSON.stringify(report,null,2));
 console.log(JSON.stringify(report,null,2));

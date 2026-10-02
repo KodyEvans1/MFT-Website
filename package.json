@@ -5,7 +5,9 @@
   "scripts": {
     "build": "node src/build.js && node src/enhance.js && node src/redesign.js && node src/seo-expansion.js",
     "test": "node src/validate.js",
-    "check": "npm run build && npm run test"
+    "check": "npm run build && npm run test",
+    "geo:refresh": "node scripts/import-wa-geographies.js",
+    "build:refresh-geography": "npm run geo:refresh && npm run build"
   },
   "engines": {
     "node": ">=20"

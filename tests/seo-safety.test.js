@@ -214,10 +214,12 @@ test('build wrapper passes the preview veto to every stage', t => {
   const d = temp(t), root = path.resolve(__dirname, '..');
   write(path.join(d, 'scripts/build-site.js'), fs.readFileSync(path.join(root, 'scripts/build-site.js')));
   write(path.join(d, 'src/seo-safety.js'), fs.readFileSync(path.join(root, 'src/seo-safety.js')));
-  for (const name of ['build', 'enhance', 'redesign', 'seo-expansion', 'validate'])
-    write(path.join(d, `src/${name}.js`), `require('node:fs').appendFileSync('stages.txt', '${name}:' + process.env.SITE_INDEXING_ENABLED + '\\n');`);
+  const stages = ['src/build.js', 'src/enhance.js', 'src/redesign.js', 'scripts/prepare-booking.js', 'src/seo-expansion.js', 'src/validate.js', 'scripts/validate-booking.js'];
+  for (const script of stages)
+    write(path.join(d, script), `require('node:fs').appendFileSync('stages.txt', '${script}:' + process.env.SITE_INDEXING_ENABLED + '\\n');`);
   const result = spawnSync(process.execPath, ['scripts/build-site.js'], { cwd: d, env: { ...process.env, ...PREVIEW }, encoding: 'utf8' });
   assert.equal(result.status, 0, result.stderr);
-  assert.equal(fs.readFileSync(path.join(d, 'stages.txt'), 'utf8').trim().split('\n').length, 5);
-  assert.ok(fs.readFileSync(path.join(d, 'stages.txt'), 'utf8').split('\n').filter(Boolean).every(x => x.endsWith(':false')));
+  const observed = fs.readFileSync(path.join(d, 'stages.txt'), 'utf8').trim().split('\n');
+  assert.equal(observed.length, stages.length);
+  assert.deepEqual(observed, stages.map(script => script + ':false'));
 });

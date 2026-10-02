@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "scopeId": "4655482d-c076-4e4d-b683-d4a99135e67a",
+  "scopeUri": "marriagefamilytherapy",
+  "applicationId": "7c72cb9f9a9b913654bb89d6c7b4e71a77911b30192051da35384b4d0c6d505b",
+  "generalUrl": "https://marriagefamilytherapy.clientsecure.me",
+  "loaderUrl": "https://widget-cdn.simplepractice.com/assets/integration-1.0.js",
+  "measurementEndpoint": "https://ops.mft.care/api/marketing/website-events",
+  "clinicians": [
+    {"key":"gary", "name":"Gary Ashley", "slug":"gary-ashley", "id":"2154633"},
+    {"key":"kody", "name":"Kody Evans", "slug":"kody-evans-bio", "id":"1701440"},
+    {"key":"emily", "name":"Emily Johnsrud", "slug":"emily-johnsrud-bio", "id":"2027366"},
+    {"key":"taylor", "name":"Dr. Taylor Nolan", "slug":"dr-nolan", "id":"2031820"},
+    {"key":"sonia", "name":"Sonia Hassan", "slug":"new-page-47", "id":"2065412"}
+  ]
+}

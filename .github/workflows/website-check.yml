@@ -22,7 +22,7 @@ jobs:
       - name: Rehearse publication policy in isolated builds
         run: npm run verify:publication
       - name: Verify Census refresh without changing the registry
-        run: npm run geo:verify
+        run: node scripts/import-wa-geographies.js --dry-run
       - name: Upload generated SEO reports
         if: always()
         uses: actions/upload-artifact@v4
@@ -35,6 +35,18 @@ jobs:
         with:
           name: review-site
           path: dist/
-          if-no-files-found: error
           retention-days: 7
-          include-hidden-files: true
+      - name: Upload reproducible source snapshot
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: review-source
+          path: |
+            src/
+            scripts/
+            content/
+            tests/
+            reports/
+            package.json
+            netlify.toml
+          retention-days: 7

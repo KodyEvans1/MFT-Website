@@ -108,7 +108,7 @@ function generate(type,e,all,meta){
   h=h.replace(/<section class="section story-section seo-entity">[\s\S]*?<\/section>/,'');
   h=h.replace(/<section class="section (?:story-section|concern-layout|approach-layout|resource-layout|clinician-story|location-layout)[\s\S]*?<\/section>/,bodySection(type,e,all));
   h=h.replace(/<section class="section action-band">[\s\S]*?<\/section>/,'');
-  h=h.replace(/<section class="section final-cta reveal">/,`<section class="section final-cta reveal"><p class="kicker">Next step</p><h2>Talk with someone before deciding.</h2><p>A free 10-minute phone consultation can help you ask practical questions and decide whether to continue.</p><div class="actions"><a class="button light" href="https://marriagefamilytherapy.clientsecure.me/">Schedule a free consultation</a><a class="button ghost" href="/team/">Meet the team</a></div></section><section style="display:none">`);
+  h=h.replace(/<section class="section final-cta reveal">[\s\S]*?<\/section>/,`<section class="section final-cta reveal"><p class="kicker">Next step</p><h2>Talk with someone before deciding.</h2><p>A free 10-minute phone consultation can help you ask practical questions and decide whether to continue.</p><div class="actions"><a class="button light" href="https://marriagefamilytherapy.clientsecure.me/">Schedule a free consultation</a><a class="button ghost" href="/team/">Meet the team</a></div></section>`);
   const out=path.join(DIST,e.slug,'index.html'); fs.mkdirSync(path.dirname(out),{recursive:true}); fs.writeFileSync(out,h);
   return {type,slug:e.slug,name:e.name,status:e.status,title,description:desc,wordCount:plain(h).split(/\s+/).length,html:h};
 }

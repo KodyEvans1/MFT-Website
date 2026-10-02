@@ -195,6 +195,44 @@ for(const {key,meta,e} of allEntities) generated.push(generate(meta.type,e,byTyp
 const stylePath=path.join(DIST,'assets','styles.css');
 fs.appendFileSync(stylePath,`\n.clinician-match-section{background:#fff}.clinician-match-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;margin-top:2rem}.clinician-match-grid a,.clinician-match-note{display:grid;gap:.3rem;padding:1.25rem;background:#edf4f1;border-radius:16px;text-decoration:none}.clinician-match-grid b{font:500 1.25rem var(--serif)}.clinician-match-grid span{color:#456866}.clinician-match-grid small{color:#617b79}.clinician-match-note{max-width:720px}.seo-entity+.purpose-panel{border-top:1px solid var(--line)}@media(max-width:700px){.clinician-match-grid{grid-template-columns:1fr}}\n`);
 
+function appendApprovedToSitemap(generated){
+  const approved=generated.filter(x=>x.status==='approved');
+  if(!approved.length) return;
+  const file=path.join(DIST,'sitemap.xml');
+  let xml=fs.readFileSync(file,'utf8');
+  const additions=[];
+  for(const g of approved){
+    const url=`${SITE}/${g.slug}/`;
+    if(!xml.includes(`<loc>${url}</loc>`)) additions.push(`  <url><loc>${url}</loc></url>`);
+  }
+  if(additions.length) xml=xml.replace('</urlset>',additions.join('\n')+'\n</urlset>');
+  fs.writeFileSync(file,xml);
+}
+function addApprovedHubLinks(generated){
+  for(const meta of Object.values(familyMeta)){
+    const items=generated.filter(x=>x.type===meta.type&&x.status==='approved');
+    if(!items.length) continue;
+    const hubSlug=meta.hub.replace(/^\/+|\/+$/g,'');
+    const file=hubSlug?path.join(DIST,hubSlug,'index.html'):path.join(DIST,'index.html');
+    if(!fs.existsSync(file)) continue;
+    let h=fs.readFileSync(file,'utf8');
+    const cards=items.slice(0,36).map(x=>`<a href="/${x.slug}/"><b>${esc(x.name)}</b><span>${esc(x.description)}</span></a>`).join('');
+    const block=`<section class="section approved-library"><div class="section-heading"><p class="kicker">${esc(meta.label)} library</p><h2>Explore reviewed pages in this section.</h2><p>These pages have moved through the site’s editorial approval gate and are available for search indexing.</p></div><div class="decision-grid">${cards}</div></section>`;
+    if(!h.includes('approved-library')) h=h.replace(/<section class="section final-cta reveal">/,block+'<section class="section final-cta reveal">');
+    fs.writeFileSync(file,h);
+  }
+}
+function writeExpansionInventory(generated){
+  const q=v=>'"'+String(v??'').replace(/"/g,'""')+'"';
+  const rows=[['URL','Type','Name','Status','Title','Description','Word count']];
+  for(const g of generated) rows.push([`${SITE}/${g.slug}/`,g.type,g.name,g.status,g.title,g.description,g.wordCount]);
+  fs.writeFileSync(path.join(DIST,'seo-page-inventory.csv'),rows.map(r=>r.map(q).join(',')).join('\n')+'\n');
+}
+
+appendApprovedToSitemap(generated);
+addApprovedHubLinks(generated);
+writeExpansionInventory(generated);
+
 let similarityFlagCount=0;
 const similarityFlagsSample=[];
 const approvedSimilarityFlags=[];

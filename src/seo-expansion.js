@@ -19,7 +19,7 @@ const esc=s=>String(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&g
 const plain=s=>String(s||'').replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').trim();
 function titleCase(slug){return slug.split('-').map(w=>w? w[0].toUpperCase()+w.slice(1):w).join(' ')}
 function tokens(s){return new Set(plain(s).toLowerCase().split(/[^a-z0-9]+/).filter(w=>w.length>3))}
-function similarity(a,b){const A=tokens(a),B=tokens(b); if(!A.size||!B.size)return 0; let i=0; for(const x of A)if(B.has(x))i++; return i/(A.size+B.size-i)}
+function similaritySets(A,B){if(!A.size||!B.size)return 0; let i=0; const small=A.size<=B.size?A:B, large=A.size<=B.size?B:A; for(const x of small)if(large.has(x))i++; return i/(A.size+B.size-i)}
 function sourceHtml(source){
   const p=path.join(DIST,source,'index.html');
   if(!fs.existsSync(p)) throw new Error('Missing template '+p);
@@ -141,7 +141,7 @@ function generate(type,e,all,meta){
   h=h.replace(/<section class="section action-band">[\s\S]*?<\/section>/,'');
   h=h.replace(/<section class="section final-cta reveal">[\s\S]*?<\/section>/,`<section class="section final-cta reveal"><p class="kicker">Next step</p><h2>Talk with someone before deciding.</h2><p>A free 10-minute phone consultation can help you ask practical questions and decide whether to continue.</p><div class="actions"><a class="button light" href="https://marriagefamilytherapy.clientsecure.me/">Schedule a free consultation</a><a class="button ghost" href="/team/">Meet the team</a></div></section>`);
   const out=path.join(DIST,e.slug,'index.html'); fs.mkdirSync(path.dirname(out),{recursive:true}); fs.writeFileSync(out,h);
-  return {type,slug:e.slug,name:e.name,status:e.status,title,description:desc,wordCount:plain(h).split(/\s+/).length,html:h};
+  return {type,slug:e.slug,name:e.name,status:e.status,title,description:desc,wordCount:plain(h).split(/\s+/).length,html:h,tokenSet:tokens(h)};
 }
 
 const allEntities=[];
@@ -167,7 +167,7 @@ const issues=[];
 for(let i=0;i<generated.length;i++){
   for(let j=i+1;j<generated.length;j++){
     if(generated[i].type!==generated[j].type) continue;
-    const s=similarity(generated[i].html,generated[j].html);
+    const s=similaritySets(generated[i].tokenSet,generated[j].tokenSet);
     if(s>=REG.strategy.similarityThreshold) issues.push({a:generated[i].slug,b:generated[j].slug,type:generated[i].type,similarity:Number(s.toFixed(3))});
   }
 }

@@ -27,7 +27,13 @@ jobs:
       - name: Refresh official Washington place data
         run: npm run geo:refresh
       - name: Validate expanded build
-        run: npm run check
+        shell: bash
+        run: |
+          set +e
+          npm run check > /tmp/mft-check.log 2>&1
+          code=$?
+          tail -n 220 /tmp/mft-check.log
+          exit $code
       - name: Commit refreshed geography snapshot
         shell: bash
         run: |

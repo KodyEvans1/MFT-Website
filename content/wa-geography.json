@@ -571,6 +571,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -123.8104317,
+      "longitude": 46.9752047,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -586,6 +589,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -117.5791969,
+      "longitude": 47.6459431,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -601,6 +607,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "town",
+      "latitude": -117.2512267,
+      "longitude": 46.7915997,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -616,6 +625,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.2504673,
+      "longitude": 47.281987,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -631,6 +643,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "town",
+      "latitude": -118.9369897,
+      "longitude": 47.7106088,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -646,6 +661,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.6249318,
+      "longitude": 48.4887249,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -661,6 +679,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.1439257,
+      "longitude": 48.1703724,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -676,6 +697,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -117.0428594,
+      "longitude": 46.3337268,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -691,6 +715,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.2105668,
+      "longitude": 47.3046218,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -706,6 +733,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.5155009,
+      "longitude": 47.642487,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -721,6 +751,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.5410646,
+      "longitude": 45.7768788,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -736,6 +769,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "town",
+      "latitude": -122.2049487,
+      "longitude": 47.5853522,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -751,6 +787,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.1535227,
+      "longitude": 47.5974247,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -766,6 +805,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.4705146,
+      "longitude": 48.7534421,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -781,6 +823,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "City",
+      "latitude": -119.4811901,
+      "longitude": 46.2612754,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -796,6 +841,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -121.4703455,
+      "longitude": 45.7131079,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -811,6 +859,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.0181398,
+      "longitude": 47.3120543,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -826,6 +877,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.7466476,
+      "longitude": 48.9871896,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -841,6 +895,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.1699851,
+      "longitude": 47.1999213,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -856,6 +913,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.2043759,
+      "longitude": 47.7735313,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -871,6 +931,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.7121149,
+      "longitude": 47.5399667,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -886,6 +949,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -119.7764123,
+      "longitude": 48.106954,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -901,6 +967,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -119.672701,
+      "longitude": 48.0070058,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -916,6 +985,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.2734318,
+      "longitude": 47.7923876,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -931,6 +1003,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.0200382,
+      "longitude": 47.1622395,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -946,6 +1021,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "town",
+      "latitude": -122.8678703,
+      "longitude": 46.7951009,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -961,6 +1039,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.3426585,
+      "longitude": 47.4756052,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -976,6 +1057,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.3297984,
+      "longitude": 48.4644235,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -991,6 +1075,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.430102,
+      "longitude": 45.6018094,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -1006,6 +1093,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "town",
+      "latitude": -122.0537154,
+      "longitude": 47.0823198,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -1021,6 +1111,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -121.9039733,
+      "longitude": 47.6441877,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -1036,6 +1129,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -120.4677664,
+      "longitude": 47.5184911,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -1051,6 +1147,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.9050819,
+      "longitude": 46.2719179,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -1066,6 +1165,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "town",
+      "latitude": -123.3835477,
+      "longitude": 46.2058471,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -1081,6 +1183,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.9695769,
+      "longitude": 46.7253575,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -1096,6 +1201,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.9649579,
+      "longitude": 46.6641763,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -1111,6 +1219,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -120.0271394,
+      "longitude": 47.8442821,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -1126,6 +1237,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -117.5789434,
+      "longitude": 47.4911301,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -1141,6 +1255,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -117.7336307,
+      "longitude": 48.28264,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -1156,6 +1273,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -117.0504345,
+      "longitude": 46.415405,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -1171,6 +1291,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -120.9538778,
+      "longitude": 47.1948252,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -1186,6 +1309,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.2179834,
+      "longitude": 47.6303535,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -1201,6 +1327,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -117.3400951,
+      "longitude": 46.9108389,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -1216,6 +1345,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -118.3924378,
+      "longitude": 46.0417521,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -1231,6 +1363,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "town",
+      "latitude": -117.1284451,
+      "longitude": 46.5674673,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -1246,6 +1381,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -117.8984792,
+      "longitude": 48.5454477,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -1261,6 +1399,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "town",
+      "latitude": -119.7521288,
+      "longitude": 48.5585534,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -1276,6 +1417,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "town",
+      "latitude": -121.7509359,
+      "longitude": 48.5328319,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -1291,6 +1435,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -118.8405527,
+      "longitude": 46.6604918,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -1306,6 +1453,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -123.7726013,
+      "longitude": 46.9541189,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -1321,6 +1471,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "City",
+      "latitude": -119.2894569,
+      "longitude": 47.6117329,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -1336,6 +1489,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "town",
+      "latitude": -118.9760256,
+      "longitude": 47.9685106,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -1351,6 +1507,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "town",
+      "latitude": -122.678937,
+      "longitude": 48.2188833,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -1366,6 +1525,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.1043482,
+      "longitude": 47.3647925,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -1381,6 +1543,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "town",
+      "latitude": -118.5199134,
+      "longitude": 47.7594154,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -1396,6 +1561,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "town",
+      "latitude": -117.29443,
+      "longitude": 48.3285459,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -1411,6 +1579,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "town",
+      "latitude": -121.603893,
+      "longitude": 48.2608315,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -1426,6 +1597,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -118.1518797,
+      "longitude": 47.6550417,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -1441,6 +1615,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -117.9767619,
+      "longitude": 46.3167881,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -1456,6 +1633,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -117.4397877,
+      "longitude": 47.9642046,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -1471,6 +1651,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.3172279,
+      "longitude": 47.3887085,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -1486,6 +1669,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.6494819,
+      "longitude": 47.1073508,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -1501,6 +1687,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -121.9725314,
+      "longitude": 47.735512,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -1516,6 +1705,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -120.2821927,
+      "longitude": 47.4174498,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -1531,6 +1723,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "town",
+      "latitude": -122.26968,
+      "longitude": 46.8682241,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -1546,6 +1741,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.2831239,
+      "longitude": 47.2320735,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -1561,6 +1759,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.3543096,
+      "longitude": 47.8136037,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -1576,6 +1777,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "City",
+      "latitude": -119.0474617,
+      "longitude": 47.9128057,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -1591,6 +1795,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -120.5497252,
+      "longitude": 47.0001242,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -1606,6 +1813,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -123.4103704,
+      "longitude": 47.0049513,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -1621,6 +1831,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "City",
+      "latitude": -118.9541472,
+      "longitude": 48.0018244,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -1636,6 +1849,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "town",
+      "latitude": -117.6866851,
+      "longitude": 46.9282315,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -1651,6 +1867,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -120.2175408,
+      "longitude": 47.676977,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -1666,6 +1885,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -121.9897827,
+      "longitude": 47.2021788,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -1681,6 +1903,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -119.5344119,
+      "longitude": 47.3120873,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -1696,6 +1921,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.1890106,
+      "longitude": 47.9611985,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -1711,6 +1939,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.3535904,
+      "longitude": 48.9125165,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -1726,6 +1957,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "town",
+      "latitude": -117.1748467,
+      "longitude": 47.3847652,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -1741,6 +1975,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "town",
+      "latitude": -117.0463582,
+      "longitude": 47.0887268,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -1756,6 +1993,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.3378205,
+      "longitude": 47.311596,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -1771,6 +2011,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.5902609,
+      "longitude": 48.8533658,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -1786,6 +2029,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.3516214,
+      "longitude": 47.232293,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -1801,6 +2047,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.5157038,
+      "longitude": 47.2307163,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -1816,6 +2065,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -124.3901823,
+      "longitude": 47.952833,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -1831,6 +2083,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "town",
+      "latitude": -123.0656251,
+      "longitude": 48.533947,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -1846,6 +2101,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "town",
+      "latitude": -117.1395259,
+      "longitude": 47.0102483,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -1861,6 +2119,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -119.8599725,
+      "longitude": 47.0831485,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -1876,6 +2137,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.5960264,
+      "longitude": 47.3367087,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -1891,6 +2155,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -121.692006,
+      "longitude": 47.8563351,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -1906,6 +2173,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -120.8233658,
+      "longitude": 45.8191455,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -1921,6 +2191,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -119.0028793,
+      "longitude": 47.9390907,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -1936,6 +2209,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -119.9099289,
+      "longitude": 46.2457119,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -1951,6 +2227,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -120.1924816,
+      "longitude": 46.3452951,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -1966,6 +2245,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -121.9705401,
+      "longitude": 48.0897129,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -1981,6 +2263,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "town",
+      "latitude": -121.9838289,
+      "longitude": 48.5224775,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -1996,6 +2281,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "town",
+      "latitude": -120.5409612,
+      "longitude": 46.4061186,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -2011,6 +2299,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -118.2552652,
+      "longitude": 47.4801585,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -2026,6 +2317,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "town",
+      "latitude": -119.1081301,
+      "longitude": 47.6894488,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -2041,6 +2335,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "town",
+      "latitude": -118.8276881,
+      "longitude": 46.7735281,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -2056,6 +2353,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -123.9042664,
+      "longitude": 46.9772017,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -2071,6 +2371,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "town",
+      "latitude": -122.2306011,
+      "longitude": 47.6429526,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -2086,6 +2389,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -124.0234636,
+      "longitude": 46.3073712,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -2101,6 +2407,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "town",
+      "latitude": -121.5559291,
+      "longitude": 47.8212624,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -2116,6 +2425,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "town",
+      "latitude": -117.4215267,
+      "longitude": 48.7398143,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -2131,6 +2443,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.047079,
+      "longitude": 47.5462493,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -2146,6 +2461,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -118.5561386,
+      "longitude": 46.6432208,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -2161,6 +2479,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.8402202,
+      "longitude": 46.0171423,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -2176,6 +2497,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.8910199,
+      "longitude": 46.1167512,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -2191,6 +2515,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.2489509,
+      "longitude": 47.7498575,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -2206,6 +2533,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -119.1750088,
+      "longitude": 46.1976218,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -2221,6 +2551,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.2130962,
+      "longitude": 47.3900079,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -2236,6 +2569,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -118.0619915,
+      "longitude": 48.6055746,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -2251,6 +2587,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.2056225,
+      "longitude": 47.6970201,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -2266,6 +2605,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -120.4189062,
+      "longitude": 46.9837019,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -2281,6 +2623,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "town",
+      "latitude": -118.9887021,
+      "longitude": 47.4105199,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -2296,6 +2641,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.6752691,
+      "longitude": 45.8604935,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -2311,6 +2659,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "town",
+      "latitude": -122.4945068,
+      "longitude": 48.3925643,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -2326,6 +2677,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "town",
+      "latitude": -117.9030561,
+      "longitude": 46.795521,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -2341,6 +2695,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.7934967,
+      "longitude": 47.0456647,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -2356,6 +2713,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.2864611,
+      "longitude": 47.7589168,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -2371,6 +2731,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.0920418,
+      "longitude": 48.0034046,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -2386,6 +2749,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.5299024,
+      "longitude": 47.1640919,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -2401,6 +2767,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "town",
+      "latitude": -117.9049392,
+      "longitude": 47.2006872,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -2416,6 +2785,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.4064849,
+      "longitude": 48.0375368,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -2431,6 +2803,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "town",
+      "latitude": -117.155753,
+      "longitude": 47.2821116,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -2446,6 +2821,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -120.662833,
+      "longitude": 47.5947036,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -2461,6 +2839,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -117.1042007,
+      "longitude": 47.6684507,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -2476,6 +2857,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "town",
+      "latitude": -118.6163743,
+      "longitude": 46.9703396,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -2491,6 +2875,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -124.0578127,
+      "longitude": 46.3619344,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -2506,6 +2893,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.9629121,
+      "longitude": 46.1457073,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -2521,6 +2911,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "town",
+      "latitude": -122.0633908,
+      "longitude": 48.5240674,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -2536,6 +2929,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.4588419,
+      "longitude": 48.9479736,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -2551,6 +2947,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.3031532,
+      "longitude": 47.8289794,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -2566,6 +2965,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -119.9939118,
+      "longitude": 46.2115459,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -2581,6 +2983,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "town",
+      "latitude": -117.4729292,
+      "longitude": 47.2295881,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -2596,6 +3001,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "town",
+      "latitude": -119.638584,
+      "longitude": 47.8123852,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -2611,6 +3019,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.0368251,
+      "longitude": 47.3671468,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -2626,6 +3037,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "town",
+      "latitude": -118.0599698,
+      "longitude": 48.6642976,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -2641,6 +3055,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.1560224,
+      "longitude": 48.0802144,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -2656,6 +3073,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -119.9064015,
+      "longitude": 46.7376519,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -2671,6 +3091,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -123.2722578,
+      "longitude": 47.0580788,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -2686,6 +3109,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -117.6892992,
+      "longitude": 47.5710393,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -2701,6 +3127,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.2427188,
+      "longitude": 47.6265731,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -2716,6 +3145,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.2319899,
+      "longitude": 47.5640042,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -2731,6 +3163,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -119.0013184,
+      "longitude": 46.5734882,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -2746,6 +3181,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "town",
+      "latitude": -117.3718306,
+      "longitude": 48.861295,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -2761,6 +3199,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "town",
+      "latitude": -117.3892296,
+      "longitude": 48.8523358,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -2776,6 +3217,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.2037268,
+      "longitude": 47.8638974,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -2791,6 +3235,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -117.2806273,
+      "longitude": 47.6847014,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -2806,6 +3253,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.3153422,
+      "longitude": 47.2519937,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -2821,6 +3271,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -121.9859312,
+      "longitude": 47.8597925,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -2836,6 +3289,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -123.585004,
+      "longitude": 47.0147256,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -2851,6 +3307,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.2814901,
+      "longitude": 46.5573823,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -2866,6 +3325,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -119.2758052,
+      "longitude": 47.1278501,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -2881,6 +3343,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.4890572,
+      "longitude": 46.5302238,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -2896,6 +3361,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.3115473,
+      "longitude": 48.4170713,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -2911,6 +3379,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.3076362,
+      "longitude": 47.7943686,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -2926,6 +3397,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -120.3966937,
+      "longitude": 46.564189,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -2941,6 +3415,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.3047166,
+      "longitude": 47.9103406,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -2956,6 +3433,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "town",
+      "latitude": -120.6912084,
+      "longitude": 46.7259848,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -2971,6 +3451,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.9015662,
+      "longitude": 46.5867959,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -2986,6 +3469,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "town",
+      "latitude": -118.9721153,
+      "longitude": 48.1669056,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -3001,6 +3487,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.1633323,
+      "longitude": 47.5353138,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -3016,6 +3505,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -117.0545679,
+      "longitude": 48.1783019,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -3031,6 +3523,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.3189265,
+      "longitude": 48.9281057,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -3046,6 +3541,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.3454268,
+      "longitude": 47.4329749,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -3061,6 +3559,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -121.7742242,
+      "longitude": 47.4879674,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -3076,6 +3577,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -121.9692477,
+      "longitude": 45.6413928,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -3091,6 +3595,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "town",
+      "latitude": -117.7796961,
+      "longitude": 48.915792,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -3106,6 +3613,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.6282572,
+      "longitude": 48.2938318,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -3121,6 +3631,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "town",
+      "latitude": -117.2464399,
+      "longitude": 47.1304696,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -3136,6 +3649,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -123.2335075,
+      "longitude": 46.8401161,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -3151,6 +3667,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -124.1520894,
+      "longitude": 46.9677296,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -3166,6 +3685,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "town",
+      "latitude": -118.6894446,
+      "longitude": 47.3325992,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -3181,6 +3703,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -119.5781349,
+      "longitude": 48.3672735,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -3196,6 +3721,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.8958383,
+      "longitude": 47.0406042,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -3211,6 +3739,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -119.5151024,
+      "longitude": 48.4223499,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -3226,6 +3757,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -119.4304095,
+      "longitude": 48.9469508,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -3241,6 +3775,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.2110935,
+      "longitude": 47.0969361,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -3256,6 +3793,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -119.1619271,
+      "longitude": 46.8233279,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -3271,6 +3811,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.2506673,
+      "longitude": 47.2619744,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -3286,6 +3829,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -117.0752075,
+      "longitude": 46.9103261,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -3301,6 +3847,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -119.13695,
+      "longitude": 46.2661126,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -3316,6 +3865,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -119.8994841,
+      "longitude": 48.053094,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -3331,6 +3883,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "town",
+      "latitude": -123.298229,
+      "longitude": 46.571314,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -3346,6 +3901,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -117.5965412,
+      "longitude": 46.4737597,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -3361,6 +3919,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -123.4494417,
+      "longitude": 48.1192489,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -3376,6 +3937,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.6611275,
+      "longitude": 47.5372539,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -3391,6 +3955,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.7868487,
+      "longitude": 48.1217622,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -3406,6 +3973,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.6405395,
+      "longitude": 47.7410784,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -3421,6 +3991,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -118.312553,
+      "longitude": 46.298834,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -3436,6 +4009,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -119.7683112,
+      "longitude": 46.2090216,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -3451,6 +4027,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -117.1682775,
+      "longitude": 46.7331261,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -3466,6 +4045,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.2906311,
+      "longitude": 47.1790463,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -3481,6 +4063,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -119.8486986,
+      "longitude": 47.2358767,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -3496,6 +4081,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.6865363,
+      "longitude": 46.8916705,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -3511,6 +4099,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -123.7378633,
+      "longitude": 46.6873669,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -3526,6 +4117,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "town",
+      "latitude": -117.8779305,
+      "longitude": 47.6700936,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -3541,6 +4135,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.1169608,
+      "longitude": 47.6779241,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -3556,6 +4153,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.1917769,
+      "longitude": 47.4794878,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -3571,6 +4171,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -118.7333489,
+      "longitude": 48.648909,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -3586,6 +4189,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -119.2937919,
+      "longitude": 46.2869805,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -3601,6 +4207,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.7047537,
+      "longitude": 45.8175707,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -3616,6 +4225,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -118.3753324,
+      "longitude": 47.1230414,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -3631,6 +4243,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "town",
+      "latitude": -119.5099991,
+      "longitude": 48.5130108,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -3646,6 +4261,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -120.1419836,
+      "longitude": 47.3731666,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -3661,6 +4279,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "town",
+      "latitude": -117.1306271,
+      "longitude": 47.4514743,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -3676,6 +4297,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "town",
+      "latitude": -117.3764765,
+      "longitude": 47.2362865,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -3691,6 +4315,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -121.0987877,
+      "longitude": 47.2700295,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -3706,6 +4333,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.5424377,
+      "longitude": 46.9899335,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -3721,6 +4351,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "City",
+      "latitude": -119.6208956,
+      "longitude": 46.901827,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -3736,6 +4369,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.5103359,
+      "longitude": 47.2975738,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -3751,6 +4387,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.0416969,
+      "longitude": 47.5942675,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -3766,6 +4405,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.2985931,
+      "longitude": 47.4436876,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -3781,6 +4423,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.3512303,
+      "longitude": 47.6193352,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -3796,6 +4441,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.2322414,
+      "longitude": 48.5114364,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -3811,6 +4459,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -120.539022,
+      "longitude": 46.6458555,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -3826,6 +4477,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -123.0944242,
+      "longitude": 48.0739645,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -3841,6 +4495,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -123.1107601,
+      "longitude": 47.2255738,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -3856,6 +4513,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.3452453,
+      "longitude": 47.7575321,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -3871,6 +4531,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "town",
+      "latitude": -121.3584258,
+      "longitude": 47.7099322,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -3886,6 +4549,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.0968122,
+      "longitude": 47.9288663,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -3901,6 +4567,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -121.8410205,
+      "longitude": 47.5432449,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -3916,6 +4585,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -119.4893084,
+      "longitude": 47.3910918,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -3931,6 +4603,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -123.8006167,
+      "longitude": 46.6699775,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -3946,6 +4621,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "town",
+      "latitude": -120.9525541,
+      "longitude": 47.1861861,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -3961,6 +4639,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "town",
+      "latitude": -122.0939435,
+      "longitude": 47.1353858,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -3976,6 +4657,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -117.3812242,
+      "longitude": 47.4298941,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -3991,6 +4675,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -117.2345959,
+      "longitude": 47.6633532,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -4006,6 +4693,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -117.4330058,
+      "longitude": 47.6669347,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -4021,6 +4711,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -117.9712903,
+      "longitude": 47.3048891,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -4036,6 +4729,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "town",
+      "latitude": -117.746565,
+      "longitude": 48.0572307,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -4051,6 +4747,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "town",
+      "latitude": -117.5886874,
+      "longitude": 47.0914742,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -4066,6 +4765,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.3424589,
+      "longitude": 48.2451443,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -4081,6 +4783,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "town",
+      "latitude": -118.124643,
+      "longitude": 46.52156,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -4096,6 +4801,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "town",
+      "latitude": -122.5934092,
+      "longitude": 47.1692672,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -4111,6 +4819,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -121.8931455,
+      "longitude": 45.6964404,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -4126,6 +4837,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -121.8041059,
+      "longitude": 47.8711319,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -4141,6 +4855,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.2694059,
+      "longitude": 48.9957548,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -4156,6 +4873,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.2337926,
+      "longitude": 47.2323555,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -4171,6 +4891,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -120.0056283,
+      "longitude": 46.3156551,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -4186,6 +4909,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.459687,
+      "longitude": 47.2521991,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -4201,6 +4927,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -117.0730567,
+      "longitude": 47.2247315,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -4216,6 +4945,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.8604505,
+      "longitude": 46.8538171,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -4231,6 +4963,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -120.7557839,
+      "longitude": 46.7026029,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -4246,6 +4981,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.8523351,
+      "longitude": 46.4447207,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -4261,6 +4999,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -119.4413064,
+      "longitude": 48.7075633,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -4276,6 +5017,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -120.3125833,
+      "longitude": 46.3802416,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -4291,6 +5035,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.2727174,
+      "longitude": 47.476289,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -4306,6 +5053,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.9176777,
+      "longitude": 46.9894629,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -4321,6 +5071,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "town",
+      "latitude": -120.1168915,
+      "longitude": 48.3610045,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -4336,6 +5089,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -120.4978964,
+      "longitude": 46.5546888,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -4351,6 +5107,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "town",
+      "latitude": -117.0861371,
+      "longitude": 46.5390914,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -4366,6 +5125,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.5458898,
+      "longitude": 47.2153709,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -4381,6 +5143,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.9570277,
+      "longitude": 46.4045961,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -4396,6 +5161,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.5965679,
+      "longitude": 45.6371555,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -4411,6 +5179,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -118.150869,
+      "longitude": 46.2697977,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -4426,6 +5197,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -118.3362159,
+      "longitude": 46.0670064,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -4441,6 +5215,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -120.4215067,
+      "longitude": 46.4436321,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -4456,6 +5233,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -119.0523104,
+      "longitude": 46.9672558,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -4471,6 +5251,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.3450299,
+      "longitude": 45.582801,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -4486,6 +5269,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "town",
+      "latitude": -118.3105393,
+      "longitude": 46.7539105,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -4501,6 +5287,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "town",
+      "latitude": -120.0706822,
+      "longitude": 47.6480186,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -4516,6 +5305,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "town",
+      "latitude": -117.2312246,
+      "longitude": 47.3380868,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -4531,6 +5323,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -120.3295573,
+      "longitude": 47.4359852,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -4546,6 +5341,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -119.3998034,
+      "longitude": 46.3137969,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -4561,6 +5359,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -124.1155198,
+      "longitude": 46.8918148,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -4576,6 +5377,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -121.4853918,
+      "longitude": 45.7285171,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -4591,6 +5395,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "town",
+      "latitude": -118.7119404,
+      "longitude": 47.7581322,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -4606,6 +5413,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "town",
+      "latitude": -122.0493664,
+      "longitude": 47.1019097,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -4621,6 +5431,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "town",
+      "latitude": -119.1176509,
+      "longitude": 47.4230129,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -4636,6 +5449,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.9139468,
+      "longitude": 46.4906805,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -4651,6 +5467,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "town",
+      "latitude": -120.1789871,
+      "longitude": 48.4715809,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -4666,6 +5485,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.1477765,
+      "longitude": 47.7576947,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -4681,6 +5503,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.7504619,
+      "longitude": 45.9181833,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -4696,6 +5521,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.3874086,
+      "longitude": 47.7835175,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -4711,6 +5539,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "town",
+      "latitude": -122.4063218,
+      "longitude": 45.8652479,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -4726,6 +5557,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -120.549939,
+      "longitude": 46.5909379,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -4741,6 +5575,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "town",
+      "latitude": -122.2190408,
+      "longitude": 47.6445856,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -4756,6 +5593,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -122.6256237,
+      "longitude": 46.9426075,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     },
     {
@@ -4771,6 +5611,9 @@
         "incorporated-place",
         "telehealth"
       ],
+      "placeType": "city",
+      "latitude": -120.2726634,
+      "longitude": 46.4084243,
       "source": "U.S. Census TIGERweb ACS26 incorporated places"
     }
   ],
@@ -4788,6 +5631,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.0586096,
+      "longitude": -123.7791626,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -4803,6 +5649,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 48.7158393,
+      "longitude": -122.2076873,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -4818,6 +5667,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 48.3589079,
+      "longitude": -117.8371874,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -4833,6 +5685,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 46.556989,
+      "longitude": -120.6148266,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -4848,6 +5703,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 46.7872333,
+      "longitude": -122.266663,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -4863,6 +5721,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.1726902,
+      "longitude": -122.2209158,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -4878,6 +5739,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.8145697,
+      "longitude": -122.2671539,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -4893,6 +5757,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 48.6175809,
+      "longitude": -122.3369294,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -4908,6 +5775,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.386377,
+      "longitude": -122.8385388,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -4923,6 +5793,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 46.2664398,
+      "longitude": -123.6227988,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -4938,6 +5811,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.453167,
+      "longitude": -123.9194285,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -4953,6 +5829,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 45.912198,
+      "longitude": -122.4795705,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -4968,6 +5847,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.6346412,
+      "longitude": -121.9664892,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -4983,6 +5865,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 46.1354173,
+      "longitude": -117.1324544,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -4998,6 +5883,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.159089,
+      "longitude": -122.7033372,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -5013,6 +5901,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 48.2119288,
+      "longitude": -122.0629951,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -5028,6 +5919,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.2986682,
+      "longitude": -122.6476608,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -5043,6 +5937,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 46.7550067,
+      "longitude": -122.0143297,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -5058,6 +5955,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.7227902,
+      "longitude": -122.7145512,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -5073,6 +5973,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.6315172,
+      "longitude": -119.2759799,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -5088,6 +5991,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 45.7136338,
+      "longitude": -122.6114433,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -5103,6 +6009,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.7661516,
+      "longitude": -121.4802789,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -5118,6 +6027,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 48.6203946,
+      "longitude": -118.1289621,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -5133,6 +6045,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 48.7783043,
+      "longitude": -118.1328617,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -5148,6 +6063,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "City",
+      "latitude": 46.5890392,
+      "longitude": -119.1566468,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -5163,6 +6081,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 46.6207533,
+      "longitude": -123.9531823,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -5178,6 +6099,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 48.4870004,
+      "longitude": -122.4625534,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -5193,6 +6117,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 46.1769739,
+      "longitude": -122.9235231,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -5208,6 +6135,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.4490957,
+      "longitude": -122.849246,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -5223,6 +6153,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 48.0549495,
+      "longitude": -123.0869766,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -5238,6 +6171,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.4873996,
+      "longitude": -122.6175168,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -5253,6 +6189,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 46.8348187,
+      "longitude": -119.9302659,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -5268,6 +6207,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 46.0056409,
+      "longitude": -120.3079798,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -5283,6 +6225,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 48.3889796,
+      "longitude": -122.2434914,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -5298,6 +6243,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 48.9236709,
+      "longitude": -122.759796,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -5313,6 +6261,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 48.0130912,
+      "longitude": -122.9895781,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -5328,6 +6279,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.8063519,
+      "longitude": -122.1843937,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -5343,6 +6297,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.8055971,
+      "longitude": -122.2401098,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -5358,6 +6315,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.5136723,
+      "longitude": -122.3159956,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -5373,6 +6333,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 48.5612851,
+      "longitude": -122.4077622,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -5388,6 +6351,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 48.7244347,
+      "longitude": -118.132084,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -5403,6 +6369,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.0064113,
+      "longitude": -123.5321303,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -5418,6 +6387,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.669042,
+      "longitude": -122.9247491,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -5433,6 +6405,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.3037554,
+      "longitude": -122.4375032,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -5448,6 +6423,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 45.7250435,
+      "longitude": -122.5483275,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -5463,6 +6441,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 48.2399989,
+      "longitude": -122.1638227,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -5478,6 +6459,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.4949851,
+      "longitude": -122.2409996,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -5493,6 +6477,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 46.4276867,
+      "longitude": -120.3182446,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -5508,6 +6495,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.9617014,
+      "longitude": -122.0944368,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -5523,6 +6513,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 46.201571,
+      "longitude": -118.9890952,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -5538,6 +6531,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.4166227,
+      "longitude": -122.6377403,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -5553,6 +6549,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 48.1705965,
+      "longitude": -122.4648945,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -5568,6 +6567,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.376491,
+      "longitude": -122.6020159,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -5583,6 +6585,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 48.1156927,
+      "longitude": -121.9832733,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -5598,6 +6603,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 48.0841667,
+      "longitude": -123.1696792,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -5613,6 +6621,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 45.7353752,
+      "longitude": -121.8219004,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -5628,6 +6639,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.1416908,
+      "longitude": -119.3259804,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -5643,6 +6657,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.8525931,
+      "longitude": -122.1057897,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -5658,6 +6675,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.9749502,
+      "longitude": -122.0770749,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -5673,6 +6693,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 45.7539936,
+      "longitude": -120.9080804,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -5688,6 +6711,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 46.9704945,
+      "longitude": -123.7019288,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -5703,6 +6729,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.902842,
+      "longitude": -121.985002,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -5718,6 +6747,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.7994285,
+      "longitude": -119.9882549,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -5733,6 +6765,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 45.802296,
+      "longitude": -122.5767622,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -5748,6 +6783,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.6225543,
+      "longitude": -122.7193064,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -5763,6 +6801,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 46.2755196,
+      "longitude": -123.9422126,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -5778,6 +6819,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 48.2535197,
+      "longitude": -124.2577832,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -5793,6 +6837,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 46.3769508,
+      "longitude": -117.092082,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -5808,6 +6855,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 48.0012217,
+      "longitude": -117.5611547,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -5823,6 +6873,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 48.4537374,
+      "longitude": -122.2335551,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -5838,6 +6891,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 46.9309957,
+      "longitude": -122.2841253,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -5853,6 +6909,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.829183,
+      "longitude": -122.1451449,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -5868,6 +6927,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 46.9221967,
+      "longitude": -121.0430142,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -5883,6 +6945,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.9740138,
+      "longitude": -122.3470181,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -5898,6 +6963,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.1404081,
+      "longitude": -122.3826499,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -5913,6 +6981,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 46.8656001,
+      "longitude": -124.1050223,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -5928,6 +6999,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 48.3356815,
+      "longitude": -122.3444319,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -5943,6 +7017,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.1206553,
+      "longitude": -124.1721973,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -5958,6 +7035,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.7465641,
+      "longitude": -122.0756051,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -5973,6 +7053,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 46.0492922,
+      "longitude": -122.3033637,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -5988,6 +7071,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.7478499,
+      "longitude": -117.4198698,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -6003,6 +7089,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 46.6718984,
+      "longitude": -120.7119355,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -6018,6 +7107,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.2109408,
+      "longitude": -119.9958753,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -6033,6 +7125,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.0842879,
+      "longitude": -122.1225817,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -6048,6 +7143,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 48.877715,
+      "longitude": -118.6045158,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -6063,6 +7161,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 48.7310784,
+      "longitude": -118.6662864,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -6078,6 +7179,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 48.91285,
+      "longitude": -122.6369939,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -6093,6 +7197,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 45.6315927,
+      "longitude": -121.1749058,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -6108,6 +7215,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 48.9936377,
+      "longitude": -118.5068955,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -6123,6 +7233,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.3131748,
+      "longitude": -122.4156653,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -6138,6 +7251,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 46.3519984,
+      "longitude": -123.6986236,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -6153,6 +7269,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 48.8312262,
+      "longitude": -122.2390323,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -6168,6 +7287,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 46.6872574,
+      "longitude": -119.9310109,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -6183,6 +7305,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 48.3445188,
+      "longitude": -119.2300745,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -6198,6 +7323,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 46.1404335,
+      "longitude": -118.1518965,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -6213,6 +7341,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 45.7802359,
+      "longitude": -122.5999682,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -6228,6 +7359,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 46.4764369,
+      "longitude": -120.3973309,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -6243,6 +7377,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 45.783819,
+      "longitude": -122.6470391,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -6258,6 +7395,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 46.1956452,
+      "longitude": -123.3587484,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -6273,6 +7413,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.519333,
+      "longitude": -122.6183151,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -6288,6 +7431,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.4717403,
+      "longitude": -122.0852305,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -6303,6 +7449,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.8967988,
+      "longitude": -122.1817183,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -6318,6 +7467,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.2404736,
+      "longitude": -121.1732432,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -6333,6 +7485,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 48.5640082,
+      "longitude": -122.4347641,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -6348,6 +7503,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 46.7652533,
+      "longitude": -122.1956296,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -6363,6 +7521,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.0424618,
+      "longitude": -122.3662506,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -6378,6 +7539,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.5885507,
+      "longitude": -122.6052769,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -6393,6 +7557,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.6038609,
+      "longitude": -122.6939892,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -6408,6 +7575,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 46.6670673,
+      "longitude": -120.6337638,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -6423,6 +7593,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.7937101,
+      "longitude": -122.3469254,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -6438,6 +7611,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.6186468,
+      "longitude": -117.6484385,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -6453,6 +7629,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.4467542,
+      "longitude": -122.1429165,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -6468,6 +7647,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.7670906,
+      "longitude": -117.4185158,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -6483,6 +7665,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "City",
+      "latitude": 47.5716772,
+      "longitude": -121.9132863,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -6498,6 +7683,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 45.7137742,
+      "longitude": -122.710397,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -6513,6 +7701,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 45.6369962,
+      "longitude": -122.3962701,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -6528,6 +7719,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.2606514,
+      "longitude": -122.3459706,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -6543,6 +7737,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 46.169729,
+      "longitude": -119.0446534,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -6558,6 +7755,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 45.6883373,
+      "longitude": -122.5737647,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -6573,6 +7773,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.939235,
+      "longitude": -122.1340837,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -6588,6 +7791,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 46.7458945,
+      "longitude": -123.0029982,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -6603,6 +7809,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.0955124,
+      "longitude": -122.5674386,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -6618,6 +7827,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.5576155,
+      "longitude": -117.5818323,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -6633,6 +7845,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.2447603,
+      "longitude": -122.6255654,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -6648,6 +7863,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.0915671,
+      "longitude": -122.360261,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -6663,6 +7881,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 48.0185607,
+      "longitude": -122.5358324,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -6678,6 +7899,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 46.060853,
+      "longitude": -118.3990268,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -6693,6 +7917,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 48.7445368,
+      "longitude": -122.4043094,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -6708,6 +7935,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 48.8907688,
+      "longitude": -121.9350787,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -6723,6 +7953,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 46.6593397,
+      "longitude": -120.6025214,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -6738,6 +7971,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 46.0228209,
+      "longitude": -121.2925874,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -6753,6 +7989,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.5239629,
+      "longitude": -122.7051665,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -6768,6 +8007,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.0322375,
+      "longitude": -122.2827566,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -6783,6 +8025,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 46.8017724,
+      "longitude": -123.0118087,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -6798,6 +8043,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.3299808,
+      "longitude": -122.8316528,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -6813,6 +8061,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 46.8303114,
+      "longitude": -124.0897004,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -6828,6 +8079,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 46.3607839,
+      "longitude": -123.5890032,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -6843,6 +8097,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.8184176,
+      "longitude": -117.2748225,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -6858,6 +8115,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.1464527,
+      "longitude": -121.6319915,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -6873,6 +8133,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.9159,
+      "longitude": -122.5734126,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -6888,6 +8151,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 48.0131279,
+      "longitude": -122.3201759,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -6903,6 +8169,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 45.679734,
+      "longitude": -122.6552819,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -6918,6 +8187,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.2644164,
+      "longitude": -122.8343307,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -6933,6 +8205,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.7967797,
+      "longitude": -122.028126,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -6948,6 +8223,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.4119565,
+      "longitude": -121.9960246,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -6963,6 +8241,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 45.730183,
+      "longitude": -122.4833341,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -6978,6 +8259,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.0416265,
+      "longitude": -124.1589375,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -6993,6 +8277,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.278854,
+      "longitude": -122.7747652,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -7008,6 +8295,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.4019796,
+      "longitude": -123.1541264,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -7023,6 +8313,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.2490803,
+      "longitude": -123.9348726,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -7038,6 +8331,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 48.3378907,
+      "longitude": -118.2371946,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -7053,6 +8349,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.7542682,
+      "longitude": -122.5155086,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -7068,6 +8367,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 48.1228386,
+      "longitude": -123.0910425,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -7083,6 +8385,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 46.9727185,
+      "longitude": -122.2272563,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -7098,6 +8403,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 48.1383679,
+      "longitude": -122.335738,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -7113,6 +8421,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 48.085189,
+      "longitude": -118.7163638,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -7128,6 +8439,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 48.9156056,
+      "longitude": -122.1336137,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -7143,6 +8457,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.1562809,
+      "longitude": -122.6341251,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -7158,6 +8475,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.3377536,
+      "longitude": -122.7502132,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -7173,6 +8493,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.6999057,
+      "longitude": -122.6239227,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -7188,6 +8511,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.7927777,
+      "longitude": -122.5065821,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -7203,6 +8529,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.590375,
+      "longitude": -122.7088016,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -7218,6 +8547,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 45.8179658,
+      "longitude": -121.1625798,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -7233,6 +8565,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 46.8198452,
+      "longitude": -122.2961696,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -7248,6 +8583,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 48.055319,
+      "longitude": -121.9811662,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -7263,6 +8601,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 48.0639127,
+      "longitude": -122.0920459,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -7278,6 +8619,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 48.3225174,
+      "longitude": -122.0121732,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -7293,6 +8637,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 48.134293,
+      "longitude": -122.2785065,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -7308,6 +8655,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.2985529,
+      "longitude": -122.1335223,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -7323,6 +8673,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 48.2822731,
+      "longitude": -122.342326,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -7338,6 +8691,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.6926271,
+      "longitude": -121.9151361,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -7353,6 +8709,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 48.3177475,
+      "longitude": -122.2320118,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -7368,6 +8727,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.3324891,
+      "longitude": -122.1032233,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -7383,6 +8745,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.9836928,
+      "longitude": -121.9128045,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -7398,6 +8763,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 45.6911321,
+      "longitude": -122.6911832,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -7413,6 +8781,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.8733235,
+      "longitude": -122.2581712,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -7428,6 +8799,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.2306818,
+      "longitude": -122.1695249,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -7443,6 +8817,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.3376342,
+      "longitude": -122.2810268,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -7458,6 +8835,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.2786261,
+      "longitude": -122.2826861,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -7473,6 +8853,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.3755432,
+      "longitude": -119.5042817,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -7488,6 +8871,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.8429002,
+      "longitude": -122.2527475,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -7503,6 +8889,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 48.9972975,
+      "longitude": -118.2247864,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -7518,6 +8907,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 46.5640907,
+      "longitude": -123.5508881,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -7533,6 +8925,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 45.8127787,
+      "longitude": -122.5143368,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -7548,6 +8943,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 46.1897114,
+      "longitude": -122.9123354,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -7563,6 +8961,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 48.05971,
+      "longitude": -122.0410605,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -7578,6 +8979,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.8114136,
+      "longitude": -122.6560493,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -7593,6 +8997,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.225513,
+      "longitude": -122.7742794,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -7608,6 +9015,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 46.1794803,
+      "longitude": -122.9569707,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -7623,6 +9033,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 48.8233382,
+      "longitude": -119.6397459,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -7638,6 +9051,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 48.0661177,
+      "longitude": -117.6287984,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -7653,6 +9069,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 46.2185004,
+      "longitude": -123.3698112,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -7668,6 +9087,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 45.6955796,
+      "longitude": -121.2805325,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -7683,6 +9105,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.9918048,
+      "longitude": -122.0517099,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -7698,6 +9123,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 48.799684,
+      "longitude": -118.611993,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -7713,6 +9141,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 46.9778871,
+      "longitude": -123.3035369,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -7728,6 +9159,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 48.2918193,
+      "longitude": -119.6955927,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -7743,6 +9177,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.802678,
+      "longitude": -122.1044333,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -7758,6 +9195,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.5508284,
+      "longitude": -122.5423341,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -7773,6 +9213,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.881562,
+      "longitude": -120.1620025,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -7788,6 +9231,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 48.9179538,
+      "longitude": -122.0943258,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -7803,6 +9249,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.4440277,
+      "longitude": -122.0972282,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -7818,6 +9267,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.3713092,
+      "longitude": -122.5689503,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -7833,6 +9285,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 48.5417564,
+      "longitude": -121.4395907,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -7848,6 +9303,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 48.7879527,
+      "longitude": -122.5544375,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -7863,6 +9321,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 46.9637254,
+      "longitude": -119.3507951,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -7878,6 +9339,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 46.9156189,
+      "longitude": -123.9818643,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -7893,6 +9357,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 48.0566228,
+      "longitude": -122.6934414,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -7908,6 +9375,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.8479155,
+      "longitude": -122.2326992,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -7923,6 +9393,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 45.6927552,
+      "longitude": -120.8071588,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -7938,6 +9411,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.8555396,
+      "longitude": -121.6743111,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -7953,6 +9429,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.1329689,
+      "longitude": -122.4922445,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -7968,6 +9447,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 46.9365471,
+      "longitude": -122.5501251,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -7983,6 +9465,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.128557,
+      "longitude": -122.2374188,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -7998,6 +9483,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.7795272,
+      "longitude": -117.3499436,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -8013,6 +9501,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 45.7523286,
+      "longitude": -122.5614522,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -8028,6 +9519,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.8585699,
+      "longitude": -122.3174856,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -8043,6 +9537,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 48.1287394,
+      "longitude": -120.0056033,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -8058,6 +9555,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.1734056,
+      "longitude": -122.4120198,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -8073,6 +9573,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.8360545,
+      "longitude": -122.1876811,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -8088,6 +9591,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 46.7192991,
+      "longitude": -122.1859933,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -8103,6 +9609,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 45.657677,
+      "longitude": -122.6204317,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -8118,6 +9627,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.4615902,
+      "longitude": -121.9936722,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -8133,6 +9645,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.2348833,
+      "longitude": -124.2026917,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -8148,6 +9663,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.8830343,
+      "longitude": -121.9867463,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -8163,6 +9681,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.1949554,
+      "longitude": -119.3177747,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -8178,6 +9699,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 45.7372881,
+      "longitude": -122.6315654,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -8193,6 +9717,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 46.3650055,
+      "longitude": -123.8012765,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -8208,6 +9735,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "City",
+      "latitude": 47.5507687,
+      "longitude": -122.6654849,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -8223,6 +9753,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 48.3609634,
+      "longitude": -124.6115586,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -8238,6 +9771,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.4031213,
+      "longitude": -123.8782017,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -8253,6 +9789,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 48.1714867,
+      "longitude": -119.0244026,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -8268,6 +9807,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 46.8348683,
+      "longitude": -120.9437527,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -8283,6 +9825,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.0163267,
+      "longitude": -122.6724765,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -8298,6 +9843,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.122171,
+      "longitude": -122.5962491,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -8313,6 +9861,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.8533289,
+      "longitude": -122.2762647,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -8328,6 +9879,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 48.4439548,
+      "longitude": -119.4458389,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -8343,6 +9897,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.2014582,
+      "longitude": -122.2746602,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -8358,6 +9915,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.8825961,
+      "longitude": -121.8250696,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -8373,6 +9933,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 46.9647762,
+      "longitude": -122.6027929,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -8388,6 +9951,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 48.2623043,
+      "longitude": -122.3501221,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -8403,6 +9969,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "City",
+      "latitude": 47.0764222,
+      "longitude": -124.1618564,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -8418,6 +9987,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 46.4961631,
+      "longitude": -124.0437504,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -8433,6 +10005,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 46.8917186,
+      "longitude": -124.0247267,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -8448,6 +10023,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 46.578224,
+      "longitude": -122.7111394,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -8463,6 +10041,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 45.6889959,
+      "longitude": -122.5306022,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -8478,6 +10059,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 48.8637662,
+      "longitude": -118.2058978,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -8493,6 +10077,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 48.2836196,
+      "longitude": -121.9237265,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -8508,6 +10095,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.7030539,
+      "longitude": -117.0853847,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -8523,6 +10113,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 46.3311525,
+      "longitude": -120.0928122,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -8538,6 +10131,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.023312,
+      "longitude": -124.1633086,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -8553,6 +10149,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.2150421,
+      "longitude": -124.1965475,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -8568,6 +10167,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 46.6085237,
+      "longitude": -121.6702517,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -8583,6 +10185,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 46.502157,
+      "longitude": -120.4668131,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -8598,6 +10203,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.1417071,
+      "longitude": -122.4375771,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -8613,6 +10221,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.5265634,
+      "longitude": -122.598664,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -8628,6 +10239,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 46.4726739,
+      "longitude": -117.5442553,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -8643,6 +10257,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 48.9506751,
+      "longitude": -122.1483883,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -8658,6 +10275,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.8749294,
+      "longitude": -122.3109834,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -8673,6 +10293,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 48.6501609,
+      "longitude": -118.6837844,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -8688,6 +10311,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 48.9862866,
+      "longitude": -123.0569355,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -8703,6 +10329,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 48.1066227,
+      "longitude": -123.3712207,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -8718,6 +10347,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.8493409,
+      "longitude": -122.5578718,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -8733,6 +10365,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 48.0327318,
+      "longitude": -122.7852939,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -8748,6 +10383,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.9140476,
+      "longitude": -122.6947705,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -8763,6 +10401,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 46.948884,
+      "longitude": -123.2736103,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -8778,6 +10419,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.1528561,
+      "longitude": -122.1047496,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -8793,6 +10437,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.1438245,
+      "longitude": -122.1408841,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -8808,6 +10455,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 46.1742662,
+      "longitude": -123.3829496,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -8823,6 +10473,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.3933326,
+      "longitude": -122.6116969,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -8838,6 +10491,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.5314697,
+      "longitude": -124.3384053,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -8853,6 +10509,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.2502012,
+      "longitude": -124.1901749,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -8868,6 +10527,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.8368393,
+      "longitude": -122.9058041,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -8883,6 +10545,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.329012,
+      "longitude": -122.6687759,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -8898,6 +10563,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.3589317,
+      "longitude": -121.9781548,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -8913,6 +10581,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 48.067697,
+      "longitude": -123.1276171,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -8928,6 +10599,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.4652367,
+      "longitude": -121.7492032,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -8943,6 +10617,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.484153,
+      "longitude": -121.7150086,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -8958,6 +10635,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 48.6092445,
+      "longitude": -123.1335348,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -8973,6 +10653,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 46.8198419,
+      "longitude": -123.0635272,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -8988,6 +10671,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 48.4849962,
+      "longitude": -121.6064204,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -9003,6 +10689,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.5885275,
+      "longitude": -122.6672428,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -9018,6 +10707,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.2337541,
+      "longitude": -121.0334778,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -9033,6 +10725,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 45.7476027,
+      "longitude": -120.2161108,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -9048,6 +10743,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 46.307661,
+      "longitude": -123.6344153,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -9063,6 +10761,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.3452496,
+      "longitude": -122.6369149,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -9078,6 +10779,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 46.3748681,
+      "longitude": -123.0441792,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -9093,6 +10797,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 45.7099158,
+      "longitude": -122.6632067,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -9108,6 +10815,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.297428,
+      "longitude": -124.2327373,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -9123,6 +10833,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.0223404,
+      "longitude": -123.4737062,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -9138,6 +10851,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 46.8214626,
+      "longitude": -119.9233623,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -9153,6 +10869,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.645439,
+      "longitude": -122.8243828,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -9168,6 +10887,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 48.2640553,
+      "longitude": -124.301448,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -9183,6 +10905,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.401691,
+      "longitude": -122.0763187,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -9198,6 +10923,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 48.2018489,
+      "longitude": -122.2457614,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -9213,6 +10941,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.8635048,
+      "longitude": -122.1497159,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -9228,6 +10959,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.666348,
+      "longitude": -122.6827966,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -9243,6 +10977,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 48.1176522,
+      "longitude": -122.1104517,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -9258,6 +10995,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 46.3003989,
+      "longitude": -123.4242359,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -9273,6 +11013,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.3297257,
+      "longitude": -123.1573234,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -9288,6 +11031,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.4015498,
+      "longitude": -121.4110144,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -9303,6 +11049,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 46.9993801,
+      "longitude": -122.3919714,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -9318,6 +11067,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.1198489,
+      "longitude": -122.2852491,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -9333,6 +11085,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.3885113,
+      "longitude": -120.2827559,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -9348,6 +11103,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.5125891,
+      "longitude": -122.5303304,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -9363,6 +11121,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.0979018,
+      "longitude": -122.4232588,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -9378,6 +11139,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.3814571,
+      "longitude": -122.715366,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -9393,6 +11157,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.8673166,
+      "longitude": -121.7502015,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -9408,6 +11175,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.0074005,
+      "longitude": -117.3502092,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -9423,6 +11193,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 48.7234991,
+      "longitude": -122.3441112,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -9438,6 +11211,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.1694294,
+      "longitude": -122.3628059,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -9453,6 +11229,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.1342785,
+      "longitude": -122.3467457,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -9468,6 +11247,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 46.5982789,
+      "longitude": -120.6564,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -9483,6 +11265,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.8296789,
+      "longitude": -117.6055757,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -9498,6 +11283,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 48.2265236,
+      "longitude": -122.2537236,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -9513,6 +11301,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.0740972,
+      "longitude": -120.0283034,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -9528,6 +11319,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.4912807,
+      "longitude": -120.3492916,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -9543,6 +11337,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.7241123,
+      "longitude": -122.5816397,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -9558,6 +11355,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 48.2828961,
+      "longitude": -121.7136892,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -9573,6 +11373,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.3283982,
+      "longitude": -124.2725852,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -9588,6 +11391,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 46.5331706,
+      "longitude": -120.8741458,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -9603,6 +11409,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.0513415,
+      "longitude": -122.7822171,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -9618,6 +11427,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.1165124,
+      "longitude": -122.1824396,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -9633,6 +11445,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 46.6044489,
+      "longitude": -120.4392248,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -9648,6 +11463,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.0654829,
+      "longitude": -120.6708368,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -9663,6 +11481,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.9420107,
+      "longitude": -121.9924469,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -9678,6 +11499,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 46.7087805,
+      "longitude": -123.983386,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -9693,6 +11517,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 48.6772243,
+      "longitude": -118.6688648,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -9708,6 +11535,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 46.041103,
+      "longitude": -118.672394,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -9723,6 +11553,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "Town",
+      "latitude": 47.7258771,
+      "longitude": -117.4220155,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -9738,6 +11571,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.6094791,
+      "longitude": -122.6532616,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -9753,6 +11589,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 45.9975536,
+      "longitude": -121.5289964,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -9768,6 +11607,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 48.2621687,
+      "longitude": -118.3590529,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -9783,6 +11625,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.3475072,
+      "longitude": -123.0950794,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -9798,6 +11643,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.6787958,
+      "longitude": -122.028388,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -9813,6 +11661,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 46.2403472,
+      "longitude": -123.324565,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -9828,6 +11679,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 48.1728814,
+      "longitude": -117.7244639,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -9843,6 +11697,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 46.9452322,
+      "longitude": -119.9921497,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -9858,6 +11715,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.4105664,
+      "longitude": -122.4574132,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -9873,6 +11733,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.3542535,
+      "longitude": -122.781762,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -9888,6 +11751,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 45.7859741,
+      "longitude": -122.4715469,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -9903,6 +11769,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 48.1002212,
+      "longitude": -121.7677745,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -9918,6 +11787,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 46.0458231,
+      "longitude": -118.3030959,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -9933,6 +11805,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.2035349,
+      "longitude": -122.3699939,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -9948,6 +11823,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 46.0847001,
+      "longitude": -118.9055934,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -9963,6 +11841,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 48.1657854,
+      "longitude": -122.3477026,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -9978,6 +11859,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.3860539,
+      "longitude": -122.6695199,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -9993,6 +11877,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 46.4015505,
+      "longitude": -117.0623395,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -10008,6 +11895,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 46.2505116,
+      "longitude": -119.1676442,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -10023,6 +11913,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.1349354,
+      "longitude": -119.1759781,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -10038,6 +11931,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 48.338638,
+      "longitude": -122.6615956,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -10053,6 +11949,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.5086161,
+      "longitude": -122.3478502,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -10068,6 +11967,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 46.3769782,
+      "longitude": -120.738123,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -10083,6 +11985,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.4464023,
+      "longitude": -121.7691478,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -10098,6 +12003,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 46.6754474,
+      "longitude": -123.6647525,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -10113,6 +12021,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 45.6613311,
+      "longitude": -120.9713679,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -10128,6 +12039,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.2827292,
+      "longitude": -122.5771465,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     },
     {
@@ -10143,6 +12057,9 @@
         "census-designated-place",
         "telehealth"
       ],
+      "placeType": "CDP",
+      "latitude": 47.8821156,
+      "longitude": -121.8982267,
       "source": "U.S. Census TIGERweb ACS26 census-designated places"
     }
   ]

@@ -1,0 +1,562 @@
+{
+  "version": 1,
+  "state": "Washington",
+  "stateCode": "WA",
+  "sourceVintage": "2026",
+  "sourceUrls": {
+    "counties": "https://ofm.wa.gov/data-research/population-demographics/decennial-census/2020-census/data/",
+    "incorporatedPlaces": "https://tigerweb.geo.census.gov/tigerwebmain/Files/acs26/tigerweb_acs26_incplace_wa.html",
+    "censusDesignatedPlaces": "https://tigerweb.geo.census.gov/tigerwebmain/Files/acs26/tigerweb_acs26_cdp_wa.html"
+  },
+  "publicationPolicy": "Geographic entities enter as draft/noindex. Promote only after the page has local usefulness, no-office clarity, and editorial review.",
+  "counties": [
+    {
+      "kind": "county",
+      "name": "Adams County",
+      "shortName": "Adams",
+      "slug": "online-therapy-adams-county-wa",
+      "status": "draft",
+      "state": "WA",
+      "tags": [
+        "washington",
+        "county",
+        "telehealth"
+      ],
+      "source": "Washington OFM / U.S. Census geography"
+    },
+    {
+      "kind": "county",
+      "name": "Asotin County",
+      "shortName": "Asotin",
+      "slug": "online-therapy-asotin-county-wa",
+      "status": "draft",
+      "state": "WA",
+      "tags": [
+        "washington",
+        "county",
+        "telehealth"
+      ],
+      "source": "Washington OFM / U.S. Census geography"
+    },
+    {
+      "kind": "county",
+      "name": "Benton County",
+      "shortName": "Benton",
+      "slug": "online-therapy-benton-county-wa",
+      "status": "draft",
+      "state": "WA",
+      "tags": [
+        "washington",
+        "county",
+        "telehealth"
+      ],
+      "source": "Washington OFM / U.S. Census geography"
+    },
+    {
+      "kind": "county",
+      "name": "Chelan County",
+      "shortName": "Chelan",
+      "slug": "online-therapy-chelan-county-wa",
+      "status": "draft",
+      "state": "WA",
+      "tags": [
+        "washington",
+        "county",
+        "telehealth"
+      ],
+      "source": "Washington OFM / U.S. Census geography"
+    },
+    {
+      "kind": "county",
+      "name": "Clallam County",
+      "shortName": "Clallam",
+      "slug": "online-therapy-clallam-county-wa",
+      "status": "draft",
+      "state": "WA",
+      "tags": [
+        "washington",
+        "county",
+        "telehealth"
+      ],
+      "source": "Washington OFM / U.S. Census geography"
+    },
+    {
+      "kind": "county",
+      "name": "Clark County",
+      "shortName": "Clark",
+      "slug": "online-therapy-clark-county-wa",
+      "status": "draft",
+      "state": "WA",
+      "tags": [
+        "washington",
+        "county",
+        "telehealth"
+      ],
+      "source": "Washington OFM / U.S. Census geography"
+    },
+    {
+      "kind": "county",
+      "name": "Columbia County",
+      "shortName": "Columbia",
+      "slug": "online-therapy-columbia-county-wa",
+      "status": "draft",
+      "state": "WA",
+      "tags": [
+        "washington",
+        "county",
+        "telehealth"
+      ],
+      "source": "Washington OFM / U.S. Census geography"
+    },
+    {
+      "kind": "county",
+      "name": "Cowlitz County",
+      "shortName": "Cowlitz",
+      "slug": "online-therapy-cowlitz-county-wa",
+      "status": "draft",
+      "state": "WA",
+      "tags": [
+        "washington",
+        "county",
+        "telehealth"
+      ],
+      "source": "Washington OFM / U.S. Census geography"
+    },
+    {
+      "kind": "county",
+      "name": "Douglas County",
+      "shortName": "Douglas",
+      "slug": "online-therapy-douglas-county-wa",
+      "status": "draft",
+      "state": "WA",
+      "tags": [
+        "washington",
+        "county",
+        "telehealth"
+      ],
+      "source": "Washington OFM / U.S. Census geography"
+    },
+    {
+      "kind": "county",
+      "name": "Ferry County",
+      "shortName": "Ferry",
+      "slug": "online-therapy-ferry-county-wa",
+      "status": "draft",
+      "state": "WA",
+      "tags": [
+        "washington",
+        "county",
+        "telehealth"
+      ],
+      "source": "Washington OFM / U.S. Census geography"
+    },
+    {
+      "kind": "county",
+      "name": "Franklin County",
+      "shortName": "Franklin",
+      "slug": "online-therapy-franklin-county-wa",
+      "status": "draft",
+      "state": "WA",
+      "tags": [
+        "washington",
+        "county",
+        "telehealth"
+      ],
+      "source": "Washington OFM / U.S. Census geography"
+    },
+    {
+      "kind": "county",
+      "name": "Garfield County",
+      "shortName": "Garfield",
+      "slug": "online-therapy-garfield-county-wa",
+      "status": "draft",
+      "state": "WA",
+      "tags": [
+        "washington",
+        "county",
+        "telehealth"
+      ],
+      "source": "Washington OFM / U.S. Census geography"
+    },
+    {
+      "kind": "county",
+      "name": "Grant County",
+      "shortName": "Grant",
+      "slug": "online-therapy-grant-county-wa",
+      "status": "draft",
+      "state": "WA",
+      "tags": [
+        "washington",
+        "county",
+        "telehealth"
+      ],
+      "source": "Washington OFM / U.S. Census geography"
+    },
+    {
+      "kind": "county",
+      "name": "Grays Harbor County",
+      "shortName": "Grays Harbor",
+      "slug": "online-therapy-grays-harbor-county-wa",
+      "status": "draft",
+      "state": "WA",
+      "tags": [
+        "washington",
+        "county",
+        "telehealth"
+      ],
+      "source": "Washington OFM / U.S. Census geography"
+    },
+    {
+      "kind": "county",
+      "name": "Island County",
+      "shortName": "Island",
+      "slug": "online-therapy-island-county-wa",
+      "status": "draft",
+      "state": "WA",
+      "tags": [
+        "washington",
+        "county",
+        "telehealth"
+      ],
+      "source": "Washington OFM / U.S. Census geography"
+    },
+    {
+      "kind": "county",
+      "name": "Jefferson County",
+      "shortName": "Jefferson",
+      "slug": "online-therapy-jefferson-county-wa",
+      "status": "draft",
+      "state": "WA",
+      "tags": [
+        "washington",
+        "county",
+        "telehealth"
+      ],
+      "source": "Washington OFM / U.S. Census geography"
+    },
+    {
+      "kind": "county",
+      "name": "King County",
+      "shortName": "King",
+      "slug": "online-therapy-king-county-wa",
+      "status": "existing",
+      "state": "WA",
+      "tags": [
+        "washington",
+        "county",
+        "telehealth"
+      ],
+      "source": "Washington OFM / U.S. Census geography"
+    },
+    {
+      "kind": "county",
+      "name": "Kitsap County",
+      "shortName": "Kitsap",
+      "slug": "online-therapy-kitsap-county-wa",
+      "status": "draft",
+      "state": "WA",
+      "tags": [
+        "washington",
+        "county",
+        "telehealth"
+      ],
+      "source": "Washington OFM / U.S. Census geography"
+    },
+    {
+      "kind": "county",
+      "name": "Kittitas County",
+      "shortName": "Kittitas",
+      "slug": "online-therapy-kittitas-county-wa",
+      "status": "draft",
+      "state": "WA",
+      "tags": [
+        "washington",
+        "county",
+        "telehealth"
+      ],
+      "source": "Washington OFM / U.S. Census geography"
+    },
+    {
+      "kind": "county",
+      "name": "Klickitat County",
+      "shortName": "Klickitat",
+      "slug": "online-therapy-klickitat-county-wa",
+      "status": "draft",
+      "state": "WA",
+      "tags": [
+        "washington",
+        "county",
+        "telehealth"
+      ],
+      "source": "Washington OFM / U.S. Census geography"
+    },
+    {
+      "kind": "county",
+      "name": "Lewis County",
+      "shortName": "Lewis",
+      "slug": "online-therapy-lewis-county-wa",
+      "status": "draft",
+      "state": "WA",
+      "tags": [
+        "washington",
+        "county",
+        "telehealth"
+      ],
+      "source": "Washington OFM / U.S. Census geography"
+    },
+    {
+      "kind": "county",
+      "name": "Lincoln County",
+      "shortName": "Lincoln",
+      "slug": "online-therapy-lincoln-county-wa",
+      "status": "draft",
+      "state": "WA",
+      "tags": [
+        "washington",
+        "county",
+        "telehealth"
+      ],
+      "source": "Washington OFM / U.S. Census geography"
+    },
+    {
+      "kind": "county",
+      "name": "Mason County",
+      "shortName": "Mason",
+      "slug": "online-therapy-mason-county-wa",
+      "status": "draft",
+      "state": "WA",
+      "tags": [
+        "washington",
+        "county",
+        "telehealth"
+      ],
+      "source": "Washington OFM / U.S. Census geography"
+    },
+    {
+      "kind": "county",
+      "name": "Okanogan County",
+      "shortName": "Okanogan",
+      "slug": "online-therapy-okanogan-county-wa",
+      "status": "draft",
+      "state": "WA",
+      "tags": [
+        "washington",
+        "county",
+        "telehealth"
+      ],
+      "source": "Washington OFM / U.S. Census geography"
+    },
+    {
+      "kind": "county",
+      "name": "Pacific County",
+      "shortName": "Pacific",
+      "slug": "online-therapy-pacific-county-wa",
+      "status": "draft",
+      "state": "WA",
+      "tags": [
+        "washington",
+        "county",
+        "telehealth"
+      ],
+      "source": "Washington OFM / U.S. Census geography"
+    },
+    {
+      "kind": "county",
+      "name": "Pend Oreille County",
+      "shortName": "Pend Oreille",
+      "slug": "online-therapy-pend-oreille-county-wa",
+      "status": "draft",
+      "state": "WA",
+      "tags": [
+        "washington",
+        "county",
+        "telehealth"
+      ],
+      "source": "Washington OFM / U.S. Census geography"
+    },
+    {
+      "kind": "county",
+      "name": "Pierce County",
+      "shortName": "Pierce",
+      "slug": "online-therapy-pierce-county-wa",
+      "status": "draft",
+      "state": "WA",
+      "tags": [
+        "washington",
+        "county",
+        "telehealth"
+      ],
+      "source": "Washington OFM / U.S. Census geography"
+    },
+    {
+      "kind": "county",
+      "name": "San Juan County",
+      "shortName": "San Juan",
+      "slug": "online-therapy-san-juan-county-wa",
+      "status": "draft",
+      "state": "WA",
+      "tags": [
+        "washington",
+        "county",
+        "telehealth"
+      ],
+      "source": "Washington OFM / U.S. Census geography"
+    },
+    {
+      "kind": "county",
+      "name": "Skagit County",
+      "shortName": "Skagit",
+      "slug": "online-therapy-skagit-county-wa",
+      "status": "draft",
+      "state": "WA",
+      "tags": [
+        "washington",
+        "county",
+        "telehealth"
+      ],
+      "source": "Washington OFM / U.S. Census geography"
+    },
+    {
+      "kind": "county",
+      "name": "Skamania County",
+      "shortName": "Skamania",
+      "slug": "online-therapy-skamania-county-wa",
+      "status": "draft",
+      "state": "WA",
+      "tags": [
+        "washington",
+        "county",
+        "telehealth"
+      ],
+      "source": "Washington OFM / U.S. Census geography"
+    },
+    {
+      "kind": "county",
+      "name": "Snohomish County",
+      "shortName": "Snohomish",
+      "slug": "online-therapy-snohomish-county-wa",
+      "status": "existing",
+      "state": "WA",
+      "tags": [
+        "washington",
+        "county",
+        "telehealth"
+      ],
+      "source": "Washington OFM / U.S. Census geography"
+    },
+    {
+      "kind": "county",
+      "name": "Spokane County",
+      "shortName": "Spokane",
+      "slug": "online-therapy-spokane-county-wa",
+      "status": "draft",
+      "state": "WA",
+      "tags": [
+        "washington",
+        "county",
+        "telehealth"
+      ],
+      "source": "Washington OFM / U.S. Census geography"
+    },
+    {
+      "kind": "county",
+      "name": "Stevens County",
+      "shortName": "Stevens",
+      "slug": "online-therapy-stevens-county-wa",
+      "status": "draft",
+      "state": "WA",
+      "tags": [
+        "washington",
+        "county",
+        "telehealth"
+      ],
+      "source": "Washington OFM / U.S. Census geography"
+    },
+    {
+      "kind": "county",
+      "name": "Thurston County",
+      "shortName": "Thurston",
+      "slug": "online-therapy-thurston-county-wa",
+      "status": "draft",
+      "state": "WA",
+      "tags": [
+        "washington",
+        "county",
+        "telehealth"
+      ],
+      "source": "Washington OFM / U.S. Census geography"
+    },
+    {
+      "kind": "county",
+      "name": "Wahkiakum County",
+      "shortName": "Wahkiakum",
+      "slug": "online-therapy-wahkiakum-county-wa",
+      "status": "draft",
+      "state": "WA",
+      "tags": [
+        "washington",
+        "county",
+        "telehealth"
+      ],
+      "source": "Washington OFM / U.S. Census geography"
+    },
+    {
+      "kind": "county",
+      "name": "Walla Walla County",
+      "shortName": "Walla Walla",
+      "slug": "online-therapy-walla-walla-county-wa",
+      "status": "draft",
+      "state": "WA",
+      "tags": [
+        "washington",
+        "county",
+        "telehealth"
+      ],
+      "source": "Washington OFM / U.S. Census geography"
+    },
+    {
+      "kind": "county",
+      "name": "Whatcom County",
+      "shortName": "Whatcom",
+      "slug": "online-therapy-whatcom-county-wa",
+      "status": "draft",
+      "state": "WA",
+      "tags": [
+        "washington",
+        "county",
+        "telehealth"
+      ],
+      "source": "Washington OFM / U.S. Census geography"
+    },
+    {
+      "kind": "county",
+      "name": "Whitman County",
+      "shortName": "Whitman",
+      "slug": "online-therapy-whitman-county-wa",
+      "status": "draft",
+      "state": "WA",
+      "tags": [
+        "washington",
+        "county",
+        "telehealth"
+      ],
+      "source": "Washington OFM / U.S. Census geography"
+    },
+    {
+      "kind": "county",
+      "name": "Yakima County",
+      "shortName": "Yakima",
+      "slug": "online-therapy-yakima-county-wa",
+      "status": "draft",
+      "state": "WA",
+      "tags": [
+        "washington",
+        "county",
+        "telehealth"
+      ],
+      "source": "Washington OFM / U.S. Census geography"
+    }
+  ],
+  "incorporatedPlaces": [],
+  "censusDesignatedPlaces": []
+}

@@ -1,0 +1,28 @@
+name: Website quality checks
+
+on:
+  pull_request:
+  push:
+    branches: [main, "review/**"]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Build and validate
+        run: npm run check
+      - name: Upload generated SEO report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: seo-expansion-report
+          path: dist/reports/seo-expansion.json
+          if-no-files-found: ignore

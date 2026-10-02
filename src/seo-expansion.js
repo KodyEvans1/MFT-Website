@@ -25,6 +25,33 @@ function sourceHtml(source){
   if(!fs.existsSync(p)) throw new Error('Missing template '+p);
   return fs.readFileSync(p,'utf8');
 }
+const PLACE_GEO=[...(GEO.incorporatedPlaces||[]),...(GEO.censusDesignatedPlaces||[])].filter(x=>Number.isFinite(x.latitude)&&Number.isFinite(x.longitude));
+const WOODINVILLE={latitude:47.7543,longitude:-122.1635};
+function milesBetween(a,b){
+  if(!Number.isFinite(a?.latitude)||!Number.isFinite(a?.longitude)||!Number.isFinite(b?.latitude)||!Number.isFinite(b?.longitude)) return null;
+  const R=3958.8,rad=x=>x*Math.PI/180;
+  const dLat=rad(b.latitude-a.latitude),dLon=rad(b.longitude-a.longitude);
+  const q=Math.sin(dLat/2)**2+Math.cos(rad(a.latitude))*Math.cos(rad(b.latitude))*Math.sin(dLon/2)**2;
+  return 2*R*Math.asin(Math.sqrt(q));
+}
+function regionFor(e){
+  if(!Number.isFinite(e?.longitude)||!Number.isFinite(e?.latitude)) return 'Washington State';
+  const lon=e.longitude,lat=e.latitude;
+  if(lon<=-123.05) return lat>=47.2?'the Olympic Peninsula and outer western Washington':'southwest and coastal Washington';
+  if(lon<=-121.45) return lat>=47.9?'northwest Washington and the north Puget Sound region':lat>=46.7?'the Puget Sound and western Washington region':'southwest Washington';
+  if(lon<=-119.0) return lat>=47.5?'north-central Washington':'central Washington';
+  return lat>=47.5?'northeastern Washington':'eastern Washington';
+}
+function nearbyGeo(e){
+  if(!Number.isFinite(e?.latitude)||!Number.isFinite(e?.longitude)) return [];
+  return PLACE_GEO.filter(x=>x.slug!==e.slug && x.geoid!==e.geoid).map(x=>({x,d:milesBetween(e,x)})).filter(x=>Number.isFinite(x.d)&&x.d>0.1).sort((a,b)=>a.d-b.d).slice(0,5).map(({x,d})=>({...x,distanceMiles:Math.round(d)}));
+}
+function locationContext(e){
+  const nearby=nearbyGeo(e),wood=milesBetween(e,WOODINVILLE),region=regionFor(e);
+  const placeType=e.kind==='county'?'county':String(e.placeType||e.kind||'community').toLowerCase();
+  return {nearby,wood,region,placeType};
+}
+
 function related(entity,all){
   const tags=new Set(entity.tags||[]);
   return all.filter(x=>x.slug!==entity.slug).map(x=>({x,score:(x.tags||[]).filter(t=>tags.has(t)).length})).filter(x=>x.score>0).sort((a,b)=>b.score-a.score||a.x.name.localeCompare(b.x.name)).slice(0,4).map(x=>x.x);
@@ -55,14 +82,19 @@ function copyFor(type,e){
     q2:'How can couples move from reaction to understanding?',
     bullets:['Each partner’s experience','Recurring interaction patterns','Repair and communication','When additional support may help']
   };
-  if(type==='location') return {
-    h1:`Online Therapy in ${name}, Washington`,
-    summary:`Explore online therapy access for eligible clients in ${name}, with clinician, service, and scheduling information from Marriage.Family.Therapy.`,
-    intro:`Marriage.Family.Therapy has one physical office in Woodinville. This page describes telehealth access for people located in ${name} and does not imply a local branch office.`,
-    q1:'How can clients in this area access care?',
-    q2:'What should you consider when choosing a therapist?',
-    bullets:['Washington-based telehealth access','Clinician fit and availability','Relevant services and approaches','Woodinville in-person option']
-  };
+  if(type==='location') {
+    const ctx=locationContext(e);
+    const travel=Number.isFinite(ctx.wood)?(ctx.wood<=35?'For some people in this area, the Woodinville office may also be a practical in-person option.':'Telehealth can remove the need for recurring travel to the Woodinville office.'):'The Woodinville office remains the practice’s only physical location.';
+    const nearbyText=ctx.nearby.length?` Nearby communities in the current Census geography include ${ctx.nearby.map(x=>x.name).join(', ')}.`:'';
+    return {
+      h1:`Online Therapy in ${name}, Washington`,
+      summary:`Explore online therapy access for eligible clients in ${name}, part of ${ctx.region}, and compare clinicians, services, and ways to begin care.`,
+      intro:`Marriage.Family.Therapy has one physical office in Woodinville. This page describes telehealth access for people in the ${name} ${ctx.placeType} and does not imply a local branch office. ${travel}${nearbyText}`,
+      q1:`What are the therapy options for people in ${name}?`,
+      q2:'What should you consider when choosing a therapist?',
+      bullets:['Washington-based telehealth access',`Regional context: ${ctx.region}`,'Clinician fit and availability','Woodinville in-person option']
+    };
+  }
   if(type==='population') return {
     h1:name,
     summary:`Therapy options tailored to the developmental, relational, and practical needs of ${name.toLowerCase()} in Woodinville and through eligible Washington telehealth.`,
@@ -100,8 +132,8 @@ function clinicianBlock(type,e){
 }
 
 function bodySection(type,e,all){
-  const c=copyFor(type,e), rel=related(e,all);
-  const links=rel.map(x=>`<a href="/${x.slug}/"><b>${esc(x.name)}</b><span>Explore a related ${type==='modality'?'approach':type==='location'?'Washington service area':'topic'}.</span></a>`).join('');
+  const c=copyFor(type,e), rel=type==='location'?nearbyGeo(e):related(e,all);
+  const links=rel.map(x=>`<a href="/${x.slug}/"><b>${esc(x.name)}</b><span>${type==='location'&&Number.isFinite(x.distanceMiles)?`Nearby Washington community · about ${x.distanceMiles} miles straight-line`:`Explore a related ${type==='modality'?'approach':type==='location'?'Washington service area':'topic'}.`}</span></a>`).join('');
   return `<section class="section story-section seo-entity">
     <div class="story-intro"><p class="kicker">${esc(familyMetaKey(type).label)}</p><h2>${esc(c.q1)}</h2><p>${esc(c.intro)}</p><h3>${esc(c.q2)}</h3><p>This page is part of M.F.T.’s structured care library. Content is reviewed before becoming eligible for search indexing.</p></div>
     <div class="value-panel"><h3>What this page helps you explore</h3><ul class="value-list">${c.bullets.map(x=>'<li>'+esc(x)+'</li>').join('')}</ul><a class="button dark" href="/team/">Compare clinicians</a></div>

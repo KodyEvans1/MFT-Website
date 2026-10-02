@@ -57,6 +57,66 @@ function purposeBlock(route){
   if(route==='/') return `<section class="section purpose-panel reveal"><div class="section-heading"><p class="kicker">Find the right starting point</p><h2>Care should make sense before the first full session.</h2><p>Explore the team, compare services, learn how different therapy approaches work, or choose a starting appointment.</p></div><div class="decision-grid"><a href="/team/"><b>Meet the team</b><span>See who works with adults, couples, children, teens, and families.</span></a><a href="/services/"><b>Explore services</b><span>Compare populations, formats, concerns, and treatment pathways.</span></a><a href="/therapy-approaches/"><b>Explore modalities</b><span>Learn about the approaches represented across our clinicians.</span></a><a href="/marriage-reset-assessment/"><b>Try Marriage.Reset</b><span>Begin with the free relationship assessment and discover what deserves attention.</span></a></div></section>`;
   return '';
 }
+function homepageOverride(html){
+  const consult='https://marriagefamilytherapy.clientsecure.me/';
+  const verify='mailto:support@mft.care?subject=Verify%20my%20therapy%20benefits';
+  const hero=`<section class="home-hero">
+    <div class="home-hero-copy">
+      <p class="kicker">Marriage.Family.Therapy</p>
+      <h1>Find the right therapist. Start in the way that feels manageable.</h1>
+      <p class="hero-summary">Therapy for individuals, couples, children, teens, and families in Woodinville, with secure online care across Washington.</p>
+      <div class="actions">
+        <a class="button primary" href="${consult}">Schedule a free 10-minute consultation</a>
+        <a class="button ghost" href="/team/">Meet the team</a>
+      </div>
+    </div>
+    <div class="home-hero-panel">
+      <p class="kicker">A clearer first step</p>
+      <h2>Not sure where to begin?</h2>
+      <p>Choose what you need first. You can understand your options before committing to ongoing care.</p>
+      <div class="quick-actions">
+        <a href="/services/"><b>Explore services</b><span>Individual, couples, child, teen, family, and premarital care.</span></a>
+        <a href="/team/"><b>Find a clinician</b><span>Compare populations served, specialties, and approaches.</span></a>
+        <a href="${verify}"><b>Verify benefits</b><span>Email our support team to start an insurance-benefit check.</span></a>
+      </div>
+    </div>
+  </section>`;
+  const intro=`<section class="section home-questions">
+    <div class="section-heading"><p class="kicker">Start with the questions that matter most</p><h2>What kind of help are you looking for?</h2><p>Most people do not arrive knowing the exact service or therapy model they need. Start with who needs support and what is getting in the way.</p></div>
+    <div class="question-grid">
+      <a href="/new-page/"><b>Support for me</b><span>Individual therapy for adults navigating anxiety, depression, ADHD, stress, grief, relationships, and transitions.</span></a>
+      <a href="/marriage-and-couples-therapy-counseling/"><b>Support for us</b><span>Couples and marriage therapy for conflict, distance, trust, communication, and connection.</span></a>
+      <a href="/childrentherapy/"><b>Support for my child</b><span>Developmentally appropriate care for children and families.</span></a>
+      <a href="/teen-counseling/"><b>Support for my teen</b><span>A respectful place for teens to build skills, confidence, and understanding.</span></a>
+    </div>
+  </section>`;
+  const steps=`<section class="section home-steps">
+    <div class="section-heading"><p class="kicker">How to begin</p><h2>Three clear steps from searching to care.</h2></div>
+    <div class="step-grid">
+      <article><span>01</span><h3>Clarify what you are looking for</h3><p>Start with a service, concern, or therapist profile that sounds closest to what is happening now.</p><a href="/services/">Explore services →</a></article>
+      <article><span>02</span><h3>Review clinician information</h3><p>Compare who they work with, focus areas, approaches, and whether you prefer in-person or online care.</p><a href="/team/">Meet the team →</a></article>
+      <article><span>03</span><h3>Schedule your next step</h3><p>Book a free 10-minute consultation or move directly into the appropriate first clinical appointment.</p><a href="${consult}">Schedule now →</a></article>
+    </div>
+  </section>`;
+  const faq=`<section class="section home-faq">
+    <div class="section-heading"><p class="kicker">Common questions</p><h2>Answers before you schedule.</h2></div>
+    <div class="faq-grid">
+      <details><summary>Can I talk with a therapist before starting?</summary><p>Yes. We offer a free 10-minute phone meet-and-greet so you can ask practical questions and get a feel for the clinician before deciding what to do next.</p></details>
+      <details><summary>Can I start with a full session instead?</summary><p>Yes. For individual clients, the standard clinical starting point may be a 53-minute diagnostic evaluation when appropriate.</p></details>
+      <details><summary>Do you offer online therapy?</summary><p>Yes. Secure telehealth may be available to eligible clients who are physically located in Washington at the time of care.</p></details>
+      <details><summary>How do I check insurance benefits?</summary><p><a href="${verify}">Email support@mft.care</a> to start a benefits-verification request. Coverage depends on the clinician, service, plan, and network status.</p></details>
+    </div>
+    <p class="faq-contact">Still unsure? <a href="mailto:support@mft.care?subject=Website%20question">Ask our support team a question.</a></p>
+  </section>`;
+  html=html.replace(/<nav class="breadcrumbs"[\s\S]*?<\/nav>/,'');
+  html=html.replace(/<section class="hero">[\s\S]*?<\/section>/,hero);
+  html=html.replace(/<section class="section purpose-panel reveal">[\s\S]*?<\/section>/,intro+steps+faq);
+  html=html.replace(/<section class="section start-options reveal"[\s\S]*?<\/section>/,'');
+  html=html.replace(/<section class="section related reveal">[\s\S]*?<\/section>/,'');
+  html=html.replace(/<a class="nav-action" href="[^"]+">Request appointment<\/a>/,`<a class="nav-action" href="${consult}">Free consultation</a>`);
+  return html;
+}
+
 function replaceGenericSections(html,route){
   const purpose=purposeBlock(route);
   if(purpose){
@@ -78,7 +138,8 @@ function enhanceHtml(file){
   h=h.replace(/<a href="https:\/\/ops\.mft\.care\/">Request appointment<\/a>/g,`<a href="${booking(route)}">Request appointment</a>`);
   h=h.replace(/<a class="button ghost" href="https:\/\/ops\.mft\.care\/">Request appointment<\/a>/g,`<a class="button ghost" href="${booking(route)}">Request appointment</a>`);
   h=replaceGenericSections(h,route);
-  if(!route.startsWith('/marriage-reset-assessment/')){
+  if(route==='/') h=homepageOverride(h);
+  if(route!=='/' && !route.startsWith('/marriage-reset-assessment/')){
     const block=consultationBlock(route);
     h=h.replace(/<section class="section final-cta reveal">/,block+'<section class="section final-cta reveal">');
   }
@@ -90,6 +151,8 @@ for(const f of walk(DIST)) enhanceHtml(f);
 
 const cssPath=path.join(DIST,'assets/styles.css');
 fs.appendFileSync(cssPath,`
+.home-hero{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(320px,.8fr);gap:clamp(2rem,5vw,5rem);padding:clamp(4rem,8vw,7rem) clamp(1rem,7vw,7rem);background:linear-gradient(135deg,#f7f3ea 0%,#edf4f1 100%);align-items:center}.home-hero-copy h1{font-size:clamp(3.2rem,6vw,6rem);max-width:900px;color:var(--deep)}.home-hero-copy .hero-summary{color:#355f5c;font-size:1.2rem}.home-hero .button.primary{background:var(--ink);color:#fff;border-color:var(--ink)}.home-hero .button.ghost{color:var(--ink);border-color:var(--ink)}.home-hero-panel{background:var(--deep);color:#fff;padding:clamp(1.5rem,4vw,3rem);border-radius:24px;box-shadow:0 24px 60px rgba(16,47,46,.12)}.home-hero-panel h2{font-size:clamp(2rem,4vw,3.4rem)}.quick-actions{display:grid;margin-top:1.6rem;border-top:1px solid rgba(255,255,255,.22)}.quick-actions a{display:grid;gap:.2rem;padding:1rem 0;border-bottom:1px solid rgba(255,255,255,.22);text-decoration:none}.quick-actions b{font:500 1.15rem var(--serif)}.quick-actions span{font-size:.9rem;color:#d8e7e2}.home-questions{background:#fff}.question-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-top:2.5rem}.question-grid a{display:block;padding:1.6rem;background:var(--mist);border-radius:18px;text-decoration:none;border:1px solid rgba(23,62,60,.08)}.question-grid b,.question-grid span{display:block}.question-grid b{font:500 1.45rem var(--serif);margin-bottom:.55rem}.question-grid span{color:#4e6d6a}.home-steps{background:#f4f0e7}.step-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;margin-top:2rem}.step-grid article{background:#fff;padding:1.7rem;border-radius:18px;border-top:4px solid var(--gold)}.step-grid article>span{font-weight:700;color:var(--teal);letter-spacing:.1em}.step-grid h3{font-size:1.55rem}.step-grid a{font-weight:700;text-underline-offset:.18em}.home-faq{background:var(--deep);color:#fff}.home-faq .kicker{color:var(--gold)}.faq-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;margin-top:2rem}.faq-grid details{background:rgba(255,255,255,.06);padding:1.25rem;border:1px solid rgba(255,255,255,.14);border-radius:14px}.faq-grid summary{font:500 1.18rem var(--serif);cursor:pointer}.faq-grid p{color:#d8e7e2}.faq-contact{margin-top:1.5rem}.faq-contact a,.faq-grid a{color:#fff}@media(max-width:900px){.home-hero{grid-template-columns:1fr}.question-grid{grid-template-columns:repeat(2,1fr)}.step-grid{grid-template-columns:1fr}}@media(max-width:600px){.question-grid,.faq-grid{grid-template-columns:1fr}.home-hero-copy h1{font-size:2.75rem}}
+
 .brand-logo{width:46px;height:46px;object-fit:contain}.brand-footer{display:flex;align-items:center;gap:.8rem}.brand-footer img{width:46px;height:46px}.purpose-panel{background:#fff}.decision-grid,.option-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1rem;margin-top:2rem}.decision-grid a,.option-card{border-top:3px solid var(--gold);background:var(--mist);padding:1.4rem;text-decoration:none;min-height:180px}.decision-grid b,.decision-grid span{display:block}.decision-grid b{font:500 1.35rem var(--serif);margin-bottom:.55rem}.decision-grid span{color:#496866}.start-options{background:#f4f0e7}.option-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.option-card{background:#fff}.option-time{text-transform:uppercase;letter-spacing:.12em;font-size:.72rem;font-weight:700;color:var(--teal)}.option-card h3{margin:.25rem 0 .7rem}.option-note{max-width:900px;margin:1.5rem 0 0;color:#496866}.staff-card{display:grid;grid-template-columns:160px 1fr;gap:1.5rem;align-items:center;margin-top:2rem;border-top:1px solid var(--line);padding-top:1.5rem}.staff-card img{width:160px;aspect-ratio:4/5;object-fit:cover}.hero-media{filter:saturate(.86) contrast(.96)}@media(max-width:900px){.decision-grid{grid-template-columns:repeat(2,1fr)}.option-grid{grid-template-columns:1fr}}@media(max-width:600px){.decision-grid{grid-template-columns:1fr}.brand-logo{width:40px;height:40px}}
 `);
 

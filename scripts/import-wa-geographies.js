@@ -26,8 +26,8 @@ function parseRows(html,kind){
       state:'WA',
       tags:['washington',kind,'telehealth'],
       placeType:(fullName.match(/\b(city|town|CDP)\b/i)||[])[1]||kind,
-      latitude:Number(cells[16]),
-      longitude:Number(cells[17]),
+      latitude:Number(cells[kind==='incorporated-place'?15:16]),
+      longitude:Number(cells[kind==='incorporated-place'?16:17]),
       source:kind==='incorporated-place'?'U.S. Census TIGERweb ACS26 incorporated places':'U.S. Census TIGERweb ACS26 census-designated places'
     });
   }

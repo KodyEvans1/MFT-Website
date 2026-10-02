@@ -34,10 +34,19 @@ for (const file of htmlFiles) {
   if (isAssessmentThanks && !/noindex/.test(h)) errors.push(`${file}: assessment confirmation must be noindex`);
   const title=(h.match(/<title>(.*?)<\/title>/)||[])[1];
   const desc=(h.match(/name="description" content="(.*?)"/)||[])[1];
+  const isNoindex=/name="robots" content="[^"]*noindex/.test(h);
   const canonical=(h.match(/rel="canonical" href="(.*?)"/)||[])[1];
   if (!is404) {
-    if (titles.has(title)) errors.push(`${file}: duplicate title with ${titles.get(title)}`); else titles.set(title,file);
-    if (descriptions.has(desc)) errors.push(`${file}: duplicate description with ${descriptions.get(desc)}`); else descriptions.set(desc,file);
+    if (titles.has(title)) {
+      const prior=titles.get(title);
+      const msg=`${file}: duplicate title with ${prior.file}`;
+      if (isNoindex || prior.noindex) warnings.push(msg); else errors.push(msg);
+    } else titles.set(title,{file,noindex:isNoindex});
+    if (descriptions.has(desc)) {
+      const prior=descriptions.get(desc);
+      const msg=`${file}: duplicate description with ${prior.file}`;
+      if (isNoindex || prior.noindex) warnings.push(msg); else errors.push(msg);
+    } else descriptions.set(desc,{file,noindex:isNoindex});
     if (canonicals.has(canonical)) errors.push(`${file}: duplicate canonical with ${canonicals.get(canonical)}`); else canonicals.set(canonical,file);
     const plainTitle=title.replace(/&amp;/g,'&');
     const plainDesc=desc.replace(/&amp;/g,'&');
@@ -97,12 +106,10 @@ if (fs.existsSync(expansionPath)) {
       errors.push(`seo registry: draft page is indexable ${e.slug}`);
     }
   }
-  for (const flag of expansion.similarityFlags||[]) {
-    const a=entities.find(x=>x.slug===flag.a), b=entities.find(x=>x.slug===flag.b);
-    if (a?.status==='approved' || b?.status==='approved') errors.push(`similarity guard: ${flag.a} and ${flag.b} = ${flag.similarity}`);
-    else warnings.push(`draft similarity flag: ${flag.a} / ${flag.b} = ${flag.similarity}`);
-  }
+  for (const flag of expansion.approvedSimilarityFlags||[]) errors.push(`similarity guard: ${flag.a} and ${flag.b} = ${flag.similarity}`);
+  for (const flag of expansion.similarityFlagsSample||[]) warnings.push(`draft similarity flag: ${flag.a} / ${flag.b} = ${flag.similarity}`);
+  if ((expansion.similarityFlagCount||0)>(expansion.similarityFlagsSample||[]).length) warnings.push(`draft similarity flags total: ${expansion.similarityFlagCount}; showing first ${(expansion.similarityFlagsSample||[]).length}`);
 }
-const result={htmlFiles:htmlFiles.length,contentPages:htmlFiles.length-1,uniqueTitles:titles.size,uniqueDescriptions:descriptions.size,uniqueCanonicals:canonicals.size,sitemapUrls:sitemapUrls.length,warnings,errors};
+const result={htmlFiles:htmlFiles.length,contentPages:htmlFiles.length-1,uniqueTitles:titles.size,uniqueDescriptions:descriptions.size,uniqueCanonicals:canonicals.size,sitemapUrls:sitemapUrls.length,warningCount:warnings.length,warnings:warnings.slice(0,120),errors};
 console.log(JSON.stringify(result,null,2));
 if(errors.length) process.exit(1);

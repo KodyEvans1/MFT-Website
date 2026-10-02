@@ -1,8 +1,10 @@
 const fs = require('fs');
 const path = require('path');
+const { indexingEnabled, validatePublication } = require('./seo-safety');
 
 const ROOT = path.resolve(__dirname, '..');
 const DIST = path.join(ROOT, 'dist');
+const CORE = JSON.parse(fs.readFileSync(path.join(ROOT,'content','seo-core-routes.json'),'utf8'));
 const htmlFiles = [];
 function walk(dir) {
   for (const entry of fs.readdirSync(dir,{withFileTypes:true})) {
@@ -35,6 +37,8 @@ for (const file of htmlFiles) {
   const title=(h.match(/<title>(.*?)<\/title>/)||[])[1];
   const desc=(h.match(/name="description" content="(.*?)"/)||[])[1];
   const isNoindex=/name="robots" content="[^"]*noindex/.test(h);
+  if (count(h,/name="robots"/g)!==1) errors.push(`${file}: expected one robots tag`);
+  if (!indexingEnabled() && !isNoindex) errors.push(`${file}: preview page must be noindex`);
   const canonical=(h.match(/rel="canonical" href="(.*?)"/)||[])[1];
   if (!is404) {
     if (titles.has(title)) {
@@ -48,13 +52,13 @@ for (const file of htmlFiles) {
       if (isNoindex || prior.noindex) warnings.push(msg); else errors.push(msg);
     } else descriptions.set(desc,{file,noindex:isNoindex});
     if (canonicals.has(canonical)) errors.push(`${file}: duplicate canonical with ${canonicals.get(canonical)}`); else canonicals.set(canonical,file);
-    const plainTitle=title.replace(/&amp;/g,'&');
-    const plainDesc=desc.replace(/&amp;/g,'&');
+    const plainTitle=(title||'').replace(/&amp;/g,'&');
+    const plainDesc=(desc||'').replace(/&amp;/g,'&');
     if (plainTitle.length>70) errors.push(`${file}: title too long (${plainTitle.length})`);
     if (plainDesc.length>180) errors.push(`${file}: description too long (${plainDesc.length})`);
   }
   for (const match of h.matchAll(/<img\b[^>]*>/g)) if (!/\balt="[^"]*"/.test(match[0])) errors.push(`${file}: image missing alt`);
-  for (const match of h.matchAll(/href="(\/[^"]*)"/g)) {
+  for (const match of h.matchAll(/href="(\/[^\"]*)"/g)) {
     const href=match[1].split(/[?#]/)[0];
     if (!href || href.startsWith('/assets/')) continue;
     let target;
@@ -80,7 +84,6 @@ for (const file of htmlFiles) {
 
 const sitemap=fs.readFileSync(path.join(DIST,'sitemap.xml'),'utf8');
 const sitemapUrls=[...sitemap.matchAll(/<loc>(.*?)<\/loc>/g)].map(x=>x[1]);
-if (sitemapUrls.length!==62) errors.push(`sitemap: expected 62 URLs, found ${sitemapUrls.length}`);
 if (new Set(sitemapUrls).size!==sitemapUrls.length) errors.push('sitemap: duplicate URLs');
 const inventory=fs.readFileSync(path.join(DIST,'page-inventory.csv'),'utf8').trim().split('\n');
 if (inventory.length<2) errors.push('inventory: missing page rows');
@@ -93,23 +96,15 @@ if (fs.existsSync(expansionPath)) {
   const geo=JSON.parse(fs.readFileSync(path.join(ROOT,'content','wa-geography.json'),'utf8'));
   const entities=[
     ...(reg.modalities||[]),...(reg.concerns||[]),...(reg.relationshipTopics||[]),...(reg.populations||[]),...(reg.decisionGuides||[]),
-    ...(geo.counties||[]).filter(x=>x.status!=='existing'),...(geo.incorporatedPlaces||[]),...(geo.censusDesignatedPlaces||[])
+    ...(geo.counties||[]),...(geo.incorporatedPlaces||[]),...(geo.censusDesignatedPlaces||[])
   ];
-  for (const e of entities) {
-    const file=path.join(DIST,e.slug,'index.html');
-    if (!fs.existsSync(file)) { errors.push(`seo registry: missing generated page ${e.slug}`); continue; }
-    const h=fs.readFileSync(file,'utf8');
-    if (e.status==='approved') {
-      if (/name="robots" content="noindex/.test(h)) errors.push(`seo registry: approved page is noindex ${e.slug}`);
-      if (!sitemap.includes(`<loc>https://www.mft.care/${e.slug}/</loc>`)) warnings.push(`approved SEO page not yet added to sitemap: ${e.slug}`);
-    } else if (!/name="robots" content="noindex/.test(h)) {
-      errors.push(`seo registry: draft page is indexable ${e.slug}`);
-    }
-  }
+  errors.push(...validatePublication(DIST,entities,CORE.slugs));
   for (const flag of expansion.approvedSimilarityFlags||[]) errors.push(`similarity guard: ${flag.a} and ${flag.b} = ${flag.similarity}`);
   for (const flag of expansion.similarityFlagsSample||[]) warnings.push(`draft similarity flag: ${flag.a} / ${flag.b} = ${flag.similarity}`);
   if ((expansion.similarityFlagCount||0)>(expansion.similarityFlagsSample||[]).length) warnings.push(`draft similarity flags total: ${expansion.similarityFlagCount}; showing first ${(expansion.similarityFlagsSample||[]).length}`);
-}
+} else errors.push('Missing SEO expansion report');
 const result={htmlFiles:htmlFiles.length,contentPages:htmlFiles.length-1,uniqueTitles:titles.size,uniqueDescriptions:descriptions.size,uniqueCanonicals:canonicals.size,sitemapUrls:sitemapUrls.length,warningCount:warnings.length,warnings:warnings.slice(0,120),errors};
+fs.mkdirSync(path.join(DIST,'reports'),{recursive:true});
+fs.writeFileSync(path.join(DIST,'reports','validation.json'),JSON.stringify(result,null,2)+'\n');
 console.log(JSON.stringify(result,null,2));
 if(errors.length) process.exit(1);

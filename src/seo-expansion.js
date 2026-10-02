@@ -1,11 +1,14 @@
 const fs=require('fs');
 const path=require('path');
+const {robotsFor, planRoutes, sitemapUrls, writePublication}=require('./seo-safety');
 const ROOT=path.resolve(__dirname,'..');
 const DIST=path.join(ROOT,'dist');
 const REG=JSON.parse(fs.readFileSync(path.join(ROOT,'content','seo-registry.json'),'utf8'));
 const SITE='https://www.mft.care';
 const GEO=JSON.parse(fs.readFileSync(path.join(ROOT,'content','wa-geography.json'),'utf8'));
 const CLIN=JSON.parse(fs.readFileSync(path.join(ROOT,'content','clinician-registry.json'),'utf8'));
+const CORE=JSON.parse(fs.readFileSync(path.join(ROOT,'content','seo-core-routes.json'),'utf8'));
+const coreSitemapUrls=sitemapUrls(fs.readFileSync(path.join(DIST,'sitemap.xml'),'utf8'));
 
 const familyMeta={
   modalities:{type:'modality',source:'cognitive-behavioral-therapy-cbt',hub:'/therapy-approaches/',label:'Therapy approach'},
@@ -159,7 +162,7 @@ function generate(type,e,all,meta){
   let h=sourceHtml(meta.source);
   h=h.replace(/<title>.*?<\/title>/,`<title>${esc(title)}</title>`);
   h=h.replace(/<meta name="description" content="[^"]*">/,`<meta name="description" content="${esc(desc)}">`);
-  h=h.replace(/<meta name="robots" content="[^"]*">/,`<meta name="robots" content="${e.status==='approved'?'index,follow,max-image-preview:large':'noindex,nofollow'}">`);
+  h=h.replace(/<meta name="robots" content="[^"]*">/,`<meta name="robots" content="${robotsFor(e.status)}">`);
   h=h.replace(/<link rel="canonical" href="[^"]*">/,`<link rel="canonical" href="${url}">`);
   h=h.replace(/<meta property="og:title" content="[^"]*">/,`<meta property="og:title" content="${esc(title)}">`);
   h=h.replace(/<meta property="og:description" content="[^"]*">/,`<meta property="og:description" content="${esc(desc)}">`);
@@ -178,7 +181,7 @@ function generate(type,e,all,meta){
 
 const allEntities=[];
 REG.geography=[
-  ...(GEO.counties||[]).filter(x=>x.status!=='existing'),
+  ...(GEO.counties||[]),
   ...(GEO.incorporatedPlaces||[]),
   ...(GEO.censusDesignatedPlaces||[])
 ];
@@ -186,28 +189,17 @@ for(const [key,meta] of Object.entries(familyMeta)){
   const arr=REG[key]||[];
   for(const e of arr) allEntities.push({key,meta,e});
 }
+// Validate every route before writing any expansion page.
+const routePlan=planRoutes(allEntities,DIST,CORE.slugs);
 const byType={};
 for(const x of allEntities){(byType[x.meta.type]??=[]).push(x.e)}
 const generated=[];
-for(const {key,meta,e} of allEntities) generated.push(generate(meta.type,e,byType[meta.type],meta));
+for(const {key,meta,e} of routePlan.generate) generated.push(generate(meta.type,e,byType[meta.type],meta));
 
 
 const stylePath=path.join(DIST,'assets','styles.css');
 fs.appendFileSync(stylePath,`\n.clinician-match-section{background:#fff}.clinician-match-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;margin-top:2rem}.clinician-match-grid a,.clinician-match-note{display:grid;gap:.3rem;padding:1.25rem;background:#edf4f1;border-radius:16px;text-decoration:none}.clinician-match-grid b{font:500 1.25rem var(--serif)}.clinician-match-grid span{color:#456866}.clinician-match-grid small{color:#617b79}.clinician-match-note{max-width:720px}.seo-entity+.purpose-panel{border-top:1px solid var(--line)}@media(max-width:700px){.clinician-match-grid{grid-template-columns:1fr}}\n`);
 
-function appendApprovedToSitemap(generated){
-  const approved=generated.filter(x=>x.status==='approved');
-  if(!approved.length) return;
-  const file=path.join(DIST,'sitemap.xml');
-  let xml=fs.readFileSync(file,'utf8');
-  const additions=[];
-  for(const g of approved){
-    const url=`${SITE}/${g.slug}/`;
-    if(!xml.includes(`<loc>${url}</loc>`)) additions.push(`  <url><loc>${url}</loc></url>`);
-  }
-  if(additions.length) xml=xml.replace('</urlset>',additions.join('\n')+'\n</urlset>');
-  fs.writeFileSync(file,xml);
-}
 function addApprovedHubLinks(generated){
   for(const meta of Object.values(familyMeta)){
     const items=generated.filter(x=>x.type===meta.type&&x.status==='approved');
@@ -229,9 +221,9 @@ function writeExpansionInventory(generated){
   fs.writeFileSync(path.join(DIST,'seo-page-inventory.csv'),rows.map(r=>r.map(q).join(',')).join('\n')+'\n');
 }
 
-appendApprovedToSitemap(generated);
 addApprovedHubLinks(generated);
 writeExpansionInventory(generated);
+const publication=writePublication(DIST,coreSitemapUrls,generated,routePlan.preserved);
 
 let similarityFlagCount=0;
 const similarityFlagsSample=[];
@@ -251,7 +243,12 @@ for(let i=0;i<generated.length;i++){
 const counts={};
 for(const g of generated){counts[g.type]=(counts[g.type]||0)+1}
 const report={
-  generatedDraftPages:generated.length,
+  generatedPages:generated.length,
+  generatedDraftPages:generated.filter(x=>x.status!=='approved').length,
+  preservedCorePages:routePlan.preserved.length,
+  preservedCoreRoutes:routePlan.preserved.map(x=>x.slug),
+  indexingEnabled:publication.indexingEnabled,
+  sitemapUrls:publication.expectedSitemapUrls.length,
   counts,
   approved:generated.filter(x=>x.status==='approved').length,
   draft:generated.filter(x=>x.status!=='approved').length,

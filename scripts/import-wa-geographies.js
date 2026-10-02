@@ -1,60 +1,48 @@
-const fs=require('fs');
-const path=require('path');
-
-const ROOT=path.resolve(__dirname,'..');
-const OUT=path.join(ROOT,'content','wa-geography.json');
-const INC='https://tigerweb.geo.census.gov/tigerwebmain/Files/acs26/tigerweb_acs26_incplace_wa.html';
-const CDP='https://tigerweb.geo.census.gov/tigerwebmain/Files/acs26/tigerweb_acs26_cdp_wa.html';
-
-function slugify(s){return s.toLowerCase().replace(/&/g,' and ').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')}
-function parseRows(html,kind){
-  const text=html.replace(/<script[\s\S]*?<\/script>/gi,' ').replace(/<style[\s\S]*?<\/style>/gi,' ');
-  const rows=[...text.matchAll(/<tr[\s\S]*?<\/tr>/gi)].map(m=>m[0]);
-  const out=[];
-  for(const row of rows){
-    const cells=[...row.matchAll(/<t[dh][^>]*>([\s\S]*?)<\/t[dh]>/gi)].map(m=>m[1].replace(/<[^>]+>/g,' ').replace(/&nbsp;/g,' ').replace(/&amp;/g,'&').replace(/\s+/g,' ').trim());
-    if(cells.length<8 || cells[0]==='MTFCC') continue;
-    const basename=cells[6], fullName=cells[7], geoid=cells[2];
-    if(!basename || !/^53/.test(geoid||'')) continue;
-    out.push({
-      kind,
-      name:basename,
-      censusName:fullName,
-      geoid,
-      slug:`online-therapy-${slugify(basename)}-wa`,
-      status:'draft',
-      state:'WA',
-      tags:['washington',kind,'telehealth'],
-      placeType:(fullName.match(/\b(city|town|CDP)\b/i)||[])[1]||kind,
-      latitude:Number(cells[kind==='incorporated-place'?15:16]),
-      longitude:Number(cells[kind==='incorporated-place'?16:17]),
-      source:kind==='incorporated-place'?'U.S. Census TIGERweb ACS26 incorporated places':'U.S. Census TIGERweb ACS26 census-designated places'
-    });
-  }
-  return out;
+'use strict';
+const fs = require('node:fs');
+const path = require('node:path');
+const { randomUUID } = require('node:crypto');
+const { parseRows, mergeGeography } = require('./wa-geography-data');
+const OUT = path.resolve(__dirname, '../content/wa-geography.json');
+const INC = 'https://tigerweb.geo.census.gov/tigerwebmain/Files/acs26/tigerweb_acs26_incplace_wa.html';
+const CDP = 'https://tigerweb.geo.census.gov/tigerwebmain/Files/acs26/tigerweb_acs26_cdp_wa.html';
+async function get(url) {
+  const response = await fetch(url, {
+    headers: { 'user-agent': 'MFT-Website geography refresh' }, signal: AbortSignal.timeout(30000)
+  });
+  if (!response.ok) throw new Error(`${response.status} ${response.statusText}: ${url}`);
+  return response.text();
 }
-async function get(url){
-  const res=await fetch(url,{headers:{'user-agent':'MFT-Website geography refresh'}});
-  if(!res.ok) throw new Error(`${res.status} ${res.statusText}: ${url}`);
-  return res.text();
-}
-(async()=>{
-  const [incHtml,cdpHtml]=await Promise.all([get(INC),get(CDP)]);
-  const geo=JSON.parse(fs.readFileSync(OUT,'utf8'));
-  geo.sourceVintage='2026';
-  geo.incorporatedPlaces=parseRows(incHtml,'incorporated-place');
-  geo.censusDesignatedPlaces=parseRows(cdpHtml,'census-designated-place');
-  const duplicateSlugs=new Map();
-  for(const e of [...geo.incorporatedPlaces,...geo.censusDesignatedPlaces]){
-    const prior=duplicateSlugs.get(e.slug);
-    if(prior) e.slug=e.slug.replace(/-wa$/,`-${e.kind==='census-designated-place'?'cdp':'place'}-wa`);
-    duplicateSlugs.set(e.slug,e);
+function writeIfUnchanged(file, original, next) {
+  const temporary = `${file}.${randomUUID()}.tmp`;
+  try {
+    if (fs.readFileSync(file, 'utf8') !== original) throw new Error('Geography registry changed during refresh; retry after reconciling edits');
+    fs.writeFileSync(temporary, JSON.stringify(next, null, 2) + '\n', { flag: 'wx' });
+    if (fs.readFileSync(file, 'utf8') !== original) throw new Error('Geography registry changed before replacement');
+    fs.renameSync(temporary, file);
+  } finally {
+    if (fs.existsSync(temporary)) fs.unlinkSync(temporary);
   }
-  fs.writeFileSync(OUT,JSON.stringify(geo,null,2)+'\n');
+}
+async function main() {
+  const dryRun = process.argv.includes('--dry-run');
+  const original = fs.readFileSync(OUT, 'utf8');
+  const previous = JSON.parse(original);
+  const [inc, cdp] = await Promise.all([get(INC), get(CDP)]);
+  const next = mergeGeography(previous, {
+    incorporatedPlaces: parseRows(inc, 'incorporated-place'),
+    censusDesignatedPlaces: parseRows(cdp, 'census-designated-place')
+  });
+  next.sourceVintage = '2026';
+  if (!dryRun) writeIfUnchanged(OUT, original, next);
   console.log(JSON.stringify({
-    counties:geo.counties.length,
-    incorporatedPlaces:geo.incorporatedPlaces.length,
-    censusDesignatedPlaces:geo.censusDesignatedPlaces.length,
-    total:geo.counties.length+geo.incorporatedPlaces.length+geo.censusDesignatedPlaces.length
-  },null,2));
-})().catch(err=>{console.error(err);process.exit(1)});
+    mode: dryRun ? 'verification-only' : 'refresh',
+    counties: next.counties.length,
+    incorporatedPlaces: next.incorporatedPlaces.length,
+    censusDesignatedPlaces: next.censusDesignatedPlaces.length,
+    total: next.counties.length + next.incorporatedPlaces.length + next.censusDesignatedPlaces.length,
+    retainedEditorialRecords: previous.incorporatedPlaces.length + previous.censusDesignatedPlaces.length
+  }, null, 2));
+}
+if (require.main === module) main().catch(error => { console.error(error.message); process.exitCode = 1; });
+module.exports = { writeIfUnchanged };

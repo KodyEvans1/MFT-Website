@@ -17,12 +17,24 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-      - name: Build and validate
+      - name: Build, validate, and run safety regressions
         run: npm run check
-      - name: Upload generated SEO report
+      - name: Rehearse publication policy in isolated builds
+        run: npm run verify:publication
+      - name: Verify Census refresh without changing the registry
+        run: npm run geo:verify
+      - name: Upload generated SEO reports
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: seo-expansion-report
-          path: dist/reports/seo-expansion.json
+          path: dist/reports/
           if-no-files-found: ignore
+      - name: Upload review site for visual verification
+        uses: actions/upload-artifact@v4
+        with:
+          name: review-site
+          path: dist/
+          if-no-files-found: error
+          retention-days: 7
+          include-hidden-files: true

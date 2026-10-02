@@ -4,13 +4,15 @@ const ROOT=path.resolve(__dirname,'..');
 const DIST=path.join(ROOT,'dist');
 const REG=JSON.parse(fs.readFileSync(path.join(ROOT,'content','seo-registry.json'),'utf8'));
 const SITE='https://www.mft.care';
+const GEO=JSON.parse(fs.readFileSync(path.join(ROOT,'content','wa-geography.json'),'utf8'));
 
 const familyMeta={
   modalities:{type:'modality',source:'cognitive-behavioral-therapy-cbt',hub:'/therapy-approaches/',label:'Therapy approach'},
   concerns:{type:'concern',source:'anxiety-stress-therapy',hub:'/what-we-help-with/',label:'What we help with'},
   relationshipTopics:{type:'relationship',source:'relationship-issues-therapy',hub:'/marriagereset/',label:'Relationship topic'},
   populations:{type:'population',source:'new-page',hub:'/services/',label:'Who we serve'},
-  decisionGuides:{type:'decision',source:'how-to-start-therapy',hub:'/resources/',label:'Practical guide'}
+  decisionGuides:{type:'decision',source:'how-to-start-therapy',hub:'/resources/',label:'Practical guide'},
+  geography:{type:'location',source:'online-therapy-king-county-wa',hub:'/online-therapy-locations/',label:'Washington location'}
 };
 const esc=s=>String(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const plain=s=>String(s||'').replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').trim();
@@ -52,6 +54,14 @@ function copyFor(type,e){
     q2:'How can couples move from reaction to understanding?',
     bullets:['Each partner’s experience','Recurring interaction patterns','Repair and communication','When additional support may help']
   };
+  if(type==='location') return {
+    h1:`Online Therapy in ${name}, Washington`,
+    summary:`Explore online therapy access for eligible clients in ${name}, with clinician, service, and scheduling information from Marriage.Family.Therapy.`,
+    intro:`Marriage.Family.Therapy has one physical office in Woodinville. This page describes telehealth access for people located in ${name} and does not imply a local branch office.`,
+    q1:'How can clients in this area access care?',
+    q2:'What should you consider when choosing a therapist?',
+    bullets:['Washington-based telehealth access','Clinician fit and availability','Relevant services and approaches','Woodinville in-person option']
+  };
   if(type==='population') return {
     h1:name,
     summary:`Therapy options tailored to the developmental, relational, and practical needs of ${name.toLowerCase()} in Woodinville and through eligible Washington telehealth.`,
@@ -71,7 +81,7 @@ function copyFor(type,e){
 }
 function bodySection(type,e,all){
   const c=copyFor(type,e), rel=related(e,all);
-  const links=rel.map(x=>`<a href="/${x.slug}/"><b>${esc(x.name)}</b><span>Explore a related ${type==='modality'?'approach':'topic'}.</span></a>`).join('');
+  const links=rel.map(x=>`<a href="/${x.slug}/"><b>${esc(x.name)}</b><span>Explore a related ${type==='modality'?'approach':type==='location'?'Washington service area':'topic'}.</span></a>`).join('');
   return `<section class="section story-section seo-entity">
     <div class="story-intro"><p class="kicker">${esc(familyMetaKey(type).label)}</p><h2>${esc(c.q1)}</h2><p>${esc(c.intro)}</p><h3>${esc(c.q2)}</h3><p>This page is part of M.F.T.’s structured care library. Content is reviewed before becoming eligible for search indexing.</p></div>
     <div class="value-panel"><h3>What this page helps you explore</h3><ul class="value-list">${c.bullets.map(x=>'<li>'+esc(x)+'</li>').join('')}</ul><a class="button dark" href="/team/">Compare clinicians</a></div>
@@ -91,7 +101,7 @@ function minimalSchema(url,title,desc){
 function generate(type,e,all,meta){
   const c=copyFor(type,e);
   const url=SITE+'/'+e.slug+'/';
-  const title=(type==='modality'? c.h1+' Therapy in Washington | M.F.T.' : c.h1+' | M.F.T.');
+  const title=(type==='modality'? c.h1+' Therapy in Washington | M.F.T.' : type==='location'? c.h1+' | M.F.T.' : c.h1+' | M.F.T.');
   const desc=c.summary.length>175?c.summary.slice(0,172)+'...':c.summary;
   let h=sourceHtml(meta.source);
   h=h.replace(/<title>.*?<\/title>/,`<title>${esc(title)}</title>`);
@@ -114,6 +124,11 @@ function generate(type,e,all,meta){
 }
 
 const allEntities=[];
+REG.geography=[
+  ...(GEO.counties||[]).filter(x=>x.status!=='existing'),
+  ...(GEO.incorporatedPlaces||[]),
+  ...(GEO.censusDesignatedPlaces||[])
+];
 for(const [key,meta] of Object.entries(familyMeta)){
   const arr=REG[key]||[];
   for(const e of arr) allEntities.push({key,meta,e});

@@ -5,6 +5,7 @@ const DIST=path.join(ROOT,'dist');
 const REG=JSON.parse(fs.readFileSync(path.join(ROOT,'content','seo-registry.json'),'utf8'));
 const SITE='https://www.mft.care';
 const GEO=JSON.parse(fs.readFileSync(path.join(ROOT,'content','wa-geography.json'),'utf8'));
+const CLIN=JSON.parse(fs.readFileSync(path.join(ROOT,'content','clinician-registry.json'),'utf8'));
 
 const familyMeta={
   modalities:{type:'modality',source:'cognitive-behavioral-therapy-cbt',hub:'/therapy-approaches/',label:'Therapy approach'},
@@ -79,6 +80,25 @@ function copyFor(type,e){
     bullets:['What the term means','Questions worth asking','What may vary by clinician or plan','Where to continue exploring']
   };
 }
+function normalizeTag(s){return String(s||'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')}
+function clinicianMatches(type,e){
+  const tags=new Set((e.tags||[]).map(normalizeTag));
+  return (CLIN.clinicians||[]).map(cl=>{
+    let score=0;
+    const reasons=[];
+    if(type==='modality' && (cl.modalities||[]).includes(e.slug)){score+=6;reasons.push('listed approach')}
+    for(const p of cl.populations||[]){if(tags.has(normalizeTag(p))){score+=2;reasons.push('population')}}
+    for(const q of cl.concerns||[]){if(tags.has(normalizeTag(q))){score+=3;reasons.push('focus area')}}
+    if(type==='relationship' && (cl.populations||[]).includes('couples')){score+=2;reasons.push('couples')}
+    return {cl,score,reasons:[...new Set(reasons)]};
+  }).filter(x=>x.score>0).sort((a,b)=>b.score-a.score||a.cl.name.localeCompare(b.cl.name)).slice(0,4);
+}
+function clinicianBlock(type,e){
+  const matches=clinicianMatches(type,e);
+  if(!matches.length) return '<div class="clinician-match-note"><p>No clinician match is being asserted on this draft page until the team registry supports it.</p><a href="/team/">Review the full team →</a></div>';
+  return '<div class="clinician-match-grid">'+matches.map(({cl,reasons})=>`<a href="/${cl.slug}/"><b>${esc(cl.name)}</b><span>${esc(cl.credential)}</span><small>Matched from current profile data: ${esc(reasons.join(', '))}</small></a>`).join('')+'</div>';
+}
+
 function bodySection(type,e,all){
   const c=copyFor(type,e), rel=related(e,all);
   const links=rel.map(x=>`<a href="/${x.slug}/"><b>${esc(x.name)}</b><span>Explore a related ${type==='modality'?'approach':type==='location'?'Washington service area':'topic'}.</span></a>`).join('');
@@ -86,7 +106,8 @@ function bodySection(type,e,all){
     <div class="story-intro"><p class="kicker">${esc(familyMetaKey(type).label)}</p><h2>${esc(c.q1)}</h2><p>${esc(c.intro)}</p><h3>${esc(c.q2)}</h3><p>This page is part of M.F.T.’s structured care library. Content is reviewed before becoming eligible for search indexing.</p></div>
     <div class="value-panel"><h3>What this page helps you explore</h3><ul class="value-list">${c.bullets.map(x=>'<li>'+esc(x)+'</li>').join('')}</ul><a class="button dark" href="/team/">Compare clinicians</a></div>
   </section>
-  <section class="section purpose-panel"><div class="section-heading"><p class="kicker">Connected care library</p><h2>Keep exploring without starting over.</h2><p>Related pages connect concerns, therapy approaches, populations, services, clinicians, and relationship topics so you can move through the site by what matters to you.</p></div><div class="decision-grid">${links || '<a href="/services/"><b>Explore services</b><span>Find the care pathway that best matches what you need.</span></a><a href="/therapy-approaches/"><b>Explore approaches</b><span>Learn how therapy may be structured.</span></a>'}</div></section>`;
+  <section class="section purpose-panel"><div class="section-heading"><p class="kicker">Connected care library</p><h2>Keep exploring without starting over.</h2><p>Related pages connect concerns, therapy approaches, populations, services, clinicians, and relationship topics so you can move through the site by what matters to you.</p></div><div class="decision-grid">${links || '<a href="/services/"><b>Explore services</b><span>Find the care pathway that best matches what you need.</span></a><a href="/therapy-approaches/"><b>Explore approaches</b><span>Learn how therapy may be structured.</span></a>'}</div></section>
+  <section class="section clinician-match-section"><div class="section-heading"><p class="kicker">Clinician fit</p><h2>Explore clinicians connected to this topic.</h2><p>Matches are generated only from currently structured profile information; they are not a guarantee of availability or clinical fit.</p></div>${clinicianBlock(type,e)}</section>`;
 }
 function familyMetaKey(type){return Object.values(familyMeta).find(x=>x.type===type)}
 function minimalSchema(url,title,desc){

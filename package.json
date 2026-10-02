@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build": "node src/build.js && node src/enhance.js && node src/redesign.js",
+    "build": "node src/build.js && node src/enhance.js && node src/redesign.js && node src/seo-expansion.js",
     "test": "node src/validate.js",
     "check": "npm run build && npm run test"
   },

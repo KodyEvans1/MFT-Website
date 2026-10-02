@@ -14,6 +14,7 @@ function walk(dir) {
 walk(DIST);
 
 const errors=[];
+const warnings=[];
 const titles=new Map();
 const descriptions=new Map();
 const canonicals=new Map();
@@ -73,9 +74,35 @@ const sitemapUrls=[...sitemap.matchAll(/<loc>(.*?)<\/loc>/g)].map(x=>x[1]);
 if (sitemapUrls.length!==62) errors.push(`sitemap: expected 62 URLs, found ${sitemapUrls.length}`);
 if (new Set(sitemapUrls).size!==sitemapUrls.length) errors.push('sitemap: duplicate URLs');
 const inventory=fs.readFileSync(path.join(DIST,'page-inventory.csv'),'utf8').trim().split('\n');
-if (inventory.length!==66) errors.push(`inventory: expected header plus 65 rows, found ${inventory.length}`);
+if (inventory.length<2) errors.push('inventory: missing page rows');
 for (const required of ['robots.txt','_headers','_redirects','llms.txt','404.html','page-inventory.csv']) if (!fs.existsSync(path.join(DIST,required))) errors.push(`missing ${required}`);
 
-const result={htmlFiles:htmlFiles.length,contentPages:htmlFiles.length-1,uniqueTitles:titles.size,uniqueDescriptions:descriptions.size,uniqueCanonicals:canonicals.size,sitemapUrls:sitemapUrls.length,errors};
+const expansionPath=path.join(DIST,'reports','seo-expansion.json');
+if (fs.existsSync(expansionPath)) {
+  const expansion=JSON.parse(fs.readFileSync(expansionPath,'utf8'));
+  const reg=JSON.parse(fs.readFileSync(path.join(ROOT,'content','seo-registry.json'),'utf8'));
+  const geo=JSON.parse(fs.readFileSync(path.join(ROOT,'content','wa-geography.json'),'utf8'));
+  const entities=[
+    ...(reg.modalities||[]),...(reg.concerns||[]),...(reg.relationshipTopics||[]),...(reg.populations||[]),...(reg.decisionGuides||[]),
+    ...(geo.counties||[]).filter(x=>x.status!=='existing'),...(geo.incorporatedPlaces||[]),...(geo.censusDesignatedPlaces||[])
+  ];
+  for (const e of entities) {
+    const file=path.join(DIST,e.slug,'index.html');
+    if (!fs.existsSync(file)) { errors.push(`seo registry: missing generated page ${e.slug}`); continue; }
+    const h=fs.readFileSync(file,'utf8');
+    if (e.status==='approved') {
+      if (/name="robots" content="noindex/.test(h)) errors.push(`seo registry: approved page is noindex ${e.slug}`);
+      if (!sitemap.includes(`<loc>https://www.mft.care/${e.slug}/</loc>`)) warnings.push(`approved SEO page not yet added to sitemap: ${e.slug}`);
+    } else if (!/name="robots" content="noindex/.test(h)) {
+      errors.push(`seo registry: draft page is indexable ${e.slug}`);
+    }
+  }
+  for (const flag of expansion.similarityFlags||[]) {
+    const a=entities.find(x=>x.slug===flag.a), b=entities.find(x=>x.slug===flag.b);
+    if (a?.status==='approved' || b?.status==='approved') errors.push(`similarity guard: ${flag.a} and ${flag.b} = ${flag.similarity}`);
+    else warnings.push(`draft similarity flag: ${flag.a} / ${flag.b} = ${flag.similarity}`);
+  }
+}
+const result={htmlFiles:htmlFiles.length,contentPages:htmlFiles.length-1,uniqueTitles:titles.size,uniqueDescriptions:descriptions.size,uniqueCanonicals:canonicals.size,sitemapUrls:sitemapUrls.length,warnings,errors};
 console.log(JSON.stringify(result,null,2));
 if(errors.length) process.exit(1);

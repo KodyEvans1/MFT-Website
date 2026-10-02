@@ -1,4 +1,5 @@
 name: Refresh Washington geography snapshot
+# Refresh writes only the reviewed snapshot; generated pages remain draft/noindex.
 
 on:
   push:

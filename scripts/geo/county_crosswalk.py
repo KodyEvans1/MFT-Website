@@ -7,18 +7,15 @@ import hashlib
 import json
 import math
 from pathlib import Path
-import sys
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
-
 import shapely
+from shapely import make_valid, is_valid_reason
 from shapely.geometry import shape
 from shapely.ops import unary_union
-
 SERVICE = 'https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb/tigerWMS_ACS2026/MapServer'
 LAYERS = {'counties': 82, 'incorporatedPlaces': 28, 'censusDesignatedPlaces': 30}
 ROOT = Path(__file__).resolve().parents[2]
-
 
 def read_json(url: str, file: Path, offline: bool) -> tuple[dict, str]:
     if not offline:
@@ -33,7 +30,6 @@ def read_json(url: str, file: Path, offline: bool) -> tuple[dict, str]:
     if not isinstance(data, dict) or 'error' in data:
         raise ValueError(f'Invalid Census response for {url}')
     return data, hashlib.sha256(raw).hexdigest()
-
 
 def features(group: str, cache: Path, offline: bool) -> tuple[list[dict], dict]:
     layer = LAYERS[group]
@@ -59,20 +55,30 @@ def features(group: str, cache: Path, offline: bool) -> tuple[list[dict], dict]:
     return rows, {'layer': layer, 'url': url, 'sha256': digest, 'metadataSha256': meta_hash,
                   'countSha256': count_hash, 'records': len(rows)}
 
-
-def polygon(feature: dict):
+def polygon(feature: dict, repairs: list | None = None):
     geometry = shape(feature['geometry'])
-    if geometry.is_empty or not geometry.is_valid or geometry.geom_type not in ('Polygon', 'MultiPolygon'):
-        raise ValueError(f'Invalid source polygon: {feature.get("properties")}')
-    if not math.isfinite(geometry.area) or geometry.area <= 0:
+    if geometry.is_empty or geometry.geom_type not in ('Polygon', 'MultiPolygon') or geometry.area <= 0:
+        raise ValueError('Invalid source area or geometry type')
+    if not geometry.is_valid:
+        reason = is_valid_reason(geometry)
+        # Permit only an explicit, audited normalization of Census ring self-touches.
+        if repairs is None or not reason.startswith('Ring Self-intersection'):
+            raise ValueError(f'Invalid source polygon: {feature.get("properties")}')
+        fixed = make_valid(geometry)
+        delta = abs(fixed.area - geometry.area) / geometry.area
+        if not fixed.is_valid or fixed.geom_type not in ('Polygon', 'MultiPolygon') or delta > 1e-10:
+            raise ValueError('Geometry normalization changed area; manual review required')
+        repairs.append({'geoid': feature['properties']['GEOID'], 'reason': reason,
+                        'method': 'shapely.make_valid', 'relativeAreaChange': delta})
+        geometry = fixed
+    if not math.isfinite(geometry.area):
         raise ValueError('Invalid source area')
     return geometry
 
-
 def memberships(place, counties: list[tuple[str, object]]) -> tuple[list[str], list[str]]:
-    """Use positive-area overlap, not centroids or boundary-only touching.
-    Ratios are numerical QA in source coordinates, not published land-area measures.
-    Very small positive intersections require human review, never silent assignment.
+    """Positive-area overlap, not centroids or boundary-only touching.
+    Ratios are numerical QA, not published land-area measures. Tiny overlaps
+    require review rather than silent assignment.
     """
     confirmed, ambiguous, pieces = [], [], []
     for geoid, county in counties:
@@ -91,7 +97,6 @@ def memberships(place, counties: list[tuple[str, object]]) -> tuple[list[str], l
     if not confirmed:
         raise ValueError('No significant county intersection')
     return sorted(confirmed), sorted(ambiguous)
-
 
 def main() -> None:
     parser = argparse.ArgumentParser()
@@ -113,12 +118,13 @@ def main() -> None:
         expected = {r['geoid']: r['name'] for r in registry[group]}
         if got != expected:
             raise ValueError(f'{group} changed; reconcile source refresh before creating hierarchy')
-    county_shapes = [(r['properties']['GEOID'], polygon(r)) for r in data['counties']]
+    repairs = []
+    county_shapes = [(r['properties']['GEOID'], polygon(r, repairs)) for r in data['counties']]
     places, review = [], []
     for group in ('incorporatedPlaces', 'censusDesignatedPlaces'):
         for feature in data[group]:
             p = feature['properties']
-            confirmed, ambiguous = memberships(polygon(feature), county_shapes)
+            confirmed, ambiguous = memberships(polygon(feature, repairs), county_shapes)
             places.append([p['GEOID'], confirmed])
             if ambiguous:
                 review.append({'geoid': p['GEOID'], 'name': p['NAME'], 'ambiguousCountyGeoids': ambiguous})
@@ -126,13 +132,11 @@ def main() -> None:
               'method': 'positive-area polygon intersection; boundary-only contacts excluded; tiny overlaps flagged',
               'software': {'shapely': shapely.__version__}, 'sources': sources,
               'counties': [[r['properties']['GEOID'], r['properties']['NAME']] for r in data['counties']],
-              'places': sorted(places), 'reviewRequired': review}
+              'places': sorted(places), 'reviewRequired': review, 'geometryNormalizations': repairs}
     args.output.parent.mkdir(parents=True, exist_ok=True)
-    # Deliberately write a proposed snapshot, never content/wa-geography.json.
     args.output.write_text(json.dumps(result, indent=2) + '\n')
     print(json.dumps({'counties': len(county_shapes), 'places': len(places),
                       'multiCountyPlaces': sum(len(r[1]) > 1 for r in places), 'reviewRequired': review}, indent=2))
-
 
 if __name__ == '__main__':
     main()

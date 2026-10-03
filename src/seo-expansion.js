@@ -8,6 +8,12 @@ const SITE='https://www.mft.care';
 const GEO=JSON.parse(fs.readFileSync(path.join(ROOT,'content','wa-geography.json'),'utf8'));
 const CLIN=JSON.parse(fs.readFileSync(path.join(ROOT,'content','clinician-registry.json'),'utf8'));
 const CORE=JSON.parse(fs.readFileSync(path.join(ROOT,'content','seo-core-routes.json'),'utf8'));
+const {buildGraph}=require('./geography-graph');
+const geoRender=require('./geography-render');
+const {decorateHtml}=require('./booking-build');
+const {indexingEnabled}=require('./seo-safety');
+const GRAPH=buildGraph(GEO,require('../content/wa-county-crosswalk.json'),require('../content/wa-regions.json'),require('../content/geo-editorial.json'));
+const geoContext=geoRender.context(GRAPH,process.env.CONTEXT==='production'||indexingEnabled(),new Set(CORE.slugs));
 const coreSitemapUrls=sitemapUrls(fs.readFileSync(path.join(DIST,'sitemap.xml'),'utf8'));
 
 const familyMeta={
@@ -28,33 +34,6 @@ function sourceHtml(source){
   if(!fs.existsSync(p)) throw new Error('Missing template '+p);
   return fs.readFileSync(p,'utf8');
 }
-const PLACE_GEO=[...(GEO.incorporatedPlaces||[]),...(GEO.censusDesignatedPlaces||[])].filter(x=>Number.isFinite(x.latitude)&&Number.isFinite(x.longitude));
-const WOODINVILLE={latitude:47.7543,longitude:-122.1635};
-function milesBetween(a,b){
-  if(!Number.isFinite(a?.latitude)||!Number.isFinite(a?.longitude)||!Number.isFinite(b?.latitude)||!Number.isFinite(b?.longitude)) return null;
-  const R=3958.8,rad=x=>x*Math.PI/180;
-  const dLat=rad(b.latitude-a.latitude),dLon=rad(b.longitude-a.longitude);
-  const q=Math.sin(dLat/2)**2+Math.cos(rad(a.latitude))*Math.cos(rad(b.latitude))*Math.sin(dLon/2)**2;
-  return 2*R*Math.asin(Math.sqrt(q));
-}
-function regionFor(e){
-  if(!Number.isFinite(e?.longitude)||!Number.isFinite(e?.latitude)) return 'Washington State';
-  const lon=e.longitude,lat=e.latitude;
-  if(lon<=-123.05) return lat>=47.2?'the Olympic Peninsula and outer western Washington':'southwest and coastal Washington';
-  if(lon<=-121.45) return lat>=47.9?'northwest Washington and the north Puget Sound region':lat>=46.7?'the Puget Sound and western Washington region':'southwest Washington';
-  if(lon<=-119.0) return lat>=47.5?'north-central Washington':'central Washington';
-  return lat>=47.5?'northeastern Washington':'eastern Washington';
-}
-function nearbyGeo(e){
-  if(!Number.isFinite(e?.latitude)||!Number.isFinite(e?.longitude)) return [];
-  return PLACE_GEO.filter(x=>x.slug!==e.slug && x.geoid!==e.geoid).map(x=>({x,d:milesBetween(e,x)})).filter(x=>Number.isFinite(x.d)&&x.d>0.1).sort((a,b)=>a.d-b.d).slice(0,5).map(({x,d})=>({...x,distanceMiles:Math.round(d)}));
-}
-function locationContext(e){
-  const nearby=nearbyGeo(e),wood=milesBetween(e,WOODINVILLE),region=regionFor(e);
-  const placeType=e.kind==='county'?'county':String(e.placeType||e.kind||'community').toLowerCase();
-  return {nearby,wood,region,placeType};
-}
-
 function related(entity,all){
   const tags=new Set(entity.tags||[]);
   return all.filter(x=>x.slug!==entity.slug).map(x=>({x,score:(x.tags||[]).filter(t=>tags.has(t)).length})).filter(x=>x.score>0).sort((a,b)=>b.score-a.score||a.x.name.localeCompare(b.x.name)).slice(0,4).map(x=>x.x);
@@ -85,19 +64,6 @@ function copyFor(type,e){
     q2:'How can couples move from reaction to understanding?',
     bullets:['Each partner’s experience','Recurring interaction patterns','Repair and communication','When additional support may help']
   };
-  if(type==='location') {
-    const ctx=locationContext(e);
-    const travel=Number.isFinite(ctx.wood)?(ctx.wood<=35?'For some people in this area, the Woodinville office may also be a practical in-person option.':'Telehealth can remove the need for recurring travel to the Woodinville office.'):'The Woodinville office remains the practice’s only physical location.';
-    const nearbyText=ctx.nearby.length?` Nearby communities in the current Census geography include ${ctx.nearby.map(x=>x.name).join(', ')}.`:'';
-    return {
-      h1:`Online Therapy in ${name}, Washington`,
-      summary:`Explore online therapy access for eligible clients in ${name}, part of ${ctx.region}, and compare clinicians, services, and ways to begin care.`,
-      intro:`Marriage.Family.Therapy has one physical office in Woodinville. This page describes telehealth access for people in the ${name} ${ctx.placeType} and does not imply a local branch office. ${travel}${nearbyText}`,
-      q1:`What are the therapy options for people in ${name}?`,
-      q2:'What should you consider when choosing a therapist?',
-      bullets:['Washington-based telehealth access',`Regional context: ${ctx.region}`,'Clinician fit and availability','Woodinville in-person option']
-    };
-  }
   if(type==='population') return {
     h1:name,
     summary:`Therapy options tailored to the developmental, relational, and practical needs of ${name.toLowerCase()} in Woodinville and through eligible Washington telehealth.`,
@@ -135,8 +101,8 @@ function clinicianBlock(type,e){
 }
 
 function bodySection(type,e,all){
-  const c=copyFor(type,e), rel=type==='location'?nearbyGeo(e):related(e,all);
-  const links=rel.map(x=>`<a href="/${x.slug}/"><b>${esc(x.name)}</b><span>${type==='location'&&Number.isFinite(x.distanceMiles)?`Nearby Washington community · about ${x.distanceMiles} miles straight-line`:`Explore a related ${type==='modality'?'approach':type==='location'?'Washington service area':'topic'}.`}</span></a>`).join('');
+  const c=copyFor(type,e), rel=related(e,all);
+  const links=rel.map(x=>`<a href="/${x.slug}/"><b>${esc(x.name)}</b><span>Explore a related ${type==='modality'?'approach':'topic'}.</span></a>`).join('');
   return `<section class="section story-section seo-entity">
     <div class="story-intro"><p class="kicker">${esc(familyMetaKey(type).label)}</p><h2>${esc(c.q1)}</h2><p>${esc(c.intro)}</p><h3>${esc(c.q2)}</h3><p>This page is part of M.F.T.’s structured care library. Content is reviewed before becoming eligible for search indexing.</p></div>
     <div class="value-panel"><h3>What this page helps you explore</h3><ul class="value-list">${c.bullets.map(x=>'<li>'+esc(x)+'</li>').join('')}</ul><a class="button dark" href="/team/">Compare clinicians</a></div>
@@ -155,6 +121,12 @@ function minimalSchema(url,title,desc){
   ]}).replace(/</g,'\\u003c');
 }
 function generate(type,e,all,meta){
+  if(type==='location'){
+    const rendered=geoRender.renderLocation(locationTemplate,e,geoContext);
+    const h=decorateHtml(rendered.html,'/'+e.slug+'/').html;
+    const out=path.join(DIST,e.slug,'index.html');fs.mkdirSync(path.dirname(out),{recursive:true});fs.writeFileSync(out,h);
+    return {type,slug:e.slug,name:e.name,status:e.status,title:rendered.title,description:rendered.description,wordCount:plain(h).split(/\s+/).length,html:h,tokenSet:tokens(h)};
+  }
   const c=copyFor(type,e);
   const url=SITE+'/'+e.slug+'/';
   const title=(type==='modality'? c.h1+' Therapy in Washington | M.F.T.' : type==='location'? c.h1+' | M.F.T.' : c.h1+' | M.F.T.');
@@ -180,16 +152,20 @@ function generate(type,e,all,meta){
 }
 
 const allEntities=[];
-REG.geography=[
-  ...(GEO.counties||[]),
-  ...(GEO.incorporatedPlaces||[]),
-  ...(GEO.censusDesignatedPlaces||[])
-];
+REG.geography=[...GRAPH.nodes.values()].filter(e=>e.kind!=='state');
 for(const [key,meta] of Object.entries(familyMeta)){
   const arr=REG[key]||[];
   for(const e of arr) allEntities.push({key,meta,e});
 }
-// Validate every route before writing any expansion page.
+// Preflight before modifying any core page, then record protected hashes after
+// explicit core navigation augmentation. Expansion cannot overwrite that work.
+planRoutes(allEntities,DIST,CORE.slugs);
+const locationTemplate=sourceHtml(familyMeta.geography.source);
+for(const slug of [...CORE.slugs,'online-therapy-locations']){
+  const e=GRAPH.nodes.get(slug), file=path.join(DIST,slug,'index.html');
+  if(!e||!fs.existsSync(file)) throw new Error('Missing core geography route: '+slug);
+  fs.writeFileSync(file,geoRender.augmentCore(fs.readFileSync(file,'utf8'),e,geoContext));
+}
 const routePlan=planRoutes(allEntities,DIST,CORE.slugs);
 const byType={};
 for(const x of allEntities){(byType[x.meta.type]??=[]).push(x.e)}
@@ -198,6 +174,7 @@ for(const {key,meta,e} of routePlan.generate) generated.push(generate(meta.type,
 
 
 const stylePath=path.join(DIST,'assets','styles.css');
+fs.appendFileSync(stylePath,fs.readFileSync(path.join(ROOT,'src/assets/geography.css'),'utf8'));
 fs.appendFileSync(stylePath,`\n.clinician-match-section{background:#fff}.clinician-match-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;margin-top:2rem}.clinician-match-grid a,.clinician-match-note{display:grid;gap:.3rem;padding:1.25rem;background:#edf4f1;border-radius:16px;text-decoration:none}.clinician-match-grid b{font:500 1.25rem var(--serif)}.clinician-match-grid span{color:#456866}.clinician-match-grid small{color:#617b79}.clinician-match-note{max-width:720px}.seo-entity+.purpose-panel{border-top:1px solid var(--line)}@media(max-width:700px){.clinician-match-grid{grid-template-columns:1fr}}\n`);
 
 function addApprovedHubLinks(generated){
@@ -261,4 +238,9 @@ const report={
 };
 fs.mkdirSync(path.join(DIST,'reports'),{recursive:true});
 fs.writeFileSync(path.join(DIST,'reports','seo-expansion.json'),JSON.stringify(report,null,2));
+const hierarchy={version:1,sourceVintage:GRAPH.crosswalk.sourceVintage,regions:GRAPH.regions.size,counties:GRAPH.counties.size,places:GRAPH.places.size,
+  multiCountyPlaces:[...GRAPH.places.values()].filter(e=>e.countyGeoids.length>1).map(e=>({name:e.name,slug:e.slug,counties:GRAPH.parents(e).map(c=>c.name)})),
+  editorialDrafts:[...GRAPH.authored.keys()],productionNavigation:geoContext.production,geometryNormalizations:GRAPH.crosswalk.geometryNormalizations||[],
+  nodes:[...GRAPH.nodes.values()].map(e=>({slug:e.slug,kind:e.kind,status:e.status,parents:GRAPH.parents(e).map(p=>p.slug),children:GRAPH.children(e).map(c=>c.slug)}))};
+fs.writeFileSync(path.join(DIST,'reports','geography-hierarchy.json'),JSON.stringify(hierarchy,null,2)+'\n');
 console.log(JSON.stringify(report,null,2));

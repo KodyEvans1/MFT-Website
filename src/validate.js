@@ -96,13 +96,14 @@ if (fs.existsSync(expansionPath)) {
   const geo=JSON.parse(fs.readFileSync(path.join(ROOT,'content','wa-geography.json'),'utf8'));
   const entities=[
     ...(reg.modalities||[]),...(reg.concerns||[]),...(reg.relationshipTopics||[]),...(reg.populations||[]),...(reg.decisionGuides||[]),
-    ...(geo.counties||[]),...(geo.incorporatedPlaces||[]),...(geo.censusDesignatedPlaces||[])
+    ...(geo.counties||[]),...(geo.incorporatedPlaces||[]),...(geo.censusDesignatedPlaces||[]),...require('../content/wa-regions.json').regions
   ];
   errors.push(...validatePublication(DIST,entities,CORE.slugs));
   for (const flag of expansion.approvedSimilarityFlags||[]) errors.push(`similarity guard: ${flag.a} and ${flag.b} = ${flag.similarity}`);
   for (const flag of expansion.similarityFlagsSample||[]) warnings.push(`draft similarity flag: ${flag.a} / ${flag.b} = ${flag.similarity}`);
   if ((expansion.similarityFlagCount||0)>(expansion.similarityFlagsSample||[]).length) warnings.push(`draft similarity flags total: ${expansion.similarityFlagCount}; showing first ${(expansion.similarityFlagsSample||[]).length}`);
 } else errors.push('Missing SEO expansion report');
+errors.push(...require('./geography-check').validateGeography(DIST));
 const result={htmlFiles:htmlFiles.length,contentPages:htmlFiles.length-1,uniqueTitles:titles.size,uniqueDescriptions:descriptions.size,uniqueCanonicals:canonicals.size,sitemapUrls:sitemapUrls.length,warningCount:warnings.length,warnings:warnings.slice(0,120),errors};
 fs.mkdirSync(path.join(DIST,'reports'),{recursive:true});
 fs.writeFileSync(path.join(DIST,'reports','validation.json'),JSON.stringify(result,null,2)+'\n');

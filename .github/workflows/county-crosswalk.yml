@@ -1,0 +1,29 @@
+name: Proposed Washington county crosswalk
+on:
+  workflow_dispatch:
+  push:
+    branches: [review/site-experience-seo-20260930]
+    paths:
+      - scripts/geo/county_crosswalk.py
+      - tests/geo/test_crosswalk.py
+      - .github/workflows/county-crosswalk.yml
+permissions:
+  contents: read
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install shapely==2.1.2
+      - run: python -m unittest discover -s tests/geo -v
+      - run: python scripts/geo/county_crosswalk.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: proposed-county-crosswalk
+          path: tmp/
+          retention-days: 7

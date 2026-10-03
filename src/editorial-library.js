@@ -8,7 +8,7 @@ const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;
 const plain = html => html.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, '').replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi, '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
 const stable = x => x === null || typeof x !== 'object' ? JSON.stringify(x) : Array.isArray(x) ? '[' + x.map(stable).join(',') + ']' : '{' + Object.keys(x).sort().map(k => JSON.stringify(k) + ':' + stable(x[k])).join(',') + '}';
 function digest(article, content, evidence) {
-  const { status, reviews, ...body } = article;
+  const { status, reviews, revisionHash, ...body } = article;
   return crypto.createHash('sha256').update(stable({ body, sources: content.sources, policyNotes: content.policyNotes, evidence })).digest('hex');
 }
 function assertText(value, label) { if (typeof value !== 'string' || !value.trim()) throw new Error('Missing editorial text: ' + label); }
@@ -26,7 +26,7 @@ function createLibrary({ content, registry, clinicians, evidence, coreSlugs = []
   const core = new Set(coreSlugs), entities = new Map(), profiles = new Map(), people = new Map(clinicians.clinicians.map(c => [c.slug, c]));
   for (const f of Object.values(FAMILY)) for (const e of registry[f.key] || []) entities.set(e.slug, e);
   for (const key of ['concerns', 'populations']) for (const e of registry[key] || []) entities.set(e.slug, e);
-  for (const s of Object.values(content.sources)) { assertText(s.title, 'source title'); assertText(s.publisher, 'publisher'); assertHttps(s.url); assertDate(s.checkedOn); }
+  for (const [id, s] of Object.entries(content.sources)) { assertSlug(id); assertText(s.title, 'source title'); assertText(s.publisher, 'publisher'); assertHttps(s.url); assertDate(s.checkedOn); }
   for (const p of evidence.clinicians) {
     assertSlug(p.slug); if (!people.has(p.slug) || profiles.has(p.slug)) throw new Error('Invalid clinician evidence identity: ' + p.slug);
     assertHttps(p.sourceUrl); assertDate(p.checkedOn); assertText(p.sourceSection, 'profile section');
@@ -42,7 +42,7 @@ function createLibrary({ content, registry, clinicians, evidence, coreSlugs = []
     for (const k of ['title', 'summary', 'searchIntent']) assertText(a[k], k);
     if (a.title.length > 70 || a.summary.length > 180) throw new Error('Editorial metadata too long: ' + a.slug);
     if (!Array.isArray(a.sections) || a.sections.length < 3 || !Array.isArray(a.relatedSlugs) || !Array.isArray(a.clinicianLinks) || !Array.isArray(a.questions) || !a.questions.length || !Array.isArray(a.reviews)) throw new Error('Incomplete editorial article: ' + a.slug);
-    const sectionIds = new Set(); let cited = 0;
+    const sectionIds = new Set(['main', 'primary-nav', ...Object.keys(content.sources).map(id => 'ed-source-' + id)]); let cited = 0;
     for (const s of a.sections) {
       assertSlug(s.id); if (sectionIds.has(s.id)) throw new Error('Duplicate editorial section: ' + s.id); sectionIds.add(s.id);
       assertText(s.heading, 'section heading');
@@ -54,6 +54,7 @@ function createLibrary({ content, registry, clinicians, evidence, coreSlugs = []
     if (!cited) throw new Error('Article has no checked sources');
     for (const slug of a.relatedSlugs) { assertSlug(slug); if (slug === a.slug || (!core.has(slug) && !entities.has(slug))) throw new Error('Unknown editorial relationship: ' + slug); }
     if (new Set(a.relatedSlugs).size !== a.relatedSlugs.length) throw new Error('Duplicate editorial relationship');
+    if (new Set(a.clinicianLinks.map(c => c.slug)).size !== a.clinicianLinks.length) throw new Error('Duplicate clinician connection');
     for (const c of a.clinicianLinks) {
       if (!matchesClaim(profiles.get(c.slug), c)) throw new Error('Unsupported clinician claim: ' + c.slug);
       if (a.family === 'modality' && !((c.basis === 'approach' && c.approach === a.slug) || (a.slug === 'integrative-therapy' && c.basis === 'multi-approach'))) throw new Error('Modality requires exact profile evidence');
@@ -63,7 +64,7 @@ function createLibrary({ content, registry, clinicians, evidence, coreSlugs = []
     for (const q of a.questions) assertText(q, 'question');
     const revisionHash = digest(a, content, evidence);
     const required = a.status === 'approved' ? ['editorial', 'clinical', 'owner'] : a.status === 'reviewed' ? ['editorial'] : [];
-    for (const r of a.reviews) { assertDate(r.reviewedOn); assertText(r.by, 'reviewer'); if (!['editorial', 'clinical', 'owner'].includes(r.role) || r.result !== 'approved') throw new Error('Invalid review receipt'); }
+    for (const r of a.reviews) { assertDate(r.reviewedOn); assertText(r.by, 'reviewer'); if (!['editorial', 'clinical', 'owner'].includes(r.role) || r.result !== 'approved' || !/^[0-9a-f]{64}$/.test(r.revisionHash || '')) throw new Error('Invalid review receipt'); }
     for (const role of required) if (!a.reviews.some(r => r.role === role && r.revisionHash === revisionHash)) throw new Error('Missing current ' + role + ' review: ' + a.slug);
     articles.set(a.slug, { ...a, revisionHash });
   }
@@ -118,7 +119,8 @@ function augmentDiscovery(html, route, ctx) {
   else return html;
   const block = discoveryBlock(articles, f ? 'Explore a question in more depth' : 'Read about approaches described in this profile');
   if (html.includes('<!--mft-editorial-discovery:start-->')) return html.replace(/<!--mft-editorial-discovery:start-->[\s\S]*?<!--mft-editorial-discovery:end-->/, block);
-  return html.replace('</main>', block + '</main>');
+  const anchor = '<section class="section final-cta reveal">';
+  return html.includes(anchor) ? html.replace(anchor, block + anchor) : html.replace('</main>', block + '</main>');
 }
 function report(ctx) {
   return { version: 1, batch: ctx.content.batch, articleCount: ctx.articles.size, approved: [...ctx.articles.values()].filter(a => a.status === 'approved').length, evidenceScope: ctx.content.policyNotes, articles: [...ctx.articles.values()].map(a => ({ slug: a.slug, family: a.family, status: a.status, revisionHash: a.revisionHash, articleWords: a.sections.reduce((n, s) => n + s.paragraphs.join(' ').split(/\s+/).length, 0), sources: sourceIds(a), clinicianLinks: a.clinicianLinks, requiredBeforePublication: a.status === 'approved' ? [] : ['editorial review', 'clinical review', 'owner approval', 'unchanged revision', 'passing site-wide publication checks'] })) };

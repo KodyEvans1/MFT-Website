@@ -7,6 +7,7 @@ const REG=JSON.parse(fs.readFileSync(path.join(ROOT,'content','seo-registry.json
 const SITE='https://www.mft.care';
 const GEO=JSON.parse(fs.readFileSync(path.join(ROOT,'content','wa-geography.json'),'utf8'));
 const CLIN=JSON.parse(fs.readFileSync(path.join(ROOT,'content','clinician-registry.json'),'utf8'));
+const editorial=require('./editorial-library');
 const CORE=JSON.parse(fs.readFileSync(path.join(ROOT,'content','seo-core-routes.json'),'utf8'));
 const {buildGraph}=require('./geography-graph');
 const geoRender=require('./geography-render');
@@ -16,6 +17,8 @@ const GRAPH=buildGraph(GEO,require('../content/wa-county-crosswalk.json'),requir
 const geoContext=geoRender.context(GRAPH,process.env.CONTEXT==='production'||indexingEnabled(),new Set(CORE.slugs));
 const coreSitemapUrls=sitemapUrls(fs.readFileSync(path.join(DIST,'sitemap.xml'),'utf8'));
 
+const coreSlugs=fs.readdirSync(DIST,{withFileTypes:true}).filter(e=>e.isDirectory()&&fs.existsSync(path.join(DIST,e.name,'index.html'))).map(e=>e.name);
+const LIBRARY=editorial.createLibrary({content:require('../content/editorial-library.json'),registry:REG,clinicians:CLIN,evidence:require('../content/clinician-evidence.json'),coreSlugs,production:process.env.CONTEXT==='production'||indexingEnabled()});
 const familyMeta={
   modalities:{type:'modality',source:'cognitive-behavioral-therapy-cbt',hub:'/therapy-approaches/',label:'Therapy approach'},
   concerns:{type:'concern',source:'anxiety-stress-therapy',hub:'/what-we-help-with/',label:'What we help with'},
@@ -83,6 +86,8 @@ function copyFor(type,e){
 }
 function normalizeTag(s){return String(s||'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')}
 function clinicianMatches(type,e){
+  // A shared population tag is not evidence of approach training/use.
+  if(type==='modality') return (CLIN.clinicians||[]).filter(cl=>LIBRARY.profiles.get(cl.slug)?.approaches.includes(e.slug)).map(cl=>({cl,score:6,reasons:['approach named in published profile']}));
   const tags=new Set((e.tags||[]).map(normalizeTag));
   return (CLIN.clinicians||[]).map(cl=>{
     let score=0;
@@ -121,6 +126,11 @@ function minimalSchema(url,title,desc){
   ]}).replace(/</g,'\\u003c');
 }
 function generate(type,e,all,meta){
+  if(LIBRARY.articles.has(e.slug)){
+    const article=LIBRARY.articles.get(e.slug),rendered=editorial.renderArticle(sourceHtml(meta.source),article,LIBRARY),h=rendered.html;
+    const out=path.join(DIST,e.slug,'index.html');fs.mkdirSync(path.dirname(out),{recursive:true});fs.writeFileSync(out,h);
+    return {type,slug:e.slug,name:e.name,status:e.status,title:rendered.title,description:rendered.description,wordCount:editorial.plain(h).split(/\s+/).length,html:h,tokenSet:tokens(h)};
+  }
   if(type==='location'){
     const rendered=geoRender.renderLocation(locationTemplate,e,geoContext);
     const h=decorateHtml(rendered.html,'/'+e.slug+'/').html;
@@ -166,6 +176,10 @@ for(const slug of [...CORE.slugs,'online-therapy-locations']){
   if(!e||!fs.existsSync(file)) throw new Error('Missing core geography route: '+slug);
   fs.writeFileSync(file,geoRender.augmentCore(fs.readFileSync(file,'utf8'),e,geoContext));
 }
+for(const slug of ['resources','therapy-approaches','marriagereset',...LIBRARY.people.keys()]){
+  const file=path.join(DIST,slug,'index.html');if(!fs.existsSync(file))throw new Error('Missing editorial discovery route: '+slug);
+  fs.writeFileSync(file,editorial.augmentDiscovery(fs.readFileSync(file,'utf8'),slug,LIBRARY));
+}
 const routePlan=planRoutes(allEntities,DIST,CORE.slugs);
 const byType={};
 for(const x of allEntities){(byType[x.meta.type]??=[]).push(x.e)}
@@ -174,6 +188,7 @@ for(const {key,meta,e} of routePlan.generate) generated.push(generate(meta.type,
 
 
 const stylePath=path.join(DIST,'assets','styles.css');
+fs.appendFileSync(stylePath,fs.readFileSync(path.join(ROOT,'src/assets/editorial.css'),'utf8'));
 fs.appendFileSync(stylePath,fs.readFileSync(path.join(ROOT,'src/assets/geography.css'),'utf8'));
 fs.appendFileSync(stylePath,`\n.clinician-match-section{background:#fff}.clinician-match-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;margin-top:2rem}.clinician-match-grid a,.clinician-match-note{display:grid;gap:.3rem;padding:1.25rem;background:#edf4f1;border-radius:16px;text-decoration:none}.clinician-match-grid b{font:500 1.25rem var(--serif)}.clinician-match-grid span{color:#456866}.clinician-match-grid small{color:#617b79}.clinician-match-note{max-width:720px}.seo-entity+.purpose-panel{border-top:1px solid var(--line)}@media(max-width:700px){.clinician-match-grid{grid-template-columns:1fr}}\n`);
 
@@ -238,6 +253,7 @@ const report={
 };
 fs.mkdirSync(path.join(DIST,'reports'),{recursive:true});
 fs.writeFileSync(path.join(DIST,'reports','seo-expansion.json'),JSON.stringify(report,null,2));
+fs.writeFileSync(path.join(DIST,'reports','editorial-library.json'),JSON.stringify(editorial.report(LIBRARY),null,2)+'\n');
 const hierarchy={version:1,sourceVintage:GRAPH.crosswalk.sourceVintage,regions:GRAPH.regions.size,counties:GRAPH.counties.size,places:GRAPH.places.size,
   multiCountyPlaces:[...GRAPH.places.values()].filter(e=>e.countyGeoids.length>1).map(e=>({name:e.name,slug:e.slug,counties:GRAPH.parents(e).map(c=>c.name)})),
   editorialDrafts:[...GRAPH.authored.keys()],productionNavigation:geoContext.production,geometryNormalizations:GRAPH.crosswalk.geometryNormalizations||[],

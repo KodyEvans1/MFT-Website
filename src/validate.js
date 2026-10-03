@@ -104,6 +104,7 @@ if (fs.existsSync(expansionPath)) {
   if ((expansion.similarityFlagCount||0)>(expansion.similarityFlagsSample||[]).length) warnings.push(`draft similarity flags total: ${expansion.similarityFlagCount}; showing first ${(expansion.similarityFlagsSample||[]).length}`);
 } else errors.push('Missing SEO expansion report');
 errors.push(...require('./geography-check').validateGeography(DIST));
+errors.push(...require('./editorial-check').validateEditorial(DIST));
 const result={htmlFiles:htmlFiles.length,contentPages:htmlFiles.length-1,uniqueTitles:titles.size,uniqueDescriptions:descriptions.size,uniqueCanonicals:canonicals.size,sitemapUrls:sitemapUrls.length,warningCount:warnings.length,warnings:warnings.slice(0,120),errors};
 fs.mkdirSync(path.join(DIST,'reports'),{recursive:true});
 fs.writeFileSync(path.join(DIST,'reports','validation.json'),JSON.stringify(result,null,2)+'\n');

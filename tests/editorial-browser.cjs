@@ -26,7 +26,11 @@ if(process.argv.includes('--worker')){
         run('open','http://127.0.0.1:4183/'+a.slug+'/');run('wait','--load','domcontentloaded');run('snapshot','-i');
         check(`if(document.querySelector('main').dataset.editorialArticle!==${JSON.stringify(a.slug)})throw Error('Authored content missing');if(document.querySelectorAll('.ed-section').length!==${a.sections.length})throw Error('Sections missing');if(document.querySelectorAll('.ed-clinician-grid article').length!==${a.clinicianLinks.length})throw Error('Wrong clinician links')`);
         check("if(document.querySelectorAll('h1').length!==1)throw Error('H1 count');if(document.documentElement.scrollWidth>innerWidth+2)throw Error('Horizontal overflow');if(!document.querySelector('meta[name=robots]').content.includes('noindex'))throw Error('Indexable draft');if(window.MFT_BOOKING_CONFIG?.measurementEnabled)throw Error('Measurement enabled');if(document.querySelector('main form,main input,main textarea'))throw Error('Data collection on article')");
+        run('screenshot',path.join(out,a.slug+'-'+width+'-before.png'));
         run('click','.ed-toc li:first-child a');run('snapshot','-i');
+        run('get','url');run('eval',"JSON.stringify({url:location.href,base:document.baseURI,href:document.querySelector('.ed-toc a').href,scroll:scrollY,target:document.querySelector('.ed-section').getBoundingClientRect().top})");
+        run('screenshot',path.join(out,a.slug+'-'+width+'-after.png'));
+        run('wait','--url','**'+ '#'+a.sections[0].id);
         check(`if(location.hash!==${JSON.stringify('#'+a.sections[0].id)})throw Error('TOC navigation failed')`);
         run('click','.ed-section:first-of-type .ed-reference:first-child');run('snapshot','-i');
         check("if(!location.hash.startsWith('#ed-source-'))throw Error('Source navigation failed')");

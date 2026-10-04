@@ -1,0 +1,30 @@
+/* Shared M.F.T. interaction and reading rules from the Plaud audit. */
+.breadcrumbs{display:none!important}
+html{scroll-behavior:auto}
+body[data-mft-experience] main :is(a,summary,button):focus-visible{outline:3px solid var(--gold,#b59d65);outline-offset:5px}
+body[data-mft-experience] main [id]{scroll-margin-top:8rem}
+.experience-body{display:grid;grid-template-columns:minmax(0,1.12fr) minmax(0,.88fr);gap:clamp(2rem,5vw,5rem);align-items:start;background:var(--cream,#f7f3ea)}
+.experience-reading,.experience-sidebar{min-width:0}
+.experience-prose{margin:0 0 2.5rem}.experience-prose h2{font:500 clamp(1.65rem,2.6vw,2.5rem)/1.18 var(--serif,Georgia,serif);margin:0 0 1rem;max-width:24ch}.experience-prose p{font-size:1.06rem;line-height:1.85;max-width:67ch;color:#34534b}
+.experience-sidebar{background:var(--deep,#143c36);color:#fff;padding:clamp(1.35rem,2.5vw,2.4rem);border-radius:22px;border-top:5px solid var(--gold,#b59d65)}
+.experience-sidebar>.kicker{color:var(--gold,#b59d65)}.experience-sidebar>h2{font:500 1.8rem/1.25 var(--serif,Georgia,serif);margin:.75rem 0 1.5rem}.experience-sidebar>p{line-height:1.7}
+.experience-topic-grid{display:grid;gap:.85rem;min-width:0}
+.experience-topic{display:flex;flex-direction:column;gap:.65rem;padding:1.15rem 1.25rem;border:1px solid #b8b695;border-left:4px solid var(--gold,#b59d65);border-radius:12px;background:#fffdf7;color:var(--deep,#143c36);text-decoration:none;min-width:0;min-height:48px;transition:box-shadow .15s,border-color .15s}
+.experience-topic-title{font:500 1.28rem/1.25 var(--serif,Georgia,serif);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.2em}.experience-topic-description{font:.92rem/1.6 var(--sans,Arial,sans-serif);color:#36534a}.experience-topic-action{display:flex;justify-content:space-between;gap:1rem;font-size:.85rem;font-weight:700}.experience-topic:hover{border-color:var(--gold,#b59d65);box-shadow:0 0 0 2px var(--gold,#b59d65)}
+.experience-status{font-size:.75rem;color:#63572f}.experience-inline{color:inherit;font-weight:600;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.2em}.experience-inline:hover{text-decoration-thickness:2px}
+.experience-context{line-height:1.7!important;font-size:.95rem!important}.experience-facts{margin:1.5rem 0;padding:1rem 0;border-top:2px solid var(--gold,#b59d65);border-bottom:1px solid #cdd4c9}.experience-facts dt{font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em}.experience-facts dd{margin:.5rem 0 0;line-height:1.65}
+body[data-mft-experience] .value-panel .experience-topic,body[data-mft-experience] .value-panel .experience-topic *{color:var(--deep,#143c36)}
+body[data-mft-experience] :is(.decision-grid,.geo-directory) a{border-bottom:2px solid var(--gold,#b59d65);border-radius:8px;min-height:44px;padding:.65rem;text-decoration:underline;text-underline-offset:.2em}
+body[data-mft-experience] :is(.decision-grid,.geo-directory) a:hover{box-shadow:0 0 0 2px var(--gold,#b59d65)}
+body[data-mft-experience] :is(.resource-actions,.contact-stack) a{border:1px solid var(--gold,#b59d65);text-decoration:underline;text-underline-offset:.2em;min-height:48px}
+body[data-mft-experience] .button{border-width:2px;min-height:48px}
+body.page-concern[data-mft-experience] .hero,body.page-approach[data-mft-experience] .hero,body.page-resource[data-mft-experience] .hero,body.page-hub[data-mft-experience] .hero{background:var(--deep,#143c36);border-bottom:5px solid var(--gold,#b59d65);min-height:410px}
+body:is(.page-concern,.page-approach,.page-resource,.page-hub)[data-mft-experience] .hero .hero-copy,body:is(.page-concern,.page-approach,.page-resource,.page-hub)[data-mft-experience] .hero .hero-summary{color:#fff;width:min(900px,100%)}
+body:is(.page-concern,.page-approach,.page-resource,.page-hub)[data-mft-experience] .hero .kicker{color:var(--gold,#b59d65)}
+body:is(.page-concern,.page-approach,.page-resource,.page-hub)[data-mft-experience] .hero .button.primary{background:var(--gold,#b59d65);border-color:var(--gold,#b59d65);color:var(--deep,#143c36)}
+body:is(.page-concern,.page-approach,.page-resource,.page-hub)[data-mft-experience] .hero .button.ghost{border-color:var(--gold,#b59d65);color:#fff}
+.ed-hero{border-bottom:3px solid var(--gold,#b59d65)}.ed-toc{background:var(--deep,#143c36);color:#fff;border-color:var(--gold,#b59d65)}.ed-reference{min-width:44px;min-height:44px;line-height:1.4;padding:.7rem;border:1px solid #b8b695;border-radius:6px;vertical-align:middle}.ed-section,.ed-sources li{scroll-margin-top:8rem}
+body[data-mft-experience] .brand img{display:block;min-width:40px}
+@media(max-width:900px){.experience-body{grid-template-columns:1fr;gap:1.5rem}.experience-sidebar .experience-topic-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){.experience-sidebar .experience-topic-grid{grid-template-columns:1fr}.experience-body{padding:2.5rem 1.25rem}.experience-prose p{font-size:1rem}.experience-sidebar{padding:1.2rem}.experience-topic-title{font-size:1.2rem}.experience-topic{padding:1rem}.experience-prose h2{max-width:none}body[data-mft-experience] main [id]{scroll-margin-top:6rem}}
+@media(prefers-reduced-motion:reduce){.experience-topic{transition:none}}

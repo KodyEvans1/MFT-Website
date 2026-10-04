@@ -8,6 +8,7 @@ const SITE='https://www.mft.care';
 const GEO=JSON.parse(fs.readFileSync(path.join(ROOT,'content','wa-geography.json'),'utf8'));
 const CLIN=JSON.parse(fs.readFileSync(path.join(ROOT,'content','clinician-registry.json'),'utf8'));
 const editorial=require('./editorial-library');
+const experience=require('./site-experience');
 const CORE=JSON.parse(fs.readFileSync(path.join(ROOT,'content','seo-core-routes.json'),'utf8'));
 const {buildGraph}=require('./geography-graph');
 const geoRender=require('./geography-render');
@@ -18,6 +19,9 @@ const geoContext=geoRender.context(GRAPH,process.env.CONTEXT==='production'||ind
 const coreSitemapUrls=sitemapUrls(fs.readFileSync(path.join(DIST,'sitemap.xml'),'utf8'));
 
 const coreSlugs=fs.readdirSync(DIST,{withFileTypes:true}).filter(e=>e.isDirectory()&&fs.existsSync(path.join(DIST,e.name,'index.html'))).map(e=>e.name);
+const sourceTemplates=new Map(coreSlugs.map(slug=>[slug,fs.readFileSync(path.join(DIST,slug,'index.html'),'utf8')]));
+const EXPERIENCE=experience.createContext(DIST,REG,process.env.CONTEXT==='production'||indexingEnabled());
+const finish=(html,slug)=>experience.applyExperience(html,slug?'/'+slug+'/':'/',EXPERIENCE);
 const LIBRARY=editorial.createLibrary({content:require('../content/editorial-library.json'),registry:REG,clinicians:CLIN,evidence:require('../content/clinician-evidence.json'),coreSlugs,production:process.env.CONTEXT==='production'||indexingEnabled()});
 const familyMeta={
   modalities:{type:'modality',source:'cognitive-behavioral-therapy-cbt',hub:'/therapy-approaches/',label:'Therapy approach'},
@@ -33,6 +37,7 @@ function titleCase(slug){return slug.split('-').map(w=>w? w[0].toUpperCase()+w.s
 function tokens(s){return new Set(plain(s).toLowerCase().split(/[^a-z0-9]+/).filter(w=>w.length>3))}
 function similaritySets(A,B){if(!A.size||!B.size)return 0; let i=0; const small=A.size<=B.size?A:B, large=A.size<=B.size?B:A; for(const x of small)if(large.has(x))i++; return i/(A.size+B.size-i)}
 function sourceHtml(source){
+  if(sourceTemplates.has(source))return sourceTemplates.get(source);
   const p=path.join(DIST,source,'index.html');
   if(!fs.existsSync(p)) throw new Error('Missing template '+p);
   return fs.readFileSync(p,'utf8');
@@ -127,13 +132,13 @@ function minimalSchema(url,title,desc){
 }
 function generate(type,e,all,meta){
   if(LIBRARY.articles.has(e.slug)){
-    const article=LIBRARY.articles.get(e.slug),rendered=editorial.renderArticle(sourceHtml(meta.source),article,LIBRARY),h=rendered.html;
+    const article=LIBRARY.articles.get(e.slug),rendered=editorial.renderArticle(sourceHtml(meta.source),article,LIBRARY),h=finish(rendered.html,e.slug);
     const out=path.join(DIST,e.slug,'index.html');fs.mkdirSync(path.dirname(out),{recursive:true});fs.writeFileSync(out,h);
     return {type,slug:e.slug,name:e.name,status:e.status,title:rendered.title,description:rendered.description,wordCount:editorial.plain(h).split(/\s+/).length,html:h,tokenSet:tokens(h)};
   }
   if(type==='location'){
     const rendered=geoRender.renderLocation(locationTemplate,e,geoContext);
-    const h=decorateHtml(rendered.html,'/'+e.slug+'/').html;
+    const h=finish(decorateHtml(rendered.html,'/'+e.slug+'/').html,e.slug);
     const out=path.join(DIST,e.slug,'index.html');fs.mkdirSync(path.dirname(out),{recursive:true});fs.writeFileSync(out,h);
     return {type,slug:e.slug,name:e.name,status:e.status,title:rendered.title,description:rendered.description,wordCount:plain(h).split(/\s+/).length,html:h,tokenSet:tokens(h)};
   }
@@ -157,6 +162,7 @@ function generate(type,e,all,meta){
   h=h.replace(/<section class="section (?:story-section|concern-layout|approach-layout|resource-layout|clinician-story|location-layout)[\s\S]*?<\/section>/,bodySection(type,e,all));
   h=h.replace(/<section class="section action-band">[\s\S]*?<\/section>/,'');
   h=h.replace(/<section class="section final-cta reveal">[\s\S]*?<\/section>/,`<section class="section final-cta reveal"><p class="kicker">Next step</p><h2>Talk with someone before deciding.</h2><p>A free 10-minute phone consultation can help you ask practical questions and decide whether to continue.</p><div class="actions"><a class="button light" href="https://marriagefamilytherapy.clientsecure.me/">Schedule a free consultation</a><a class="button ghost" href="/team/">Meet the team</a></div></section>`);
+  h=finish(h,e.slug);
   const out=path.join(DIST,e.slug,'index.html'); fs.mkdirSync(path.dirname(out),{recursive:true}); fs.writeFileSync(out,h);
   return {type,slug:e.slug,name:e.name,status:e.status,title,description:desc,wordCount:plain(h).split(/\s+/).length,html:h,tokenSet:tokens(h)};
 }
@@ -180,6 +186,25 @@ for(const slug of ['resources','therapy-approaches','marriagereset',...LIBRARY.p
   const file=path.join(DIST,slug,'index.html');if(!fs.existsSync(file))throw new Error('Missing editorial discovery route: '+slug);
   fs.writeFileSync(file,editorial.augmentDiscovery(fs.readFileSync(file,'utf8'),slug,LIBRARY));
 }
+for(const slug of ['',...coreSlugs]){
+  const file=path.join(DIST,slug,'index.html');
+  fs.writeFileSync(file,finish(fs.readFileSync(file,'utf8'),slug));
+}
+for(const base of ['google','marriage-reset-assessment']){
+  const dir=path.join(DIST,base);if(!fs.existsSync(dir))continue;
+  for(const child of fs.readdirSync(dir,{withFileTypes:true}).filter(e=>e.isDirectory())){
+    const slug=base+'/'+child.name,file=path.join(DIST,slug,'index.html');
+    if(fs.existsSync(file))fs.writeFileSync(file,finish(fs.readFileSync(file,'utf8'),slug));
+  }
+}
+const missingPage=path.join(DIST,'404.html');
+if(fs.existsSync(missingPage)){
+  const home=fs.readFileSync(path.join(DIST,'index.html'),'utf8');
+  const header=home.match(/<header class="site-header">[\s\S]*?<\/header>/)?.[0];
+  if(!header)throw new Error('Missing public header for 404 recovery');
+  let missing=fs.readFileSync(missingPage,'utf8').replace(/<header class="site-header">[\s\S]*?<\/header>/,header);
+  fs.writeFileSync(missingPage,finish(missing,'404.html'));
+}
 const routePlan=planRoutes(allEntities,DIST,CORE.slugs);
 const byType={};
 for(const x of allEntities){(byType[x.meta.type]??=[]).push(x.e)}
@@ -187,6 +212,7 @@ const generated=[];
 for(const {key,meta,e} of routePlan.generate) generated.push(generate(meta.type,e,byType[meta.type],meta));
 
 
+fs.copyFileSync(path.join(ROOT,'src/assets/site-experience.js'),path.join(DIST,'assets/site-experience.js'));
 const stylePath=path.join(DIST,'assets','styles.css');
 fs.appendFileSync(stylePath,fs.readFileSync(path.join(ROOT,'src/assets/editorial.css'),'utf8'));
 fs.appendFileSync(stylePath,fs.readFileSync(path.join(ROOT,'src/assets/geography.css'),'utf8'));
@@ -253,6 +279,7 @@ const report={
 };
 fs.mkdirSync(path.join(DIST,'reports'),{recursive:true});
 fs.writeFileSync(path.join(DIST,'reports','seo-expansion.json'),JSON.stringify(report,null,2));
+fs.writeFileSync(path.join(DIST,'reports','site-experience.json'),JSON.stringify({version:1,basis:'October 2 Plaud plus site-wide correction',pages:[...EXPERIENCE.report.values()]},null,2)+'\n');
 fs.writeFileSync(path.join(DIST,'reports','editorial-library.json'),JSON.stringify(editorial.report(LIBRARY),null,2)+'\n');
 const hierarchy={version:1,sourceVintage:GRAPH.crosswalk.sourceVintage,regions:GRAPH.regions.size,counties:GRAPH.counties.size,places:GRAPH.places.size,
   multiCountyPlaces:[...GRAPH.places.values()].filter(e=>e.countyGeoids.length>1).map(e=>({name:e.name,slug:e.slug,counties:GRAPH.parents(e).map(c=>c.name)})),

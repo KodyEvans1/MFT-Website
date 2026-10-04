@@ -23,5 +23,6 @@ for (const route of ['/how-to-start-therapy/', '/', '/marriagereset/']) {
 }
 fs.writeFileSync(bookingFile,JSON.stringify(booking,null,2)+'\n');
 fs.appendFileSync(path.join(dist,'assets/styles.css'),fs.readFileSync(path.join(root,'src/assets/start-page.css'),'utf8'));
+fs.appendFileSync(path.join(dist,'assets/styles.css'),fs.readFileSync(path.join(root,'src/assets/site-experience.css'),'utf8'));
 fs.writeFileSync(path.join(dist,'reports/plaud-page-edits.json'),JSON.stringify({version:1,recordingDate:'2026-10-02',updates,productionRelease:false},null,2)+'\n');
 console.log(JSON.stringify({plaudPageEdits:updates}));

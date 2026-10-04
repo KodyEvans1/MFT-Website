@@ -32,7 +32,7 @@ function validateEditorial(dist) {
       for (const m of main.matchAll(/href="#([^"]+)"/g)) check(ids.includes(m[1]), 'Missing anchor ' + m[1]);
       for (const s of a.sections) {
         check(main.includes('id="' + s.id + '"'), 'Missing section ' + s.id);
-        for (const p of s.paragraphs) check(main.includes(esc(p)), 'Missing authored paragraph in ' + s.id);
+        for (const p of s.paragraphs) check(main.replace(/<\/?a\b[^>]*>/g, '').includes(esc(p)), 'Missing authored paragraph in ' + s.id);
       }
       check(!/<form\b|<input\b|<textarea\b/i.test(main), 'Unexpected public data collection');
       check(!/story-section seo-entity|Connected care library/.test(main), 'Inherited generic content');

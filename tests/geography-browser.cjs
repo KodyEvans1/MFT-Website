@@ -30,7 +30,7 @@ if(process.argv.includes('--worker')){
         run('open','http://127.0.0.1:4173/'+route+'/');run('wait','--load','domcontentloaded');
         run('snapshot','-i');
         evaluate("if(document.querySelectorAll('h1').length!==1)throw Error('Wrong H1 count');if(document.documentElement.scrollWidth>innerWidth+2)throw Error('Horizontal overflow '+document.documentElement.scrollWidth+' vs '+innerWidth);if(!document.querySelector('meta[name=robots]').content.includes('noindex'))throw Error('Indexable preview');if(!document.querySelector('.geo-directory a'))throw Error('Missing directory');if(window.MFT_BOOKING_CONFIG?.measurementEnabled)throw Error('Measurement enabled')");
-        if(route==='online-therapy-coulee-dam-wa')evaluate("if(document.querySelectorAll('.geo-breadcrumbs').length!==3)throw Error('Three county trails missing')");
+        if(route==='online-therapy-coulee-dam-wa')evaluate("if(document.querySelector('.breadcrumbs'))throw Error('Visible breadcrumb returned');const graph=JSON.parse(document.querySelector('script[type=\"application/ld+json\"]').textContent)['@graph'];if(graph.filter(n=>n['@type']==='BreadcrumbList').length!==3)throw Error('Three county schema trails missing');if(document.querySelectorAll('.geo-parents a').length<3)throw Error('County parent links missing')");
         run('screenshot',path.join(out,route+'-'+width+'.png'),'--full');cases.push({route,width,pass:true});
       }
     }

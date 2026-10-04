@@ -16,7 +16,9 @@
 .person .mft-clinician-name{font-family:var(--serif);font-size:1.25rem}
 .staff-card .mft-portrait--staff{width:180px;height:225px}
 /* Biography hero: restore the continuous deep-green photographic treatment.
-   Keep the entire source rectangle in view. Card crops above are unchanged. */
+   Keep the entire source rectangle in view. Card crops above are unchanged.
+   The image element uses its native aspect ratio so edge blending follows the
+   actual pixels, not empty letterbox space inside a taller portrait frame. */
 body.page-clinician .hero.mft-clinician-hero{position:relative;isolation:isolate;display:grid;align-items:center;min-height:620px;padding:0;overflow:hidden;background:linear-gradient(100deg,#092624 0%,#102f2e 55%,#173e3c 100%);border-bottom:3px solid var(--gold)}
 body.page-clinician .mft-clinician-hero .hero-copy{position:relative;z-index:2;width:54%;max-width:860px;min-width:0;padding:clamp(3rem,5vw,5.5rem) clamp(1.25rem,6vw,6rem);padding-right:2rem;color:#fff}
 body.page-clinician .mft-clinician-hero .mft-clinician-name{color:#fff;font-size:clamp(2.6rem,4.8vw,4.8rem);margin:0 0 .65rem}
@@ -27,8 +29,8 @@ body.page-clinician .mft-clinician-hero .kicker{color:#dfbc7a}
 body.page-clinician .hero.mft-clinician-hero .button.primary{background:#fff;color:#102f2e;border-color:#fff}
 body.page-clinician .hero.mft-clinician-hero .button.ghost{background:transparent;color:#fff;border-color:#dfbc7a}
 body.page-clinician .hero.mft-clinician-hero .button:focus-visible{outline:3px solid #dfbc7a;outline-offset:5px}
-body.page-clinician .mft-clinician-hero .mft-portrait--hero{position:absolute;z-index:0;inset:32px 2vw 0 auto;width:48%;height:calc(100% - 32px);aspect-ratio:auto;max-width:760px;border:0;border-radius:0;background:none;overflow:visible;align-self:auto;justify-self:auto}
-body.page-clinician .mft-clinician-hero .mft-portrait--hero>.hero-media{position:absolute;inset:auto 0 0 auto;display:block;width:100%;height:100%;max-width:100%;max-height:100%;padding:0;aspect-ratio:auto;object-fit:contain;object-position:center bottom;border-radius:0;filter:none;transform:none;mask-image:linear-gradient(to right,transparent,#000 10%,#000 96%,transparent),linear-gradient(to top,transparent,#000 12%,#000 99%,transparent);mask-composite:intersect}
+body.page-clinician .mft-clinician-hero .mft-portrait--hero{position:absolute;z-index:0;inset:32px 2vw 0 auto;width:48%;height:calc(100% - 64px);display:flex;align-items:center;justify-content:center;aspect-ratio:auto;max-width:760px;border:0;border-radius:0;background:none;overflow:visible;align-self:auto;justify-self:auto}
+body.page-clinician .mft-clinician-hero .mft-portrait--hero>.hero-media{position:relative;inset:auto;display:block;width:auto;height:auto;max-width:100%;max-height:100%;flex:0 1 auto;padding:0;aspect-ratio:auto;object-fit:contain;object-position:center center;border-radius:0;filter:none;transform:none;mask-image:linear-gradient(to right,transparent,#000 14%,#000 90%,transparent),linear-gradient(to top,transparent,#000 15%,#000 97%,transparent);mask-composite:intersect}
 body.page-clinician [data-clinician-hero="dr-nolan"] .mft-portrait--hero{max-width:400px;right:7vw}
 body.page-clinician [data-clinician-hero="emily-johnsrud-bio"] .mft-portrait--hero{max-width:380px;right:7vw}
 body.page-clinician [data-clinician-hero="gary-ashley"] .mft-portrait--hero{max-width:500px;right:4vw}
@@ -38,7 +40,7 @@ body.page-clinician .mft-clinician-blend{position:absolute;z-index:1;inset:0;poi
 @media(max-width:900px){
  body.page-clinician .hero.mft-clinician-hero{display:flex;flex-direction:column;min-height:0;padding:0;background:linear-gradient(160deg,#173e3c,#092624 68%)}
  body.page-clinician .mft-clinician-hero .mft-portrait--hero{position:relative;inset:auto;order:0;width:min(88%,400px);height:360px;max-width:400px;margin:24px auto 0;flex:none}
- body.page-clinician .mft-clinician-hero .mft-portrait--hero>.hero-media{object-position:center bottom}
+ body.page-clinician .mft-clinician-hero .mft-portrait--hero>.hero-media{object-position:center center}
  body.page-clinician .mft-clinician-blend{display:none}
  body.page-clinician .mft-clinician-hero .hero-copy{order:1;width:100%;max-width:680px;margin:auto;padding:1.25rem 2rem 3rem}
  body.page-clinician .mft-clinician-hero .mft-clinician-name{font-size:clamp(2.4rem,6vw,4rem)}

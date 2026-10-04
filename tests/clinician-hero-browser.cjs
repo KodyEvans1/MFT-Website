@@ -21,9 +21,10 @@ function worker(){try{
     const raw=new Image();raw.src=img.currentSrc;await raw.decode();await document.fonts.ready;
     const h=hero.getBoundingClientRect(),f=frame.getBoundingClientRect(),i=img.getBoundingClientRect(),s=getComputedStyle(img),cfg=${JSON.stringify(heroSources[p.slug])};
     const scale=Math.min(i.width/raw.naturalWidth,i.height/raw.naturalHeight),pw=raw.naturalWidth*scale,ph=raw.naturalHeight*scale;
-    const painted={left:i.left+(i.width-pw)/2,top:i.bottom-ph,width:pw,height:ph,bottom:i.bottom};
-    if(s.objectFit!=='contain'||s.objectPosition!=='50% 100%'||s.transform!=='none'||parseFloat(s.paddingTop)!==0)throw Error('Hero crop/stretch rule');
+    const painted={left:i.left+(i.width-pw)/2,top:i.top+(i.height-ph)/2,width:pw,height:ph,bottom:i.top+(i.height+ph)/2};
+    if(s.objectFit!=='contain'||s.objectPosition!=='50% 50%'||s.transform!=='none'||parseFloat(s.paddingTop)!==0)throw Error('Hero crop/stretch rule');
     if(painted.top<h.top+23||painted.left<f.left-.6||painted.bottom>h.bottom+.6||painted.width>f.width+.6||painted.height>f.height+.6)throw Error('Source cropped or headroom missing '+JSON.stringify(painted));
+    if(Math.abs(i.width/i.height-raw.naturalWidth/raw.naturalHeight)>.008)throw Error('Mask follows empty box, not source pixels');
     if(pw>cfg.width+1||ph>cfg.height+1)throw Error('Photo enlarged beyond original pixels');
     if(Math.abs(raw.naturalWidth/raw.naturalHeight-cfg.width/cfg.height)>.006)throw Error('Source aspect changed');
     if(raw.naturalWidth+2<Math.min(cfg.width,pw*devicePixelRatio*.9))throw Error('Available higher resolution not selected');

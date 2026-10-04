@@ -1,0 +1,63 @@
+name: Prepare isolated clinician portrait candidate
+on:
+  push:
+    branches: ['work/clinician-portraits-20261004']
+permissions:
+  contents: write
+jobs:
+  candidate:
+    if: github.ref == 'refs/heads/work/clinician-portraits-20261004'
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Apply bounded source changes
+        run: python .github/portrait-change/apply.py
+      - name: Build and regression checks
+        run: npm run check > portrait-check.log 2>&1
+      - name: Publication rehearsal without deployment
+        run: node tests/full-site.cjs > portrait-publication.log 2>&1
+      - run: npm install -g agent-browser@0.38.2
+      - run: agent-browser install --with-deps
+      - name: Verify decoded portraits and native navigation
+        run: node tests/clinician-portraits-browser.cjs
+      - name: Commit tested source on the isolated candidate branch only
+        run: |
+          test "$GITHUB_REF" = 'refs/heads/work/clinician-portraits-20261004'
+          git fetch origin work/clinician-portraits-20261004
+          test "$(git rev-parse FETCH_HEAD)" = "$GITHUB_SHA"
+          rm -r .github/portrait-change
+          rm .github/workflows/prepare-clinician-portraits.yml
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add content/clinician-registry.json src/assets/portraits.css src/ui/clinician-presentation.js src/build.js src/reference-pages.js src/seo-expansion-engine.js src/site-experience.js src/editorial-library.js src/editorial-check.js src/redesign.js tests/clinician-presentation.test.js tests/clinician-portraits-browser.cjs .github
+          git commit -m 'Unify clinician portrait frames and separate names from licenses'
+          git rev-parse HEAD > portrait-candidate-sha.txt
+          git push origin HEAD:refs/heads/work/clinician-portraits-20261004
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: portrait-candidate-evidence
+          path: |
+            tmp/clinician-portraits/
+            portrait-check.log
+            portrait-publication.log
+            portrait-candidate-sha.txt
+          retention-days: 7
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: portrait-candidate-source
+          path: |
+            src/
+            content/
+            scripts/
+            reports/
+            tests/
+            package.json
+          retention-days: 7

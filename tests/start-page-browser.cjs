@@ -10,6 +10,12 @@ function run(...args){
  catch(e){commands.push({args,error:String(e),stdout:String(e.stdout||''),stderr:String(e.stderr||'')});fs.writeFileSync(path.join(out,'commands.json'),JSON.stringify(commands,null,2));throw e;}
 }
 function check(code){return run('eval',`(()=>{${code};return 'PASS';})()`);}
+// The site uses smooth scrolling; center and hit-test the actual control before
+// a real browser click. Never toggle details or invoke element.click() in JS.
+function intoView(selector){
+ return run('eval',`(async()=>{const e=document.querySelector(${JSON.stringify(selector)});if(!e)throw Error('Missing control');e.scrollIntoView({block:'center',inline:'nearest',behavior:'instant'});await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));const b=e.getBoundingClientRect(),x=b.left+b.width/2,y=b.top+b.height/2,hit=document.elementFromPoint(x,y);if(y<0||y>innerHeight||!hit||!(e===hit||e.contains(hit)))throw Error('Control not clickable: '+JSON.stringify({selector:${JSON.stringify(selector)},rect:{top:b.top,bottom:b.bottom},hit:hit?.outerHTML?.slice(0,180)}));return JSON.stringify({selector:${JSON.stringify(selector)},top:b.top,bottom:b.bottom,scrollY});})()`);
+}
+function clickControl(selector){intoView(selector);return run('click',selector);}
 function open(route){run('open','http://127.0.0.1:4193'+route);run('wait','--load','domcontentloaded');run('snapshot','-i');}
 const server=http.createServer((req,res)=>{
  let route;try{route=decodeURIComponent(new URL(req.url,'http://127.0.0.1').pathname);}catch{res.writeHead(400);res.end();return;}
@@ -31,10 +37,10 @@ if(process.argv.includes('--worker')){
     check("if(document.querySelectorAll('h1').length!==1)throw Error('H1 count');if(document.documentElement.scrollWidth>innerWidth+2)throw Error('Horizontal overflow');if(!document.querySelector('meta[name=robots]').content.includes('noindex'))throw Error('Indexable preview');if(window.MFT_BOOKING_CONFIG?.measurementEnabled)throw Error('Measurement enabled');if(!document.querySelector('header img[src=\"/assets/mft-logo.svg\"]'))throw Error('Brand logo missing');if(!document.querySelector('.primary-nav a[href=\"/marriagereset/\"]'))throw Error('Marriage.Reset navigation missing')");
     if(route==='/how-to-start-therapy/'){
      check("if(document.querySelector('main .breadcrumbs,main form,main input,main textarea,main .final-cta'))throw Error('Old layout or form remains');if(document.querySelectorAll('.start-faq details').length!==4)throw Error('FAQ count');for(const a of document.querySelectorAll('main a[data-mft-booking]')){if(a.getAttribute('href')!=='https://marriagefamilytherapy.clientsecure.me'||!a.hasAttribute('data-spwidget-scope-global'))throw Error('Wrong scheduling destination')}if(!document.querySelector('a[href=\"mailto:support@mft.care?subject=Benefits%20verification\"]'))throw Error('Benefits email missing')");
-     run('click','.start-text-link');run('wait','--url','**#start-steps');run('snapshot','-i');check("if(location.hash!=='#start-steps')throw Error('Steps anchor failed')");
-     for(let n=1;n<=4;n++){run('click',`.start-faq details:nth-child(${n}) summary`);run('snapshot','-i');check(`if(!document.querySelector('.start-faq details:nth-child(${n})').open)throw Error('FAQ did not expand')`);}
-     run('eval',"document.querySelector('.start-faq summary').focus()");run('press','Enter');check("if(document.querySelector('.start-faq details').open)throw Error('Keyboard toggle failed')");
-     run('eval','window.scrollTo(0,0)');run('screenshot',path.join(out,'how-to-start-therapy-'+width+'.png'),'--full');
+     clickControl('.start-text-link');run('wait','--url','**#start-steps');run('snapshot','-i');check("if(location.hash!=='#start-steps')throw Error('Steps anchor failed')");
+     for(let n=1;n<=4;n++){clickControl(`.start-faq details:nth-child(${n}) summary`);run('snapshot','-i');check(`if(!document.querySelector('.start-faq details:nth-child(${n})').open)throw Error('FAQ did not expand')`);}
+     intoView('.start-faq summary');run('eval',"document.querySelector('.start-faq summary').focus({preventScroll:true})");run('press','Enter');check("if(document.querySelector('.start-faq details').open)throw Error('Keyboard toggle failed')");
+     open('/how-to-start-therapy/');run('screenshot',path.join(out,'how-to-start-therapy-'+width+'.png'),'--full');
     }else{
      if(route==='/')check("if(document.querySelector('main .final-cta'))throw Error('Redundant homepage CTA remains')");
      if(route==='/marriagereset/')check("const a=document.querySelector('a[data-mr-client-access]');if(!a||a.href!=='https://ops.mft.care/'||a.hasAttribute('data-mft-booking'))throw Error('MR sign-in hijacked')");
@@ -43,11 +49,11 @@ if(process.argv.includes('--worker')){
     cases.push({route,width,pass:true});
    }
   }
-  open('/how-to-start-therapy/');run('click','.start-step-grid a[href="/services/"]');run('wait','--url','**/services/');run('snapshot','-i');
-  open('/how-to-start-therapy/');run('click','.start-step-grid a[href="/team/"]');run('wait','--url','**/team/');run('snapshot','-i');
-  open('/how-to-start-therapy/');run('click','.menu-button');run('snapshot','-i');
+  open('/how-to-start-therapy/');clickControl('.start-step-grid a[href="/services/"]');run('wait','--url','**/services/');run('snapshot','-i');
+  open('/how-to-start-therapy/');clickControl('.start-step-grid a[href="/team/"]');run('wait','--url','**/team/');run('snapshot','-i');
+  open('/how-to-start-therapy/');clickControl('.menu-button');run('snapshot','-i');
   check("if(document.querySelector('.menu-button').getAttribute('aria-expanded')!=='true')throw Error('Mobile menu did not open')");
-  run('click','.primary-nav a[href="/marriagereset/"]');run('wait','--url','**/marriagereset/');run('snapshot','-i');
+  clickControl('.primary-nav a[href="/marriagereset/"]');run('wait','--url','**/marriagereset/');run('snapshot','-i');
   const errors=run('errors');fs.writeFileSync(path.join(out,'browser-errors.txt'),errors);
   if(errors.trim()&&!/no errors/i.test(errors))throw Error('Browser reported errors: '+errors);
   fs.writeFileSync(path.join(out,'result.json'),JSON.stringify({pass:true,cases,navigation:['start -> services','start -> team','mobile menu -> Marriage.Reset'],interactions:['steps anchor','four FAQ expanders','keyboard FAQ toggle'],scope:'Built output. No hosted Netlify CSP/SDK flow, sign-in, appointment submission, email send or live measurement.'},null,2));

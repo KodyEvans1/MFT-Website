@@ -19,7 +19,8 @@ for (const file of walk(dist).filter(f=>f.endsWith('.html'))) {
   const relative = path.relative(dist,file).split(path.sep).join('/');
   if (relative === '404.html') continue;
   const route = '/' + relative.replace(/index\.html$/,'');
-  const cleanHero = require('../src/hero-media').apply(fs.readFileSync(file,'utf8'),route.replace(/^\/+|\/+$/g,''));
+  const mrPrepared = require('../src/marriage-reset').prepare(fs.readFileSync(file,'utf8'),route.replace(/^\/+|\/+$/g,''));
+  const cleanHero = require('../src/hero-media').apply(mrPrepared,route.replace(/^\/+|\/+$/g,''));
   const r = decorateHtml(cleanHero,route);
   fs.writeFileSync(file,r.html);
   report.pages.push({route,buttons:r.buttons,widget:r.widget});
@@ -34,3 +35,5 @@ fs.appendFileSync(path.join(dist,'assets/styles.css'), '\n.mft-measurement-panel
 fs.mkdirSync(path.join(dist,'reports'),{recursive:true});
 fs.writeFileSync(path.join(dist,'reports/booking-integration.json'), JSON.stringify(report,null,2)+'\n');
 console.log(JSON.stringify({bookingCorePages:report.pages.length, measurementEnabled, clinicianMappings:config.clinicians.length}));
+
+fs.appendFileSync(path.join(dist,'assets/styles.css'),fs.readFileSync(path.join(root,'src/assets/marriage-reset.css'),'utf8'));

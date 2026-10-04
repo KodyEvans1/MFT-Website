@@ -2,6 +2,7 @@
 // Native page-family composition, separate from legacy post-generation rewrites.
 const fs=require('node:fs'),path=require('node:path');
 const ui=require('./ui/home-components');
+const marriageReset=require('./marriage-reset');
 const {indexingEnabled}=require('./seo-safety');
 const people=require('../content/clinician-registry.json').clinicians;
 const evidence=require('../content/clinician-evidence.json').clinicians;
@@ -38,8 +39,9 @@ function clinicianSection(s,p){
  }).join('');
  return `<section class="section mft-clinicians mft-component" id="${s.id}" aria-labelledby="${s.id}-title" data-ui="clinicians">${ui.heading(s)}<div class="mft-clinician-grid">${cards}</div><p class="mft-section-note">Profile descriptions were recorded October 2, 2026. Confirm current services and availability. <a href="/team/">View the full team</a>.</p></section>`;
 }
-function render(slug){if(slug==='what-we-help-with')return require('./concern-directory').render({has:s=>bySlug.has(s)});const p=validate(bySlug.get(slug));const body=p.sections.map(s=>s.type==='clinicians'?clinicianSection(s,p):ui[s.type](s)).join('');return `<main id="main" data-reference-page="${ui.esc(slug)}" data-page-family="${p.family}"${p.contentOrigin?` ${p.contentOrigin==='authored-concern-guide'?'data-concern-revision':'data-modality-revision'}="${revision(p)}"`:""} data-design-system="homepage-shared-v1">${ui.hero(p.hero)}${ui.jump(p.jump)}${body}${ui.sources(Object.fromEntries(p.sources.map(id=>[id,sourceCatalog[id]])))}<aside class="mft-care-note mft-component" aria-label="Urgent support">This educational guide does not assess you or replace individualized care. For a mental health crisis in the U.S., call or text <a href="tel:988">988</a>. For a life-threatening emergency, call 911. Ordinary scheduling and support email are not crisis services.</aside></main>`;}
+function render(slug){if(marriageReset.has(slug))return marriageReset.render(slug,true);if(slug==='what-we-help-with')return require('./concern-directory').render({has:s=>bySlug.has(s)});const p=validate(bySlug.get(slug));const body=p.sections.map(s=>s.type==='clinicians'?clinicianSection(s,p):ui[s.type](s)).join('');return `<main id="main" data-reference-page="${ui.esc(slug)}" data-page-family="${p.family}"${p.contentOrigin?` ${p.contentOrigin==='authored-concern-guide'?'data-concern-revision':'data-modality-revision'}="${revision(p)}"`:""} data-design-system="homepage-shared-v1">${ui.hero(p.hero)}${ui.jump(p.jump)}${body}${ui.sources(Object.fromEntries(p.sources.map(id=>[id,sourceCatalog[id]])))}<aside class="mft-care-note mft-component" aria-label="Urgent support">This educational guide does not assess you or replace individualized care. For a mental health crisis in the U.S., call or text <a href="tel:988">988</a>. For a life-threatening emergency, call 911. Ordinary scheduling and support email are not crisis services.</aside></main>`;}
 function applyMetadata(html,slug){
+ if(marriageReset.has(slug))return marriageReset.metadata(html,slug);
  const p=bySlug.get(slug);if(!p||!['authored-modality-guide','authored-concern-guide'].includes(p.contentOrigin))return html;
  const title=p.name+' | M.F.T.',description=p.hero.summary.length>175?p.hero.summary.slice(0,172)+'...':p.hero.summary;
  let out=html.replace(/<title>.*?<\/title>/,`<title>${ui.esc(title)}</title>`)
@@ -51,4 +53,4 @@ function applyMetadata(html,slug){
   return '<script type="application/ld+json">'+JSON.stringify(schema).replace(/</g,'\\u003c')+'</script>';
  });return out;
 }
-module.exports={enabled,has:slug=>bySlug.has(slug)||slug==='what-we-help-with',get:slug=>bySlug.get(slug),render,validate,pages,allPages,modalityPages,concernPages,selectedClinicians,revision,sourceUrls,applyMetadata};
+module.exports={enabled,has:slug=>marriageReset.has(slug)||bySlug.has(slug)||slug==='what-we-help-with',get:slug=>bySlug.get(slug),render,validate,pages,allPages,modalityPages,concernPages,selectedClinicians,revision,sourceUrls,applyMetadata};

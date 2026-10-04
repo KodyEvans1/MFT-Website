@@ -1,0 +1,31 @@
+name: Marriage.Reset explanation review
+on:
+  push:
+    branches: [review/site-experience-seo-20260930]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm run check
+      - run: npm run verify:publication
+      - run: npm install -g agent-browser@0.38.2
+      - run: agent-browser install --with-deps
+      - run: node tests/marriage-reset-browser.cjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: marriage-reset-review
+          path: |
+            tmp/marriage-reset-browser/
+            dist/reports/marriage-reset.json
+            dist/reports/publication-rehearsal.json
+            dist/reports/validation.json
+          retention-days: 7

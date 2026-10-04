@@ -70,15 +70,10 @@ for (const file of htmlFiles) {
   if (json) try { JSON.parse(json); } catch (e) { errors.push(`${file}: invalid JSON-LD ${e.message}`); }
   if (/Maritain|free virtual free virtual|2024 retreat|kody-evans\.clientsecure/.test(h)) errors.push(`${file}: known stale or incorrect text`);
   const forms=count(h,/<form\b/gi);
-  if (forms && !isAssessmentForm) errors.push(`${file}: unexpected public form found`);
-  if (isAssessmentForm) {
-    if (forms!==1) errors.push(`${file}: expected one access-request form`);
-    if (!/name="marriage-reset-access"/.test(h) || !/data-netlify="true"/.test(h)) errors.push(`${file}: Netlify form configuration missing`);
-    if (count(h,/type="email"/g)!==2) errors.push(`${file}: expected exactly two email fields`);
-    if (!/name="partner-permission"[^>]*required/.test(h)) errors.push(`${file}: partner permission confirmation missing`);
-    if (!/name="program-understanding"[^>]*required/.test(h)) errors.push(`${file}: program understanding confirmation missing`);
-    if (!/data-netlify-honeypot="bot-field"/.test(h)) errors.push(`${file}: honeypot missing`);
-    if (/<textarea\b|type="file"|type="tel"/i.test(h)) errors.push(`${file}: prohibited sensitive-data field found`);
+  if (forms) errors.push(`${file}: public forms are not part of the care-team invitation model`);
+  if (isAssessmentForm || isAssessmentThanks) {
+    if (!h.includes('data-marriage-reset=')) errors.push(`${file}: missing invitation-only explanation`);
+    if (/<input\b|<textarea\b|data-netlify="true"|name="partner-email"/i.test(h)) errors.push(`${file}: obsolete public partner-data collection`);
   }
 }
 
@@ -110,3 +105,5 @@ fs.mkdirSync(path.join(DIST,'reports'),{recursive:true});
 fs.writeFileSync(path.join(DIST,'reports','validation.json'),JSON.stringify(result,null,2)+'\n');
 console.log(JSON.stringify(result,null,2));
 if(errors.length) process.exit(1);
+
+require('../scripts/validate-marriage-reset');

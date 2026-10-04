@@ -163,7 +163,13 @@ function contextualLinks(html,slug,ctx){
 function applyExperience(html,route,ctx){
   const slug=route.replace(/^\/+|\/+$/g,'');
   let out=html.replace(/<nav\b[^>]*class="[^"]*\bbreadcrumbs\b[^"]*"[^>]*>[\s\S]*?<\/nav>/g,'');
-  if(!/marriage-reset-assessment/.test(slug)){
+  const reference=require('./reference-pages');
+  const composeReference=reference.enabled()&&reference.has(slug);
+  if(composeReference){
+    if(!/<main\b[^>]*>[\s\S]*?<\/main>/.test(out))throw Error('Missing reference page shell');
+    out=out.replace(/<main\b[^>]*>[\s\S]*?<\/main>/,reference.render(slug));
+  }
+  if(!/marriage-reset-assessment/.test(slug)&&!composeReference){
     out=detailBody(out,slug,ctx);
     out=replaceLists(out,slug,ctx);
     out=out.replace(/(>)(Verify insurance)(<\/a>)/gi,'$1Verify benefits$3');

@@ -1,0 +1,11 @@
+{
+  "c-depression":{"title":"Depression","publisher":"National Institute of Mental Health","url":"https://www.nimh.nih.gov/health/publications/depression","checkedOn":"2026-10-03"},
+  "c-adhd":{"title":"ADHD in Adults: 4 Things to Know","publisher":"National Institute of Mental Health","url":"https://www.nimh.nih.gov/health/publications/adhd-what-you-need-to-know","checkedOn":"2026-10-03"},
+  "c-trauma":{"title":"Post-Traumatic Stress Disorder","publisher":"National Institute of Mental Health","url":"https://www.nimh.nih.gov/health/publications/post-traumatic-stress-disorder-ptsd","checkedOn":"2026-10-03"},
+  "c-grief":{"title":"Grief after bereavement or loss","publisher":"NHS","url":"https://www.nhs.uk/mental-health/feelings-symptoms-behaviours/feelings-and-symptoms/grief-bereavement-loss/","checkedOn":"2026-10-03"},
+  "c-esteem":{"title":"Raising low self-esteem","publisher":"NHS","url":"https://www.nhs.uk/mental-health/self-help/tips-and-support/raise-low-self-esteem/","checkedOn":"2026-10-03"},
+  "c-change":{"title":"How to deal with change and uncertainty","publisher":"NHS Every Mind Matters","url":"https://www.nhs.uk/every-mind-matters/mental-wellbeing-tips/how-to-deal-with-change/","checkedOn":"2026-10-03"},
+  "c-parents":{"title":"Parents Under Pressure: Parental Mental Health and Well-Being","publisher":"U.S. Department of Health and Human Services","url":"https://www.hhs.gov/surgeongeneral/reports-and-publications/parents/index.html","checkedOn":"2026-10-03"},
+  "c-conflict":{"title":"The Four Horsemen: The Antidotes","publisher":"The Gottman Institute","url":"https://www.gottman.com/blog/the-four-horsemen-the-antidotes/","checkedOn":"2026-10-03"},
+  "c-alcohol":{"title":"Alcohol-use disorder","publisher":"NHS","url":"https://www.nhs.uk/conditions/alcohol-use-disorder/","checkedOn":"2026-10-03"}
+}

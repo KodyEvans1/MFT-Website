@@ -1,0 +1,53 @@
+name: Clinician green hero verification
+on:
+  push:
+    branches: [review/site-experience-seo-20260930, work/hero-restore-20261004]
+permissions:
+  contents: read
+jobs:
+  green-hero:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: npm run check
+      - run: npm install -g agent-browser@0.38.2
+      - run: agent-browser install --with-deps
+      - name: Original-source geometry and green composition
+        run: node tests/clinician-hero-browser.cjs
+      - name: Existing card dimensions and native navigation
+        run: node tests/clinician-portraits-browser.cjs
+      - name: Verify the deployed review hero, not only the local build
+        if: github.ref == 'refs/heads/review/site-experience-seo-20260930'
+        run: |
+          cp -R tmp/clinician-hero tmp/clinician-hero-local
+          node --input-type=module <<'JS'
+          import fs from 'node:fs';
+          const base='https://deploy-preview-1--marriagefamilytherapy.netlify.app';
+          const expected=fs.readFileSync('src/assets/portraits.css','utf8').trim();
+          let ready=false;
+          for(let n=0;n<18;n++){
+            try{
+              const [html,css]=await Promise.all(['/kody-evans-bio/','/assets/styles.css'].map(async p=>{
+                const r=await fetch(base+p,{signal:AbortSignal.timeout(15000),headers:{'Cache-Control':'no-cache'}});
+                if(!r.ok)throw Error('HTTP '+r.status);return r.text();
+              }));
+              if(html.includes('data-hero-treatment="green-blend"')&&css.includes(expected)){ready=true;break;}
+            }catch(e){console.log('Waiting for matching preview:',String(e));}
+            await new Promise(r=>setTimeout(r,10000));
+          }
+          if(!ready)throw Error('Preview does not match current hero CSS; do not count as hosted verification');
+          JS
+          HERO_BASE_URL=https://deploy-preview-1--marriagefamilytherapy.netlify.app node tests/clinician-hero-browser.cjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: clinician-green-hero
+          path: |
+            tmp/clinician-hero/
+            tmp/clinician-hero-local/
+            tmp/clinician-portraits/
+          retention-days: 7

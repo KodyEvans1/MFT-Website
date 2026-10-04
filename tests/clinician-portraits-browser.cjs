@@ -30,12 +30,17 @@ const measure=`(async()=>{
  }
  return JSON.stringify(frames.map(f=>{
   const i=f.querySelector('img'),r=f.getBoundingClientRect(),ir=i.getBoundingClientRect(),s=getComputedStyle(i);
-  if(!i.naturalWidth||s.objectFit!=='cover'||s.transform!=='none')throw Error('Photo fit');
-  if(r.width<=0||Math.abs(r.width/r.height-.8)>.008)throw Error('Frame ratio '+JSON.stringify({w:r.width,h:r.height,alt:i.alt}));
-  if(Math.abs(ir.width-f.clientWidth)>1||Math.abs(ir.height-f.clientHeight)>1)throw Error('Photo box differs from frame');
+  const isHero=f.dataset.portraitVariant==='hero';
+  if(!i.naturalWidth||s.objectFit!==(isHero?'contain':'cover')||s.transform!=='none')throw Error('Photo fit');
+  if(r.width<=0||(!isHero&&Math.abs(r.width/r.height-.8)>.008))throw Error('Frame ratio '+JSON.stringify({w:r.width,h:r.height,alt:i.alt}));
+  if(isHero){if(ir.left<r.left-.5||ir.top<r.top-.5||ir.right>r.right+.5||ir.bottom>r.bottom+.5)throw Error('Hero image outside reserved space');if(Math.abs(ir.width/ir.height-i.naturalWidth/i.naturalHeight)>.008)throw Error('Mask not following source aspect');}else if(Math.abs(ir.width-f.clientWidth)>1||Math.abs(ir.height-f.clientHeight)>1)throw Error('Photo box differs from frame');
   const availableWidth=ir.width-parseFloat(s.paddingLeft)-parseFloat(s.paddingRight),availableHeight=ir.height-parseFloat(s.paddingTop)-parseFloat(s.paddingBottom);
-  const scale=Math.max(availableWidth/i.naturalWidth,availableHeight/i.naturalHeight);
-  if(scale<=0||i.naturalWidth*scale<availableWidth-.5||i.naturalHeight*scale<availableHeight-.5||s.objectPosition!=='50% 0%')throw Error('Frame not filled or top edge cropped');
+  const scale=(isHero?Math.min:Math.max)(availableWidth/i.naturalWidth,availableHeight/i.naturalHeight);
+  if(scale<=0)throw Error('Invalid scale');
+  if(isHero){
+    if(i.naturalWidth*scale>availableWidth+.5||i.naturalHeight*scale>availableHeight+.5||s.objectPosition!=='50% 50%')throw Error('Cropped biography source');
+    const hero=f.closest('[data-clinician-hero]');if(hero.dataset.heroTreatment!=='green-blend'||!getComputedStyle(hero).backgroundImage.includes('linear-gradient'))throw Error('Hero gradient missing');
+  }else if(i.naturalWidth*scale<availableWidth-.5||i.naturalHeight*scale<availableHeight-.5||s.objectPosition!=='50% 0%')throw Error('Guide frame changed');
   return {name:i.alt,variant:f.dataset.portraitVariant,width:r.width,height:r.height,naturalWidth:i.naturalWidth,naturalHeight:i.naturalHeight,fit:s.objectFit,position:s.objectPosition};
  }));
 })()`;
@@ -47,7 +52,7 @@ function worker(){
    const routes=width===1440||width===390?imagePages:[...people.map(p=>p.slug),'team','new-page','marriage-and-couples-therapy-counseling','childrentherapy'];
    for(const slug of routes){
     open(slug);const rows=evaluate(measure);
-    for(const r of rows){const key=width+':'+r.variant;const dims=[r.width,r.height];if(['card','hero'].includes(r.variant)&&sizes.has(key)&&dims.some((x,i)=>Math.abs(x-sizes.get(key)[i])>1))throw Error('Frame differs across pages: '+key+' '+slug);if(['card','hero'].includes(r.variant))sizes.set(key,dims);}
+    for(const r of rows){const key=width+':'+r.variant;const dims=[r.width,r.height];if(r.variant==='card'&&sizes.has(key)&&dims.some((x,i)=>Math.abs(x-sizes.get(key)[i])>1))throw Error('Frame differs across pages: '+key+' '+slug);if(r.variant==='card')sizes.set(key,dims);}
     cases.push({slug,width,pass:true,portraits:rows});
     if([1440,390].includes(width)&&people.some(p=>p.slug===slug))run('screenshot',path.join(out,slug+'-'+width+'.png'));
     if([1440,390].includes(width)&&['team','marriage-and-couples-therapy-counseling','cognitive-behavioral-therapy-cbt'].includes(slug)){

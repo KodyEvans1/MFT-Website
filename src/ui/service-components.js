@@ -1,0 +1,11 @@
+'use strict';
+// Additive service components reuse homepage typography, heading and link primitives.
+const {esc,rich,heading}=require('./home-components');
+function pricing(s) {
+  return `<section class="section mft-pricing mft-component" id="${esc(s.id)}" aria-labelledby="${esc(s.id)}-title" data-ui="pricing">${heading(s)}<div class="mft-price-grid">${s.items.map(x=>`<article class="mft-price-card" data-ui="card"><p class="kicker">${esc(x.duration)}</p><h3>${esc(x.title)}</h3><p class="mft-price">$${Number(x.price).toLocaleString('en-US')}<span>${esc(x.unit)}</span></p><p>${rich(x.text)}</p><p class="mft-price-note">${rich(x.note)}</p><a class="button dark" data-ui="button" data-retreat-format="${esc(x.id)}" href="#retreat-interest">Ask about this format <span aria-hidden="true">&rarr;</span></a></article>`).join('')}</div><p class="mft-section-note">${rich(s.note)}</p></section>`;
+}
+function inquiry(s) {
+  const fallback='mailto:support@mft.care?subject=Couples%20retreat%20information&body=Hello%2C%20I%20would%20like%20information%20about%20upcoming%20couples%20retreats.%20Please%20share%20the%20current%20formats%2C%20dates%2C%20inclusions%2C%20and%20fees.';
+  return `<section class="section mft-inquiry mft-component mft-dark-section" id="${esc(s.id)}" aria-labelledby="${esc(s.id)}-title" data-ui="inquiry">${heading(s)}<div class="mft-inquiry-panel" data-retreat-inquiry><label for="retreat-format">Which format interests you?</label><select id="retreat-format"><option value="unsure">Not sure yet</option><option value="half-day">4-Hour Intensive</option><option value="full-day">Full-Day Retreat</option><option value="overnight">Overnight Retreat</option></select><p data-retreat-selection role="status" aria-live="polite">You can ask about any format.</p><a class="button light" data-ui="button" data-retreat-email href="${esc(fallback)}">Open email to request information <span aria-hidden="true">&rarr;</span></a><p class="mft-inquiry-help">No email app? Write to <a href="mailto:support@mft.care">support@mft.care</a>. This page does not send an email or reserve a place.</p><noscript><p>Include your preferred format in the email. The inquiry link works without JavaScript.</p></noscript></div><p class="mft-section-note">${rich(s.note)}</p></section>`;
+}
+module.exports={pricing,inquiry};

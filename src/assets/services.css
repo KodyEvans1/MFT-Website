@@ -1,0 +1,19 @@
+/* Service compositions inherit the homepage primitives; these are additive variants. */
+.mft-component.mft-dark-section{background:var(--deep);color:#fff}
+.mft-dark-section :is(h2,h3){color:#fff}.mft-dark-section .kicker{color:var(--gold)}
+.mft-dark-section :is(.mft-prose p,.section-heading>p:not(.kicker),.mft-section-note){color:#e0ece7}
+.mft-dark-section .mft-prose a{color:#fff}
+.mft-dark-section .home-hero-panel{background:var(--ink);border:2px solid var(--gold);box-shadow:none}
+.mft-dark-section .home-hero-panel :is(p,a){color:#f2f6f3}
+.mft-pricing{background:var(--cream)}.mft-price-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1.25rem;margin-top:2.5rem;align-items:stretch}
+.mft-price-card{display:flex;flex-direction:column;padding:clamp(1.4rem,2.8vw,2.4rem);border:1px solid var(--line);border-top:4px solid var(--gold);border-radius:18px;background:#fff;min-width:0}
+.mft-price-card h3{font-size:1.8rem;line-height:1.2;margin-top:0}.mft-price-card>p{line-height:1.75}.mft-price-card .mft-price{font:500 clamp(2.8rem,4vw,4.4rem)/1.15 var(--serif);margin:1rem 0;color:var(--deep)}
+.mft-price span{display:block;font:500 .88rem/1.5 var(--sans);margin-top:.4rem}.mft-price-note{font-size:.88rem;color:#49665e}.mft-price-card>.button{margin-top:auto;text-align:center}
+.mft-inquiry-panel{max-width:46rem;padding:clamp(1.5rem,4vw,3rem);border:2px solid var(--gold);border-radius:24px;background:var(--ink);margin-top:2rem}
+.mft-inquiry-panel label{display:block;font:500 1.35rem/1.4 var(--serif);margin-bottom:.8rem}
+.mft-inquiry-panel select{display:block;width:100%;padding:1rem;font:inherit;border:2px solid var(--gold);border-radius:8px;background:var(--cream);color:var(--deep)}
+.mft-inquiry-panel .button.light{background:var(--gold);border:2px solid var(--gold);color:var(--deep)}
+.mft-inquiry-panel :is(p,a:not(.button)){color:#f2f6f3}.mft-inquiry-panel p{line-height:1.75}.mft-inquiry-help{font-size:.9rem}
+.mft-inquiry-panel select:focus-visible{outline:3px solid #fff;outline-offset:4px}
+@media(max-width:900px){.mft-price-grid{grid-template-columns:1fr}.mft-price-card .button{align-self:start}}
+@media(max-width:600px){.mft-price-card .button,.mft-inquiry-panel .button{width:100%}.mft-inquiry-panel{padding:1.3rem}}

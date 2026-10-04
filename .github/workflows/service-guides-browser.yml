@@ -1,0 +1,26 @@
+name: Service and retreat browser review
+on:
+  push:
+    branches: ['review/site-experience-seo-20260930']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  service-browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm run check
+      - run: npm install -g agent-browser@0.38.2
+      - run: agent-browser install --with-deps
+      - run: node tests/service-guides-browser.cjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: service-retreat-browser
+          path: tmp/service-browser/
+          retention-days: 7

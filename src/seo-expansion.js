@@ -36,3 +36,9 @@ const modalityErrors=require('./modality-check').validateModalitySite(dist);
 if(modalityErrors.length)throw Error(modalityErrors.join('\n'));
 fs.writeFileSync(path.join(dist,'reports/review-build.json'),JSON.stringify({commit:process.env.COMMIT_REF||process.env.GITHUB_SHA||null,context:process.env.CONTEXT||'local',modalityGuides:require('./reference-pages').modalityPages.length,measurementEnabled:booking.measurementEnabled},null,2)+'\n');
 console.log(JSON.stringify({plaudPageEdits:updates}));
+
+fs.copyFileSync(path.join(root,'src/assets/retreat-inquiry.js'),path.join(dist,'assets/retreat-inquiry.js'));
+fs.appendFileSync(path.join(dist,'assets/styles.css'),fs.readFileSync(path.join(root,'src/assets/services.css'),'utf8'));
+const serviceReport=require('./service-check').inspect(dist);
+fs.writeFileSync(path.join(dist,'reports/service-guides.json'),JSON.stringify(serviceReport,null,2)+'\n');
+if(serviceReport.errors.length)throw Error(serviceReport.errors.join('\n'));

@@ -42,7 +42,7 @@ if(process.argv.includes('--worker')){
     run('click','.ed-related a[href="/strengths-based-therapy/"]');run('snapshot','-i');check("if(location.pathname!=='/strengths-based-therapy/')throw Error('Related link failed')");
     run('click','.ed-clinician-grid a[href="/gary-ashley/"]');run('snapshot','-i');
     check("if(location.pathname!=='/gary-ashley/')throw Error('Profile link failed');if(!document.querySelector('main a[data-spwidget-clinician-id=\"2154633\"]'))throw Error('Profile booking missing');if(!document.querySelector('.ed-discovery a[href=\"/person-centered-therapy/\"]'))throw Error('Reciprocal reading link missing')");
-    for(const slug of ['resources','marriagereset']){run('open','http://127.0.0.1:4183/'+slug+'/');run('snapshot','-i');check("if(document.querySelectorAll('.ed-discovery a').length!==3)throw Error('Missing reading family')");}
+    for(const slug of ['resources','marriagereset']){run('open','http://127.0.0.1:4183/'+slug+'/');run('snapshot','-i');check("if(document.querySelectorAll('.ed-discovery > ul > li > a').length!==3)throw Error('Missing reading family')");}
     const browserErrors=run('errors');fs.writeFileSync(path.join(out,'browser-errors.txt'),browserErrors);
     if(browserErrors.trim()&&!/no errors/i.test(browserErrors))throw Error('Browser reported errors: '+browserErrors);
     fs.writeFileSync(path.join(out,'result.json'),JSON.stringify({pass:true,cases,navigation:['approaches','person-centered','strengths-based','Gary profile'],scope:'Built static output in CI; no hosted CSP test, live submissions or measurement'},null,2));

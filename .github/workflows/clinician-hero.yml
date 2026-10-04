@@ -1,0 +1,30 @@
+name: Clinician green hero verification
+on:
+  push:
+    branches: [review/site-experience-seo-20260930, work/hero-restore-20261004]
+permissions:
+  contents: read
+jobs:
+  green-hero:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: npm run check
+      - run: npm install -g agent-browser@0.38.2
+      - run: agent-browser install --with-deps
+      - name: Original-source geometry and green composition
+        run: node tests/clinician-hero-browser.cjs
+      - name: Existing card dimensions and native navigation
+        run: node tests/clinician-portraits-browser.cjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: clinician-green-hero
+          path: |
+            tmp/clinician-hero/
+            tmp/clinician-portraits/
+          retention-days: 7

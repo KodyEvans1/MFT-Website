@@ -10,6 +10,12 @@ const plain = h => String(h || '').replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi
 const field = (h,re) => plain(h.match(re)?.[1] || '');
 const normalize = s => plain(s).toLowerCase().replace(/[\u2018\u2019]/g,"'").replace(/[\u2013\u2014]/g,'-').replace(/\s+/g,' ').trim();
 const ALIASES = {
+  'team':['clinician profiles','team profiles','clinician biographies','Meet the team'],
+  'therapy-approaches':['therapy approaches library','therapy approaches','approaches library'],
+  'services':['Explore services'],
+  'online-therapy-washington':['Washington online-care page','Washington online care'],
+  'therapy-contact-woodinville':['office details'],
+  'check-my-coverage':['Verify benefits'],
   'new-page':['Individual therapy','Individual care'],
   'marriage-and-couples-therapy-counseling':['Couples therapy','Marriage counseling','Marriage and couples therapy'],
   'childrentherapy':['Child therapy','Children\'s therapy'],
@@ -104,7 +110,7 @@ function detailBody(html,slug,ctx) {
   let heading,body,related,asideTitle;
   if(entry){heading=entry.heading;body=entry.sections.map(s=>`<section class="experience-prose"><h2>${esc(s.heading)}</h2>${s.paragraphs.map(p=>`<p>${esc(p)}</p>`).join('')}</section>`).join('');related=cards(entry.topics,ctx,slug);asideTitle='Follow the question that brought you here';}
   if(approach){heading=page.name;const matches=evidence.clinicians.filter(p=>p.approaches.includes(slug));
-    body=`<section class="experience-prose"><h2>What this approach emphasizes</h2><p>${esc(page.summary)}</p></section><section class="experience-prose"><h2>${esc(approach.heading)}</h2><p>${esc(approach.paragraph)}</p></section><section class="experience-prose"><h2>Ask about the person and the plan</h2><p>The profile links identify clinicians whose recorded published biographies name this approach. They do not certify training, promise availability, or mean that the clinician reviewed this page. Confirm the current offering and how the approach would fit your goals.</p><p>For a comparison of styles, read the therapy approaches library or the guide to choosing a therapist. For practical questions before an appointment, use the starting-care guide. Those are separate reading paths, not a recommendation to select a method before speaking with a clinician.</p></section>`;
+    body=`<section class="experience-prose"><h2>What this approach emphasizes</h2><p>${esc(page.summary)}</p></section><section class="experience-prose"><h2>${esc(approach.heading)}</h2><p>${esc(approach.paragraph)}</p></section><section class="experience-prose"><h2>Ask about the person and the plan</h2><p>These clinicians name this approach in their published biographies. Read their profiles, then ask how they use it and whether it fits the care you are seeking. A profile description does not establish certification or current availability.</p><p>For a comparison of styles, read the therapy approaches library or the guide to choosing a therapist. For practical questions before an appointment, use the starting-care guide. Those are separate reading paths, not a recommendation to select a method before speaking with a clinician.</p></section>`;
     related=peopleCards(matches.map(p=>p.slug),ctx);asideTitle='Profiles that describe this approach';
     if(!related)related='<p>No clinician-specific use is asserted here. Ask the practice about current services rather than assuming every listed approach is offered by every clinician.</p>';
     related+=cards(['how-to-choose-a-therapist','what-happens-first-therapy-session'],ctx,slug,2);
@@ -113,11 +119,11 @@ function detailBody(html,slug,ctx) {
     const clients=field(html,/<dt>Clients<\/dt>\s*<dd>([\s\S]*?)<\/dd>/);
     const fullFocus=field(html,/<dt>Focus areas<\/dt>\s*<dd>([\s\S]*?)<\/dd>/);
     const focusTargets=targetsFor(fullFocus,ctx,slug);
-    body=`<section class="experience-prose"><h2>How this clinician describes their work</h2><p>${esc(page.summary)}</p><dl class="experience-facts"><dt>Who they work with</dt><dd>${esc(clients)}</dd></dl></section><section class="experience-prose"><h2>Follow a focus area into more detail</h2><p>The focus areas below come from the existing profile, not from an automated diagnosis or a new claim of specialist training. Open a linked topic to understand the question more fully, then ask the clinician about the care they currently offer.</p><p class="experience-profile-focus">${esc(fullFocus)}</p></section><section class="experience-prose"><h2>Bring a question about working together</h2><p>You might ask how the first appointment is structured, how your priorities would shape the work, or how to raise a concern about fit. Check the appointment format, availability, and intended service before requesting a time. The buttons on this profile retain this clinician's SimplePractice configuration.</p><div class="experience-topic-grid">${cards(focusTargets,ctx,slug,6)}</div></section>`;
+    body=`<section class="experience-prose"><h2>How this clinician describes their work</h2><p>${esc(page.summary)}</p><dl class="experience-facts"><dt>Who they work with</dt><dd>${esc(clients)}</dd></dl></section><section class="experience-prose"><h2>Follow a focus area into more detail</h2><p>Explore the focus areas described in this biography. Open a topic to read more, then ask about how this clinician works with the question you are bringing.</p><p class="experience-profile-focus">${esc(fullFocus)}</p></section><section class="experience-prose"><h2>Bring a question about working together</h2><p>You might ask how the first appointment is structured, how your priorities would shape the work, or how to raise a concern about fit. Check the appointment format, availability, and intended service before requesting a time. You can request an appointment with this clinician directly from this profile.</p><div class="experience-topic-grid">${cards(focusTargets,ctx,slug,6)}</div></section>`;
     related=cards(person.approaches,ctx,slug,10);asideTitle='Approaches named in the published profile';
     if(!related)related='<p>Ask this clinician how they work; no additional approach use is being inferred.</p>';
   }
-  const block=`<section class="section experience-body" data-experience-body="${slug}" aria-label="${esc(heading)}"><div class="experience-reading">${body}</div><aside class="experience-sidebar"><p class="kicker">Go beyond the list</p><h2>${esc(asideTitle)}</h2><div class="experience-topic-grid">${related}</div></aside></section>`;
+  const block=`<section class="section experience-body" data-experience-body="${slug}" aria-label="${esc(heading)}"><div class="experience-reading">${body}</div><aside class="experience-sidebar"><p class="kicker">Explore related care</p><h2>${esc(asideTitle)}</h2><div class="experience-topic-grid">${related}</div></aside></section>`;
   return html.replace(sourceSection,block).replace(/<section class="section action-band">[\s\S]*?<\/section>/g,'');
 }
 function replaceLists(html,slug,ctx) {

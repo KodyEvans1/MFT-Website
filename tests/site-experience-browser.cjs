@@ -10,7 +10,10 @@ const log=[],cases=[];
 function run(...args){const output=execFileSync('agent-browser',args,{encoding:'utf8',timeout:65000,maxBuffer:2e6});log.push({args,output});fs.writeFileSync(path.join(out,'commands.json'),JSON.stringify(log));return output;}
 function check(code){return run('eval',`(()=>{${code};return 'PASS';})()`);}
 function open(slug){run('open','http://127.0.0.1:4193/'+(slug?slug+'/':''));run('wait','--load','domcontentloaded');run('snapshot','-i');}
-function click(selector,tail){run('click',selector);run('wait','--url','**'+tail);run('snapshot','-i');}
+function click(selector,tail){
+ run('eval',`(()=>{const e=document.querySelector(${JSON.stringify(selector)});if(!e)throw Error('Missing click target');e.scrollIntoView({behavior:'instant',block:'center'});const r=e.getBoundingClientRect();const h=document.elementFromPoint(r.left+r.width/2,r.top+r.height/2);return JSON.stringify({before:location.href,href:e.href||e.closest('a')?.href,hit:h?.outerHTML.slice(0,500),rect:{x:r.x,y:r.y,width:r.width,height:r.height}});})()`);
+ run('click',selector);run('get','url');run('screenshot',path.join(out,'last-navigation.png'));run('wait','--url','**'+tail);run('snapshot','-i');
+}
 const server=http.createServer((req,res)=>{let route;try{route=decodeURIComponent(new URL(req.url,'http://127.0.0.1').pathname);}catch{res.writeHead(400);res.end();return;}let f=path.resolve(dist,'.'+route);if(f!==dist&&!f.startsWith(dist+path.sep)){res.writeHead(403);res.end();return;}if(fs.existsSync(f)&&fs.statSync(f).isDirectory())f=path.join(f,'index.html');if(!fs.existsSync(f)){res.writeHead(404);res.end();return;}res.setHeader('Content-Type',f.endsWith('.html')?'text/html':f.endsWith('.css')?'text/css':f.endsWith('.js')?'text/javascript':f.endsWith('.svg')?'image/svg+xml':'application/octet-stream');res.setHeader('Referrer-Policy','no-referrer');fs.createReadStream(f).pipe(res);});
 if(process.argv.includes('--worker')){
  try{

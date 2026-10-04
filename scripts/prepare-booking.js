@@ -19,7 +19,8 @@ for (const file of walk(dist).filter(f=>f.endsWith('.html'))) {
   const relative = path.relative(dist,file).split(path.sep).join('/');
   if (relative === '404.html') continue;
   const route = '/' + relative.replace(/index\.html$/,'');
-  const r = decorateHtml(fs.readFileSync(file,'utf8'),route);
+  const cleanHero = require('../src/hero-media').apply(fs.readFileSync(file,'utf8'),route.replace(/^\/+|\/+$/g,''));
+  const r = decorateHtml(cleanHero,route);
   fs.writeFileSync(file,r.html);
   report.pages.push({route,buttons:r.buttons,widget:r.widget});
 }

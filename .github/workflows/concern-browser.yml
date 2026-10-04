@@ -1,0 +1,30 @@
+name: Concern design and hero review
+on:
+  push:
+    branches: ['review/**']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: npm run check
+      - run: npm install -g agent-browser@0.38.2
+      - run: agent-browser install --with-deps
+      - run: node tests/concern-browser.cjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: concern-browser-review
+          path: |
+            tmp/concern-browser/
+            dist/reports/concern-guides.json
+            dist/reports/hero-media.json
+            dist/reports/validation.json
+          retention-days: 7

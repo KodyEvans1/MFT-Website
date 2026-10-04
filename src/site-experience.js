@@ -165,20 +165,21 @@ function applyExperience(html,route,ctx){
   let out=html.replace(/<nav\b[^>]*class="[^"]*\bbreadcrumbs\b[^"]*"[^>]*>[\s\S]*?<\/nav>/g,'');
   const reference=require('./reference-pages');
   const composeReference=reference.enabled()&&reference.has(slug);
+  const composeDirectory=reference.enabled()&&slug==='therapy-approaches';
   if(composeReference){
     if(!/<main\b[^>]*>[\s\S]*?<\/main>/.test(out))throw Error('Missing reference page shell');
     out=out.replace(/<main\b[^>]*>[\s\S]*?<\/main>/,reference.render(slug));
+    out=reference.applyMetadata(out,slug);
   }
-  if(!/marriage-reset-assessment/.test(slug)&&!composeReference){
+  if(composeDirectory)out=out.replace(/<main\b[^>]*>[\s\S]*?<\/main>/,require('./modality-directory').render(reference));
+  if(!/marriage-reset-assessment/.test(slug)&&!composeReference&&!composeDirectory){
     out=detailBody(out,slug,ctx);
     out=replaceLists(out,slug,ctx);
     out=out.replace(/(>)(Verify insurance)(<\/a>)/gi,'$1Verify benefits$3');
     out=out.replace(/Use secure practice workflows/g,'Schedule your appointment').replace(/use the secure appointment pathway/g,'request an appointment in SimplePractice').replace(/use secure practice workflows/g,'request an appointment in SimplePractice');
-    // Keep useful article endings; discard the old repeated, staff-oriented closing block.
     out=out.replace(/<section class="section final-cta reveal">(?:(?!<\/section>)[\s\S])*?Start through the secure client-care system\.(?:(?!<\/section>)[\s\S])*?<\/section>/g,'');
     out=contextualLinks(out,slug,ctx);
   }
-  // Data hooks are added without changing the official brand artwork or footer content.
   if(!out.includes('data-mft-experience'))out=out.replace(/<body\b/,'<body data-mft-experience="plaud-sitewide"');
   if(!out.includes('/assets/site-experience.js'))out=out.replace('</body>','<script src="/assets/site-experience.js" defer></script></body>');
   if(/\bdata-spwidget-/.test(out))out=booking.decorateHtml(out,route).html;

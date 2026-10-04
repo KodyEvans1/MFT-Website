@@ -1,0 +1,5 @@
+
+/* Uniform portrait frames, natural photo proportions: never stretch the source. */
+.mft-portrait-frame{width:100%;aspect-ratio:4/5;overflow:hidden;border-radius:8px;background:var(--mist)}
+.mft-clinician-top .mft-portrait-frame img{display:block;width:100%;height:100%;max-width:100%;max-height:100%;aspect-ratio:auto;object-fit:contain;object-position:center;transform:none;border-radius:0}
+.mft-availability-note{max-width:70ch;padding:1.75rem;border:1px solid var(--gold);border-radius:18px;background:var(--paper);line-height:1.8}

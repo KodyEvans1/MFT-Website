@@ -21,6 +21,13 @@ function validateEditorial(dist) {
       const html = fs.readFileSync(path.join(dist, a.slug, 'index.html'), 'utf8');
       const main = html.match(/<main\b[^>]*>[\s\S]*?<\/main>/)?.[0] || '';
       const check = (ok, message) => { if (!ok) errors.push(a.slug + ': ' + message); };
+      const reference = require('./reference-pages');
+      const replacement = reference.get(a.slug);
+      if(reference.enabled() && replacement?.contentOrigin === 'authored-modality-guide') {
+        check(report.articles.find(r => r.slug === a.slug)?.revisionHash === digest(a, content, evidence), 'Original essay revision changed');
+        errors.push(...require('./modality-check').validateModalityHtml(html,replacement));
+        continue;
+      }
       check(main.includes('data-editorial-article="' + a.slug + '"'), 'Authored renderer missing');
       check(html.includes('<title>' + esc(a.title) + '</title>'), 'Wrong authored title');
       check(html.includes('name="description" content="' + esc(a.summary) + '"'), 'Wrong authored description');

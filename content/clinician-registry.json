@@ -4,7 +4,7 @@
   "clinicians": [
     {
       "slug": "kody-evans-bio",
-      "name": "Kody Evans, LMFT",
+      "name": "Kody Evans",
       "credential": "Licensed Marriage & Family Therapist; Founder & Clinical Director",
       "populations": [
         "adults",
@@ -28,7 +28,8 @@
         "discernment"
       ],
       "modalities": [],
-      "status": "current"
+      "status": "current",
+      "license": "LMFT"
     },
     {
       "slug": "dr-nolan",
@@ -57,7 +58,8 @@
         "person-centered-therapy",
         "sex-therapy"
       ],
-      "status": "current"
+      "status": "current",
+      "license": "Ph.D.; LMHC (WA); LCPC (MT)"
     },
     {
       "slug": "emily-johnsrud-bio",
@@ -81,7 +83,8 @@
         "family-stress"
       ],
       "modalities": [],
-      "status": "current"
+      "status": "current",
+      "license": "LMFTA"
     },
     {
       "slug": "gary-ashley",
@@ -116,7 +119,8 @@
         "motivational-interviewing",
         "gottman-method-couples-therapy"
       ],
-      "status": "current"
+      "status": "current",
+      "license": "LMHCA"
     },
     {
       "slug": "new-page-47",
@@ -139,7 +143,8 @@
         "chronic-pain"
       ],
       "modalities": [],
-      "status": "current"
+      "status": "current",
+      "license": "LSWAIC"
     }
   ],
   "staff": [

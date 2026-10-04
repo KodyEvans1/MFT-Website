@@ -1,5 +1,6 @@
 const fs=require('fs');
 const path=require('path');
+const presentation=require('./ui/clinician-presentation');
 const {robotsFor, planRoutes, sitemapUrls, writePublication}=require('./seo-safety');
 const ROOT=path.resolve(__dirname,'..');
 const DIST=path.join(ROOT,'dist');
@@ -107,7 +108,7 @@ function clinicianMatches(type,e){
 function clinicianBlock(type,e){
   const matches=clinicianMatches(type,e);
   if(!matches.length) return '<div class="clinician-match-note"><p>No clinician match is being asserted on this draft page until the team registry supports it.</p><a href="/team/">Review the full team →</a></div>';
-  return '<div class="clinician-match-grid">'+matches.map(({cl,reasons})=>`<a href="/${cl.slug}/"><b>${esc(cl.name)}</b><span>${esc(cl.credential)}</span><small>Matched from current profile data: ${esc(reasons.join(', '))}</small></a>`).join('')+'</div>';
+  return '<div class="clinician-match-grid">'+matches.map(({cl,reasons})=>`<a href="/${cl.slug}/">${presentation.identity(cl.slug,'b')}<small>Matched from current profile data: ${esc(reasons.join(', '))}</small></a>`).join('')+'</div>';
 }
 
 function bodySection(type,e,all){

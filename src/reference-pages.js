@@ -2,6 +2,7 @@
 // Native page-family composition, separate from legacy post-generation rewrites.
 const fs=require('node:fs'),path=require('node:path');
 const ui=require('./ui/home-components');
+const presentation=require('./ui/clinician-presentation');
 const serviceUi=require('./ui/service-components');
 const marriageReset=require('./marriage-reset');
 const {indexingEnabled}=require('./seo-safety');
@@ -37,7 +38,7 @@ function clinicianSection(s,p){
  const cards=matches.map(person=>{
   const source=evidence.find(e=>e.slug===person.slug);if(!source||!booking.clinicians.some(c=>c.slug===person.slug))throw Error('Missing profile source or booking identity');
   const why=p.clinicianRule.population&&p.contentOrigin==='authored-service-guide'?`This practice profile describes working with ${p.clinicianRule.population}. ${p.slug==='new-page-1'?'Confirm the current premarital offering; this connection does not assert a premarital certification.':'Confirm current services, fit, and any age-range requirements.'}`:p.clinicianRule.approach?`This published profile names ${(p.name||"Cognitive behavioral therapy").toLowerCase()} among its approaches.`:p.clinicianRule.concernAny?`This practice profile lists ${person.concerns.filter(tag=>p.clinicianRule.concernAny.includes(tag)).map(tag=>tag.replace(/-/g,' ')).join(', ')} among its focus areas. Explore the biography and confirm current fit.`:p.clinicianRule.concern?'Anxiety is listed among this clinician\'s focus areas for adult care.':'This clinician describes working with adults. Explore the profile for their focus and style.';
-  return `<article class="mft-clinician-card" data-ui="card" data-clinician="${ui.esc(person.slug)}"><div class="mft-clinician-top"><div class="mft-portrait-frame" data-portrait-frame><img src="${ui.esc(profileImage(person.slug))}" alt="${ui.esc(person.name)}" data-portrait-fit="contain" loading="lazy" referrerpolicy="no-referrer"></div><div><h3>${ui.esc(person.name)}</h3><p>${ui.esc(person.credential)}</p></div></div><div class="mft-clinician-body"><p>${ui.esc(why)}</p><a href="/${person.slug}/">Meet ${ui.esc(person.name.split(',')[0])} <span aria-hidden="true">&rarr;</span></a></div></article>`;
+  return `<article class="mft-clinician-card" data-ui="card" data-clinician="${ui.esc(person.slug)}"><div class="mft-clinician-top">${presentation.portrait(profileImage(person.slug),person.name)}${presentation.identity(person.slug)}</div><div class="mft-clinician-body"><p>${ui.esc(why)}</p><a href="/${person.slug}/">Meet ${ui.esc(person.name.split(',')[0])} <span aria-hidden="true">&rarr;</span></a></div></article>`;
  }).join('');
  return `<section class="section mft-clinicians mft-component" id="${s.id}" aria-labelledby="${s.id}-title" data-ui="clinicians">${ui.heading(s)}<div class="mft-clinician-grid">${cards}</div><p class="mft-section-note">Profile descriptions were recorded October 2, 2026. Confirm current services and availability. <a href="/team/">View the full team</a>.</p></section>`;
 }

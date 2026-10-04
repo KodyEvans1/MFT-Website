@@ -1,6 +1,7 @@
 'use strict';
 // Authored topic content is separate from templates and from publication approval.
 const crypto = require('node:crypto');
+const presentation = require('./ui/clinician-presentation');
 const { assertSlug, robotsFor, SITE } = require('./seo-safety');
 const { decorateHtml } = require('./booking-build');
 const FAMILY = { modality: { key: 'modalities', hub: 'therapy-approaches', label: 'Therapy approaches' }, relationship: { key: 'relationshipTopics', hub: 'marriagereset', label: 'Relationship library' }, decision: { key: 'decisionGuides', hub: 'resources', label: 'Starting care' } };
@@ -83,7 +84,7 @@ function clinicianCards(a, ctx) {
   return `<section class="ed-clinicians"><h2>${a.family === 'modality' ? 'Published approach connections' : 'Explore clinicians who describe couples work'}</h2><p>These links reflect practice profiles, not a guarantee of fit or availability. They do not certify a clinician in a method or mean that a clinician reviewed this article.</p><div class="ed-clinician-grid">${a.clinicianLinks.map(c => {
     const person = ctx.people.get(c.slug), evidence = ctx.profiles.get(c.slug);
     const label = c.basis === 'approach' ? 'This approach is named in the published profile.' : c.basis === 'multi-approach' ? 'The biography describes combining approaches; no separate integrative credential is asserted.' : 'The published profile describes working with couples; no topic-specific certification is asserted.';
-    return `<article><h3><a href="/${c.slug}/">${esc(person.name)}</a></h3><p>${esc(label)}</p><a class="ed-evidence" href="${esc(evidence.sourceUrl)}" rel="noopener noreferrer">Published profile source</a></article>`;
+    return `<article><a class="mft-clinician-profile-link" href="/${c.slug}/">${presentation.identity(c.slug)}</a><p>${esc(label)}</p><a class="ed-evidence" href="${esc(evidence.sourceUrl)}" rel="noopener noreferrer">Published profile source</a></article>`;
   }).join('')}</div></section>`;
 }
 function safetyNote(a, ids) {

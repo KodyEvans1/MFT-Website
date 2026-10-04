@@ -1,5 +1,6 @@
 const fs=require('fs');
 const path=require('path');
+const presentation=require('./ui/clinician-presentation');
 const ROOT=path.resolve(__dirname,'..');
 const DIST=path.join(ROOT,'dist');
 const CONSULT='https://marriagefamilytherapy.clientsecure.me/';
@@ -86,7 +87,7 @@ function standardSection(route){
   return '';
 }
 function teamCharlene(h){
-  return h.replace(/<div class="staff-note">[\s\S]*?<\/div>/,`<div class="staff-card"><img src="${CHARLENE}" alt="Charlene Brister, Clinical Manager at Marriage.Family.Therapy" loading="lazy"><div><p class="kicker">Clinical operations</p><h3>Charlene Brister</h3><p><b>Clinical Manager</b></p><p>Supports client experience, clinical operations, care coordination, and practice growth so clients and clinicians have a clear path through the practice.</p></div></div>`);
+  return h.replace(/<div class="staff-note">[\s\S]*?<\/div>/,`<div class="staff-card">${presentation.portrait(CHARLENE,'Charlene Brister, Clinical Manager','staff')}<div><p class="kicker">Clinical operations</p><h3>Charlene Brister</h3><p><b>Clinical Manager</b></p><p>Supports client experience, clinical operations, care coordination, and practice growth so clients and clinicians have a clear path through the practice.</p></div></div>`);
 }
 function replaceInnerSections(h,route,type){
   if(type==='home'||type==='ad'||type==='assessment') return h;

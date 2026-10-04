@@ -28,7 +28,7 @@ function validateConcernHtml(html,p){
  const actual=[...main.matchAll(/data-clinician="([^"]+)"/g)].map(m=>m[1]).sort();
  check(JSON.stringify(actual)===JSON.stringify(expected),'Incorrect clinician connections');
  if(!expected.length)check(main.includes('mft-availability-note'),'Missing service availability qualification');
- for(const m of main.matchAll(/<img\b[^>]*data-portrait-fit[^>]*>/g))check(/data-portrait-fit="contain"/.test(m[0]),'Distorted portrait fit');
+ for(const m of main.matchAll(/<img\b[^>]*data-portrait-fit[^>]*>/g))check(/data-portrait-fit="cover"/.test(m[0]),'Distorted portrait fit');
  try{const schema=JSON.parse(html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)?.[1]||'{}');const page=(schema['@graph']||[]).find(n=>n['@type']==='WebPage');check(JSON.stringify(page?.citation)===JSON.stringify(refs.sourceUrls(p)),'Schema citation mismatch');}catch{check(false,'Invalid page schema');}
  check(/name="robots" content="[^"]*noindex/.test(html),'Review must remain noindex');
  return errors;

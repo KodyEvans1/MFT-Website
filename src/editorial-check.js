@@ -47,7 +47,7 @@ function validateEditorial(dist) {
       if (a.relationshipSafety) check(main.includes('ed-safety'), 'Missing relationship safety boundary');
       for (const src of ['/assets/mft-booking-core.js', '/assets/mft-booking-config.js', '/assets/mft-booking.js', config.loaderUrl]) check(html.split('src="' + src + '"').length === 2, 'Missing/duplicated booking loader ' + src);
       check(/data-spwidget-scope-global/.test(main), 'Missing general booking binding');
-      const cards = main.match(/<div class="ed-clinician-grid">[\s\S]*?<\/div>/)?.[0] || '';
+      const cards = main.match(/<section class="ed-clinicians">[\s\S]*?<\/section>/)?.[0] || '';
       for (const c of ctx.people.values()) check(cards.includes('href="/' + c.slug + '/"') === a.clinicianLinks.some(link => link.slug === c.slug), 'Wrong clinician connection ' + c.slug);
       const schema = JSON.parse(html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)?.[1] || '{}');
       check(schema['@graph']?.length === 2, 'Unexpected editorial schema');

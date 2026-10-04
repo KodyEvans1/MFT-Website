@@ -5,6 +5,7 @@ const path = require('node:path');
 const config = require('../content/site-experience.json');
 const evidence = require('../content/clinician-evidence.json');
 const booking = require('./booking-build');
+const presentation = require('./ui/clinician-presentation');
 const esc = v => String(v ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const plain = h => String(h || '').replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi,'').replace(/<[^>]+>/g,' ').replace(/&amp;/g,'&').replace(/&#39;|&apos;/g,"'").replace(/&quot;/g,'"').replace(/&nbsp;/g,' ').replace(/\s+/g,' ').trim();
 const field = (h,re) => plain(h.match(re)?.[1] || '');
@@ -98,7 +99,7 @@ function cards(targets,ctx,current,limit=8) {
 }
 function peopleCards(slugs,ctx) {
   const people=require('../content/clinician-registry.json').clinicians;
-  return slugs.map(slug=>people.find(p=>p.slug===slug)).filter(Boolean).map(p=>`<a class="experience-topic" data-linked-topic="${p.slug}" href="/${p.slug}/"><span class="experience-topic-title">${esc(p.name)}</span><span class="experience-topic-description">${esc(p.credential)}</span><span class="experience-topic-action">Read the profile <span aria-hidden="true">&rarr;</span></span></a>`).join('');
+  return slugs.map(slug=>people.find(p=>p.slug===slug)).filter(Boolean).map(p=>`<a class="experience-topic" data-linked-topic="${p.slug}" href="/${p.slug}/">${presentation.identity(p.slug,'b')}<span class="experience-topic-action">Read the profile <span aria-hidden="true">&rarr;</span></span></a>`).join('');
 }
 function detailBody(html,slug,ctx) {
   if(html.includes('data-experience-body='))return html;

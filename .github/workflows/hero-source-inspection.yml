@@ -1,0 +1,52 @@
+name: Inspect original clinician hero sources
+on:
+  push:
+    branches: [work/hero-restore-20261004]
+permissions:
+  contents: read
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Collect existing source photos and original public hero markup
+        run: |
+          mkdir -p tmp/hero-source-inspection/images
+          node --input-type=module <<'JS'
+          import fs from 'node:fs';
+          const root='tmp/hero-source-inspection';
+          const src=fs.readFileSync('src/build.js','utf8');
+          const names=['kody','taylor','emily','gary','sonia'];
+          const report=[];
+          for(const name of names){
+            const original=src.match(new RegExp(name+": '([^']+)'"))[1];
+            for(const size of ['1000w','2500w']){
+              const url=new URL(original);url.searchParams.set('format',size);
+              const res=await fetch(url,{signal:AbortSignal.timeout(30000)});
+              if(!res.ok)throw Error(name+' '+res.status);
+              const bytes=Buffer.from(await res.arrayBuffer());
+              const file=name+'-'+size+(res.headers.get('content-type').includes('png')?'.png':'.jpg');
+              fs.writeFileSync(root+'/images/'+file,bytes);
+              report.push({name,url:url.href,file,bytes:bytes.length,contentType:res.headers.get('content-type')});
+            }
+          }
+          for(const [file,url] of [['original-bio.html','https://www.mft.care/kody-evans-bio'],['preview-bio.html','https://deploy-preview-1--marriagefamilytherapy.netlify.app/kody-evans-bio/']]){
+            const res=await fetch(url,{signal:AbortSignal.timeout(30000)});
+            if(res.ok)fs.writeFileSync(root+'/'+file,await res.text());
+          }
+          fs.writeFileSync(root+'/sources.json',JSON.stringify(report,null,2));
+          JS
+      - name: Prepare pinned browser verification CLI
+        run: |
+          npm install --prefix /tmp/hero-browser-tool agent-browser@0.38.2
+          cp -R /tmp/hero-browser-tool/node_modules/agent-browser tmp/hero-source-inspection/agent-browser
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: hero-source-inspection
+          path: tmp/hero-source-inspection/
+          retention-days: 7

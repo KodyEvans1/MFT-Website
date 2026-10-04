@@ -28,18 +28,19 @@ jobs:
           import fs from 'node:fs';
           const base='https://deploy-preview-1--marriagefamilytherapy.netlify.app';
           const expected=fs.readFileSync('src/assets/portraits.css','utf8').trim();
+          const stylesheet=JSON.parse(fs.readFileSync('dist/reports/stylesheet-version.json','utf8')).href;
           let ready=false;
           for(let n=0;n<18;n++){
             try{
-              const [html,css]=await Promise.all(['/kody-evans-bio/','/assets/styles.css'].map(async p=>{
+              const [html,css]=await Promise.all(['/kody-evans-bio/',stylesheet].map(async p=>{
                 const r=await fetch(base+p,{signal:AbortSignal.timeout(15000),headers:{'Cache-Control':'no-cache'}});
                 if(!r.ok)throw Error('HTTP '+r.status);return r.text();
               }));
-              if(html.includes('data-hero-treatment="green-blend"')&&css.includes(expected)){ready=true;break;}
+              if(html.includes('data-hero-treatment="green-blend"')&&html.includes(stylesheet)&&css.includes(expected)){ready=true;break;}
             }catch(e){console.log('Waiting for matching preview:',String(e));}
             await new Promise(r=>setTimeout(r,10000));
           }
-          if(!ready)throw Error('Preview does not match current hero CSS; do not count as hosted verification');
+          if(!ready)throw Error('Preview does not match current hero CSS and versioned address; do not count as hosted verification');
           JS
           HERO_BASE_URL=https://deploy-preview-1--marriagefamilytherapy.netlify.app node tests/clinician-hero-browser.cjs
       - uses: actions/upload-artifact@v4

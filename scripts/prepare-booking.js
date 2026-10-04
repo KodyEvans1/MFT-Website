@@ -37,3 +37,6 @@ fs.writeFileSync(path.join(dist,'reports/booking-integration.json'), JSON.string
 console.log(JSON.stringify({bookingCorePages:report.pages.length, measurementEnabled, clinicianMappings:config.clinicians.length}));
 
 fs.appendFileSync(path.join(dist,'assets/styles.css'),fs.readFileSync(path.join(root,'src/assets/marriage-reset.css'),'utf8'));
+
+// Assign a fresh CSS address before protected core pages are fingerprinted.
+require('./prepare-stylesheet-version').apply(root);

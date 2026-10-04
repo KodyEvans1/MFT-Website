@@ -8,6 +8,11 @@ const articles=require('../content/editorial-library.json').articles,log=[];
 const refs=require('../src/reference-pages');
 function run(...args){const output=execFileSync('agent-browser',args,{encoding:'utf8',timeout:65000,maxBuffer:2e6});log.push({args,output});fs.writeFileSync(path.join(out,'commands.json'),JSON.stringify(log,null,2));return output;}
 function check(code){return run('eval',`(()=>{${code};return 'PASS';})()`);}
+// Center the real target before a native click. Retain URL and focus assertions.
+function click(selector,tail){
+ run('eval',`(async()=>{const e=document.querySelector(${JSON.stringify(selector)});if(!e)throw Error('Missing target');e.scrollIntoView({behavior:'instant',block:'center'});await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));const b=e.getBoundingClientRect(),hit=document.elementFromPoint(b.left+b.width/2,b.top+b.height/2);if(!hit||!(hit===e||e.contains(hit)))throw Error('Obscured target');return 'VISIBLE';})()`);
+ run('click',selector);if(tail)run('wait','--url','**'+tail);run('snapshot','-i');
+}
 const server=http.createServer((req,res)=>{
   let route;try{route=decodeURIComponent(new URL(req.url,'http://127.0.0.1').pathname);}catch{res.writeHead(400);res.end();return;}
   let file=path.resolve(dist,'.'+route);if(!file.startsWith(dist+path.sep)&&file!==dist){res.writeHead(403);res.end();return;}
@@ -30,26 +35,26 @@ if(process.argv.includes('--worker')){
         else check(`if(document.querySelector('main').dataset.editorialArticle!==${JSON.stringify(a.slug)})throw Error('Authored content missing');if(document.querySelectorAll('.ed-section').length!==${a.sections.length})throw Error('Sections missing');if(document.querySelectorAll('.ed-clinician-grid article').length!==${a.clinicianLinks.length})throw Error('Wrong clinician links')`);
         check("if(document.querySelectorAll('h1').length!==1)throw Error('H1 count');if(document.documentElement.scrollWidth>innerWidth+2)throw Error('Horizontal overflow');if(!document.querySelector('meta[name=robots]').content.includes('noindex'))throw Error('Indexable draft');if(window.MFT_BOOKING_CONFIG?.measurementEnabled)throw Error('Measurement enabled');if(document.querySelector('main form,main input,main textarea'))throw Error('Data collection on article')");
         if(native){
-          run('click','.mft-jump a[href="#understanding"]');run('wait','--url','**#understanding');run('snapshot','-i');
-          run('click','#understanding .mft-citations a:first-child');run('snapshot','-i');
+          click('.mft-jump a[href="#understanding"]','#understanding');
+          click('#understanding .mft-citations a:first-child','#source-*');
           check("if(!location.hash.startsWith('#source-')||document.activeElement.id!==location.hash.slice(1))throw Error('Native source focus failed')");
         }else{
           run('screenshot',path.join(out,a.slug+'-'+width+'-before.png'));
-          run('click','.ed-toc li:first-child a');run('snapshot','-i');
+          click('.ed-toc li:first-child a','#'+a.sections[0].id);
           run('get','url');run('eval',"JSON.stringify({url:location.href,base:document.baseURI,href:document.querySelector('.ed-toc a').href,scroll:scrollY,target:document.querySelector('.ed-section').getBoundingClientRect().top})");
           run('screenshot',path.join(out,a.slug+'-'+width+'-after.png'));
           run('wait','--url','**'+'#'+a.sections[0].id);
           check(`if(location.hash!==${JSON.stringify('#'+a.sections[0].id)})throw Error('TOC navigation failed')`);
-          run('click','.ed-section:first-of-type .ed-reference:first-child');run('snapshot','-i');
+          click('.ed-section:first-of-type .ed-reference:first-child','#ed-source-*');
           check("if(!location.hash.startsWith('#ed-source-'))throw Error('Source navigation failed')");
         }
         run('eval','window.scrollTo(0,0)');run('screenshot',path.join(out,a.slug+'-'+width+'.png'),'--full');cases.push({slug:a.slug,width,native,pass:true});
       }
     }
     run('open','http://127.0.0.1:4183/therapy-approaches/');run('snapshot','-i');
-    run('click','#modality-guides a[href="/person-centered-therapy/"]');run('snapshot','-i');check("if(location.pathname!=='/person-centered-therapy/')throw Error('Hub link failed')");
-    run('click','#related-reading a[href="/strengths-based-therapy/"]');run('snapshot','-i');check("if(location.pathname!=='/strengths-based-therapy/')throw Error('Related link failed')");
-    run('click','#clinicians a[href="/gary-ashley/"]');run('snapshot','-i');
+    click('#modality-guides a[href="/person-centered-therapy/"]','/person-centered-therapy/');check("if(location.pathname!=='/person-centered-therapy/')throw Error('Hub link failed')");
+    click('#related-reading a[href="/strengths-based-therapy/"]','/strengths-based-therapy/');check("if(location.pathname!=='/strengths-based-therapy/')throw Error('Related link failed')");
+    click('#clinicians a[href="/gary-ashley/"]','/gary-ashley/');
     check("if(location.pathname!=='/gary-ashley/')throw Error('Profile link failed');if(!document.querySelector('main a[data-spwidget-clinician-id=\"2154633\"]'))throw Error('Profile booking missing');if(!document.querySelector('.ed-discovery a[href=\"/person-centered-therapy/\"]'))throw Error('Reciprocal reading link missing')");
     for(const slug of ['resources','marriagereset']){run('open','http://127.0.0.1:4183/'+slug+'/');run('snapshot','-i');check("if(document.querySelectorAll('.ed-discovery > ul > li > a').length!==3)throw Error('Missing reading family')");}
     const browserErrors=run('errors');fs.writeFileSync(path.join(out,'browser-errors.txt'),browserErrors);

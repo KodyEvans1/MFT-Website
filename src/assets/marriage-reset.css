@@ -4,6 +4,9 @@
 [data-marriage-reset] .home-hero-copy .hero-summary{max-width:53ch}
 .mr-member-access{display:flex;align-items:center;justify-content:flex-end;flex-wrap:wrap;gap:.8rem 1.5rem;padding:1rem clamp(1.25rem,7vw,7rem);background:var(--paper);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
 .mr-member-access p{font-size:.92rem;margin:0}.mr-member-access .button{font-size:.88rem;min-height:44px;border-radius:8px}
+/* This utility strip is outside .mft-component: do not inherit the white ghost style. */
+[data-marriage-reset] .mr-member-access .button.ghost{color:var(--mr-deep);border-color:var(--mr-deep);background:transparent}
+[data-marriage-reset] .mr-member-access .button.ghost:hover{background:var(--mr-deep);color:var(--mr-cream)}
 .mr-cycle{background:var(--mr-deep);color:var(--mr-cream)}
 .mr-cycle .section-heading{max-width:900px}.mr-cycle .section-heading>p:not(.kicker){color:#dfebe5;max-width:76ch;line-height:1.8}
 .mr-cycle .kicker,.mr-feature .kicker{color:var(--mr-gold)}

@@ -77,3 +77,16 @@ test('measurement page codes ignore query and normalize trailing slash',()=>{
   assert.equal(core.pageCode('/team/?email=anything'),core.pageCode('/team'));
   assert.equal(core.normalizePath('/'),'/');
 });
+
+test('Ops is never a client therapy booking destination',()=>{
+  assert.equal(core.isAppointment('https://ops.mft.care/go/book?placement=homepage','Request appointment'),false);
+  assert.equal(core.isAppointment('https://ops.mft.care/go/consult','Free consultation'),false);
+  assert.equal(config.measurementEndpoint,undefined);
+});
+test('10-minute consultation requires acknowledgment before SimplePractice',()=>{
+  const js=require('node:fs').readFileSync(require('node:path').join(__dirname,'../src/assets/mft-booking.js'),'utf8');
+  assert.match(js,/data-mft-ten-minute-consultation/);
+  assert.match(js,/one time for new clients only/);
+  assert.match(js,/not a therapy session/);
+  assert.match(js,/Continue to scheduling/);
+});

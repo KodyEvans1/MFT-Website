@@ -10,6 +10,7 @@ const GEO=JSON.parse(fs.readFileSync(path.join(ROOT,'content','wa-geography.json
 const CLIN=JSON.parse(fs.readFileSync(path.join(ROOT,'content','clinician-registry.json'),'utf8'));
 const editorial=require('./editorial-library');
 const experience=require('./site-experience');
+const launchContent=require('./launch-content');
 const CORE=JSON.parse(fs.readFileSync(path.join(ROOT,'content','seo-core-routes.json'),'utf8'));
 const {buildGraph}=require('./geography-graph');
 const geoRender=require('./geography-render');
@@ -22,7 +23,7 @@ const coreSitemapUrls=sitemapUrls(fs.readFileSync(path.join(DIST,'sitemap.xml'),
 const coreSlugs=fs.readdirSync(DIST,{withFileTypes:true}).filter(e=>e.isDirectory()&&fs.existsSync(path.join(DIST,e.name,'index.html'))).map(e=>e.name);
 const sourceTemplates=new Map(coreSlugs.map(slug=>[slug,fs.readFileSync(path.join(DIST,slug,'index.html'),'utf8')]));
 const EXPERIENCE=experience.createContext(DIST,REG,process.env.CONTEXT==='production'||indexingEnabled());
-const finish=(html,slug)=>experience.applyExperience(html,slug?'/'+slug+'/':'/',EXPERIENCE);
+const finish=(html,slug)=>launchContent.apply(experience.applyExperience(html,slug?'/'+slug+'/':'/',EXPERIENCE),slug);
 const LIBRARY=editorial.createLibrary({content:require('../content/editorial-library.json'),registry:REG,clinicians:CLIN,evidence:require('../content/clinician-evidence.json'),coreSlugs,production:process.env.CONTEXT==='production'||indexingEnabled()});
 const familyMeta={
   modalities:{type:'modality',source:'cognitive-behavioral-therapy-cbt',hub:'/therapy-approaches/',label:'Therapy approach'},
@@ -217,6 +218,7 @@ fs.copyFileSync(path.join(ROOT,'src/assets/site-experience.js'),path.join(DIST,'
 const stylePath=path.join(DIST,'assets','styles.css');
 fs.appendFileSync(stylePath,fs.readFileSync(path.join(ROOT,'src/assets/editorial.css'),'utf8'));
 fs.appendFileSync(stylePath,fs.readFileSync(path.join(ROOT,'src/assets/geography.css'),'utf8'));
+fs.appendFileSync(stylePath,launchContent.css);
 fs.appendFileSync(stylePath,`\n.clinician-match-section{background:#fff}.clinician-match-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;margin-top:2rem}.clinician-match-grid a,.clinician-match-note{display:grid;gap:.3rem;padding:1.25rem;background:#edf4f1;border-radius:16px;text-decoration:none}.clinician-match-grid b{font:500 1.25rem var(--serif)}.clinician-match-grid span{color:#456866}.clinician-match-grid small{color:#617b79}.clinician-match-note{max-width:720px}.seo-entity+.purpose-panel{border-top:1px solid var(--line)}@media(max-width:700px){.clinician-match-grid{grid-template-columns:1fr}}\n`);
 
 function addApprovedHubLinks(generated){

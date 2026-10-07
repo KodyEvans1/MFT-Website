@@ -7,8 +7,8 @@ const DIST = path.join(ROOT, 'dist');
 const SITE = 'https://www.mft.care';
 const INDEXING = /^true$/i.test(process.env.SITE_INDEXING_ENABLED || '');
 const VERIFY = (process.env.GOOGLE_SITE_VERIFICATION || '').trim();
-const APPOINTMENT = 'https://ops.mft.care/';
-const INSURANCE = 'https://ops.mft.care/';
+const APPOINTMENT = 'https://marriagefamilytherapy.clientsecure.me/';
+const INSURANCE = 'mailto:support@mft.care?subject=Benefits%20verification';
 const PORTAL = 'https://marriagefamilytherapy.clientsecure.me/';
 const DIRECTIONS = 'https://maps.app.goo.gl/SyW9QMpUgunaTFp19';
 

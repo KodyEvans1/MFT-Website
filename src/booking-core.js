@@ -29,8 +29,7 @@
     try {
       const u = new URL(href);
       return (u.origin === 'https://marriagefamilytherapy.clientsecure.me' && u.pathname === '/') ||
-        (u.origin === 'https://clientsecure.me' && u.pathname === '/widget-redirect') ||
-        (u.origin === 'https://ops.mft.care' && /^\/go\/(book|consult)\/?$/.test(u.pathname));
+        (u.origin === 'https://clientsecure.me' && u.pathname === '/widget-redirect');
     } catch { return false; }
   }
   const paidMedium = m => ['cpc','ppc','paid_search','paidsearch'].includes(m);

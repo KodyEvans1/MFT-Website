@@ -1,0 +1,28 @@
+/* Shared homepage cards in the requested solid-green treatment. No hero stock reuse. */
+.mft-component.mft-dark-section{background:var(--deep);color:var(--paper)}
+.mft-component.mft-dark-section .section-heading>p:not(.kicker){color:#dfebe5;max-width:66ch}
+.mft-component.mft-dark-section .kicker{color:var(--gold)}
+.mft-component.mft-dark-section .question-grid{align-items:stretch;gap:1.4rem}
+.mft-component:is(.mft-dark-section,.mft-solid-cards) .question-grid>:is(a,article,details){background:var(--ink);color:var(--paper);border:1px solid #71877c;border-top:3px solid var(--gold);box-shadow:none}
+.mft-component:is(.mft-dark-section,.mft-solid-cards) .question-grid>a{display:flex;flex-direction:column;padding:clamp(1.6rem,3vw,2.4rem);transition:box-shadow .18s ease,border-color .18s ease}
+.mft-component:is(.mft-dark-section,.mft-solid-cards) .question-grid>a>b{font:500 clamp(1.55rem,2.4vw,2rem)/1.15 var(--serif);margin:0 0 1rem;color:var(--paper);text-decoration-thickness:1px;text-underline-offset:.2em}
+.mft-component:is(.mft-dark-section,.mft-solid-cards) .question-grid>a>span:not(.mft-card-action){color:#dfebe5;font-size:1rem;line-height:1.8;max-width:62ch}
+.mft-component:is(.mft-dark-section,.mft-solid-cards) .question-grid .mft-card-action{color:#edce8f!important;padding-top:1.35rem;margin-top:auto!important;min-height:44px}
+.mft-component:is(.mft-dark-section,.mft-solid-cards) .mft-card-action i{color:#edce8f}
+.mft-component:is(.mft-dark-section,.mft-solid-cards) .question-grid>a:hover{border-color:var(--gold);box-shadow:0 0 0 2px var(--gold)}
+.mft-component.mft-solid-cards{background:var(--paper)}
+.mft-component.mft-solid-cards .mft-disclosure summary>span:not(.mft-card-number):not(.mft-card-action),.mft-component.mft-solid-cards .mft-disclosure-body{color:#dfebe5}
+.mft-component.mft-solid-cards .mft-disclosure summary .mft-card-number,.mft-component.mft-solid-cards .mft-disclosure-body .kicker{color:#edce8f}
+.mft-component.mft-solid-cards .mft-disclosure-body{border-color:#71877c}
+.mft-component.mft-solid-cards .mft-disclosure-body a{color:#edce8f}
+.mft-concern-library .section-heading{max-width:850px}
+.mft-concern-library .question-grid{margin-top:3rem}
+/* Imagery-free legacy headings now use the same spacious, cream/green hierarchy. */
+body .hero.mft-typographic-hero{display:block;min-height:0;background:var(--paper);border-bottom:1px solid var(--line);padding:0}
+body .hero.mft-typographic-hero .hero-copy{width:100%;max-width:1200px;color:var(--ink);padding:clamp(3.5rem,7vw,6rem) clamp(1.25rem,7vw,7rem);margin:0}
+body .hero.mft-typographic-hero .hero-copy h1{max-width:900px;font-size:clamp(2.5rem,5vw,4.8rem)}
+body .hero.mft-typographic-hero .hero-summary{color:#355650;max-width:68ch}
+body .hero.mft-typographic-hero .button.primary{background:var(--ink);color:#fff;border-color:var(--ink)}
+body .hero.mft-typographic-hero .button.ghost{background:transparent;color:var(--ink);border-color:var(--ink)}
+@media(max-width:600px){.mft-concern-library .question-grid{gap:1rem;margin-top:2rem}.mft-component:is(.mft-dark-section,.mft-solid-cards) .question-grid>a{padding:1.5rem}}
+@media(prefers-reduced-motion:reduce){.mft-component:is(.mft-dark-section,.mft-solid-cards) .question-grid>a{transition:none}}

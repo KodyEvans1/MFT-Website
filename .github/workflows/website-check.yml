@@ -1,0 +1,52 @@
+name: Website quality checks
+
+on:
+  pull_request:
+  push:
+    branches: [main, "review/**"]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Build, validate, and run safety regressions
+        run: npm run check
+      - name: Rehearse publication policy in isolated builds
+        run: npm run verify:publication
+      - name: Verify Census refresh without changing the registry
+        run: node scripts/import-wa-geographies.js --dry-run
+      - name: Upload generated SEO reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: seo-expansion-report
+          path: dist/reports/
+          if-no-files-found: ignore
+      - name: Upload review site for visual verification
+        uses: actions/upload-artifact@v4
+        with:
+          name: review-site
+          path: dist/
+          retention-days: 7
+      - name: Upload reproducible source snapshot
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: review-source
+          path: |
+            src/
+            scripts/
+            content/
+            tests/
+            reports/
+            package.json
+            netlify.toml
+          retention-days: 7

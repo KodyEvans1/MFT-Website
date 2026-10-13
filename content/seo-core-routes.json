@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "policy": "These routes belong to the core builder. Expansion must preserve their HTML, not replace it. Other output collisions fail the build.",
+  "slugs": [
+    "online-therapy-spokane-wa",
+    "online-therapy-yakima-wa",
+    "online-therapy-wenatchee-wa",
+    "online-therapy-vancouver-wa",
+    "online-therapy-bothell-wa",
+    "online-therapy-kirkland-wa",
+    "online-therapy-redmond-wa",
+    "online-therapy-bremerton-wa",
+    "online-therapy-fircrest-wa",
+    "online-therapy-king-county-wa",
+    "online-therapy-snohomish-county-wa"
+  ]
+}

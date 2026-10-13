@@ -1,0 +1,26 @@
+name: Geography browser review
+on:
+  workflow_dispatch:
+  push:
+    branches: [review/site-experience-seo-20260930]
+permissions:
+  contents: read
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm run build
+      - run: npm install -g agent-browser@0.38.2
+      - run: agent-browser install --with-deps
+      - run: node tests/geography-browser.cjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: geography-browser-review
+          path: tmp/browser-review/
+          retention-days: 7

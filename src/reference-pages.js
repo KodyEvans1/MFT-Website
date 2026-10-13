@@ -1,0 +1,65 @@
+'use strict';
+// Native page-family composition, separate from legacy post-generation rewrites.
+const fs=require('node:fs'),path=require('node:path');
+const ui=require('./ui/home-components');
+const presentation=require('./ui/clinician-presentation');
+const serviceUi=require('./ui/service-components');
+const marriageReset=require('./marriage-reset');
+const {indexingEnabled}=require('./seo-safety');
+const people=require('../content/clinician-registry.json').clinicians;
+const evidence=require('../content/clinician-evidence.json').clinicians;
+const booking=require('../content/simplepractice-booking.json');
+const crypto=require('node:crypto');
+const release=require('../content/launch-release.json');
+const richRoutes=new Set(release.richRoutes);
+const sourceCatalog={...require('../content/reference-pages/sources.json'),...require('../content/modality-guides/sources.json'),...require('../content/concern-guides/sources.json'),...require('../content/service-guides/sources.json')};
+const modalityPages=require('./modality-guides').pages;
+const pages=[require('../content/reference-pages/individual.json'),require('../content/reference-pages/anxiety.json'),require('../content/reference-pages/cbt.json')];
+const concernPages=require('./concern-guides').pages;
+const servicePages=require('./service-guides').pages;
+const allPages=[...pages,...modalityPages,...concernPages,...servicePages];
+const bySlug=new Map(allPages.map(p=>[p.slug,p]));
+const revision=p=>crypto.createHash('sha256').update(JSON.stringify({page:p,sources:p.sources.map(id=>sourceCatalog[id]),evidence})).digest('hex');
+const sourceUrls=p=>p.sources.map(id=>sourceCatalog[id].url);
+function enabled(slug,env=process.env){
+  if(typeof slug!=='string'){env=slug||process.env;return String(env.CONTEXT||'').toLowerCase()!=='production'&&!indexingEnabled(env);}
+  const production=String(env.CONTEXT||'').toLowerCase()==='production'||indexingEnabled(env);
+  return production?richRoutes.has(slug):true;
+}
+function selectedClinicians(rule){return people.filter(p=>p.status==='current'&&(!rule.population||p.populations.includes(rule.population))&&(!rule.concern||p.concerns.includes(rule.concern))&&(!rule.concernAny||rule.concernAny.some(tag=>p.concerns.includes(tag)))&&(!rule.approach||evidence.find(e=>e.slug===p.slug)?.approaches.includes(rule.approach)));}
+function profileImage(slug){const html=fs.readFileSync(path.resolve(__dirname,'../dist',slug,'index.html'),'utf8');const url=html.match(/<img class="hero-media" src="([^"]+)"/)?.[1];if(!url)throw Error('Original clinician portrait missing: '+slug);return url.replace(/&amp;/g,'&');}
+function validate(p){
+ if(!p||p.version!==1||p.publication!=='review-only'||p.status!=='draft'||p.visualApproval||p.clinicalApproval||p.ownerApproval)throw Error('Reference work has not been approved for publication');
+ if(!['service','concern','approach'].includes(p.family))throw Error('Unknown reference family');
+ const ids=new Set();
+ for(const s of p.sections){if(!/^[a-z][a-z0-9-]*$/.test(s.id)||ids.has(s.id))throw Error('Invalid or duplicate reference section');if(!['story','cards','disclosures','comparison','example','steps','faq','clinicians','pricing','inquiry'].includes(s.type))throw Error('Unknown reference component: '+s.type);ids.add(s.id);}
+ for(const j of p.jump)if(!ids.has(j.id))throw Error('Missing reference jump target');
+ for(const id of p.sources){const s=sourceCatalog[id];if(!s||!s.title||!s.publisher||!s.checkedOn)throw Error('Missing checked reference source');ui.href(s.url);}
+ function visit(v){if(!v||typeof v!=='object')return;if(Array.isArray(v))return v.forEach(visit);for(const id of v.sourceIds||[])if(!p.sources.includes(id))throw Error('Undeclared reference citation: '+id);Object.values(v).forEach(visit);}
+ visit(p);if(p.sections.some(s=>s.type==='clinicians')&&!selectedClinicians(p.clinicianRule).length&&!['authored-modality-guide','authored-concern-guide'].includes(p.contentOrigin))throw Error('No supported clinician relationship');return p;
+}
+function clinicianSection(s,p){
+ const matches=selectedClinicians(p.clinicianRule);
+ if(!matches.length)return `<section class="section mft-clinicians mft-component" id="${s.id}" data-ui="clinicians">${ui.heading(s)}<div class="mft-availability-note"><h3>Ask about current services</h3><p>The recorded profile information does not establish a clinician-specific connection for this topic. This educational guide does not establish that the service is offered.</p><p><a href="/team/">Meet the team</a> or <a href="mailto:support@mft.care?subject=Therapy%20approach%20question">ask about availability or an appropriate referral</a>.</p></div></section>`;
+ const cards=matches.map(person=>{
+  const source=evidence.find(e=>e.slug===person.slug);if(!source||!booking.clinicians.some(c=>c.slug===person.slug))throw Error('Missing profile source or booking identity');
+  const why=p.clinicianRule.population&&p.contentOrigin==='authored-service-guide'?`This practice profile describes working with ${p.clinicianRule.population}. ${p.slug==='new-page-1'?'Confirm the current premarital offering; this connection does not assert a premarital certification.':'Confirm current services, fit, and any age-range requirements.'}`:p.clinicianRule.approach?`This published profile names ${(p.name||"Cognitive behavioral therapy").toLowerCase()} among its approaches.`:p.clinicianRule.concernAny?`This practice profile lists ${person.concerns.filter(tag=>p.clinicianRule.concernAny.includes(tag)).map(tag=>tag.replace(/-/g,' ')).join(', ')} among its focus areas. Explore the biography and confirm current fit.`:p.clinicianRule.concern?'Anxiety is listed among this clinician\'s focus areas for adult care.':'This clinician describes working with adults. Explore the profile for their focus and style.';
+  return `<article class="mft-clinician-card" data-ui="card" data-clinician="${ui.esc(person.slug)}"><div class="mft-clinician-top">${presentation.portrait(profileImage(person.slug),person.name)}${presentation.identity(person.slug)}</div><div class="mft-clinician-body"><p>${ui.esc(why)}</p><a href="/${person.slug}/">Meet ${ui.esc(person.name.split(',')[0])} <span aria-hidden="true">&rarr;</span></a></div></article>`;
+ }).join('');
+ return `<section class="section mft-clinicians mft-component" id="${s.id}" aria-labelledby="${s.id}-title" data-ui="clinicians">${ui.heading(s)}<div class="mft-clinician-grid">${cards}</div><p class="mft-section-note">Profile descriptions were recorded October 2, 2026. Confirm current services and availability. <a href="/team/">View the full team</a>.</p></section>`;
+}
+function render(slug){if(slug==='services')return require('./service-directory').render();if(marriageReset.has(slug))return marriageReset.render(slug,true);if(slug==='what-we-help-with')return require('./concern-directory').render({has:s=>bySlug.has(s)});const p=validate(bySlug.get(slug));const body=p.sections.map(s=>s.type==='clinicians'?clinicianSection(s,p):(ui[s.type]||serviceUi[s.type])(s)).join('');return `<main id="main" data-reference-page="${ui.esc(slug)}" data-page-family="${p.family}"${p.contentOrigin?` ${p.contentOrigin==='authored-service-guide'?'data-service-revision':p.contentOrigin==='authored-concern-guide'?'data-concern-revision':'data-modality-revision'}="${revision(p)}"`:""} data-design-system="homepage-shared-v1">${ui.hero(p.hero)}${ui.jump(p.jump)}${body}${ui.sources(Object.fromEntries(p.sources.map(id=>[id,sourceCatalog[id]])))}<aside class="mft-care-note mft-component" aria-label="Urgent support">This educational guide does not assess you or replace individualized care. For a mental health crisis in the U.S., call or text <a href="tel:988">988</a>. For a life-threatening emergency, call 911. Ordinary scheduling and support email are not crisis services.</aside>${p.slug==='new-page-2'?'<script src="/assets/retreat-inquiry.js" defer></script>':''}</main>`;}
+function applyMetadata(html,slug){
+ if(marriageReset.has(slug))return marriageReset.metadata(html,slug);
+ const p=bySlug.get(slug);if(!p||!['authored-modality-guide','authored-concern-guide','authored-service-guide'].includes(p.contentOrigin))return html;
+ const title=p.name+' | M.F.T.',description=p.hero.summary.length>175?p.hero.summary.slice(0,172)+'...':p.hero.summary;
+ let out=html.replace(/<title>.*?<\/title>/,`<title>${ui.esc(title)}</title>`)
+ .replace(/<meta name="description" content="[^"]*">/,`<meta name="description" content="${ui.esc(description)}">`)
+ .replace(/<meta property="og:title" content="[^"]*">/,`<meta property="og:title" content="${ui.esc(title)}">`)
+ .replace(/<meta property="og:description" content="[^"]*">/,`<meta property="og:description" content="${ui.esc(description)}">`);
+ out=out.replace(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/,(_,raw)=>{
+  const schema=JSON.parse(raw);for(const item of schema['@graph']||[])if(item['@type']==='WebPage'){item.name=p.name;item.description=description;item.citation=sourceUrls(p);}
+  return '<script type="application/ld+json">'+JSON.stringify(schema).replace(/</g,'\\u003c')+'</script>';
+ });return out;
+}
+module.exports={enabled,has:slug=>slug==='services'||marriageReset.has(slug)||bySlug.has(slug)||slug==='what-we-help-with',get:slug=>bySlug.get(slug),render,validate,pages,allPages,modalityPages,concernPages,servicePages,selectedClinicians,revision,sourceUrls,applyMetadata};

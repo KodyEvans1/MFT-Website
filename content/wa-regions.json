@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "basis": "M.F.T. editorial navigation groups, not official government regions or service boundaries.",
+  "regions": [
+    {"kind":"region","key":"northwest","name":"Northwest Washington","slug":"online-therapy-northwest-region-wa","status":"draft","countyGeoids":["53029","53055","53057","53073"],"tags":["washington","region","telehealth"]},
+    {"kind":"region","key":"puget-sound","name":"Central Puget Sound","slug":"online-therapy-puget-sound-region-wa","status":"draft","countyGeoids":["53033","53053","53061"],"tags":["washington","region","telehealth"]},
+    {"kind":"region","key":"peninsula-kitsap","name":"Peninsula and Kitsap","slug":"online-therapy-peninsula-kitsap-region-wa","status":"draft","countyGeoids":["53009","53031","53035","53045"],"tags":["washington","region","telehealth"]},
+    {"kind":"region","key":"south-sound-coast","name":"South Sound and Coast","slug":"online-therapy-south-sound-coast-region-wa","status":"draft","countyGeoids":["53027","53041","53049","53067"],"tags":["washington","region","telehealth"]},
+    {"kind":"region","key":"southwest-gorge","name":"Southwest and Columbia Gorge","slug":"online-therapy-southwest-gorge-region-wa","status":"draft","countyGeoids":["53011","53015","53039","53059","53069"],"tags":["washington","region","telehealth"]},
+    {"kind":"region","key":"central","name":"Central Washington","slug":"online-therapy-central-region-wa","status":"draft","countyGeoids":["53007","53017","53025","53037","53047","53077"],"tags":["washington","region","telehealth"]},
+    {"kind":"region","key":"northeast","name":"Northeast Washington","slug":"online-therapy-northeast-region-wa","status":"draft","countyGeoids":["53019","53043","53051","53063","53065"],"tags":["washington","region","telehealth"]},
+    {"kind":"region","key":"southeast","name":"Southeast Washington","slug":"online-therapy-southeast-region-wa","status":"draft","countyGeoids":["53001","53003","53005","53013","53021","53023","53071","53075"],"tags":["washington","region","telehealth"]}
+  ]
+}

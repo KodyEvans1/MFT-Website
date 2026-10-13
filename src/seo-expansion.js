@@ -1,0 +1,44 @@
+'use strict';
+// Keep expansion templates unchanged. Apply the bounded Plaud first-page edits
+// only after generation, before the normal validators run.
+require('./seo-expansion-engine');
+const fs = require('node:fs');
+const path = require('node:path');
+const {applyPlaudEdits} = require('./start-page');
+const {decorateHtml} = require('./booking-build');
+const root = path.resolve(__dirname,'..');
+const dist = path.join(root,'dist');
+const bookingFile = path.join(dist,'reports/booking-integration.json');
+const booking = JSON.parse(fs.readFileSync(bookingFile,'utf8'));
+const updates = [];
+for (const route of ['/how-to-start-therapy/', '/', '/marriagereset/']) {
+  const file = path.join(dist, route.replace(/^\/+|\/+$/g,''), 'index.html');
+  const before = fs.readFileSync(file,'utf8');
+  const result = decorateHtml(applyPlaudEdits(before,route),route);
+  fs.writeFileSync(file,result.html);
+  const row = booking.pages.find(p => p.route === route);
+  if (!row) throw new Error('Missing booking inventory for edited page: ' + route);
+  row.buttons = result.buttons; row.widget = result.widget;
+  updates.push({route, changed: before !== result.html, appointmentButtons: result.buttons});
+}
+fs.writeFileSync(bookingFile,JSON.stringify(booking,null,2)+'\n');
+fs.appendFileSync(path.join(dist,'assets/styles.css'),fs.readFileSync(path.join(root,'src/assets/start-page.css'),'utf8'));
+fs.appendFileSync(path.join(dist,'assets/styles.css'),fs.readFileSync(path.join(root,'src/assets/site-experience.css'),'utf8'));
+fs.appendFileSync(path.join(dist,'assets/styles.css'),fs.readFileSync(path.join(root,'src/assets/portraits.css'),'utf8'));
+fs.appendFileSync(path.join(dist,'assets/styles.css'),fs.readFileSync(path.join(root,'src/assets/concerns.css'),'utf8'));
+const heroReport=require('./hero-media').inspect(dist);
+if(heroReport.errors.length)throw Error(heroReport.errors.join('\n'));
+fs.writeFileSync(path.join(dist,'reports/hero-media.json'),JSON.stringify(heroReport,null,2)+'\n');
+const concernErrors=require('./concern-check').validateConcernSite(dist);
+if(concernErrors.length)throw Error(concernErrors.join('\n'));
+fs.writeFileSync(path.join(dist,'reports/plaud-page-edits.json'),JSON.stringify({version:1,recordingDate:'2026-10-02',updates,productionRelease:false},null,2)+'\n');
+const modalityErrors=require('./modality-check').validateModalitySite(dist);
+if(modalityErrors.length)throw Error(modalityErrors.join('\n'));
+fs.writeFileSync(path.join(dist,'reports/review-build.json'),JSON.stringify({commit:process.env.COMMIT_REF||process.env.GITHUB_SHA||null,context:process.env.CONTEXT||'local',modalityGuides:require('./reference-pages').modalityPages.length,measurementEnabled:booking.measurementEnabled},null,2)+'\n');
+console.log(JSON.stringify({plaudPageEdits:updates}));
+
+fs.copyFileSync(path.join(root,'src/assets/retreat-inquiry.js'),path.join(dist,'assets/retreat-inquiry.js'));
+fs.appendFileSync(path.join(dist,'assets/styles.css'),fs.readFileSync(path.join(root,'src/assets/services.css'),'utf8'));
+const serviceReport=require('./service-check').inspect(dist);
+fs.writeFileSync(path.join(dist,'reports/service-guides.json'),JSON.stringify(serviceReport,null,2)+'\n');
+if(serviceReport.errors.length)throw Error(serviceReport.errors.join('\n'));

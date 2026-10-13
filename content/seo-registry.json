@@ -1,0 +1,836 @@
+{
+  "version": 1,
+  "strategy": {
+    "targetIndexablePages": 650,
+    "publicationRule": "Only entities with status=approved generate indexable pages. draft entities remain in the registry and expansion report until clinical/editorial review.",
+    "similarityThreshold": 0.78
+  },
+  "pageFamilies": [
+    {
+      "id": "modality",
+      "hub": "/therapy-approaches/",
+      "template": "approach"
+    },
+    {
+      "id": "concern",
+      "hub": "/what-we-help-with/",
+      "template": "concern"
+    },
+    {
+      "id": "relationship",
+      "hub": "/marriagereset/",
+      "template": "relationship"
+    },
+    {
+      "id": "population",
+      "hub": "/services/",
+      "template": "population"
+    },
+    {
+      "id": "decision",
+      "hub": "/resources/",
+      "template": "resource"
+    },
+    {
+      "id": "location",
+      "hub": "/online-therapy-locations/",
+      "template": "location"
+    }
+  ],
+  "modalities": [
+    {
+      "slug": "acceptance-commitment-therapy-act",
+      "name": "Acceptance and Commitment Therapy (ACT)",
+      "status": "draft",
+      "tags": [
+        "adults",
+        "anxiety",
+        "stress",
+        "values"
+      ]
+    },
+    {
+      "slug": "person-centered-therapy",
+      "name": "Person-Centered Therapy",
+      "status": "draft",
+      "tags": [
+        "adults",
+        "teens",
+        "identity",
+        "growth"
+      ]
+    },
+    {
+      "slug": "strengths-based-therapy",
+      "name": "Strengths-Based Therapy",
+      "status": "draft",
+      "tags": [
+        "adults",
+        "teens",
+        "families",
+        "growth"
+      ]
+    },
+    {
+      "slug": "experiential-therapy",
+      "name": "Experiential Therapy",
+      "status": "draft",
+      "tags": [
+        "couples",
+        "families",
+        "emotion"
+      ]
+    },
+    {
+      "slug": "structural-family-therapy",
+      "name": "Structural Family Therapy",
+      "status": "draft",
+      "tags": [
+        "families",
+        "parenting",
+        "relationships"
+      ]
+    },
+    {
+      "slug": "bowen-family-systems-therapy",
+      "name": "Bowen Family Systems Therapy",
+      "status": "draft",
+      "tags": [
+        "families",
+        "relationships",
+        "intergenerational"
+      ]
+    },
+    {
+      "slug": "psychodynamic-therapy",
+      "name": "Psychodynamic Therapy",
+      "status": "draft",
+      "tags": [
+        "adults",
+        "patterns",
+        "relationships"
+      ]
+    },
+    {
+      "slug": "existential-therapy",
+      "name": "Existential Therapy",
+      "status": "draft",
+      "tags": [
+        "adults",
+        "meaning",
+        "transitions"
+      ]
+    },
+    {
+      "slug": "behavioral-activation",
+      "name": "Behavioral Activation",
+      "status": "draft",
+      "tags": [
+        "adults",
+        "depression",
+        "motivation"
+      ]
+    },
+    {
+      "slug": "exposure-based-therapy",
+      "name": "Exposure-Based Therapy",
+      "status": "draft",
+      "tags": [
+        "anxiety",
+        "fears",
+        "adults"
+      ]
+    },
+    {
+      "slug": "somatic-therapy-informed",
+      "name": "Somatic-Informed Therapy",
+      "status": "draft",
+      "tags": [
+        "trauma",
+        "stress",
+        "regulation"
+      ]
+    },
+    {
+      "slug": "play-therapy",
+      "name": "Play Therapy",
+      "status": "draft",
+      "tags": [
+        "children",
+        "development",
+        "family"
+      ]
+    },
+    {
+      "slug": "child-centered-play-therapy",
+      "name": "Child-Centered Play Therapy",
+      "status": "draft",
+      "tags": [
+        "children",
+        "development",
+        "family"
+      ]
+    },
+    {
+      "slug": "parent-coaching",
+      "name": "Parent Coaching",
+      "status": "draft",
+      "tags": [
+        "parents",
+        "children",
+        "family"
+      ]
+    },
+    {
+      "slug": "discernment-counseling",
+      "name": "Discernment Counseling",
+      "status": "draft",
+      "tags": [
+        "couples",
+        "divorce",
+        "decision"
+      ]
+    },
+    {
+      "slug": "sex-therapy",
+      "name": "Sex Therapy",
+      "status": "draft",
+      "tags": [
+        "couples",
+        "adults",
+        "intimacy"
+      ]
+    },
+    {
+      "slug": "grief-therapy",
+      "name": "Grief Therapy",
+      "status": "draft",
+      "tags": [
+        "grief",
+        "adults",
+        "families"
+      ]
+    },
+    {
+      "slug": "emotion-regulation-skills",
+      "name": "Emotion Regulation Skills",
+      "status": "draft",
+      "tags": [
+        "teens",
+        "adults",
+        "stress"
+      ]
+    },
+    {
+      "slug": "solution-focused-couples-therapy",
+      "name": "Solution-Focused Couples Therapy",
+      "status": "draft",
+      "tags": [
+        "couples",
+        "relationships"
+      ]
+    },
+    {
+      "slug": "integrative-therapy",
+      "name": "Integrative Therapy",
+      "status": "draft",
+      "tags": [
+        "adults",
+        "teens",
+        "couples"
+      ]
+    }
+  ],
+  "concerns": [
+    {
+      "slug": "panic-attacks-therapy",
+      "name": "Panic Attacks",
+      "status": "draft",
+      "tags": [
+        "anxiety",
+        "adults",
+        "teens"
+      ]
+    },
+    {
+      "slug": "social-anxiety-therapy",
+      "name": "Social Anxiety",
+      "status": "draft",
+      "tags": [
+        "anxiety",
+        "adults",
+        "teens"
+      ]
+    },
+    {
+      "slug": "burnout-therapy",
+      "name": "Burnout",
+      "status": "draft",
+      "tags": [
+        "stress",
+        "adults",
+        "work"
+      ]
+    },
+    {
+      "slug": "perfectionism-therapy",
+      "name": "Perfectionism",
+      "status": "draft",
+      "tags": [
+        "anxiety",
+        "self-esteem",
+        "adults"
+      ]
+    },
+    {
+      "slug": "caregiver-stress-therapy",
+      "name": "Caregiver Stress",
+      "status": "draft",
+      "tags": [
+        "stress",
+        "older-adults",
+        "family"
+      ]
+    },
+    {
+      "slug": "loneliness-therapy",
+      "name": "Loneliness and Disconnection",
+      "status": "draft",
+      "tags": [
+        "depression",
+        "relationships",
+        "adults"
+      ]
+    },
+    {
+      "slug": "anger-management-therapy",
+      "name": "Anger and Reactivity",
+      "status": "draft",
+      "tags": [
+        "emotion",
+        "relationships",
+        "adults"
+      ]
+    },
+    {
+      "slug": "work-stress-therapy",
+      "name": "Work Stress",
+      "status": "draft",
+      "tags": [
+        "stress",
+        "adults",
+        "work"
+      ]
+    },
+    {
+      "slug": "divorce-adjustment-therapy",
+      "name": "Divorce Adjustment",
+      "status": "draft",
+      "tags": [
+        "transitions",
+        "relationships",
+        "adults"
+      ]
+    },
+    {
+      "slug": "co-parenting-counseling",
+      "name": "Co-Parenting Stress",
+      "status": "draft",
+      "tags": [
+        "parenting",
+        "family",
+        "relationships"
+      ]
+    },
+    {
+      "slug": "blended-family-therapy",
+      "name": "Blended Family Stress",
+      "status": "draft",
+      "tags": [
+        "family",
+        "parenting",
+        "relationships"
+      ]
+    },
+    {
+      "slug": "betrayal-trauma-therapy",
+      "name": "Betrayal and Trust Injuries",
+      "status": "draft",
+      "tags": [
+        "trauma",
+        "relationships",
+        "couples"
+      ]
+    },
+    {
+      "slug": "emotional-distance-couples",
+      "name": "Emotional Distance in Relationships",
+      "status": "draft",
+      "tags": [
+        "couples",
+        "relationships"
+      ]
+    },
+    {
+      "slug": "communication-problems-couples",
+      "name": "Communication Problems in Relationships",
+      "status": "draft",
+      "tags": [
+        "couples",
+        "relationships"
+      ]
+    },
+    {
+      "slug": "school-stress-therapy",
+      "name": "School Stress",
+      "status": "draft",
+      "tags": [
+        "teens",
+        "children",
+        "stress"
+      ]
+    },
+    {
+      "slug": "friendship-stress-therapy",
+      "name": "Friendship and Social Stress",
+      "status": "draft",
+      "tags": [
+        "teens",
+        "children",
+        "relationships"
+      ]
+    },
+    {
+      "slug": "identity-exploration-therapy",
+      "name": "Identity Exploration",
+      "status": "draft",
+      "tags": [
+        "teens",
+        "adults",
+        "identity"
+      ]
+    },
+    {
+      "slug": "men-mental-health-therapy",
+      "name": "Men's Mental Health",
+      "status": "draft",
+      "tags": [
+        "men",
+        "adults",
+        "stress"
+      ]
+    },
+    {
+      "slug": "young-adult-therapy",
+      "name": "Young Adult Transitions",
+      "status": "draft",
+      "tags": [
+        "young-adults",
+        "transitions",
+        "identity"
+      ]
+    },
+    {
+      "slug": "chronic-pain-adjustment-therapy",
+      "name": "Chronic Pain Adjustment",
+      "status": "draft",
+      "tags": [
+        "adults",
+        "stress",
+        "health"
+      ]
+    }
+  ],
+  "relationshipTopics": [
+    {
+      "slug": "repeated-conflict",
+      "name": "Repeated Conflict",
+      "status": "draft",
+      "tags": [
+        "couples",
+        "relationships",
+        "marriage-reset"
+      ]
+    },
+    {
+      "slug": "emotional-distance",
+      "name": "Emotional Distance",
+      "status": "draft",
+      "tags": [
+        "couples",
+        "relationships",
+        "marriage-reset"
+      ]
+    },
+    {
+      "slug": "rebuilding-trust",
+      "name": "Rebuilding Trust",
+      "status": "draft",
+      "tags": [
+        "couples",
+        "relationships",
+        "marriage-reset"
+      ]
+    },
+    {
+      "slug": "infidelity-recovery",
+      "name": "Infidelity Recovery",
+      "status": "draft",
+      "tags": [
+        "couples",
+        "relationships",
+        "marriage-reset"
+      ]
+    },
+    {
+      "slug": "intimacy-and-connection",
+      "name": "Intimacy And Connection",
+      "status": "draft",
+      "tags": [
+        "couples",
+        "relationships",
+        "marriage-reset"
+      ]
+    },
+    {
+      "slug": "division-of-labor",
+      "name": "Division Of Labor",
+      "status": "draft",
+      "tags": [
+        "couples",
+        "relationships",
+        "marriage-reset"
+      ]
+    },
+    {
+      "slug": "resentment-in-relationships",
+      "name": "Resentment In Relationships",
+      "status": "draft",
+      "tags": [
+        "couples",
+        "relationships",
+        "marriage-reset"
+      ]
+    },
+    {
+      "slug": "parenting-differences",
+      "name": "Parenting Differences",
+      "status": "draft",
+      "tags": [
+        "couples",
+        "relationships",
+        "marriage-reset"
+      ]
+    },
+    {
+      "slug": "money-conflict",
+      "name": "Money Conflict",
+      "status": "draft",
+      "tags": [
+        "couples",
+        "relationships",
+        "marriage-reset"
+      ]
+    },
+    {
+      "slug": "in-law-conflict",
+      "name": "In Law Conflict",
+      "status": "draft",
+      "tags": [
+        "couples",
+        "relationships",
+        "marriage-reset"
+      ]
+    },
+    {
+      "slug": "attachment-patterns-in-couples",
+      "name": "Attachment Patterns In Couples",
+      "status": "draft",
+      "tags": [
+        "couples",
+        "relationships",
+        "marriage-reset"
+      ]
+    },
+    {
+      "slug": "discernment-and-stay-or-leave-decisions",
+      "name": "Discernment And Stay Or Leave Decisions",
+      "status": "draft",
+      "tags": [
+        "couples",
+        "relationships",
+        "marriage-reset"
+      ]
+    },
+    {
+      "slug": "premarital-communication",
+      "name": "Premarital Communication",
+      "status": "draft",
+      "tags": [
+        "couples",
+        "relationships",
+        "marriage-reset"
+      ]
+    },
+    {
+      "slug": "blended-family-relationships",
+      "name": "Blended Family Relationships",
+      "status": "draft",
+      "tags": [
+        "couples",
+        "relationships",
+        "marriage-reset"
+      ]
+    },
+    {
+      "slug": "co-parenting-after-separation",
+      "name": "Co Parenting After Separation",
+      "status": "draft",
+      "tags": [
+        "couples",
+        "relationships",
+        "marriage-reset"
+      ]
+    },
+    {
+      "slug": "communication-cycles",
+      "name": "Communication Cycles",
+      "status": "draft",
+      "tags": [
+        "couples",
+        "relationships",
+        "marriage-reset"
+      ]
+    },
+    {
+      "slug": "repair-after-conflict",
+      "name": "Repair After Conflict",
+      "status": "draft",
+      "tags": [
+        "couples",
+        "relationships",
+        "marriage-reset"
+      ]
+    },
+    {
+      "slug": "fairness-and-equality",
+      "name": "Fairness And Equality",
+      "status": "draft",
+      "tags": [
+        "couples",
+        "relationships",
+        "marriage-reset"
+      ]
+    },
+    {
+      "slug": "boundaries-in-relationships",
+      "name": "Boundaries In Relationships",
+      "status": "draft",
+      "tags": [
+        "couples",
+        "relationships",
+        "marriage-reset"
+      ]
+    },
+    {
+      "slug": "affection-and-belonging",
+      "name": "Affection And Belonging",
+      "status": "draft",
+      "tags": [
+        "couples",
+        "relationships",
+        "marriage-reset"
+      ]
+    }
+  ],
+  "populations": [
+    {
+      "slug": "therapy-for-men",
+      "name": "Therapy for Men",
+      "status": "draft",
+      "tags": [
+        "population"
+      ]
+    },
+    {
+      "slug": "therapy-for-young-adults",
+      "name": "Therapy for Young Adults",
+      "status": "draft",
+      "tags": [
+        "population"
+      ]
+    },
+    {
+      "slug": "therapy-for-college-students",
+      "name": "Therapy for College Students",
+      "status": "draft",
+      "tags": [
+        "population"
+      ]
+    },
+    {
+      "slug": "therapy-for-parents",
+      "name": "Therapy for Parents",
+      "status": "draft",
+      "tags": [
+        "population"
+      ]
+    },
+    {
+      "slug": "therapy-for-caregivers",
+      "name": "Therapy for Caregivers",
+      "status": "draft",
+      "tags": [
+        "population"
+      ]
+    },
+    {
+      "slug": "therapy-for-older-adults",
+      "name": "Therapy for Older Adults",
+      "status": "draft",
+      "tags": [
+        "population"
+      ]
+    },
+    {
+      "slug": "therapy-for-neurodivergent-adults",
+      "name": "Therapy for Neurodivergent Adults",
+      "status": "draft",
+      "tags": [
+        "population"
+      ]
+    },
+    {
+      "slug": "therapy-for-teens-with-anxiety",
+      "name": "Therapy for Teens With Anxiety",
+      "status": "draft",
+      "tags": [
+        "population"
+      ]
+    },
+    {
+      "slug": "therapy-for-children-experiencing-divorce",
+      "name": "Therapy for Children Experiencing Divorce",
+      "status": "draft",
+      "tags": [
+        "population"
+      ]
+    },
+    {
+      "slug": "therapy-for-couples-becoming-parents",
+      "name": "Therapy for Couples Becoming Parents",
+      "status": "draft",
+      "tags": [
+        "population"
+      ]
+    },
+    {
+      "slug": "therapy-for-professionals",
+      "name": "Therapy for Professionals",
+      "status": "draft",
+      "tags": [
+        "population"
+      ]
+    },
+    {
+      "slug": "therapy-for-blended-families",
+      "name": "Therapy for Blended Families",
+      "status": "draft",
+      "tags": [
+        "population"
+      ]
+    }
+  ],
+  "decisionGuides": [
+    {
+      "slug": "therapist-vs-counselor",
+      "name": "Therapist vs. Counselor",
+      "status": "draft",
+      "tags": [
+        "decision",
+        "resource"
+      ]
+    },
+    {
+      "slug": "lmft-vs-lmhc",
+      "name": "LMFT vs. LMHC",
+      "status": "draft",
+      "tags": [
+        "decision",
+        "resource"
+      ]
+    },
+    {
+      "slug": "what-happens-first-therapy-session",
+      "name": "What Happens in a First Therapy Session?",
+      "status": "draft",
+      "tags": [
+        "decision",
+        "resource"
+      ]
+    },
+    {
+      "slug": "does-insurance-cover-therapy",
+      "name": "Does Insurance Cover Therapy?",
+      "status": "draft",
+      "tags": [
+        "decision",
+        "resource"
+      ]
+    },
+    {
+      "slug": "how-long-does-therapy-take",
+      "name": "How Long Does Therapy Take?",
+      "status": "draft",
+      "tags": [
+        "decision",
+        "resource"
+      ]
+    },
+    {
+      "slug": "how-often-should-i-go-to-therapy",
+      "name": "How Often Should I Go to Therapy?",
+      "status": "draft",
+      "tags": [
+        "decision",
+        "resource"
+      ]
+    },
+    {
+      "slug": "what-happens-in-couples-therapy",
+      "name": "What Happens in Couples Therapy?",
+      "status": "draft",
+      "tags": [
+        "decision",
+        "resource"
+      ]
+    },
+    {
+      "slug": "what-is-90791",
+      "name": "What Is a 90791 Diagnostic Evaluation?",
+      "status": "draft",
+      "tags": [
+        "decision",
+        "resource"
+      ]
+    },
+    {
+      "slug": "online-vs-in-person-couples-therapy",
+      "name": "Online vs. In-Person Couples Therapy",
+      "status": "draft",
+      "tags": [
+        "decision",
+        "resource"
+      ]
+    },
+    {
+      "slug": "how-to-know-if-couples-therapy-is-right",
+      "name": "How to Know if Couples Therapy Is Right for You",
+      "status": "draft",
+      "tags": [
+        "decision",
+        "resource"
+      ]
+    }
+  ]
+}

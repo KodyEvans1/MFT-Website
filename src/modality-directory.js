@@ -1,0 +1,9 @@
+'use strict';
+const ui = require('./ui/home-components');
+function render(refs) {
+  const pages = [refs.get('cognitive-behavioral-therapy-cbt'), ...refs.modalityPages];
+  const hero = ui.hero({kicker:'Therapy approaches',title:'Understand the approach. Choose the person.',summary:'Explore the ideas, examples, and practical work behind therapy approaches. A useful guide should help you understand more than a name.',actions:[{label:'Explore the approach library',href:'#modality-guides'},{label:'See the CBT worked example',href:'/cognitive-behavioral-therapy-cbt/#cbt-example'}],panel:{kicker:'Start with your question',title:'You do not have to choose a method first.',paragraphs:['Learn at your own pace, compare how approaches differ, and then consider the clinician and the care you need.'],items:[{title:'Browse the guides',text:'Read explanations, examples, limitations, and answers.',href:'#modality-guides'},{title:'Meet the team',text:'See the approaches clinicians describe.',href:'/team/'},{title:'Choose a therapist',text:'Consider the person, process, and practical fit.',href:'/how-to-choose-a-therapist/'}]}});
+  const cards = ui.cards({id:'modality-guides',kicker:'The approach library',title:'Go deeper into the work.',intro:'Each guide explains an approach, walks through a fictional example, and explores sessions, limitations, and questions. Educational inclusion does not mean every approach is currently offered by M.F.T.',columns:3,items:pages.map(p => ({title:p.name||"Cognitive Behavioral Therapy",text:p.hero.summary,href:'/'+p.slug+'/',action:'Explore this approach'}))});
+  return '<main id="main" data-modality-hub="review-only" data-design-system="homepage-shared-v1"><!--modality-directory:start-->' + hero + cards + '<!--modality-directory:end--></main>';
+}
+module.exports = {render};

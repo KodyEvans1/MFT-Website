@@ -165,8 +165,8 @@ function applyExperience(html,route,ctx){
   const slug=route.replace(/^\/+|\/+$/g,'');
   let out=html.replace(/<nav\b[^>]*class="[^"]*\bbreadcrumbs\b[^"]*"[^>]*>[\s\S]*?<\/nav>/g,'');
   const reference=require('./reference-pages');
-  const composeReference=reference.enabled()&&reference.has(slug);
-  const composeDirectory=reference.enabled()&&slug==='therapy-approaches';
+  const composeReference=reference.enabled(slug)&&reference.has(slug);
+  const composeDirectory=reference.enabled('therapy-approaches')&&slug==='therapy-approaches';
   if(composeReference){
     if(!/<main\b[^>]*>[\s\S]*?<\/main>/.test(out))throw Error('Missing reference page shell');
     out=out.replace(/<main\b[^>]*>[\s\S]*?<\/main>/,reference.render(slug));

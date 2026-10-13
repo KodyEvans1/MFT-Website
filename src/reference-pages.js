@@ -10,6 +10,8 @@ const people=require('../content/clinician-registry.json').clinicians;
 const evidence=require('../content/clinician-evidence.json').clinicians;
 const booking=require('../content/simplepractice-booking.json');
 const crypto=require('node:crypto');
+const release=require('../content/launch-release.json');
+const richRoutes=new Set(release.richRoutes);
 const sourceCatalog={...require('../content/reference-pages/sources.json'),...require('../content/modality-guides/sources.json'),...require('../content/concern-guides/sources.json'),...require('../content/service-guides/sources.json')};
 const modalityPages=require('./modality-guides').pages;
 const pages=[require('../content/reference-pages/individual.json'),require('../content/reference-pages/anxiety.json'),require('../content/reference-pages/cbt.json')];
@@ -19,7 +21,11 @@ const allPages=[...pages,...modalityPages,...concernPages,...servicePages];
 const bySlug=new Map(allPages.map(p=>[p.slug,p]));
 const revision=p=>crypto.createHash('sha256').update(JSON.stringify({page:p,sources:p.sources.map(id=>sourceCatalog[id]),evidence})).digest('hex');
 const sourceUrls=p=>p.sources.map(id=>sourceCatalog[id].url);
-function enabled(env=process.env){return env.CONTEXT!=='production'&&!indexingEnabled(env);}
+function enabled(slug,env=process.env){
+  if(typeof slug!=='string'){env=slug||process.env;return String(env.CONTEXT||'').toLowerCase()!=='production'&&!indexingEnabled(env);}
+  const production=String(env.CONTEXT||'').toLowerCase()==='production'||indexingEnabled(env);
+  return production?richRoutes.has(slug):true;
+}
 function selectedClinicians(rule){return people.filter(p=>p.status==='current'&&(!rule.population||p.populations.includes(rule.population))&&(!rule.concern||p.concerns.includes(rule.concern))&&(!rule.concernAny||rule.concernAny.some(tag=>p.concerns.includes(tag)))&&(!rule.approach||evidence.find(e=>e.slug===p.slug)?.approaches.includes(rule.approach)));}
 function profileImage(slug){const html=fs.readFileSync(path.resolve(__dirname,'../dist',slug,'index.html'),'utf8');const url=html.match(/<img class="hero-media" src="([^"]+)"/)?.[1];if(!url)throw Error('Original clinician portrait missing: '+slug);return url.replace(/&amp;/g,'&');}
 function validate(p){

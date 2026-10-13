@@ -4,6 +4,8 @@ const ui=require('./ui/home-components');
 const copy=require('../content/marriage-reset.json');
 const {indexingEnabled}=require('./seo-safety');
 const crypto=require('node:crypto');
+const release=require('../content/launch-release.json');
+const richRoutes=new Set(release.richRoutes);
 const BOOK=require('../content/simplepractice-booking.json').generalUrl;
 const LOGIN='https://ops.mft.care/';
 const routes=['marriagereset','marriage-reset-assessment','marriage-reset-assessment/thanks'];
@@ -13,7 +15,11 @@ const at=(key,i)=>p(key,i)[0];
 const join=(key,...indices)=>p(key,...indices).join(' ');
 const source=(html,keys)=>html.replace('<section ',`<section data-mr-source="${keys.join(' ')}" `);
 const steps=copy.blocks.cycle.paragraphs.slice(2,7).map((s,i)=>{const [name,description]=s.split('\n');return {name,description,id:['understand','prioritize','practice','measure','adapt'][i]};});
-function enabled(env=process.env){return env.CONTEXT!=='production'&&!indexingEnabled(env);}
+function enabled(slug,env=process.env){
+  if(typeof slug!=='string'){env=slug||process.env;return String(env.CONTEXT||'').toLowerCase()!=='production'&&!indexingEnabled(env);}
+  const production=String(env.CONTEXT||'').toLowerCase()==='production'||indexingEnabled(env);
+  return production?richRoutes.has(slug):true;
+}
 function validate(){
  if(copy.version!==1||copy.publication!=='review-only'||!/^[a-f0-9]{64}$/.test(copy.source.sha256))throw Error('Invalid Marriage.Reset source');
  for(const k of ['overview','assessment','adaptive','understand','decision','sequence','continuity','practice','participation','reassessment','evolve','privacy','safety','uncertainty','limitations','human','history','entry','cycle','faq','closing']){
@@ -40,7 +46,7 @@ function questions(){const a=copy.blocks.faq.paragraphs;return source(ui.faq({id
 function enrollment(){return `<section class="section mft-component mr-entry" id="begin" aria-labelledby="begin-title" data-ui="entry" data-mr-source="entry closing">${ui.heading({id:'begin',kicker:'Begin with Marriage.Family.Therapy',title:at('closing',0),intro:at('closing',1)})}<div class="mr-entry-grid"><div>${ui.paragraphs([at('entry',0),at('entry',2),at('closing',3)])}<div class="actions">${ui.button({label:'Schedule a consultation',href:BOOK})}${ui.button({label:'Explore couples care',href:'/marriage-and-couples-therapy-counseling/'},'ghost')}</div><p class="mr-entry-note">${ui.esc(at('entry',1))}</p></div><aside class="home-hero-panel" data-ui="panel"><p class="kicker">Already invited?</p><h2>Return to your Marriage.Reset space.</h2>${ui.paragraphs([at('entry',3)])}<a class="button light" data-ui="button" data-mr-client-access href="${LOGIN}" rel="noopener noreferrer">Marriage.Reset client sign-in <span aria-hidden="true">&rarr;</span></a></aside></div></section>`;}
 function assessmentMain(){return hero(true)+ui.jump([{id:'understand',label:'Your assessment'},{id:'why-it-changes',label:'Progressive questions'},{id:'privacy-and-safety',label:'Privacy and safety'},{id:'treatment-direction',label:'What follows'},{id:'questions',label:'Questions'},{id:'begin',label:'Getting started'}])+assessmentSection()+adaptive()+privacy()+directions()+source(ui.cards({id:'the-next-step',kicker:'The beginning of care, not the end',title:'Your assessment connects to a continuing journey.',columns:3,items:[{title:'Prioritize',text:at('cycle',3).split('\n')[1],href:'/marriagereset/#prioritize',action:'Explore treatment priorities'},{title:'Practice',text:at('cycle',4).split('\n')[1],href:'/marriagereset/#practice',action:'Explore between-session work'},{title:'Measure and adapt',text:at('cycle',5).split('\n')[1]+' '+at('cycle',6).split('\n')[1],href:'/marriagereset/#measure',action:'Explore evidence of change'}]}),['cycle'])+questions()+enrollment();}
 function fallback(slug){return ui.hero({kicker:'Marriage.Reset | Care-team invitations',title:slug.endsWith('/thanks')?'Continue through your care team.':'Marriage.Reset begins through your care team.',summary:at('entry',2),actions:[{label:'Learn about Marriage.Reset',href:'/marriagereset/'},{label:'Schedule a consultation',href:BOOK}],panel:{title:'An invitation, not public self-enrollment.',paragraphs:[at('entry',1),at('entry',3)]}})+access();}
-function render(slug,rich=enabled()){
+function render(slug,rich=enabled(slug)){
  validate();if(!routes.includes(slug))throw Error('Unknown Marriage.Reset route');
  const body=!rich||slug.endsWith('/thanks')?fallback(slug):slug==='marriagereset'?hero()+overview()+cycle()+assessmentSection()+adaptive()+prioritize()+directions()+practice()+measure()+adapt()+privacy()+boundaries()+questions()+enrollment():assessmentMain();
  return `<main id="main" data-marriage-reset="${rich?'review':'invitation-only'}" data-mr-revision="${revision}" data-design-system="homepage-shared-v1">${body}<aside class="mft-care-note mft-component">This page explains the Marriage.Reset model developed by Marriage.Family.Therapy. It is not an assessment and does not collect partner answers.</aside></main>`;

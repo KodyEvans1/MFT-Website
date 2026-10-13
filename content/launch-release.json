@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "note": "Owner-approved production-rich routes. This list does not approve the generated SEO catalogue for indexing.",
+  "richRoutes": [
+    "services",
+    "new-page",
+    "marriage-and-couples-therapy-counseling",
+    "childrentherapy",
+    "teen-counseling",
+    "family-therapy-group-counseling",
+    "new-page-1",
+    "new-page-2",
+    "marriagereset",
+    "marriage-reset-assessment"
+  ]
+}

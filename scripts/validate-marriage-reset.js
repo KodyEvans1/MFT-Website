@@ -13,6 +13,6 @@ for(const slug of mr.routes){
  for(const m of main.matchAll(/href="#([^"]+)"/g))if(!ids.includes(m[1]))errors.push(slug+': missing anchor '+m[1]);
  pages.push({slug,richExplanation:mr.enabled(slug)&&!slug.endsWith('/thanks'),sourceSections:[...new Set([...main.matchAll(/data-mr-source="([^"]+)"/g)].flatMap(m=>m[1].split(' ')))]});
 }
-const report={version:1,revision:mr.revision,source:mr.copy.source,pages,errors,productionRelease:false,appBehaviorVerified:false};
+const report={version:1,revision:mr.revision,source:mr.copy.source,pages,errors,productionRelease:mr.routes.some(slug=>mr.enabled(slug,{CONTEXT:'production',SITE_INDEXING_ENABLED:'true'})),appBehaviorVerified:false};
 fs.writeFileSync(path.join(dist,'reports/marriage-reset.json'),JSON.stringify(report,null,2)+'\n');
 console.log(JSON.stringify({marriageResetPages:pages.length,errors}));if(errors.length)process.exit(1);

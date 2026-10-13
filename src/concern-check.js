@@ -34,13 +34,14 @@ function validateConcernHtml(html,p){
  return errors;
 }
 function validateConcernSite(dist){
- const active=refs.enabled(),errors=[],entries=[];
+ const errors=[],entries=[];
  for(const p of refs.concernPages){const html=fs.readFileSync(path.join(dist,p.slug,'index.html'),'utf8');
-  if(active)errors.push(...validateConcernHtml(html,p));else if(html.includes('data-concern-revision='))errors.push('Review-only concern leaked into production: '+p.slug);
+  const active=refs.enabled(p.slug);if(active)errors.push(...validateConcernHtml(html,p));else if(html.includes('data-concern-revision='))errors.push('Review-only concern leaked into production: '+p.slug);
   entries.push({slug:p.slug,revision:refs.revision(p),sections:p.sections.length,activeInBuild:active,clinicians:refs.selectedClinicians(p.clinicianRule).map(c=>c.slug),sources:refs.sourceUrls(p)});
  }
  const hub=fs.readFileSync(path.join(dist,'what-we-help-with/index.html'),'utf8');
- if(active){
+ const hubActive=refs.enabled('what-we-help-with');
+ if(hubActive){
   if(!hub.includes('data-concern-hub="review-only"')||!hub.includes('mft-dark-section'))errors.push('Missing native solid-green concern directory');
   const block=hub.match(/<section\b[^>]*id="concern-guides"[\s\S]*?<\/section>/)?.[0]||'';
   const actual=[...block.matchAll(/<a\b[^>]*href="\/([^"/]+)\/"/g)].map(m=>m[1]);

@@ -35,9 +35,10 @@ function validateModalityHtml(html,p){
  return errors;
 }
 function validateModalitySite(dist){
- const active=refs.enabled(),errors=[],entries=[];
+ const errors=[],entries=[];
  for(const p of refs.modalityPages){
   const h=fs.readFileSync(path.join(dist,p.slug,'index.html'),'utf8');
+  const active=refs.enabled(p.slug);
   if(active)errors.push(...validateModalityHtml(h,p));
   else if(h.includes('data-modality-revision='))errors.push(p.slug+': review-only content in production');
   entries.push({slug:p.slug,revision:refs.revision(p),activeInBuild:active,sourceUrls:refs.sourceUrls(p),clinicians:refs.selectedClinicians(p.clinicianRule).map(c=>c.slug)});

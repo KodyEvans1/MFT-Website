@@ -4,7 +4,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { createLibrary, digest, esc } = require('./editorial-library');
 const { indexingEnabled, robotsFor, SITE } = require('./seo-safety');
-const { config } = require('./booking-build');
+const { scriptSources } = require('./booking-build');
 function validateEditorial(dist) {
   const errors = [];
   try {
@@ -45,7 +45,7 @@ function validateEditorial(dist) {
       check(!/story-section seo-entity|Connected care library/.test(main), 'Inherited generic content');
       if (a.status !== 'approved') check(main.includes('ed-review-note'), 'Missing review notice');
       if (a.relationshipSafety) check(main.includes('ed-safety'), 'Missing relationship safety boundary');
-      for (const src of ['/assets/mft-booking-core.js', '/assets/mft-booking-config.js', '/assets/mft-booking.js', config.loaderUrl]) check(html.split('src="' + src + '"').length === 2, 'Missing/duplicated booking loader ' + src);
+      for (const src of scriptSources) check(html.split('src="' + src + '"').length === 2, 'Missing/duplicated booking loader ' + src);
       check(/data-spwidget-scope-global/.test(main), 'Missing general booking binding');
       const cards = main.match(/<section class="ed-clinicians">[\s\S]*?<\/section>/)?.[0] || '';
       for (const c of ctx.people.values()) check(cards.includes('href="/' + c.slug + '/"') === a.clinicianLinks.some(link => link.slug === c.slug), 'Wrong clinician connection ' + c.slug);
@@ -57,7 +57,7 @@ function validateEditorial(dist) {
       for (const slug of ['resources', 'therapy-approaches', 'marriagereset', ...ctx.people.keys()]) {
         const html = fs.readFileSync(path.join(dist, slug, 'index.html'), 'utf8');
         const block = html.match(/<!--mft-editorial-discovery:start-->[\s\S]*?<!--mft-editorial-discovery:end-->/)?.[0] || '';
-        for (const a of ctx.articles.values()) if (a.status !== 'approved' && block.includes('href="/' + a.slug + '/"')) errors.push('Draft leaked into production editorial discovery: ' + a.slug);
+        for (const a of ctx.articles.values()) if (a.status !== 'approved' && block.includes('href="/' + a.slug + '/"')) errors.push('Draft leaked into production editorial discovery: ' + slug);
       }
     }
   } catch (error) { errors.push('Editorial validation: ' + error.message); }

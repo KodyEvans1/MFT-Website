@@ -9,11 +9,12 @@
     return config.clinicians.find(c => normalizePath(pathname) === '/' + c.slug + '/') || null;
   }
   function destination(config, clinician) {
-    if (!clinician) return config.generalUrl;
-    if (!config.clinicians.some(c => c.id === clinician.id)) throw new Error('Unknown booking clinician');
+    if (clinician && !config.clinicians.some(c => c.id === clinician.id)) throw new Error('Unknown booking clinician');
     const u = new URL('https://clientsecure.me/widget-redirect');
-    for (const [k, v] of Object.entries({scopeId: config.scopeId, applicationId: config.applicationId,
-      channel: 'professional_website', appearance: JSON.stringify({fullScreen: true}), clinicianId: clinician.id})) u.searchParams.set(k, v);
+    const params = {scopeId: config.scopeId, applicationId: config.applicationId,
+      channel: 'professional_website', appearance: JSON.stringify({fullScreen: true})};
+    if (clinician) params.clinicianId = clinician.id;
+    for (const [k, v] of Object.entries(params)) u.searchParams.set(k, v);
     return u.toString();
   }
   function attributes(config, clinician) {

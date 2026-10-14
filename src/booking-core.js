@@ -10,6 +10,9 @@
   }
   function destination(config, clinician) {
     if (clinician && !config.clinicians.some(c => c.id === clinician.id)) throw new Error('Unknown booking clinician');
+    // The practice-wide native request page does not depend on an iframe.
+    if (!clinician) return new URL('/request', config.generalUrl).href;
+    // Keep the owner-supplied clinician mapping in its verified full-page URL.
     const u = new URL('https://clientsecure.me/widget-redirect');
     const params = {scopeId: config.scopeId, applicationId: config.applicationId,
       channel: 'professional_website', appearance: JSON.stringify({fullScreen: true})};
@@ -21,7 +24,7 @@
   function attributes(config, clinician) {
     const out = {'data-mft-booking':'true', 'data-spwidget-scope-id':config.scopeId,
       'data-spwidget-scope-uri':config.scopeUri, 'data-spwidget-application-id':config.applicationId,
-      'data-spwidget-type':'OAR', 'data-spwidget-autobind':''};
+      'data-spwidget-type':'OAR', 'data-mft-booking-mode':'direct'};
     out[clinician ? 'data-spwidget-clinician-id' : 'data-spwidget-scope-global'] = clinician ? clinician.id : '';
     return out;
   }
@@ -30,7 +33,7 @@
     if (!/request|schedule|consultation|appointment|initial session/i.test(label)) return false;
     try {
       const u = new URL(href);
-      return (u.origin === 'https://marriagefamilytherapy.clientsecure.me' && u.pathname === '/') ||
+      return (u.origin === 'https://marriagefamilytherapy.clientsecure.me' && ['/','/request','/request/'].includes(u.pathname)) ||
         (u.origin === 'https://clientsecure.me' && u.pathname === '/widget-redirect');
     } catch { return false; }
   }

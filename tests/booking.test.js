@@ -15,12 +15,8 @@ for (const [key,id] of [['gary','2154633'],['kody','1701440'],['emily','2027366'
 }
 test('general scheduling routes directly to the practice-wide SimplePractice calendar', () => {
   const u = new URL(core.destination(config,null));
-  assert.equal(u.origin + u.pathname,'https://clientsecure.me/widget-redirect');
-  assert.equal(u.searchParams.get('scopeId'),config.scopeId);
-  assert.equal(u.searchParams.get('applicationId'),config.applicationId);
-  assert.equal(u.searchParams.get('channel'),'professional_website');
-  assert.equal(u.searchParams.get('appearance'),'{"fullScreen":true}');
-  assert.equal(u.searchParams.get('clinicianId'),null);
+  assert.equal(u.href,'https://marriagefamilytherapy.clientsecure.me/request');
+  assert.equal(u.search,'');
   assert.ok('data-spwidget-scope-global' in core.attributes(config,null));
   assert.equal(core.attributes(config,null)['data-spwidget-clinician-id'],undefined);
   assert.throws(()=>core.destination(config,{id:'unknown'}));
@@ -67,7 +63,7 @@ test('profile content selects clinician; navigation/footer stay general; design 
   assert.equal((r.html.match(/data-spwidget-scope-global=/g)||[]).length,2);
   assert.equal((r.html.match(/class="button primary"/g)||[]).length,3);
   assert.match(r.html,/<a href="https:\/\/marriagefamilytherapy.clientsecure.me\/">Existing client portal<\/a>/);
-  assert.equal(r.html.split('src="'+config.loaderUrl+'"').length-1,1);
+  assert.equal(r.html.split('src="'+config.loaderUrl+'"').length-1,0);
   assert.equal(decorateHtml(r.html,'/gary-ashley/').html,r.html);
 });
 test('sensitive forms retain usable fallback but no widget/measurement loader',()=>{

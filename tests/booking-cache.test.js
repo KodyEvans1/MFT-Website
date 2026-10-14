@@ -9,12 +9,12 @@ const core = require('../src/booking-core');
 const localSources=['/assets/mft-booking-core.js','/assets/mft-booking-config.js','/assets/mft-booking.js'];
 const page='<html><head></head><body><header><a href="https://marriagefamilytherapy.clientsecure.me/">Free consultation</a></header><main><a href="https://marriagefamilytherapy.clientsecure.me/">Schedule now</a><a href="https://marriagefamilytherapy.clientsecure.me/">Existing client portal</a></main><footer></footer></body></html>';
 
-test('booking scripts share a content-derived cache version; external loader is unchanged',()=>{
+test('booking scripts share a content-derived cache version; no embedded loader is emitted',()=>{
   const expected=createHash('sha256')
     .update(fs.readFileSync(path.join(__dirname,'../src/booking-core.js')))
     .update(fs.readFileSync(path.join(__dirname,'../src/assets/mft-booking.js')))
     .update(JSON.stringify(config)).digest('hex').slice(0,16);
-  assert.deepEqual(scriptSources,localSources.map(src=>src+'?v='+expected).concat(config.loaderUrl));
+  assert.deepEqual(scriptSources,localSources.map(src=>src+'?v='+expected));
 });
 
 test('general buttons use the calendar before JavaScript and load fresh booking scripts once',()=>{

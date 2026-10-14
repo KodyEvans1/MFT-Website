@@ -28,7 +28,7 @@ test('individual and couples consultation choices use the approved different sta
 });
 test('free consultation links are gated before direct SimplePractice scheduling',()=>{
   for(const slug of ['new-page','marriage-and-couples-therapy-counseling']){const h=page(slug);assert.match(text(h),/10-minute/);assert.match(h,/https:\/\/marriagefamilytherapy\.clientsecure\.me/);}
-  const js=fs.readFileSync(path.join(dist,'assets/mft-booking.js'),'utf8');assert.match(js,/mftTenMinuteConsultation/);assert.match(js,/one time for new clients only/);assert.match(js,/not a therapy session/);assert.match(js,/disabled>Continue to scheduling/);
+  const js=fs.readFileSync(path.join(dist,'assets/mft-booking.js'),'utf8');assert.match(js,/mftTenMinuteConsultation/);assert.match(js,/one time for new clients only/);assert.match(js,/not a therapy session/);assert.match(js,/aria-disabled="true"[^>]*>Continue to scheduling/);
 });
 test('Ops never appears as a client booking or measurement destination',()=>{
   const bad=[];for(const f of fs.readdirSync(dist,{withFileTypes:true})){const file=f.isDirectory()?path.join(dist,f.name,'index.html'):f.name==='index.html'?path.join(dist,'index.html'):null;if(!file||!fs.existsSync(file))continue;const h=fs.readFileSync(file,'utf8');

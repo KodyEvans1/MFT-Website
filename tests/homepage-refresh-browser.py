@@ -89,7 +89,7 @@ try:
             assert len(state['ids']) == len(set(state['ids'])), 'Duplicate IDs'
             assert 'noindex' in state['robots'] and state['measurement'] is False
             assert state['reducedMotion'] is True
-            assert state['ctas'] and all(u.startswith('https://clientsecure.me/widget-redirect?') for u in state['ctas'])
+            assert state['ctas'] and all(u == 'https://marriagefamilytherapy.clientsecure.me/request' for u in state['ctas'])
             if REQUIRE_IMAGES:
                 assert all(i['loaded'] for i in state['images']), ('Image failure',state['images'])
             page.screenshot(path=str(OUT/f'homepage-{width}.png'), full_page=True)
@@ -128,7 +128,7 @@ try:
         n = nojs.new_page();n.goto(base+'/',wait_until='domcontentloaded')
         assert n.locator('h1').is_visible()
         assert n.locator('.mh-path').count()==4
-        assert n.locator('.mh-hero a').first.get_attribute('href').startswith('https://clientsecure.me/widget-redirect?')
+        assert n.locator('.mh-hero a').first.get_attribute('href') == 'https://marriagefamilytherapy.clientsecure.me/request'
         n.screenshot(path=str(OUT/'homepage-no-javascript.png'),full_page=True)
         results['noJavaScript'] = True
         normal=browser.new_context(reduced_motion='no-preference')

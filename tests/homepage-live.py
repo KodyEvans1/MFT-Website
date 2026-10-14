@@ -91,7 +91,7 @@ try:
             assert state['photoPosition'] == '100% 50%'
             assert all(i['loaded'] for i in state['images'])
             assert state['canonical'] == BASE + '/'
-            assert state['bookingLinks'] and all(u.startswith('https://clientsecure.me/widget-redirect?') for u in state['bookingLinks'])
+            assert state['bookingLinks'] and all(u == 'https://marriagefamilytherapy.clientsecure.me/request' for u in state['bookingLinks'])
             assert state['portal'].rstrip('/') == 'https://marriagefamilytherapy.clientsecure.me'
             page.screenshot(path=str(OUT/f'homepage-opening-{width}.png'))
             page.screenshot(path=str(OUT/f'homepage-full-{width}.png'), full_page=True)

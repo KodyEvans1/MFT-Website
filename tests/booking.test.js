@@ -13,8 +13,14 @@ for (const [key,id] of [['gary','2154633'],['kody','1701440'],['emily','2027366'
     assert.equal(core.attributes(config,c)['data-spwidget-scope-global'],undefined);
   });
 }
-test('general scheduling has the exact practice fallback and scope-global', () => {
-  assert.equal(core.destination(config,null),'https://marriagefamilytherapy.clientsecure.me');
+test('general scheduling routes directly to the practice-wide SimplePractice calendar', () => {
+  const u = new URL(core.destination(config,null));
+  assert.equal(u.origin + u.pathname,'https://clientsecure.me/widget-redirect');
+  assert.equal(u.searchParams.get('scopeId'),config.scopeId);
+  assert.equal(u.searchParams.get('applicationId'),config.applicationId);
+  assert.equal(u.searchParams.get('channel'),'professional_website');
+  assert.equal(u.searchParams.get('appearance'),'{"fullScreen":true}');
+  assert.equal(u.searchParams.get('clinicianId'),null);
   assert.ok('data-spwidget-scope-global' in core.attributes(config,null));
   assert.equal(core.attributes(config,null)['data-spwidget-clinician-id'],undefined);
   assert.throws(()=>core.destination(config,{id:'unknown'}));

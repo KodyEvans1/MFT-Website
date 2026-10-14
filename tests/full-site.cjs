@@ -36,8 +36,9 @@ for (const [name, flag, context] of [
       assert.equal(analytics.enabled, true);
       assert.ok(analytics.injected.length > 0);
       assert.equal(analytics.injected.includes('/marriage-reset-assessment/'), false);
-      const approvedPaths = new Set(publication.expectedSitemapUrls.map(url => new URL(url).pathname));
-      for (const route of analytics.injected) assert.ok(approvedPaths.has(route), 'analytics route must be sitemap-approved: ' + route);
+      const normalize = p => p === '/' ? '/' : (p.endsWith('/') ? p : p + '/');
+      const approvedPaths = new Set(publication.expectedSitemapUrls.map(url => normalize(new URL(url).pathname)));
+      for (const route of analytics.injected) assert.ok(approvedPaths.has(normalize(route)), 'analytics route must be sitemap-approved: ' + route);
     }
     results.push({ name, status: 'pass', environment: 'isolated CI build only',
       htmlFiles: validation.htmlFiles, sitemapUrls: validation.sitemapUrls,

@@ -32,7 +32,18 @@ for (const f of walk(dist).filter(f => f.endsWith('.html') && !f.endsWith('/404.
 const js = fs.readFileSync(path.join(dist,'assets/site.js'),'utf8');
 if (/const gclid=q\.get\('gclid'\)/.test(js)) errors.push('Legacy attribution script remains');
 const headers = fs.readFileSync(path.join(dist,'_headers'),'utf8');
-if (!headers.includes("script-src 'self' https://widget-cdn.simplepractice.com;") || !headers.includes('Referrer-Policy: no-referrer')) errors.push('Widget security headers missing');
+const csp = (headers.match(/Content-Security-Policy:\s*([^\n]+)/) || [])[1] || '';
+const directive = name => {
+  const m = csp.match(new RegExp('(?:^|;\\s*)' + name + '\\s+([^;]+)'));
+  return new Set(m ? m[1].trim().split(/\\s+/) : []);
+};
+const scriptSrc = directive('script-src'), frameSrc = directive('frame-src'), connectSrc = directive('connect-src');
+const bookingHeadersOk =
+  headers.includes('Referrer-Policy: no-referrer') &&
+  scriptSrc.has("'self'") && scriptSrc.has('https://widget-cdn.simplepractice.com') &&
+  frameSrc.has('https://clientsecure.me') && frameSrc.has('https://marriagefamilytherapy.clientsecure.me') &&
+  connectSrc.has("'self'") && connectSrc.has('https://clientsecure.me') && connectSrc.has('https://marriagefamilytherapy.clientsecure.me');
+if (!bookingHeadersOk) errors.push('Widget security headers missing');
 const report = {version:1,htmlPages:pages.length,clinicianMappings:config.clinicians.length,errors,pages};
 fs.mkdirSync(path.join(dist,'reports'),{recursive:true});
 fs.writeFileSync(path.join(dist,'reports/booking-validation.json'),JSON.stringify(report,null,2)+'\n');

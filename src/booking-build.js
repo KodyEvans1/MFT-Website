@@ -1,6 +1,21 @@
 'use strict';
+const fs = require('node:fs');
+const path = require('node:path');
+const {createHash} = require('node:crypto');
 const core = require('./booking-core');
 const config = require('../content/simplepractice-booking.json');
+// /assets/* is cached as immutable for a year. Change all three browser URLs
+// together whenever booking logic or configuration changes, so an old core
+// cannot overwrite the corrected calendar links with the client portal URL.
+const assetVersion = createHash('sha256')
+  .update(fs.readFileSync(path.join(__dirname,'booking-core.js')))
+  .update(fs.readFileSync(path.join(__dirname,'assets/mft-booking.js')))
+  .update(JSON.stringify(config))
+  .digest('hex').slice(0,16);
+const scriptSources = Object.freeze(
+  ['/assets/mft-booking-core.js','/assets/mft-booking-config.js','/assets/mft-booking.js']
+    .map(src => `${src}?v=${assetVersion}`).concat(config.loaderUrl)
+);
 const esc = s => String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 const text = s => s.replace(/<[^>]*>/g,' ').replace(/\s+/g,' ').trim();
 function decorateHtml(html, route) {
@@ -26,10 +41,10 @@ function decorateHtml(html, route) {
   if (!/<meta name="referrer"/.test(out)) out = out.replace('</head>', '<meta name="referrer" content="no-referrer"></head>');
   const sensitive = /^\/marriage-reset-assessment(?:\/|$)/.test(route);
   if (count && !sensitive && !out.includes('/assets/mft-booking.js')) {
-    const scripts = ['/assets/mft-booking-core.js','/assets/mft-booking-config.js','/assets/mft-booking.js',config.loaderUrl]
+    const scripts = scriptSources
       .map(src => `<script src="${src}" defer referrerpolicy="no-referrer"></script>`).join('');
     out = out.replace('</body>',scripts + '</body>');
   }
   return {html:out, buttons:count, widget:count > 0 && !sensitive};
 }
-module.exports = {decorateHtml, config};
+module.exports = {decorateHtml, config, scriptSources};

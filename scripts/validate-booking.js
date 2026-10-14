@@ -1,6 +1,7 @@
 'use strict';
 const fs = require('node:fs'), path = require('node:path');
-const core = require('../src/booking-core'), config = require('../content/simplepractice-booking.json');
+const core = require('../src/booking-core');
+const {config,scriptSources} = require('../src/booking-build');
 const dist = path.resolve(__dirname,'../dist');
 function walk(d) { return fs.readdirSync(d,{withFileTypes:true}).flatMap(e => e.isDirectory() ? walk(path.join(d,e.name)) : [path.join(d,e.name)]); }
 const errors = [], pages = [], codes = new Set();
@@ -17,11 +18,12 @@ for (const f of walk(dist).filter(f => f.endsWith('.html') && !f.endsWith('/404.
     if (href.startsWith('https://ops.mft.care/')) errors.push(`Appointment still uses Ops redirect: ${route}`);
     const clinician = core.clinicianForPath(config,route);
     const inTag = tag => h.lastIndexOf('<'+tag,m.index) > h.lastIndexOf('</'+tag+'>',m.index);
-    if (clinician && !inTag('header') && !inTag('footer') && href !== core.destination(config,clinician)) errors.push(`Wrong clinician fallback: ${route}`);
+    const targetClinician = clinician && !inTag('header') && !inTag('footer') ? clinician : null;
+    if (href !== core.destination(config,targetClinician)) errors.push(`Wrong ${targetClinician ? 'clinician' : 'general calendar'} fallback: ${route}`);
     if (/gclid=|gbraid=|wbraid=|utm_/i.test(href)) errors.push(`Attribution forwarded to scheduling: ${route}`);
   }
   const sensitive = /^\/marriage-reset-assessment(?:\/|$)/.test(route);
-  for (const src of ['/assets/mft-booking-core.js','/assets/mft-booking-config.js','/assets/mft-booking.js',config.loaderUrl]) {
+  for (const src of scriptSources) {
     const count = h.split('src="'+src+'"').length - 1;
     if (sensitive && count) errors.push(`Widget/measurement asset on assessment: ${route}`);
     else if (n && !sensitive && count !== 1) errors.push(`Expected one ${src} on ${route}, got ${count}`);

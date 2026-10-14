@@ -16,19 +16,29 @@ for (const [name, flag, context] of [
   try {
     for (const dir of ['src', 'scripts', 'content', 'reports'])
       fs.cpSync(path.join(root, dir), path.join(work, dir), { recursive: true });
-    const env = { ...process.env, SITE_INDEXING_ENABLED: flag, CONTEXT: context };
+    const env = { ...process.env, SITE_INDEXING_ENABLED: flag, CONTEXT: context, GA4_BASIC_MEASUREMENT_ENABLED: context === 'production' ? 'true' : 'false' };
     delete env.NETLIFY_PREVIEW_SERVER;
     const build = spawnSync(process.execPath, ['scripts/build-site.js'], {
       cwd: work, env, encoding: 'utf8', maxBuffer: 16 * 1024 * 1024, timeout: 120000
     });
     if (build.error || build.status !== 0) throw new Error(`${name} failed: ${build.error?.message || ''}\n${build.stderr}\n${build.stdout}`);
     const read = name => JSON.parse(fs.readFileSync(path.join(work, 'dist/reports', name), 'utf8'));
-    const publication = read('publication.json'), validation = read('validation.json'), expansion = read('seo-expansion.json');
+    const publication = read('publication.json'), validation = read('validation.json'), expansion = read('seo-expansion.json'), analytics = read('analytics-integration.json');
     assert.deepEqual(validation.errors, []);
     assert.equal(publication.indexingEnabled, context === 'production');
     assert.equal(new Set(publication.preservedRoutes.map(x => x.slug)).size, publication.preservedRoutes.length);
-    if (context !== 'production') assert.equal(publication.expectedSitemapUrls.length, 0);
-    else assert.ok(publication.expectedSitemapUrls.length > 0);
+    if (context !== 'production') {
+      assert.equal(publication.expectedSitemapUrls.length, 0);
+      assert.equal(analytics.enabled, false);
+      assert.equal(analytics.injected.length, 0);
+    } else {
+      assert.ok(publication.expectedSitemapUrls.length > 0);
+      assert.equal(analytics.enabled, true);
+      assert.ok(analytics.injected.length > 0);
+      assert.equal(analytics.injected.includes('/marriage-reset-assessment/'), false);
+      const approvedPaths = new Set(publication.expectedSitemapUrls.map(url => new URL(url).pathname));
+      for (const route of analytics.injected) assert.ok(approvedPaths.has(route), 'analytics route must be sitemap-approved: ' + route);
+    }
     results.push({ name, status: 'pass', environment: 'isolated CI build only',
       htmlFiles: validation.htmlFiles, sitemapUrls: validation.sitemapUrls,
       generatedPages: expansion.generatedPages, approvedExpansionPages: expansion.approved,

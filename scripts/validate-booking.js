@@ -37,7 +37,7 @@ const headers = fs.readFileSync(path.join(dist,'_headers'),'utf8');
 const bookingHeadersOk =
   /Referrer-Policy:\s*no-referrer(?:\r?\n|$)/.test(headers) &&
   /script-src\s+[^;\n]*https:\/\/widget-cdn\.simplepractice\.com[^;\n]*;/.test(headers) &&
-  /frame-src\s+[^;\n]*https:\/\/clientsecure\.me[^;\n]*https:\/\/marriagefamilytherapy\.clientsecure\.me[^;\n]*;/.test(headers) &&
+  /frame-src\s+[^;\n]*https:\/\/clientsecure\.me[^;\n]*https:\/\/marriagefamilytherapy\.clientsecure\.me[^;\n]*https:\/\/spwidget-marriagefamilytherapy\.clientsecure\.me[^;\n]*;/.test(headers) &&
   /connect-src\s+[^;\n]*'self'[^;\n]*https:\/\/clientsecure\.me[^;\n]*https:\/\/marriagefamilytherapy\.clientsecure\.me[^;\n]*;/.test(headers);
 if (!bookingHeadersOk) errors.push('Widget security headers missing');
 const report = {version:1,htmlPages:pages.length,clinicianMappings:config.clinicians.length,errors,pages};

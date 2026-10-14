@@ -28,7 +28,7 @@ for (const file of walk(dist).filter(f=>f.endsWith('.html'))) {
 let headers = fs.readFileSync(path.join(dist,'_headers'),'utf8');
 headers = headers.replace(/Referrer-Policy: [^\n]+/g,'Referrer-Policy: no-referrer')
   .replace("script-src 'self';", "script-src 'self' https://widget-cdn.simplepractice.com;")
-  .replace("frame-src 'none';", "frame-src https://clientsecure.me https://marriagefamilytherapy.clientsecure.me;")
+  .replace("frame-src 'none';", "frame-src https://clientsecure.me https://marriagefamilytherapy.clientsecure.me https://spwidget-marriagefamilytherapy.clientsecure.me;")
   .replace("connect-src 'self';", "connect-src 'self' https://clientsecure.me https://marriagefamilytherapy.clientsecure.me;");
 fs.writeFileSync(path.join(dist,'_headers'),headers);
 fs.appendFileSync(path.join(dist,'assets/styles.css'), `\n.mft-consultation-gate{max-width:640px;width:calc(100% - 2rem);border:2px solid var(--gold);border-radius:18px;padding:clamp(1.25rem,4vw,2rem);background:var(--cream,#f7f3ea);color:var(--ink,#143d3a);box-shadow:0 20px 70px #0005}.mft-consultation-gate::backdrop{background:rgba(7,31,30,.72)}.mft-dialog-close{float:right;border:0;background:transparent;font-size:2rem;cursor:pointer}.mft-consultation-check{display:grid;grid-template-columns:22px 1fr;gap:.75rem;align-items:start;margin:1.4rem 0}.mft-consultation-check input{width:18px;height:18px;margin-top:.2rem;accent-color:var(--ink)}.mft-consultation-gate button[disabled]{opacity:.45;cursor:not-allowed}\n`);

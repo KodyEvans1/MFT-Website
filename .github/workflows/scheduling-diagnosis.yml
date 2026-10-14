@@ -1,0 +1,134 @@
+name: Diagnose SimplePractice scheduling handoff
+on:
+  push:
+    branches: ['fix/simplepractice-scheduling-20261014']
+    paths: ['.github/workflows/scheduling-diagnosis.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  diagnosis:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install playwright==1.57.0
+      - run: python -m playwright install --with-deps chromium
+      - name: Trace public scheduler without submitting an appointment
+        run: |
+          mkdir -p tmp/scheduling-diagnosis
+          python - <<'PY'
+          import json, re
+          from pathlib import Path
+          from urllib.parse import urlsplit, urlencode
+          from urllib.request import urlopen
+          from playwright.sync_api import sync_playwright
+          out = Path('tmp/scheduling-diagnosis')
+          config = json.loads(Path('content/simplepractice-booking.json').read_text())
+          report = {'snapshots': [], 'console': [], 'failed': [], 'responses': [], 'blocked': []}
+          try:
+              with urlopen(config['loaderUrl'], timeout=20) as response:
+                  (out/'integration-1.0.js').write_bytes(response.read())
+          except Exception as e:
+              report['loaderFetchError'] = str(e)
+          def safe_url(url):
+              u = urlsplit(url)
+              return u.scheme+'://'+u.netloc+u.path
+          def guard(route):
+              r = route.request
+              host = urlsplit(r.url).hostname or ''
+              if r.method not in ['GET','HEAD'] or any(s in host for s in ['google-analytics','googletagmanager','sentry','segment','doubleclick','facebook']):
+                  report['blocked'].append({'method':r.method,'url':safe_url(r.url)})
+                  route.abort()
+              else:
+                  route.continue_()
+          def setup(page):
+              page.on('console',lambda m: report['console'].append({'type':m.type,'text':m.text}) if m.type in ['error','warning'] else None)
+              page.on('pageerror',lambda e: report['console'].append({'type':'pageerror','text':str(e)}))
+              page.on('requestfailed',lambda r: report['failed'].append({'url':safe_url(r.url),'failure':r.failure}))
+              page.on('response',lambda r: report['responses'].append({'status':r.status,'url':safe_url(r.url)}) if r.status>=400 else None)
+          def snapshot(context,label):
+              for i,page in enumerate(context.pages):
+                  item={'label':label,'page':i,'url':page.url,'frames':[]}
+                  for frame in page.frames:
+                      try:
+                          item['frames'].append({'url':frame.url,'text':frame.locator('body').inner_text(timeout=4000)[:10000]})
+                      except Exception as e:
+                          item['frames'].append({'url':frame.url,'error':str(e)})
+                  try:
+                      page.screenshot(path=str(out/(label+'-'+str(i)+'.png')),full_page=False)
+                      if 'mft.care' in page.url:
+                          item['dom']=page.evaluate("() => [...document.querySelectorAll('iframe,dialog,[class*=spwidget]')].map(x=>({tag:x.tagName,cls:x.className,src:x.src,open:x.open,style:x.getAttribute('style')}))")
+                  except Exception as e:
+                      item['captureError']=str(e)
+                  report['snapshots'].append(item)
+          with sync_playwright() as p:
+              browser=p.chromium.launch(headless=True)
+              context=browser.new_context(viewport={'width':1440,'height':1000})
+              context.route('**/*',guard)
+              context.on('page',setup)
+              page=context.new_page()
+              try:
+                  response=page.goto('https://www.mft.care/',wait_until='domcontentloaded',timeout=45000)
+                  report['homepageHeaders']={k:v for k,v in response.headers.items() if k in ['content-security-policy','referrer-policy','cache-control']}
+                  page.wait_for_timeout(2500)
+                  report['anchor']=page.locator('.mh-hero a[data-mft-ten-minute-consultation]').evaluate('(a)=>a.outerHTML')
+                  page.locator('.mh-hero a[data-mft-ten-minute-consultation]').click()
+                  page.locator('.mft-consultation-gate input').check()
+                  page.locator('[data-consultation-continue]').click()
+                  page.wait_for_timeout(6500)
+                  snapshot(context,'after-consultation-continue')
+              except Exception as e:
+                  report['homepageError']=str(e)
+                  snapshot(context,'homepage-error')
+              context.close()
+              context=browser.new_context(viewport={'width':1200,'height':1000})
+              context.route('**/*',guard)
+              context.on('page',setup)
+              page=context.new_page()
+              params={'scopeId':config['scopeId'],'applicationId':config['applicationId'],'channel':'professional_website','appearance':json.dumps({'fullScreen':True},separators=(',',':'))}
+              direct='https://clientsecure.me/widget-redirect?'+urlencode(params)
+              try:
+                  page.goto(direct,wait_until='domcontentloaded',timeout=45000)
+                  page.wait_for_timeout(6500)
+                  snapshot(context,'direct-widget-redirect')
+                  for name in ["I'm a New Client",'New client']:
+                      button=page.get_by_text(name,exact=True)
+                      if button.count() and button.first.is_visible():
+                          button.first.click()
+                          page.wait_for_timeout(4000)
+                          snapshot(context,'direct-new-client')
+                          break
+              except Exception as e:
+                  report['directError']=str(e)
+                  snapshot(context,'direct-error')
+              context.close()
+              context=browser.new_context(viewport={'width':1200,'height':1000})
+              context.route('**/*',guard)
+              context.on('page',setup)
+              page=context.new_page()
+              try:
+                  page.goto(config['generalUrl'],wait_until='domcontentloaded',timeout=45000)
+                  page.wait_for_timeout(2500)
+                  snapshot(context,'clientportal')
+                  link=page.get_by_text("I'm a New Client",exact=True)
+                  if link.count():
+                      report['newClientLink']=link.first.evaluate('(a)=>a.outerHTML')
+                      link.first.click()
+                      page.wait_for_timeout(4000)
+                      snapshot(context,'clientportal-new-client')
+              except Exception as e:
+                  report['portalError']=str(e)
+              browser.close()
+          (out/'result.json').write_text(json.dumps(report,indent=2))
+          print(json.dumps(report,indent=2))
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: scheduling-diagnosis
+          path: tmp/scheduling-diagnosis/
+          retention-days: 7

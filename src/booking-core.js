@@ -14,6 +14,7 @@
     const params = {scopeId: config.scopeId, applicationId: config.applicationId,
       channel: 'professional_website', appearance: JSON.stringify({fullScreen: true})};
     if (clinician) params.clinicianId = clinician.id;
+    else params.scopeGlobal = 'true';
     for (const [k, v] of Object.entries(params)) u.searchParams.set(k, v);
     return u.toString();
   }

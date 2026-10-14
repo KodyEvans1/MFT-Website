@@ -1,0 +1,31 @@
+name: Verify published homepage
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/homepage-refresh.js'
+      - 'src/assets/homepage-refresh.css'
+      - 'tests/homepage-live.py'
+      - '.github/workflows/homepage-live-verification.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  live-homepage:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install playwright==1.57.0
+      - run: python -m playwright install --with-deps chromium
+      - name: Wait for matching production assets and verify desktop and mobile
+        run: python tests/homepage-live.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: homepage-live-verification
+          path: tmp/homepage-live/
+          retention-days: 7

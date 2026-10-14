@@ -3,6 +3,7 @@
 // metadata, and supporting content images are not decorative hero photographs.
 const fs=require('node:fs'),path=require('node:path');
 const owners=new Map([
+ ['1cbcf430-dfe2-4b69-9d9f-7ac53733849e',''], // Existing lobby asset, homepage only.
  ['0dac4deb-e22c-42de-9d48-eaf4df2628e5','therapy-contact-woodinville'],
  ['ed7383ec-060e-4649-93bb-7e71fcea4a21','kody-evans-bio'],
  ['83275db3-920a-42f3-9c8e-618474a34b52','dr-nolan'],

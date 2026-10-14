@@ -214,7 +214,7 @@ test('build wrapper passes the preview veto to every stage', t => {
   const d = temp(t), root = path.resolve(__dirname, '..');
   write(path.join(d, 'scripts/build-site.js'), fs.readFileSync(path.join(root, 'scripts/build-site.js')));
   write(path.join(d, 'src/seo-safety.js'), fs.readFileSync(path.join(root, 'src/seo-safety.js')));
-  const stages = ['src/build.js', 'src/enhance.js', 'src/redesign.js', 'scripts/prepare-booking.js', 'src/seo-expansion.js', 'src/validate.js', 'scripts/validate-booking.js'];
+  const stages = ['src/build.js', 'src/enhance.js', 'src/redesign.js', 'scripts/prepare-booking.js', 'src/seo-expansion.js', 'scripts/prepare-analytics.js', 'src/validate.js', 'scripts/validate-booking.js'];
   for (const script of stages)
     write(path.join(d, script), `require('node:fs').appendFileSync('stages.txt', '${script}:' + process.env.SITE_INDEXING_ENABLED + '\\n');`);
   const result = spawnSync(process.execPath, ['scripts/build-site.js'], { cwd: d, env: { ...process.env, ...PREVIEW }, encoding: 'utf8' });

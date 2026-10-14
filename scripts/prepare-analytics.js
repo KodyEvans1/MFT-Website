@@ -17,6 +17,7 @@ const allowedRoutes = new Set(urls.map(raw => {
 const files=[];
 (function walk(d){for(const e of fs.readdirSync(d,{withFileTypes:true})){const f=path.join(d,e.name);if(e.isDirectory())walk(f);else if(e.name==='index.html'||f.endsWith(path.sep+'404.html'))files.push(f);}})(dist);
 const report={version:1,measurementId:'G-BTK39BBNRE',enabled:enabled(),approvalSource:'production sitemap only',allowedRoutes:[...allowedRoutes].sort(),injected:[],excluded:[]};
+fs.copyFileSync(path.join(root,'src/assets/mft-ga4-bootstrap.js'),path.join(dist,'assets/mft-ga4-bootstrap.js'));
 fs.copyFileSync(path.join(root,'src/assets/mft-analytics.js'),path.join(dist,'assets/mft-analytics.js'));
 for(const file of files){
   const rel=path.relative(dist,file).split(path.sep).join('/');

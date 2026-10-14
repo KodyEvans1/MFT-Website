@@ -57,7 +57,7 @@ function validateEditorial(dist) {
       for (const slug of ['resources', 'therapy-approaches', 'marriagereset', ...ctx.people.keys()]) {
         const html = fs.readFileSync(path.join(dist, slug, 'index.html'), 'utf8');
         const block = html.match(/<!--mft-editorial-discovery:start-->[\s\S]*?<!--mft-editorial-discovery:end-->/)?.[0] || '';
-        for (const a of ctx.articles.values()) if (a.status !== 'approved' && block.includes('href="/' + a.slug + '/"')) errors.push('Draft leaked into production editorial discovery: ' + slug);
+        for (const a of ctx.articles.values()) if (a.status !== 'approved' && block.includes('href="/' + a.slug + '/"')) errors.push('Draft leaked into production editorial discovery: ' + a.slug);
       }
     }
   } catch (error) { errors.push('Editorial validation: ' + error.message); }

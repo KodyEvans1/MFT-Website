@@ -22,6 +22,7 @@ for (const f of walk(dist).filter(f => f.endsWith('.html') && !f.endsWith('/404.
     if (href !== core.destination(config,targetClinician)) errors.push(`Wrong ${targetClinician ? 'clinician' : 'general calendar'} fallback: ${route}`);
     if (/gclid=|gbraid=|wbraid=|utm_/i.test(href)) errors.push(`Attribution forwarded to scheduling: ${route}`);
   }
+  if (h.includes(config.loaderUrl) || /data-spwidget-autobind/.test(h)) errors.push(`Embedded booking dependency remains: ${route}`);
   const sensitive = /^\/marriage-reset-assessment(?:\/|$)/.test(route);
   for (const src of scriptSources) {
     const count = h.split('src="'+src+'"').length - 1;

@@ -1,0 +1,52 @@
+name: Native scheduling link probe
+on:
+  push:
+    branches: ['fix/direct-scheduling-20261014']
+    paths: ['.github/workflows/native-scheduling-probe.yml']
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install playwright==1.57.0
+      - run: python -m playwright install --with-deps chromium
+      - run: |
+          mkdir -p tmp/native-probe
+          python - <<'PY'
+          import json,re
+          from pathlib import Path
+          from urllib.parse import urlsplit
+          from playwright.sync_api import sync_playwright
+          out=Path('tmp/native-probe'); states=[]
+          def guard(route):
+              r=route.request;u=urlsplit(r.url);host=u.hostname or ''
+              read_post=r.method=='POST' and host=='marriagefamilytherapy.clientsecure.me' and u.path=='/client-portal-api/clinician-search/next-slots'
+              if any(x in host for x in ['google-analytics','googletagmanager','bugsnag','sentry','segment','doubleclick']) or (r.method not in ['GET','HEAD'] and not read_post):route.abort()
+              else:route.continue_()
+          with sync_playwright() as p:
+              b=p.chromium.launch()
+              for c in [None]+json.loads(Path('content/simplepractice-booking.json').read_text())['clinicians']:
+                  context=b.new_context();context.route('**/*',guard);page=context.new_page();page.set_default_timeout(18000)
+                  url='https://marriagefamilytherapy.clientsecure.me/request'+('?clinicianId='+c['id'] if c else '')
+                  item={'input':url,'clinician':c['key'] if c else 'general'}
+                  try:
+                      page.goto(url,wait_until='domcontentloaded');page.get_by_text('Request an appointment',exact=True).wait_for();page.wait_for_timeout(700)
+                      item.update({'url':page.url,'text':page.locator('body').inner_text()[:8000]})
+                      page.screenshot(path=str(out/(item['clinician']+'.png')))
+                  except Exception as e:item['error']=str(e)
+                  states.append(item);context.close()
+              b.close()
+          (out/'result.json').write_text(json.dumps(states,indent=2));print(json.dumps(states,indent=2))
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: native-scheduling-probe
+          path: tmp/native-probe/
+          retention-days: 3

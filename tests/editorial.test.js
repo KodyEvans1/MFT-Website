@@ -90,7 +90,7 @@ for(const a of data.articles) test('editorial: complete rendering and source anc
   const ctx=load(),h=lib.renderArticle(shell,ctx.articles.get(a.slug),ctx).html;
   assert.match(h,/KEEP NAV/);assert.match(h,/KEEP FOOTER/);assert.doesNotMatch(h,/REMOVE TEMPLATE|>OLD<|<form\b|<input\b/);
   assert.equal((h.match(/<h1>/g)||[]).length,1);assert.match(h,/ed-review-note/);assert.match(h,/data-spwidget-scope-global/);
-  assert.equal(h.split('src="https://widget-cdn.simplepractice.com/assets/integration-1.0.js"').length,2);
+  assert.equal(h.split('src="https://widget-cdn.simplepractice.com/assets/integration-1.0.js"').length,1);
   for(const s of a.sections)assert.ok(h.includes('id="'+s.id+'"'));
   const ids=[...h.matchAll(/\bid="([^"]*)"/g)].map(m=>m[1]);assert.equal(new Set(ids).size,ids.length);
   for(const m of h.matchAll(/href="#([^"]*)"/g))assert.ok(ids.includes(m[1]));

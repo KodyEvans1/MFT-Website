@@ -8,7 +8,7 @@ const config = require('../content/simplepractice-booking.json');
 
 test('general fallback preserves practice-wide selection rather than defaulting to owner', () => {
   const url = new URL(core.destination(config, null));
-  assert.equal(url.searchParams.get('scopeGlobal'), 'true');
+  assert.equal(url.href, 'https://marriagefamilytherapy.clientsecure.me/request');
   assert.equal(url.searchParams.get('clinicianId'), null);
   assert.ok('data-spwidget-scope-global' in core.attributes(config, null));
 });

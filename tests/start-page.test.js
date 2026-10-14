@@ -35,12 +35,12 @@ test('Plaud: benefits and questions are email links, never public intake forms',
  assert.doesNotMatch(html,/<form\b|<input\b|<textarea\b|mailto:support@mftcare/i);
  assert.match(html,/Opens your email app/);
 });
-test('Plaud: starting-care scheduling is bound once to the supplied general widget',()=>{
+test('Plaud: starting-care scheduling uses the native request page without an embedded widget',()=>{
  const html=decorateHtml(applyPlaudEdits(fixture,'/how-to-start-therapy/'),'/how-to-start-therapy/').html;
  const links=anchors(main(html)).filter(a=>a[1].includes('data-mft-booking'));
  assert.equal(links.length,3);
  for(const a of links){assert.ok(a[1].includes('href="'+require('../src/booking-core').destination(config,null).replace(/&/g,'&amp;')+'"'));assert.match(a[1],/data-spwidget-scope-global/);assert.doesNotMatch(a[1],/data-spwidget-clinician-id/);}
- assert.equal(html.split('src="'+config.loaderUrl+'"').length-1,1);
+ assert.equal(html.split('src="'+config.loaderUrl+'"').length-1,0);
  assert.equal(decorateHtml(html,'/how-to-start-therapy/').html,html);
  const portal=anchors(main(html)).find(a=>a[2]==='existing client portal');assert.ok(portal);assert.doesNotMatch(portal[1],/data-mft-booking/);
 });

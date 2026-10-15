@@ -33,8 +33,11 @@
     {
       "key": "sonia",
       "name": "Sonia Hassan",
-      "slug": "new-page-47",
-      "id": "2065412"
+      "slug": "sonia-hassan-bio",
+      "id": "2065412",
+      "aliases": [
+        "new-page-47"
+      ]
     }
   ]
 }

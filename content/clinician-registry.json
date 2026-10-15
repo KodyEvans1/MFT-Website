@@ -123,7 +123,7 @@
       "license": "LMHCA"
     },
     {
-      "slug": "new-page-47",
+      "slug": "sonia-hassan-bio",
       "name": "Sonia Hassan",
       "credential": "Licensed Social Work Associate Independent Clinical (LSWAIC)",
       "populations": [
@@ -135,14 +135,28 @@
       ],
       "concerns": [
         "anxiety",
+        "depression",
+        "trauma",
         "grief",
-        "life-transitions",
-        "stress",
-        "emotional-adjustment",
+        "relationships",
         "caregiver-stress",
-        "chronic-pain"
+        "life-transitions",
+        "chronic-pain",
+        "stress",
+        "emotion-regulation",
+        "self-esteem",
+        "communication",
+        "emotional-adjustment"
       ],
-      "modalities": [],
+      "modalities": [
+        "acceptance-commitment-therapy-act",
+        "cognitive-behavioral-therapy-cbt",
+        "dialectical-behavior-therapy-dbt",
+        "motivational-interviewing",
+        "mindfulness-based-therapy",
+        "narrative-therapy",
+        "somatic-therapy-informed"
+      ],
       "status": "current",
       "license": "LSWAIC"
     }

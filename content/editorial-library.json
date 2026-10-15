@@ -53,7 +53,7 @@
       ],
       "questions":["What connects the methods you use?","How will we review progress toward my goals?","What happens when a technique does not feel appropriate?"],
       "relatedSlugs":["person-centered-therapy","strengths-based-therapy","what-happens-first-therapy-session","therapy-approaches"],
-      "clinicianLinks":[{"slug":"kody-evans-bio","basis":"multi-approach"},{"slug":"emily-johnsrud-bio","basis":"multi-approach"},{"slug":"new-page-47","basis":"multi-approach"}],"reviews":[]
+      "clinicianLinks":[{"slug":"kody-evans-bio","basis":"multi-approach"},{"slug":"emily-johnsrud-bio","basis":"multi-approach"},{"slug":"sonia-hassan-bio","basis":"multi-approach"}],"reviews":[]
     },
     {
       "slug":"repeated-conflict","family":"relationship","status":"draft","title":"When the Same Argument Keeps Returning | M.F.T.",
@@ -81,7 +81,7 @@
       ],
       "questions":["What kind of connection am I missing?","What can I describe without assuming my partner's motives?","How can we discuss closeness without pressure?"],
       "relatedSlugs":["repeated-conflict","repair-after-conflict","what-happens-in-couples-therapy","marriagereset"],
-      "clinicianLinks":[{"slug":"emily-johnsrud-bio","basis":"couples"},{"slug":"dr-nolan","basis":"couples"},{"slug":"new-page-47","basis":"couples"}],"reviews":[]
+      "clinicianLinks":[{"slug":"emily-johnsrud-bio","basis":"couples"},{"slug":"dr-nolan","basis":"couples"},{"slug":"sonia-hassan-bio","basis":"couples"}],"reviews":[]
     },
     {
       "slug":"repair-after-conflict","family":"relationship","status":"draft","title":"Repair After Conflict: More Than Saying Sorry | M.F.T.",

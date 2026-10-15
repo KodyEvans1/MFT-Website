@@ -9,7 +9,7 @@ const CHARLENE='https://images.squarespace-cdn.com/content/v1/65b78566ba645b4f0f
 
 const groups={
   service:new Set(['new-page','marriage-and-couples-therapy-counseling','marriagereset','teen-counseling','childrentherapy','family-therapy-group-counseling','new-page-1','new-page-2']),
-  clinician:new Set(['kody-evans-bio','dr-nolan','emily-johnsrud-bio','gary-ashley','new-page-47']),
+  clinician:new Set(['kody-evans-bio','dr-nolan','emily-johnsrud-bio','gary-ashley','sonia-hassan-bio']),
   concern:new Set(['anxiety-stress-therapy','depression-therapy','adhd-neurodivergence-therapy','trauma-therapy','grief-counseling','self-esteem-identity-therapy','relationship-issues-therapy','parenting-family-stress-therapy','life-transitions-therapy','substance-use-recovery-therapy']),
   approach:new Set(['cognitive-behavioral-therapy-cbt','dialectical-behavior-therapy-dbt','emotionally-focused-therapy-eft','gottman-method-couples-therapy','internal-family-systems-ifs','solution-focused-brief-therapy','narrative-therapy','motivational-interviewing','attachment-based-therapy','family-systems-therapy','mindfulness-based-therapy','trauma-informed-therapy']),
   resource:new Set(['how-to-start-therapy','how-to-choose-a-therapist','online-vs-in-person-therapy','therapy-insurance-benefits']),

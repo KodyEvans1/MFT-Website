@@ -1,0 +1,30 @@
+{
+  "slug": "sonia-hassan-bio",
+  "reviewStatus": "owner-verification-required",
+  "sourceNotes": {
+    "requestedUrl": "https://www.mft.care/sonia-hassan-bio",
+    "requestedUrlStatus": "HTTP 404 on 2026-10-15 UTC; intended replacement text not recovered",
+    "basis": [
+      "content/clinician-evidence.json: Sonia source checked 2026-10-02",
+      "src/launch-content.js: existing education record",
+      "Search-indexed former M.F.T. profile https://www.mft.care/new-page-47 inspected 2026-10-15 UTC"
+    ],
+    "publicationBlocker": "Verify candidate against owner-approved replacement biography before merging or publishing."
+  },
+  "sections": [
+    {
+      "heading": "About Sonia",
+      "paragraphs": [
+        "Sonia works with teens, adults, older adults, and couples facing anxiety, depression, grief, relationship difficulties, and life changes. Her work also includes caregiver stress, chronic pain, emotional adjustment, self-esteem, and communication concerns.",
+        "She brings a warm, curious, and compassionate style to therapy. Sessions offer space to explore difficult experiences, understand recurring patterns, and recognize personal strengths, needs, and values."
+      ]
+    },
+    {
+      "heading": "My Approach",
+      "paragraphs": [
+        "Sonia considers the connections among thoughts, emotions, relationships, and physical experiences. She draws from Acceptance and Commitment Therapy (ACT), Cognitive Behavioral Therapy (CBT), Dialectical Behavior Therapy (DBT) skills, Motivational Interviewing, mindfulness, Narrative Therapy, and somatic approaches.",
+        "The work is collaborative and shaped around the person. Depending on their concerns, sessions may explore coping and emotional regulation, communication, responses to stress, or choices that reflect their values."
+      ]
+    }
+  ]
+}

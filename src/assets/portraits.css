@@ -34,7 +34,7 @@ body.page-clinician .mft-clinician-hero .mft-portrait--hero>.hero-media{position
 body.page-clinician [data-clinician-hero="dr-nolan"] .mft-portrait--hero{max-width:400px;right:7vw}
 body.page-clinician [data-clinician-hero="emily-johnsrud-bio"] .mft-portrait--hero{max-width:380px;right:7vw}
 body.page-clinician [data-clinician-hero="gary-ashley"] .mft-portrait--hero{max-width:500px;right:4vw}
-body.page-clinician [data-clinician-hero="new-page-47"] .mft-portrait--hero{max-width:440px;right:5vw}
+body.page-clinician [data-clinician-hero="sonia-hassan-bio"] .mft-portrait--hero{max-width:440px;right:5vw}
 body.page-clinician .mft-clinician-blend{position:absolute;z-index:1;inset:0;pointer-events:none;background:linear-gradient(90deg,#092624 0%,rgba(9,38,36,.98) 39%,rgba(9,38,36,.75) 49%,rgba(9,38,36,.1) 64%,transparent 77%)}
 .mft-availability-note{max-width:70ch;padding:1.75rem;border:1px solid var(--gold);border-radius:18px;background:var(--paper);line-height:1.8}
 @media(max-width:900px){

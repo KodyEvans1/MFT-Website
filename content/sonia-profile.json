@@ -1,30 +1,63 @@
 {
   "slug": "sonia-hassan-bio",
-  "reviewStatus": "owner-verification-required",
+  "reviewStatus": "owner-approved",
   "sourceNotes": {
     "requestedUrl": "https://www.mft.care/sonia-hassan-bio",
-    "requestedUrlStatus": "HTTP 404 on 2026-10-15 UTC; intended replacement text not recovered",
+    "approvalSource": "Owner supplied full biography, Care Philosophy, and Specialties directly in this conversation on 2026-10-14 America/Los_Angeles.",
+    "approvedOn": "2026-10-14",
     "basis": [
-      "content/clinician-evidence.json: Sonia source checked 2026-10-02",
-      "src/launch-content.js: existing education record",
-      "Search-indexed former M.F.T. profile https://www.mft.care/new-page-47 inspected 2026-10-15 UTC"
-    ],
-    "publicationBlocker": "Verify candidate against owner-approved replacement biography before merging or publishing."
+      "Owner-supplied replacement text; preserved verbatim in sections and specialties.",
+      "Existing education record retained from src/launch-content.js."
+    ]
   },
   "sections": [
     {
       "heading": "About Sonia",
       "paragraphs": [
-        "Sonia works with teens, adults, older adults, and couples facing anxiety, depression, grief, relationship difficulties, and life changes. Her work also includes caregiver stress, chronic pain, emotional adjustment, self-esteem, and communication concerns.",
-        "She brings a warm, curious, and compassionate style to therapy. Sessions offer space to explore difficult experiences, understand recurring patterns, and recognize personal strengths, needs, and values."
+        "Sonia Hassan, LSWAIC, is a Licensed Social Work Associate Independent Clinical who works with teens, adults, elder adults, and couples. She supports clients navigating anxiety, depression, trauma, grief and loss, chronic pain, caregiver stress, relationship challenges, emotional regulation, and major life transitions.",
+        "Sonia understands that people often seek therapy during seasons when life feels heavier, more complicated, or less manageable than it once did. You may be adjusting to an unexpected change, struggling with anxiety or depression, grieving a loss, feeling disconnected in an important relationship, or trying to care for others while finding little space for yourself. Her goal is to provide a supportive environment where clients can slow down, better understand what they are experiencing, and develop healthier, more sustainable ways of moving forward."
       ]
     },
     {
       "heading": "My Approach",
       "paragraphs": [
-        "Sonia considers the connections among thoughts, emotions, relationships, and physical experiences. She draws from Acceptance and Commitment Therapy (ACT), Cognitive Behavioral Therapy (CBT), Dialectical Behavior Therapy (DBT) skills, Motivational Interviewing, mindfulness, Narrative Therapy, and somatic approaches.",
-        "The work is collaborative and shaped around the person. Depending on their concerns, sessions may explore coping and emotional regulation, communication, responses to stress, or choices that reflect their values."
+        "Her approach is warm, collaborative, and individualized. Sonia draws from Acceptance and Commitment Therapy (ACT), Cognitive Behavioral Therapy (CBT), Dialectical Behavior Therapy (DBT) skills, Motivational Interviewing, mindfulness, Narrative Therapy, and somatic approaches. Depending on each client's needs, therapy may involve recognizing patterns, strengthening coping and emotional regulation skills, improving communication, exploring personal values, and becoming more aware of how stress and difficult experiences affect both the mind and body."
+      ]
+    },
+    {
+      "heading": "Working With Couples",
+      "paragraphs": [
+        "In her work with couples, Sonia helps partners explore communication difficulties, recurring conflict, emotional disconnection, relationship stress, and life transitions. She creates space for both partners to better understand the patterns developing between them and work toward healthier communication and greater connection."
+      ]
+    },
+    {
+      "heading": "Working With Teens",
+      "paragraphs": [
+        "Sonia also works with teens experiencing anxiety, depression, stress, self-esteem concerns, emotional regulation difficulties, relationship challenges, and significant changes. Her work helps teens better understand their emotions, build coping skills, strengthen communication, and develop greater confidence navigating challenges."
+      ]
+    },
+    {
+      "heading": "Working With Adults and Elder Adults",
+      "paragraphs": [
+        "With adults and elder adults, Sonia supports concerns including anxiety, depression, grief, chronic pain, caregiving responsibilities, relationship difficulties, emotional adjustment, and major life changes. She works collaboratively with clients to strengthen resilience, reconnect with their needs and values, and develop practical ways of supporting their emotional well-being."
+      ]
+    },
+    {
+      "heading": "Care Philosophy",
+      "paragraphs": [
+        "My approach to therapy is collaborative, compassionate, and centered on your individual needs and experiences. I believe you are an active partner in your care, and I want therapy to be a space where you feel heard, respected, and comfortable sharing what is and is not working for you.",
+        "Together, we will identify what matters most to you and develop goals that feel meaningful and realistic. I may offer practical tools, encourage reflection, and help you notice patterns in your thoughts, emotions, relationships, and physical responses to stress. As your needs change, our work can change with them.",
+        "I value open communication and welcome your feedback throughout the therapeutic process. My goal is not to tell you how to live your life, but to help you better understand yourself, strengthen your existing resilience, develop new skills, and make choices that feel more aligned with your values and well-being."
       ]
     }
+  ],
+  "specialties": [
+    "Women's Counseling",
+    "Clinical Social Work",
+    "Individual Counseling",
+    "Relationship Counseling",
+    "Couples Counseling",
+    "Grief and Bereavement",
+    "Counseling"
   ]
 }

@@ -146,7 +146,8 @@
         "emotion-regulation",
         "self-esteem",
         "communication",
-        "emotional-adjustment"
+        "emotional-adjustment",
+        "womens-issues"
       ],
       "modalities": [
         "acceptance-commitment-therapy-act",
@@ -158,7 +159,16 @@
         "somatic-therapy-informed"
       ],
       "status": "current",
-      "license": "LSWAIC"
+      "license": "LSWAIC",
+      "specialties": [
+        "Women's Counseling",
+        "Clinical Social Work",
+        "Individual Counseling",
+        "Relationship Counseling",
+        "Couples Counseling",
+        "Grief and Bereavement",
+        "Counseling"
+      ]
     }
   ],
   "staff": [

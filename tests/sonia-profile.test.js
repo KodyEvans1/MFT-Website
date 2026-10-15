@@ -6,7 +6,7 @@ const profile=require('../content/sonia-profile.json'),people=require('../conten
 const booking=require('../content/simplepractice-booking.json'),core=require('../src/booking-core');
 const slug='sonia-hassan-bio',h=read(slug);
 const walk=d=>fs.readdirSync(d,{withFileTypes:true}).flatMap(e=>e.isDirectory()?walk(path.join(d,e.name)):[path.join(d,e.name)]);
-const plain=s=>s.replace(/<[^>]+>/g,'');
+const plain=s=>s.replace(/<[^>]+>/g,'').replace(/&#39;/g,"'").replace(/&amp;/g,'&');
 test('Sonia has authored biography and approach sections inside the shared profile layout',()=>{
  for(const section of profile.sections){assert.ok(h.includes('<h2>'+section.heading+'</h2>'));for(const p of section.paragraphs)assert.ok(plain(h).includes(p));}
  assert.match(h,/data-experience-body="sonia-hassan-bio"/);
@@ -55,9 +55,14 @@ test('other clinician biography prose is unchanged',()=>{
  const baseline=require('./fixtures/other-clinician-prose.json');
  for(const [s,expected] of Object.entries(baseline)){
   const prose=read(s).match(/<div class="experience-reading">([\s\S]*?)<\/div><aside/)[1];
-  assert.equal(crypto.createHash('sha256').update(plain(prose)).digest('hex'),expected,s);
+  assert.equal(crypto.createHash('sha256').update(prose.replace(/<[^>]+>/g,'')).digest('hex'),expected,s);
  }
 });
-test('replacement provenance is explicit and cannot be mistaken for owner verification',()=>{
- assert.equal(profile.reviewStatus,'owner-verification-required');assert.match(profile.sourceNotes.requestedUrlStatus,/404/);assert.ok(profile.sourceNotes.publicationBlocker);
+test('owner-supplied biography, philosophy, population sections and specialties are complete',()=>{
+ assert.equal(profile.reviewStatus,'owner-approved');assert.equal(profile.sourceNotes.approvedOn,'2026-10-14');assert.equal(profile.sourceNotes.publicationBlocker,undefined);
+ for(const heading of ['Care Philosophy','Working With Couples','Working With Teens','Working With Adults and Elder Adults'])assert.ok(profile.sections.some(s=>s.heading===heading));
+ assert.equal(profile.sections.reduce((n,s)=>n+s.paragraphs.length,0),9);
+ assert.deepEqual(profile.specialties,people.find(p=>p.slug===slug).specialties);
+ for(const specialty of profile.specialties)assert.ok(plain(h).includes(specialty),specialty);
+ assert.ok(plain(h).includes('I value open communication and welcome your feedback throughout the therapeutic process.'));
 });

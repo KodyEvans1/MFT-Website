@@ -3,9 +3,9 @@
 /*
   X-Content-Type-Options: nosniff
   X-Frame-Options: SAMEORIGIN
-  Referrer-Policy: strict-origin-when-cross-origin
+  Referrer-Policy: no-referrer
   Permissions-Policy: camera=(), microphone=(), geolocation=()
-  Content-Security-Policy: default-src 'self'; img-src 'self' https://images.squarespace-cdn.com data:; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; connect-src 'self'; frame-src 'none'; base-uri 'self'; form-action 'self' https://ops.mft.care https://marriagefamilytherapy.clientsecure.me
+  Content-Security-Policy: default-src 'self'; img-src 'self' https://images.squarespace-cdn.com data:; script-src 'self' https://widget-cdn.simplepractice.com; style-src 'self' 'unsafe-inline'; font-src 'self'; connect-src 'self' https://clientsecure.me https://marriagefamilytherapy.clientsecure.me; frame-src https://clientsecure.me https://marriagefamilytherapy.clientsecure.me https://spwidget-marriagefamilytherapy.clientsecure.me; base-uri 'self'; form-action 'self' https://ops.mft.care https://marriagefamilytherapy.clientsecure.me
 
 /assets/*
   Cache-Control: public, max-age=31536000, immutable

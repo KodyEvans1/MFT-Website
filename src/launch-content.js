@@ -5,7 +5,7 @@ const education={
  'dr-nolan':{education:['Ph.D. in Clinical Sexology — Modern Sex Therapy Institutes, 2022','M.S. in Mental Health Counseling — The Johns Hopkins University, 2016'],training:['Clinical sexology focus','Gottman-informed therapy','Sex therapy-informed care']},
  'emily-johnsrud-bio':{education:['M.A. in Couples & Family Therapy — Seattle University, 2023'],training:['EMDR Trained','CBT training']},
  'gary-ashley':{education:['M.A. in Clinical Mental Health Counseling — Colorado Christian University, 2023','B.A. in Industrial Design — Metropolitan State University of Denver, 2002'],training:['Level 1 Gottman Training']},
- 'new-page-47':{education:['Master of Social Work, Clinical Specialization — University of Washington, 2024'],training:['Acceptance & Commitment Therapy (ACT)','Cognitive Behavioral Therapy (CBT)','Dialectical Behavior Therapy (DBT) skills','Motivational Interviewing','Mindfulness, narrative, and somatic approaches']}
+ 'sonia-hassan-bio':{education:['Master of Social Work, Clinical Specialization — University of Washington, 2024'],training:['Acceptance & Commitment Therapy (ACT)','Cognitive Behavioral Therapy (CBT)','Dialectical Behavior Therapy (DBT) skills','Motivational Interviewing','Mindfulness, narrative, and somatic approaches']}
 };
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 function group(title,items){return items?.length?`<div class="mft-credential-group"><h3>${esc(title)}</h3><ul>${items.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`:''}

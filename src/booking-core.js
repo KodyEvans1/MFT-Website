@@ -6,7 +6,7 @@
   'use strict';
   const normalizePath = p => { const s = String(p || '').split(/[?#]/)[0].replace(/^\/+|\/+$/g, ''); return s ? '/' + s + '/' : '/'; };
   function clinicianForPath(config, pathname) {
-    return config.clinicians.find(c => normalizePath(pathname) === '/' + c.slug + '/') || null;
+    return config.clinicians.find(c => [c.slug, ...(c.aliases || [])].some(slug => normalizePath(pathname) === '/' + slug + '/')) || null;
   }
   function destination(config, clinician) {
     if (clinician && !config.clinicians.some(c => c.id === clinician.id)) throw new Error('Unknown booking clinician');

@@ -7,7 +7,7 @@ const text=html=>html.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi,' ').replace
 test('Kody shows approved training but not Capella education',()=>{
   const h=text(page('kody-evans-bio')); assert.match(h,/ADHD-CCSP/);assert.match(h,/Level 1 Gottman Training/);assert.doesNotMatch(h,/Capella/i);
 });
-for(const [slug,needle] of [['dr-nolan','Johns Hopkins University'],['emily-johnsrud-bio','Seattle University'],['gary-ashley','Colorado Christian University'],['new-page-47','University of Washington']])
+for(const [slug,needle] of [['dr-nolan','Johns Hopkins University'],['emily-johnsrud-bio','Seattle University'],['gary-ashley','Colorado Christian University'],['sonia-hassan-bio','University of Washington']])
   test(slug+' includes verified education and training',()=>{const h=text(page(slug));assert.match(h,new RegExp(needle));assert.match(h,/Training/);});
 test('benefits page contains approved carriers, routing information and no sensitive public form',()=>{
   const h=page('check-my-coverage'),t=text(h); for(const carrier of ['Premera','Aetna','Regence','Cigna'])assert.match(t,new RegExp(carrier));

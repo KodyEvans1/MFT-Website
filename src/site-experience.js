@@ -1,4 +1,5 @@
 'use strict';
+const authoredProfiles=[require('../content/sonia-profile.json')];
 // Shared user-requested presentation rules. Approval, clinical scope and URL ownership stay separate.
 const fs = require('node:fs');
 const path = require('node:path');
@@ -120,7 +121,8 @@ function detailBody(html,slug,ctx) {
     const clients=field(html,/<dt>Clients<\/dt>\s*<dd>([\s\S]*?)<\/dd>/);
     const fullFocus=field(html,/<dt>Focus areas<\/dt>\s*<dd>([\s\S]*?)<\/dd>/);
     const focusTargets=targetsFor(fullFocus,ctx,slug);
-    body=`<section class="experience-prose"><h2>How this clinician describes their work</h2><p>${esc(page.summary)}</p><dl class="experience-facts"><dt>Who they work with</dt><dd>${esc(clients)}</dd></dl></section><section class="experience-prose"><h2>Follow a focus area into more detail</h2><p>Explore the focus areas described in this biography. Open a topic to read more, then ask about how this clinician works with the question you are bringing.</p><p class="experience-profile-focus">${esc(fullFocus)}</p></section><section class="experience-prose"><h2>Bring a question about working together</h2><p>You might ask how the first appointment is structured, how your priorities would shape the work, or how to raise a concern about fit. Check the appointment format, availability, and intended service before requesting a time. You can request an appointment with this clinician directly from this profile.</p><div class="experience-topic-grid">${cards(focusTargets,ctx,slug,6)}</div></section>`;
+    const profile=authoredProfiles.find(p=>p.slug===slug);
+    body=`${profile ? profile.sections.map(s=>`<section class="experience-prose"><h2>${esc(s.heading)}</h2>${s.paragraphs.map(p=>`<p>${esc(p)}</p>`).join('')}</section>`).join('')+`<section class="experience-prose"><h2>Specialties</h2><ul>${profile.specialties.map(s=>`<li>${esc(s)}</li>`).join('')}</ul></section>` : `<section class="experience-prose"><h2>How this clinician describes their work</h2><p>${esc(page.summary)}</p><dl class="experience-facts"><dt>Who they work with</dt><dd>${esc(clients)}</dd></dl></section>`}<section class="experience-prose"><h2>Follow a focus area into more detail</h2><p>Explore the focus areas described in this biography. Open a topic to read more, then ask about how this clinician works with the question you are bringing.</p><p class="experience-profile-focus">${esc(fullFocus)}</p></section><section class="experience-prose"><h2>Bring a question about working together</h2><p>You might ask how the first appointment is structured, how your priorities would shape the work, or how to raise a concern about fit. Check the appointment format, availability, and intended service before requesting a time. You can request an appointment with this clinician directly from this profile.</p><div class="experience-topic-grid">${cards(focusTargets,ctx,slug,6)}</div></section>`;
     related=cards(person.approaches,ctx,slug,10);asideTitle='Approaches named in the published profile';
     if(!related)related='<p>Ask this clinician how they work; no additional approach use is being inferred.</p>';
   }

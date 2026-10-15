@@ -22,7 +22,7 @@ const heroSources = Object.freeze({
   'dr-nolan': {width:561,height:628,maxWidth:400},
   'emily-johnsrud-bio': {width:512,height:641,maxWidth:380},
   'gary-ashley': {width:1254,height:1254,maxWidth:500},
-  'new-page-47': {width:1891,height:2553,maxWidth:440}
+  'sonia-hassan-bio': {width:1891,height:2553,maxWidth:440}
 });
 function heroPortrait(p) {
   const source=heroSources[p.slug];

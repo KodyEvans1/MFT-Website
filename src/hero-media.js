@@ -9,7 +9,7 @@ const owners=new Map([
  ['83275db3-920a-42f3-9c8e-618474a34b52','dr-nolan'],
  ['832941fe-27a3-4b13-97d9-720a96c1bed2','emily-johnsrud-bio'],
  ['b81f7500-fa68-425b-b2a9-8b0029f1fc04','gary-ashley'],
- ['adfbbf96-f0ab-49ce-9f82-3c3a2906adc0','new-page-47']
+ ['adfbbf96-f0ab-49ce-9f82-3c3a2906adc0','sonia-hassan-bio']
 ]);
 function assetKey(src){
  try {const u=new URL(src.replace(/&amp;/g,'&'),'https://www.mft.care');const m=u.pathname.match(/\/([a-f0-9-]{36})\//i);return m?m[1].toLowerCase():u.origin+decodeURIComponent(u.pathname);}catch{return null;}

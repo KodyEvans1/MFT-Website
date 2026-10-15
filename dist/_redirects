@@ -1,1 +1,3 @@
-# No content redirects are active until each mapping is explicitly approved.
+# Sonia profile migration; unrelated mappings remain pending.
+/new-page-47 /sonia-hassan-bio/ 301
+/new-page-47/ /sonia-hassan-bio/ 301

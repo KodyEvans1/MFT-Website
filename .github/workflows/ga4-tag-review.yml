@@ -1,0 +1,27 @@
+name: Inspect GA4 tag configuration
+on:
+  push:
+    branches: ['fix/ga4-connection-20261015']
+    paths: ['.github/workflows/ga4-tag-review.yml']
+permissions:
+  contents: read
+jobs:
+  tag:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - run: |
+          mkdir -p tmp/ga4-tag
+          python - <<'PY'
+          from urllib.request import urlopen
+          from pathlib import Path
+          with urlopen('https://www.googletagmanager.com/gtag/js?id=G-BTK39BBNRE',timeout=30) as r:
+              data=r.read()
+          Path('tmp/ga4-tag/gtag.js').write_bytes(data)
+          print('Read public tag script bytes:',len(data))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ga4-tag-review
+          path: tmp/ga4-tag/
+          retention-days: 3

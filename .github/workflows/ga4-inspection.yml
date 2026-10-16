@@ -1,0 +1,46 @@
+name: Inspect public GA4 installation
+on:
+  push:
+    branches: ['fix/ga4-connection-20261015']
+    paths: ['.github/workflows/ga4-inspection.yml']
+permissions:
+  contents: read
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          mkdir -p tmp/ga4-inspection
+          python - <<'PY'
+          import json,re
+          from urllib.request import Request,urlopen
+          from pathlib import Path
+          report=[]
+          for route in ['/', '/team/', '/sonia-hassan-bio/', '/check-my-coverage/', '/marriage-reset-assessment/', '/reports/analytics-integration.json']:
+              try:
+                  with urlopen(Request('https://www.mft.care'+route,headers={'Cache-Control':'no-cache'}),timeout=25) as r:
+                      text=r.read().decode(); record={'route':route,'status':r.status,'csp':r.headers.get('Content-Security-Policy'),'scripts':re.findall(r'<script[^>]*src="[^"]+"[^>]*>',text)}
+                      if route.endswith('.json'): record['integration']=json.loads(text)
+              except Exception as e: record={'route':route,'error':str(e)}
+              report.append(record)
+          Path('tmp/ga4-inspection/result.json').write_text(json.dumps(report,indent=2))
+          print(json.dumps(report,indent=2))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ga4-inspection
+          path: tmp/ga4-inspection/
+          retention-days: 7
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ga4-repair-source
+          path: |
+            src/
+            scripts/
+            content/
+            tests/
+            reports/
+            netlify.toml
+            package.json
+          retention-days: 7

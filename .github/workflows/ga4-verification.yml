@@ -1,0 +1,48 @@
+name: Verify consent-based GA4 connection
+on:
+  push:
+    branches: ['fix/ga4-connection-20261015', main]
+    paths:
+      - 'src/analytics-build.js'
+      - 'src/assets/mft-analytics.js'
+      - 'src/assets/mft-ga4-frame.js'
+      - 'scripts/prepare-analytics.js'
+      - 'tests/analytics*'
+      - 'netlify.toml'
+      - '.github/workflows/ga4-verification.yml'
+permissions:
+  contents: read
+jobs:
+  ga4:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: npm run check
+      - run: npm run verify:publication
+      - name: Rehearse enabled production build
+        run: npm run build
+        env:
+          CONTEXT: production
+          SITE_INDEXING_ENABLED: 'true'
+          GA4_BASIC_MEASUREMENT_ENABLED: 'true'
+      - run: python -m pip install playwright==1.57.0
+      - run: python -m playwright install --with-deps chromium
+      - name: Inspect GA4 network payloads and consent
+        run: python tests/analytics-browser.py
+        env:
+          MFT_ANALYTICS_LIVE: ${{ github.ref == 'refs/heads/main' && 'true' || 'false' }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ga4-connection-verification
+          path: |
+            tmp/analytics-browser/
+            dist/reports/analytics-integration.json
+          retention-days: 7

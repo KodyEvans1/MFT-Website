@@ -4,7 +4,8 @@ const xp=require('../src/site-experience'),dist=path.resolve(__dirname,'../dist'
 const read=slug=>fs.readFileSync(path.join(dist,slug,'index.html'),'utf8');
 const registry=require('../content/seo-registry.json');
 const files=d=>fs.readdirSync(d,{withFileTypes:true}).flatMap(e=>e.isDirectory()?files(path.join(d,e.name)):[path.join(d,e.name)]);
-const pages=()=>files(dist).filter(f=>f.endsWith('.html'));
+// The non-indexable analytics helper is a technical asset, not a care page.
+const pages=()=>files(dist).filter(f=>f.endsWith('.html')&&f!==path.join(dist,'assets/mft-ga4-frame.html'));
 test('Plaud: breadcrumb strips removed from every page, not just the starting guide',()=>{for(const f of pages())assert.doesNotMatch(fs.readFileSync(f,'utf8'),/<nav\b[^>]*class="[^"]*\bbreadcrumbs\b/,f);});
 test('Plaud: logo and Marriage.Reset top navigation on all pages',()=>{for(const f of pages()){const h=fs.readFileSync(f,'utf8');assert.match(h,/<img[^>]*src="\/assets\/mft-logo.svg"/,f);assert.match(h,/<nav[^>]*class="primary-nav"[\s\S]*?href="\/marriagereset\/"/,f);assert.doesNotMatch(h,/Marriage\.Family\.Therapy\.<\/span>/,f);}});
 test('Plaud: no public appointment action uses Ops, including the error page',()=>{for(const f of pages()){const h=fs.readFileSync(f,'utf8').replace(/<footer\b[^>]*>[\s\S]*?<\/footer>/g,'');for(const a of h.matchAll(/<a\b([^>]*href="https:\/\/ops\.mft\.care[^>]*?)>([\s\S]*?)<\/a>/g))assert.ok(require('../src/marriage-reset').routes.some(slug=>f.endsWith('/'+slug+'/index.html'))&&a[1].includes('data-mr-client-access')&&!a[1].includes('data-mft-booking')&&a[1].includes('href="https://ops.mft.care/"'),f);}});

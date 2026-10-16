@@ -10,3 +10,11 @@
 
 # Staging is noindex by default. Set SITE_INDEXING_ENABLED=true only after
 # launch approval, DNS preparation, redirect review, and final hosted QA.
+
+# Owner authorized activation of existing G-BTK39BBNRE; no preview measurement.
+[context.production.environment]
+  GA4_BASIC_MEASUREMENT_ENABLED = "true"
+[context.deploy-preview.environment]
+  GA4_BASIC_MEASUREMENT_ENABLED = "false"
+[context.branch-deploy.environment]
+  GA4_BASIC_MEASUREMENT_ENABLED = "false"

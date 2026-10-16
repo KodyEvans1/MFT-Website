@@ -20,6 +20,7 @@ const report={version:1,measurementId:'G-BTK39BBNRE',enabled:enabled(),approvalS
 fs.copyFileSync(path.join(root,'src/assets/mft-ga4-bootstrap.js'),path.join(dist,'assets/mft-ga4-bootstrap.js'));
 fs.copyFileSync(path.join(root,'src/assets/mft-ga4-frame.js'),path.join(dist,'assets/mft-ga4-frame.js'));
 fs.copyFileSync(path.join(root,'src/assets/mft-analytics.js'),path.join(dist,'assets/mft-analytics.js'));
+fs.writeFileSync(path.join(dist,'assets/mft-ga4-frame.html'),fs.readFileSync(path.join(root,'src/assets/mft-ga4-frame.html'),'utf8').replace('__MFT_FRAME_SCRIPT_VERSION__',assetVersion('mft-ga4-frame.js')));
 for(const file of files){
   const rel=path.relative(dist,file).split(path.sep).join('/');
   const route=rel==='index.html'?'/':'/'+rel.replace(/index\.html$/,'');

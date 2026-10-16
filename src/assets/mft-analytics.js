@@ -27,10 +27,13 @@ function send(){
  if(frame||status()!=='granted')return;
  frame=document.createElement('iframe');frame.hidden=true;frame.title='Optional website traffic measurement';
  frame.setAttribute('aria-hidden','true');frame.tabIndex=-1;frame.referrerPolicy='no-referrer';
- frame.srcdoc='<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="referrer" content="no-referrer"><title>M.F.T. Public Website</title></head><body><script src="/assets/mft-ga4-frame.js?v='+frameVersion+'" defer></script></body></html>';
- frame.addEventListener('load',()=>{if(frame&&status()==='granted')frame.contentWindow.postMessage({type:'mft:analytics:pageview',pageKey,referrer:safeReferrer()},location.origin);},{once:true});
+ frame.src='/assets/mft-ga4-frame.html?v='+frameVersion;
  document.body.appendChild(frame);
 }
+window.addEventListener('message',event=>{
+ if(!frame||status()!=='granted'||event.source!==frame.contentWindow||event.origin!==location.origin||event.data?.type!=='mft:analytics:ready')return;
+ frame.contentWindow.postMessage({type:'mft:analytics:pageview',pageKey,referrer:safeReferrer()},location.origin);
+});
 function grant(){if(privacySignal())return;save('granted');removeBanner();send();}
 function deny(){save('denied');stop();removeBanner();}
 function banner(force=false){

@@ -2,6 +2,7 @@
 const crypto = require('node:crypto');
 const fs = require('node:fs'), path = require('node:path');
 function assetVersion(name) { return crypto.createHash('sha256').update(fs.readFileSync(path.join(__dirname,'assets',name))).digest('hex').slice(0,16); }
+function frameVersion() { return crypto.createHash('sha256').update(fs.readFileSync(path.join(__dirname,'assets/mft-ga4-frame.js'))).update(fs.readFileSync(path.join(__dirname,'assets/mft-ga4-frame.html'))).digest('hex').slice(0,16); }
 const { indexingEnabled } = require('./seo-safety');
 
 const MEASUREMENT_ID = 'G-BTK39BBNRE';
@@ -47,9 +48,9 @@ function inject(html, route, allowedRoutes, env = process.env) {
   if (!enabled(env) || !allowedRoutes.has(p) || isSensitive(p) || /<(?:form|input|textarea)\b/i.test(html)) return { html, injected: false, reason: 'disabled-or-not-approved' };
   if (/G-BTK39BBNRE|mft-analytics\.js/.test(html)) throw new Error('Existing Google Analytics integration detected; refusing duplicate installation');
   const tag = '<script src="/assets/mft-analytics.js?v=' + assetVersion('mft-analytics.js') +
-    '" defer data-mft-measurement-id="' + MEASUREMENT_ID + '" data-mft-frame-version="' + assetVersion('mft-ga4-frame.js') +
+    '" defer data-mft-measurement-id="' + MEASUREMENT_ID + '" data-mft-frame-version="' + frameVersion() +
     '" data-mft-page-key="' + pageKey(p) + '"></script>';
   if (!html.includes('</body>')) throw new Error('Missing closing body tag for analytics injection: ' + p);
   return { html: html.replace('</body>', tag + '</body>'), injected: true, reason: 'approved-production-page' };
 }
-module.exports = { MEASUREMENT_ID, SITE, ENABLE_FLAG, enabled, normalizeRoute, isSensitive, pageKey, inject, assetVersion, strip };
+module.exports = { MEASUREMENT_ID, SITE, ENABLE_FLAG, enabled, normalizeRoute, isSensitive, pageKey, inject, assetVersion, strip, frameVersion };

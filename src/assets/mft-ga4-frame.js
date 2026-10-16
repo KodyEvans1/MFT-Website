@@ -1,7 +1,7 @@
 /* Empty-document GA4. Parent interactions and form contents are never forwarded. */
 (()=>{'use strict';
 const id='G-BTK39BBNRE',origins=['https://www.mft.care','https://mft.care'];
-if(window.parent===window)return;
+if(window.parent===window||!origins.includes(location.origin))return;
 let initialized=false;
 window.addEventListener('message',event=>{
  if(initialized||event.source!==window.parent||!origins.includes(event.origin))return;
@@ -22,4 +22,5 @@ window.addEventListener('message',event=>{
  gtag('event','page_view',{send_to:id,page_location:pageLocation,page_title:'M.F.T. Public Website',page_referrer:referrer});
  const script=document.createElement('script');script.async=true;script.referrerPolicy='no-referrer';script.src='https://www.googletagmanager.com/gtag/js?id='+id;document.head.appendChild(script);
 });
+window.parent.postMessage({type:'mft:analytics:ready'},location.origin);
 })();

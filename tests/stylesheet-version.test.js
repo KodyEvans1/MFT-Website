@@ -11,7 +11,7 @@ test('Only the shared stylesheet URL changes; versioning is idempotent',()=>fixt
 }));
 test('Missing stylesheet links fail instead of silently retaining an old layout',()=>fixture(r=>{fs.writeFileSync(path.join(r,'dist/index.html'),'<h1>No stylesheet</h1>');assert.throws(()=>apply(r),/Expected one/);}));
 test('Every completed page uses the current version, including drafts and the error page',()=>{
- const version=sourceVersion(root);const walk=d=>fs.readdirSync(d,{withFileTypes:true}).flatMap(e=>e.isDirectory()?walk(path.join(d,e.name)):[path.join(d,e.name)]);const html=walk(path.join(root,'dist')).filter(f=>f.endsWith('.html'));assert.ok(html.length>800);for(const f of html){const h=fs.readFileSync(f,'utf8');assert.ok(h.includes('href="/assets/styles.css?v='+version+'"'),f);assert.doesNotMatch(h,/href="\/assets\/styles\.css"/);}
+ const version=sourceVersion(root);const walk=d=>fs.readdirSync(d,{withFileTypes:true}).flatMap(e=>e.isDirectory()?walk(path.join(d,e.name)):[path.join(d,e.name)]);const html=walk(path.join(root,'dist')).filter(f=>f.endsWith('.html')&&f!==path.join(root,'dist/assets/mft-ga4-frame.html'));assert.ok(html.length>800);for(const f of html){const h=fs.readFileSync(f,'utf8');assert.ok(h.includes('href="/assets/styles.css?v='+version+'"'),f);assert.doesNotMatch(h,/href="\/assets\/styles\.css"/);}
 });
 test('Stylesheet versioning precedes protected-core snapshots and expansion clones',()=>{
  const s=fs.readFileSync(path.join(root,'scripts/build-site.js'),'utf8');assert.ok(s.indexOf("'scripts/prepare-booking.js'")<s.indexOf("'src/seo-expansion.js'"));assert.ok(fs.readFileSync(path.join(root,'scripts/prepare-booking.js'),'utf8').includes("require('./prepare-stylesheet-version').apply(root)"));

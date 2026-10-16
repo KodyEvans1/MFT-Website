@@ -12,6 +12,10 @@ function apply(dist) {
     const rel = path.relative(dist,file).split(path.sep).join('/');
     const route = analytics.normalizeRoute('/' + rel.replace(/index\.html$/, ''));
     let html = fs.readFileSync(file, 'utf8');
+    if (rel === 'assets/mft-ga4-frame.html') {
+      if (!/name="robots" content="noindex,nofollow"/.test(html) || /data-mft-measurement-id=|googletagmanager\.com/.test(html) || sitemap.has(route)) throw Error('Unsafe analytics helper document');
+      continue;
+    }
     if (!allowed.has(route)) {
       const cleaned = analytics.strip(html);
       if (cleaned !== html) { fs.writeFileSync(file,cleaned); stripped.push(route); html = cleaned; }

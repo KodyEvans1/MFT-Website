@@ -25,14 +25,16 @@ function stop(){
 }
 function send(){
  if(frame||measured||status()!=='granted')return;
- frame=document.createElement('iframe');frame.hidden=true;frame.title='Optional website traffic measurement';
+ frame=document.createElement('iframe');frame.width='1';frame.height='1';
+ frame.style.cssText='position:fixed;left:-10px;top:-10px;width:1px;height:1px;border:0;opacity:0;pointer-events:none';
+ frame.setAttribute('inert','');frame.title='Optional website traffic measurement';
  frame.setAttribute('aria-hidden','true');frame.tabIndex=-1;frame.referrerPolicy='no-referrer';
  frame.src='/assets/mft-ga4-frame.html?v='+frameVersion;
  document.body.appendChild(frame);
 }
 window.addEventListener('message',event=>{
  if(!frame||status()!=='granted'||event.source!==frame.contentWindow||event.origin!==location.origin)return;
- if(event.data?.type==='mft:analytics:complete'){measured=true;frame.remove();frame=null;return;}
+ if(event.data?.type==='mft:analytics:complete'){measured=true;return;}
  if(event.data?.type==='mft:analytics:ready')frame.contentWindow.postMessage({type:'mft:analytics:pageview',pageKey,referrer:safeReferrer()},location.origin);
 });
 function grant(){if(privacySignal())return;save('granted');removeBanner();send();}

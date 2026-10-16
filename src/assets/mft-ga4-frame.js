@@ -20,7 +20,7 @@ window.addEventListener('message',event=>{
  gtag('js',new Date());
  gtag('config',id,{send_page_view:false,page_location:pageLocation,page_title:'M.F.T. Public Website',page_referrer:referrer,allow_google_signals:false,allow_ad_personalization_signals:false,allow_enhanced_conversions:false,user_data:{},cookie_domain:'none',cookie_prefix:'mftga',cookie_flags:'SameSite=Lax;Secure'});
  // This integration counts visits only; stop automatic activity after this event.
- gtag('event','page_view',{send_to:id,page_location:pageLocation,page_title:'M.F.T. Public Website',page_referrer:referrer,event_callback:()=>{window['ga-disable-'+id]=true;},event_timeout:2000});
+ gtag('event','page_view',{send_to:id,page_location:pageLocation,page_title:'M.F.T. Public Website',page_referrer:referrer,event_callback:()=>{window['ga-disable-'+id]=true;window.parent.postMessage({type:'mft:analytics:complete'},location.origin);},event_timeout:2000});
  const script=document.createElement('script');script.async=true;script.referrerPolicy='no-referrer';script.src='https://www.googletagmanager.com/gtag/js?id='+id;document.head.appendChild(script);
 });
 window.parent.postMessage({type:'mft:analytics:ready'},location.origin);

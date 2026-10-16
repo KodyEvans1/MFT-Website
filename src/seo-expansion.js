@@ -42,3 +42,6 @@ fs.appendFileSync(path.join(dist,'assets/styles.css'),fs.readFileSync(path.join(
 const serviceReport=require('./service-check').inspect(dist);
 fs.writeFileSync(path.join(dist,'reports/service-guides.json'),JSON.stringify(serviceReport,null,2)+'\n');
 if(serviceReport.errors.length)throw Error(serviceReport.errors.join('\n'));
+
+// Analytics identities cannot be inherited by generated draft routes.
+require('../scripts/validate-analytics').apply(dist);

@@ -9,7 +9,7 @@ ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/'tmp/analytics-browser';OUT.mkdir(parents=True,exist_ok=True)
 BASE='https://www.mft.care';MID='G-BTK39BBNRE';LIVE=os.getenv('MFT_ANALYTICS_LIVE')=='true'
 CSP=re.search(r'Content-Security-Policy: ([^\n]+)',(ROOT/'dist/_headers').read_text())[1]
-report={'pass':False,'live':LIVE,'checks':[],'hits':[],'deliveries':[], 'scope':'Public website traffic only. Test hits intercepted; only one actual consented live-homepage visit may be sent. No appointments or client information.'}
+report={'pass':False,'live':LIVE,'checks':[],'hits':[],'deliveries':[],'console':[],'failures':[], 'scope':'Public website traffic only. Test hits intercepted; only one actual consented live-homepage visit may be sent. No appointments or client information.'}
 fixture=os.getenv('MFT_GTAG_FIXTURE')
 current_case=''; google_requests=[]; hits=[]; send_live=False
 
@@ -59,10 +59,17 @@ def wait_hit(page):
     for _ in range(80):
         page.wait_for_timeout(100)
         if any(h.get('en')==['page_view'] for h in hits):return
+    report['frameState']=[f.evaluate("""() => ({url:location.href, scripts:[...document.scripts].map(s=>s.src), ready:document.readyState, dataLayer:window.dataLayer ? [...window.dataLayer].map(v=>Array.from(v)) : null})""") for f in page.frames]
+    report['googleLoaderRequests']=len(google_requests)
     raise AssertionError('No GA4 page_view observed')
 
+def observe(page):
+    page.on('pageerror',lambda error:report['console'].append(str(error)))
+    page.on('console',lambda message:report['console'].append(message.text[:1200]) if message.type=='error' else None)
+    page.on('requestfailed',lambda request:report['failures'].append({'host':urlsplit(request.url).hostname,'path':urlsplit(request.url).path,'error':request.failure}))
+
 def context(browser,**kwargs):
-    c=browser.new_context(viewport={'width':1440,'height':1000},reduced_motion='reduce',**kwargs);c.route('**/*',guard);return c
+    c=browser.new_context(viewport={'width':1440,'height':1000},reduced_motion='reduce',**kwargs);c.route('**/*',guard);c.on('page',observe);return c
 
 def record(label):report['checks'].append({'name':label,'pass':True})
 
@@ -147,8 +154,11 @@ try:
     report['pass']=True
 except Exception as error:
     report['error']=str(error)
-    try:page.screenshot(path=str(OUT/'failure.png'))
-    except Exception:pass
+    try:
+        report['frameState']=[f.evaluate("""() => ({url:location.protocol+'//'+location.host+location.pathname, scripts:[...document.scripts].map(s=>s.src), ready:document.readyState, dataLayer:window.dataLayer ? [...window.dataLayer].map(v=>Array.from(v)) : null})""") for f in page.frames]
+        report['googleLoaderRequests']=len(google_requests)
+        page.screenshot(path=str(OUT/'failure.png'))
+    except Exception as e:report['captureError']=str(e)
     raise
 finally:
     (OUT/'result.json').write_text(json.dumps(report,indent=2))

@@ -38,6 +38,10 @@ function isSensitive(route) {
 function pageKey(route) {
   return crypto.createHash('sha256').update(normalizeRoute(route)).digest('hex').slice(0,16);
 }
+// Generated pages must not inherit the analytics identity of a source template.
+function strip(html) {
+  return html.replace(/<script\b[^>]*src="[^"]*\/mft-(?:analytics|ga4-bootstrap|ga4-frame)\.js(?:\?[^"]*)?"[^>]*>[\s\S]*?<\/script>/gi, '');
+}
 function inject(html, route, allowedRoutes, env = process.env) {
   const p = normalizeRoute(route);
   if (!enabled(env) || !allowedRoutes.has(p) || isSensitive(p) || /<(?:form|input|textarea)\b/i.test(html)) return { html, injected: false, reason: 'disabled-or-not-approved' };
@@ -48,4 +52,4 @@ function inject(html, route, allowedRoutes, env = process.env) {
   if (!html.includes('</body>')) throw new Error('Missing closing body tag for analytics injection: ' + p);
   return { html: html.replace('</body>', tag + '</body>'), injected: true, reason: 'approved-production-page' };
 }
-module.exports = { MEASUREMENT_ID, SITE, ENABLE_FLAG, enabled, normalizeRoute, isSensitive, pageKey, inject, assetVersion };
+module.exports = { MEASUREMENT_ID, SITE, ENABLE_FLAG, enabled, normalizeRoute, isSensitive, pageKey, inject, assetVersion, strip };

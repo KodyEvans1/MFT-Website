@@ -50,7 +50,6 @@ test('browser analytics asset does not read sensitive page or form values',()=>{
   assert.match(isolated,/user_data:\{\}/);
   assert.match(isolated,/cookie_domain:'none'/);
   assert.doesNotMatch(isolated,/parent\.document|top\.document|parent\.location|FormData|querySelector/);
-
 });
 
 test('GA4 bootstrap defaults analytics and ad consent to denied before Google loads',()=>{
@@ -72,4 +71,15 @@ test('activation is production-only in Netlify and measurement assets are versio
  assert.match(toml,/\[context.production.environment\]\s+GA4_BASIC_MEASUREMENT_ENABLED = "true"/);
  for(const context of ['deploy-preview','branch-deploy'])assert.ok(toml.includes('[context.'+context+'.environment]\n  GA4_BASIC_MEASUREMENT_ENABLED = "false"'));
  assert.match(a.assetVersion('mft-analytics.js'),/^[a-f0-9]{16}$/);
+});
+
+test('generated templates cannot retain an approved source page analytics identity',()=>{
+ const env={CONTEXT:'production',SITE_INDEXING_ENABLED:'true',GA4_BASIC_MEASUREMENT_ENABLED:'true'};
+ const html='<html><body>Content</body></html>';
+ const tagged=a.inject(html,'/',new Set(['/']),env).html;
+ assert.equal(a.strip(tagged),html);
+ assert.equal(a.strip(a.strip(tagged)),html);
+ const report=JSON.parse(fs.readFileSync(path.join(__dirname,'../dist/reports/analytics-integration.json'),'utf8'));
+ assert.equal(report.finalVerified,true);
+ assert.deepEqual(report.finalPages,[...report.injected].sort());
 });

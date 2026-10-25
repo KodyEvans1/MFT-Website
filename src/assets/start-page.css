@@ -26,3 +26,9 @@
 @media(prefers-reduced-motion:reduce){.start-button{transition:none}.start-guide{scroll-behavior:auto}}
 /* Keep the existing footer wordmark inside very narrow phone screens. */
 @media(max-width:360px){.brand-footer{gap:.6rem}.brand-footer img{width:36px;height:36px}.footer-brand{font-size:1.15rem}.footer-grid>div{min-width:0}.brand-footer span{overflow-wrap:anywhere}.start-guide .start-button{min-width:0;overflow-wrap:anywhere}}
+
+/* Scheduling journey: extend the existing M.F.T. start-guide, not a new visual system. */
+.journey-jump{display:flex;flex-wrap:wrap;gap:.6rem;margin:1.5rem 0}.journey-jump a{display:inline-flex;align-items:center;min-height:44px;padding:.55rem .85rem;border:1px solid #b59d65;border-radius:999px;color:#fff;font-weight:650;text-underline-offset:.2em}
+.journey-stage{font-size:.75rem;line-height:1.5;letter-spacing:.08em;text-transform:uppercase;font-weight:750;color:#476455}.journey-grid p{margin-bottom:0}.journey-couples{background:#e3ece5;border-block:1px solid #c5d2c3;border-radius:20px}.journey-note{padding:1.5rem 1.8rem;border-left:4px solid #b59d65;background:#fff;margin-top:1.5rem;border-radius:4px 14px 14px 4px}.journey-note h3{font-size:1.4rem;margin:0 0 .8rem}.journey-note p{max-width:95ch;line-height:1.8;margin:.7rem 0;color:#415d55}
+.journey-actions{display:flex;flex-wrap:wrap;gap:.8rem;margin-top:1.5rem}.journey-call-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1.5rem}.journey-call-grid article{border-top:2px solid #b59d65;padding-top:1rem;min-width:0}.journey-call-grid h3{font-size:1.4rem;margin:.5rem 0}.journey-call-grid p{color:#415d55;line-height:1.8}.mh-hero-note a{text-underline-offset:.22em;font-weight:650}
+@media(max-width:860px){.journey-call-grid{grid-template-columns:1fr}.journey-couples{border-radius:0}.journey-note{padding:1.3rem}.journey-actions{flex-direction:column}.journey-actions .start-button{width:100%}.journey-jump{gap:.5rem}}

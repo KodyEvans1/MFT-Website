@@ -21,7 +21,7 @@ for (const file of walk(dist).filter(f=>f.endsWith('.html'))) {
   const route = '/' + relative.replace(/index\.html$/,'');
   const mrPrepared = require('../src/marriage-reset').prepare(fs.readFileSync(file,'utf8'),route.replace(/^\/+|\/+$/g,''));
   const cleanHero = require('../src/hero-media').apply(mrPrepared,route.replace(/^\/+|\/+$/g,''));
-  const r = decorateHtml(cleanHero,route);
+  const r = decorateHtml(require('../src/start-page').addJourneyLinks(cleanHero),route);
   fs.writeFileSync(file,r.html);
   report.pages.push({route,buttons:r.buttons,widget:r.widget});
 }

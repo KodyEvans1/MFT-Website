@@ -88,7 +88,7 @@ test('Ops is never a client therapy booking destination',()=>{
 test('10-minute consultation requires acknowledgment before SimplePractice',()=>{
   const js=require('node:fs').readFileSync(require('node:path').join(__dirname,'../src/assets/mft-booking.js'),'utf8');
   assert.match(js,/data-mft-ten-minute-consultation/);
-  assert.match(js,/one time for new clients only/);
+  assert.match(js,/available to all clients/);
   assert.match(js,/not a therapy session/);
   assert.match(js,/Continue to scheduling/);
 });

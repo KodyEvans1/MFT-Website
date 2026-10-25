@@ -17,6 +17,34 @@
     const consultationContext=(a.closest('[data-ui="card"],.option-card')?.textContent||'')+' '+(a.textContent||'');
     if (/free\s*(?:10[- ]minute\s*)?(?:phone\s*)?consultation|10[- ]minute|meet-and-greet|phone introduction/i.test(consultationContext)) a.dataset.mftTenMinuteConsultation='true';
   });
+  function placement(a){return a.closest('header')?'header':a.closest('footer')?'footer':a.closest('.mft-consultation-gate')?'dialog':'body';}
+  function measure(names,a,done){
+    const api=window.MFTSchedulingMeasurement;
+    try{if(api&&typeof api.track==='function')return api.track(names,placement(a),done);}catch{}
+    if(done)done();return false;
+  }
+  function handoff(e,a,names){
+    if(e.defaultPrevented||e.isTrusted!==true||e.button>1)return;
+    // Native modified/new-tab navigation stays untouched. No data is sent without consent.
+    if(e.type==='auxclick'||e.ctrlKey||e.metaKey||e.shiftKey||e.altKey||a.target==='_blank'){
+      measure(names,a);return;
+    }
+    if(!window.MFTSchedulingMeasurement||window.MFTAnalyticsConsent?.status()!=='granted')return;
+    // Keep the real destination unchanged, with a bounded best-effort measurement flush.
+    const href=a.href;let completed=false;
+    const go=()=>{if(!completed){completed=true;location.assign(href);}};
+    e.preventDefault();
+    setTimeout(go,300); // independent failsafe, even if measurement fails or throws
+    measure(names,a,go);
+  }
+  function normalBookingClick(e){
+    const a=e.target.closest&&e.target.closest('a[data-mft-booking="true"]');
+    if(!a||!core.isAppointment(a.href,a.textContent))return;
+    const event=a.dataset.mftTenMinuteConsultation==='true'?'consultation_click':a.hasAttribute('data-spwidget-clinician-id')?'clinician_schedule_click':'appointment_request_click';
+    handoff(e,a,[event,'simplepractice_exit']);
+  }
+  document.addEventListener('click',normalBookingClick);
+  document.addEventListener('auxclick',e=>{if(e.button===1)normalBookingClick(e);});
   if (typeof HTMLDialogElement === 'undefined' || !HTMLDialogElement.prototype.showModal) return;
   const dialog=document.createElement('dialog');
   dialog.className='mft-consultation-gate';
@@ -44,9 +72,15 @@
     check.checked=false;syncLink();
     try { dialog.showModal(); } catch { destination=null; return; }
     e.preventDefault();e.stopImmediatePropagation();
+    if(e.isTrusted===true)measure(['consultation_click'],a);
   },true);
   go.addEventListener('click',e=>{
-    if(!destination||!check.checked)e.preventDefault();
-    // Otherwise allow the real anchor's native navigation, not a synthetic click.
+    if(!destination||!check.checked){e.preventDefault();return;}
+    handoff(e,go,['simplepractice_exit']);
+  });
+  go.addEventListener('auxclick',e=>{
+    if(e.button!==1)return;
+    if(!destination||!check.checked){e.preventDefault();return;}
+    handoff(e,go,['simplepractice_exit']);
   });
 })();

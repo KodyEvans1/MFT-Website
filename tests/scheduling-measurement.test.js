@@ -56,10 +56,11 @@ test('consented acquisition persists across an internal page, with expiry',()=>{
  const y=parentFixture({session:{'mft.analytics.source.v1':JSON.stringify(a)}});y.c.MFTAnalyticsConsent.grant();y.ready();
  assert.deepEqual(y.sent[0].message.source,{source:'direct',medium:'none'});
 });
-test('consent refusal erases source state and releases navigation callbacks',()=>{
+test('consent refusal erases source state, disables the helper and releases navigation callbacks',()=>{
  const x=parentFixture();x.c.MFTAnalyticsConsent.grant();x.ready();let n=0;
  x.c.MFTSchedulingMeasurement.track(['simplepractice_exit'],'header',()=>n++);x.c.MFTAnalyticsConsent.deny();
  assert.equal(n,1);assert.deepEqual(x.c.sessionStorage.all(),{});assert.equal(x.elements[0].removed,true);
+ assert.equal(x.elements[0].contentWindow['ga-disable-G-BTK39BBNRE'],true);
  x.timers.forEach(f=>f());assert.equal(n,1);
 });
 test('GPC, DNT and nonproduction origins cannot start measurement',()=>{
@@ -96,12 +97,12 @@ test('approved campaign attribution and denied advertising features survive fram
  for(const a of consent)for(const key of ['ad_storage','ad_user_data','ad_personalization'])assert.equal(a[2][key],'denied');
  const config=x.commands().find(a=>a[0]==='config')[2];assert.equal(config.allow_google_signals,false);assert.equal(config.allow_enhanced_conversions,false);
 });
-test('intent can be sent after initial page-view completion; duplicate batch cannot double count',()=>{
- const x=frameFixture();x.init();x.events()[0][2].event_callback();assert.equal(x.c['ga-disable-G-BTK39BBNRE'],true);
+test('intent after page-view completion retains active consent and duplicate batch cannot double count',()=>{
+ const x=frameFixture();x.init();x.events()[0][2].event_callback();assert.notEqual(x.c['ga-disable-G-BTK39BBNRE'],true);
  const batch={type:'mft:analytics:intent',id:'m1',names:['appointment_request_click','simplepractice_exit'],placement:'header',clinicianId:'private-name',gclid:'private-token'};
- x.send(batch);x.send(batch);assert.equal(x.events().length,3);assert.equal(x.c['ga-disable-G-BTK39BBNRE'],false);
- for(const e of x.events().slice(1))e[2].event_callback();
- assert.equal(x.c['ga-disable-G-BTK39BBNRE'],true);assert.equal(x.outgoing.filter(e=>e.message.type==='mft:analytics:ack').length,1);
+ x.send(batch);x.send(batch);assert.equal(x.events().length,3);
+ for(const e of x.events().slice(1))e[2].event_callback();x.timers.forEach(f=>f());
+ assert.notEqual(x.c['ga-disable-G-BTK39BBNRE'],true);assert.equal(x.outgoing.filter(e=>e.message.type==='mft:analytics:ack').length,1);
  assert.doesNotMatch(JSON.stringify(x.commands()),/private-name|private-token/);
 });
 test('frame rejects completed booking names, free-text placement and extra duplicate calls',()=>{

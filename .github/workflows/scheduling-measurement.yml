@@ -37,13 +37,32 @@ jobs:
       - run: python -m playwright install --with-deps chromium
       - name: Trace synthetic callback and navigation order
         run: python tests/scheduling-transport-probe.py
+      - name: Publish synthetic-only trace diagnostic
+        if: always()
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path('tmp/scheduling-measurement/transport-probe.json')
+          if p.exists():
+              data = json.loads(p.read_text())
+              value = json.dumps(data, separators=(',', ':'))
+              print('::warning file=tests/scheduling-transport-probe.py,line=1,title=Synthetic transport trace::' + value.replace('%', '%25').replace('\r', '%0D').replace('\n', '%0A'))
+          else:
+              print('::error file=tests/scheduling-transport-probe.py,line=1::Expected synthetic transport trace missing')
+          PY
       - name: Real Google script with intercepted collector and scheduler
         run: python tests/scheduling-measurement-browser.py
       - uses: actions/upload-artifact@v4
         if: always()
         with:
+          name: scheduling-transport-diagnostics
+          path: tmp/scheduling-measurement/
+          if-no-files-found: error
+          retention-days: 7
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
           name: scheduling-measurement-verification
-          path: |
-            tmp/scheduling-measurement/
-            dist/reports/analytics-integration.json
+          path: dist/reports/analytics-integration.json
           retention-days: 7

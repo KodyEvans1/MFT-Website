@@ -37,7 +37,7 @@ def guard(route):
    hits.append(data)
   route.fulfill(status=204,body='')
  elif u.hostname in ['marriagefamilytherapy.clientsecure.me','clientsecure.me']:
-  destinations.append(req.url)
+  if req.is_navigation_request():destinations.append(req.url)
   route.fulfill(status=200,content_type='text/html',body='<h1>Intercepted scheduler. No real appointment request.</h1>')
  else:route.abort()
 
@@ -50,12 +50,13 @@ def start(browser,path='/',consent=None,legacy=None,viewport=None,signal=None):
  page=c.new_page();page.on('pageerror',lambda e:errors.append(str(e)));page.goto(BASE+path,wait_until='domcontentloaded');return c,page
 
 def count(name):return sum(h.get('en')==[name] for h in hits)
+def diagnostic():return {'events':[h.get('en',[''])[0] for h in hits],'destinations':destinations,'pageErrors':errors,'tagLoads':len(loaders)}
 def wait_event(page,name):
  deadline=time.monotonic()+12
  while time.monotonic()<deadline:
   if count(name):return
   page.wait_for_timeout(100)
- raise AssertionError('No event received: '+name)
+ raise AssertionError('No event received: '+name+' '+json.dumps(diagnostic()))
 def check(name):
  assert not errors,errors
  report['checks'].append({'name':name,'pass':True})
@@ -82,17 +83,21 @@ try:
   check('Consultation open and cancel do not count as handoff or booking')
   page.locator('.mh-hero a[data-mft-booking]').click();page.locator('.mft-consultation-gate input[type="checkbox"]').check()
   page.locator('[data-consultation-continue]').click();page.wait_for_url('https://marriagefamilytherapy.clientsecure.me/request');page.wait_for_timeout(300)
-  assert count('simplepractice_exit')==1 and len(destinations)==1
+  assert count('simplepractice_exit')==1 and len(destinations)==1,diagnostic()
   assert count('appointment_request_click')==0
   check('Continue emits one handoff and preserves scheduling destination');c.close()
   c,page=start(browser,consent='granted');wait_event(page,'page_view')
   page.locator('footer a[data-mft-booking]').first.focus();page.keyboard.press('Enter');page.wait_for_url('https://marriagefamilytherapy.clientsecure.me/request');page.wait_for_timeout(200)
-  assert count('appointment_request_click')==1 and count('simplepractice_exit')==1
+  assert count('appointment_request_click')==1 and count('simplepractice_exit')==1,diagnostic()
   check('Keyboard footer request: one subtype and one handoff, not two acquisitions');c.close()
   c,page=start(browser,'/sonia-hassan-bio/',consent='granted');wait_event(page,'page_view')
-  expected=page.locator('a[data-spwidget-clinician-id="2065412"]').first.get_attribute('href')
-  page.locator('a[data-spwidget-clinician-id="2065412"]').first.click();page.wait_for_url('https://clientsecure.me/widget-redirect?*');page.wait_for_timeout(200)
-  assert destinations==[expected] and count('clinician_schedule_click')==1 and count('simplepractice_exit')==1
+  link=page.locator('a[data-spwidget-clinician-id="2065412"]').first
+  expected=link.get_attribute('href')
+  report['clinicianBeforeClick']=link.evaluate('(a)=>({label:a.textContent,booking:a.dataset.mftBooking,consultation:a.dataset.mftTenMinuteConsultation||null,hasClinician:a.hasAttribute("data-spwidget-clinician-id"),status:window.MFTAnalyticsConsent.status(),measurement:typeof window.MFTSchedulingMeasurement.track})')
+  link.click();page.wait_for_url('https://clientsecure.me/widget-redirect?*');page.wait_for_timeout(500)
+  assert destinations==[expected],{'expected':expected,**diagnostic()}
+  assert count('clinician_schedule_click')==1,diagnostic()
+  assert count('simplepractice_exit')==1,diagnostic()
   check('Clinician destination preserved without clinician identity in Google payload');c.close()
   c,page=start(browser,consent='denied',viewport={'width':390,'height':844});page.locator('footer a[data-mft-booking]').first.click();page.wait_for_url('https://marriagefamilytherapy.clientsecure.me/request')
   assert not hits and not loaders
@@ -121,7 +126,7 @@ try:
   browser.close()
  report['passed']=True
 except Exception as e:
- report['error']=str(e)
+ report['error']=str(e);report['failureDiagnostics']=diagnostic()
  try:page.screenshot(path=str(OUT/'failure.png'))
  except Exception:pass
  raise

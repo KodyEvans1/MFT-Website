@@ -5,7 +5,7 @@ if(window.parent===window||!origins.includes(location.origin))return;
 const names=new Set(['appointment_request_click','clinician_schedule_click','consultation_click','simplepractice_exit']);
 const placements=new Set(['header','footer','body','dialog']);
 const campaigns=new Set(['24274542446','24362234053']);
-let initialized=false,pageLocation='',referrer='',pending=0,source={};
+let initialized=false,pageLocation='',referrer='',source={};
 const seen=new Set();
 function acknowledge(type,extra={}){window.parent.postMessage({type,...extra},location.origin);}
 function sanitizedSource(a){
@@ -21,11 +21,12 @@ function sanitizedSource(a){
  return out;
 }
 function emit(name,extra,done){
- pending++;window['ga-disable-'+id]=false;
  let finished=false;
- const complete=()=>{if(finished)return;finished=true;pending--;if(pending===0)window['ga-disable-'+id]=true;if(done)done();};
+ const complete=()=>{if(finished)return;finished=true;if(done)done();};
+ // Do not toggle ga-disable between events: that opt-out flag can discard queued
+ // events. Consent withdrawal is owned by the parent, which disables/removes
+ // this empty helper. Automatic metadata remains the same sanitized values.
  window.gtag('event',name,{send_to:id,page_location:pageLocation,page_title:'M.F.T. Public Website',page_referrer:referrer,...source,...extra,transport_type:'beacon',event_callback:complete,event_timeout:2000});
- // A blocked tag must not leave future automatic activity enabled indefinitely.
  setTimeout(complete,2200);
 }
 window.addEventListener('message',event=>{
@@ -48,7 +49,6 @@ window.addEventListener('message',event=>{
   gtag('js',new Date());
   gtag('config',id,{send_page_view:false,page_location:pageLocation,page_title:'M.F.T. Public Website',page_referrer:referrer,...source,allow_google_signals:false,allow_ad_personalization_signals:false,allow_enhanced_conversions:false,user_data:{},cookie_domain:'none',cookie_prefix:'mftga',cookie_flags:'SameSite=Lax;Secure'});
   if(data.sendPageView!==false)emit('page_view',{},()=>acknowledge('mft:analytics:complete'));
-  else window['ga-disable-'+id]=true;
   const script=document.createElement('script');script.async=true;script.referrerPolicy='no-referrer';script.src='https://www.googletagmanager.com/gtag/js?id='+id;document.head.appendChild(script);
   return;
  }

@@ -23,12 +23,12 @@ test('homepage feedback is anonymized and not represented as Google reviews',()=
 });
 test('individual and couples consultation choices use the approved different starting paths',()=>{
   const individual=text(page('new-page')),couples=text(page('marriage-and-couples-therapy-counseling'));
-  assert.match(individual,/26-minute private-pay/);assert.match(individual,/53-minute first clinical session/);assert.doesNotMatch(individual,/30-minute couples consultation/);
+  assert.match(individual,/30-minute private-pay/);assert.match(individual,/Diagnostic evaluation \(90791\)/);assert.doesNotMatch(individual,/30-minute couples consultation/);
   assert.match(couples,/30-minute couples consultation/);assert.match(couples,/couples therapy/i);assert.match(couples,/Couples consultations and couples sessions are private pay/);assert.doesNotMatch(couples,/53-minute first clinical session/);
 });
 test('free consultation links are gated before direct SimplePractice scheduling',()=>{
   for(const slug of ['new-page','marriage-and-couples-therapy-counseling']){const h=page(slug);assert.match(text(h),/10-minute/);assert.match(h,/https:\/\/marriagefamilytherapy\.clientsecure\.me/);}
-  const js=fs.readFileSync(path.join(dist,'assets/mft-booking.js'),'utf8');assert.match(js,/mftTenMinuteConsultation/);assert.match(js,/one time for new clients only/);assert.match(js,/not a therapy session/);assert.match(js,/aria-disabled="true"[^>]*>Continue to scheduling/);
+  const js=fs.readFileSync(path.join(dist,'assets/mft-booking.js'),'utf8');assert.match(js,/mftTenMinuteConsultation/);assert.match(js,/available to all clients/);assert.match(js,/not a therapy session/);assert.match(js,/aria-disabled="true"[^>]*>Continue to scheduling/);
 });
 test('Ops never appears as a client booking or measurement destination',()=>{
   const bad=[];for(const f of fs.readdirSync(dist,{withFileTypes:true})){const file=f.isDirectory()?path.join(dist,f.name,'index.html'):f.name==='index.html'?path.join(dist,'index.html'):null;if(!file||!fs.existsSync(file))continue;const h=fs.readFileSync(file,'utf8');

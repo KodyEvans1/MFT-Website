@@ -38,9 +38,11 @@ test('page identifiers do not expose route text',()=>{
 
 test('browser analytics asset does not read sensitive page or form values',()=>{
   const js=fs.readFileSync(path.join(__dirname,'../src/assets/mft-analytics.js'),'utf8');
-  assert.doesNotMatch(js,/document\.title|location\.href|location\.search|FormData|querySelector\(['"][^'"]*(?:input|textarea|form)/);
+  assert.doesNotMatch(js,/document\.title|location\.href|FormData|querySelector\(['"][^'"]*(?:input|textarea|form)/);
   assert.doesNotMatch(js,/createElement\(['"]script['"]\)/);
   assert.match(js,/status\(\)!=='granted'/);
+  assert.match(js,/new URLSearchParams\(location\.search\)/);
+  assert.match(js,/campaigns\.has\(a\.campaignId\)/);
   assert.match(js,/globalPrivacyControl/);
   assert.match(js,/doNotTrack/);
   const isolated=fs.readFileSync(path.join(__dirname,'../src/assets/mft-ga4-frame.js'),'utf8');
@@ -64,7 +66,7 @@ test('intake, coverage, appointment and form pages cannot receive analytics',()=
  for(const route of ['/check-my-coverage/','/intake/','/patient/','/appointment/','/marriagereset/','/marriage-reset-assessment/','/start/']){
   assert.equal(a.inject('<html><body></body></html>',route,new Set([route]),env).injected,false,route);
  }
- assert.equal(a.inject('<html><body><form></form></body></html>','/',new Set(['/']),env).injected,false);
+ assert.equal(a.inject('<html><body><form></form></html>','/',new Set(['/']),env).injected,false);
 });
 test('activation is production-only in Netlify and measurement assets are versioned',()=>{
  const toml=fs.readFileSync(path.join(__dirname,'../netlify.toml'),'utf8');

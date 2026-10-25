@@ -17,7 +17,6 @@ const callbacks=new Map();
 try{
  const saved=localStorage.getItem(consentKey);
  if(['granted','denied'].includes(saved))choice=saved;
- // The broader v3 purpose requires a fresh choice. A previous refusal remains a refusal.
  else if(localStorage.getItem(legacyConsentKey)==='denied')choice='denied';
 }catch{}
 function privacySignal(){return navigator.globalPrivacyControl===true||navigator.doNotTrack==='1';}
@@ -35,7 +34,7 @@ function cleanSource(value){
  return out;
 }
 function acquisition(){
- // Read once, only after consent. Never retain/transmit the query, click IDs, free text or URLs.
+ // Read once, only after consent; never retain/transmit raw queries or click IDs.
  const q=new URLSearchParams(location.search),s=(q.get('utm_source')||'').toLowerCase(),m=(q.get('utm_medium')||'').toLowerCase();
  const click=['gclid','gbraid','wbraid'].some(k=>/^[A-Za-z0-9_~-]{1,255}$/.test(q.get(k)||''));
  let a={source:'direct',medium:'none'},explicit=Boolean(s||m||click);
@@ -95,8 +94,9 @@ function track(names,placement,done){
  if(typeof done==='function'){
   let completed=false;
   callbacks.set(id,()=>{if(!completed){completed=true;done();}});
-  // Navigation is never dependent on Google, a frame response, or a successful request.
-  setTimeout(()=>finish(id),250);
+  // Bounded fallback: a blocked tag must never prevent scheduling. Allow the
+  // real tag's batching/callback cycle, rather than abandoning the frame at 250ms.
+  setTimeout(()=>finish(id),2000);
  }
  try{
   send();

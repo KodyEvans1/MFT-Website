@@ -2,7 +2,7 @@
 (function () {
   'use strict';
   const core = window.MFTBookingCore, config = window.MFT_BOOKING_CONFIG;
-  if (!core || !config) return; // Static links already work without this enhancement.
+  if (!core || !config) return;
   const routeClinician = core.clinicianForPath(config, location.pathname);
   document.querySelectorAll('a[href]').forEach(a => {
     if (a.hasAttribute('data-mft-booking-fallback')) return;
@@ -25,16 +25,14 @@
   }
   function handoff(e,a,names){
     if(e.defaultPrevented||e.isTrusted!==true||e.button>1)return;
-    // Native modified/new-tab navigation stays untouched. No data is sent without consent.
     if(e.type==='auxclick'||e.ctrlKey||e.metaKey||e.shiftKey||e.altKey||a.target==='_blank'){
       measure(names,a);return;
     }
     if(!window.MFTSchedulingMeasurement||window.MFTAnalyticsConsent?.status()!=='granted')return;
-    // Keep the real destination unchanged, with a bounded best-effort measurement flush.
     const href=a.href;let completed=false;
     const go=()=>{if(!completed){completed=true;location.assign(href);}};
     e.preventDefault();
-    setTimeout(go,300); // independent failsafe, even if measurement fails or throws
+    setTimeout(go,2200); // independent fallback even if the analytics module fails
     measure(names,a,go);
   }
   function normalBookingClick(e){
@@ -65,7 +63,6 @@
     const a=e.target.closest&&e.target.closest('a[data-mft-ten-minute-consultation="true"]');
     if(!a||e.button!==0||e.ctrlKey||e.metaKey||e.shiftKey||e.altKey)return;
     if(!core.isAppointment(a.href,a.textContent))return;
-    // Recompute from the approved configuration, never from query parameters.
     const id=a.getAttribute('data-spwidget-clinician-id');
     const clinician=config.clinicians.find(c=>c.id===id)||null;
     destination=core.destination(config,clinician);

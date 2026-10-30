@@ -1,0 +1,41 @@
+name: Verify returning-client and couples scheduling buttons
+on:
+  push:
+    branches: ['review/scheduling-buttons-20261029', main]
+    paths:
+      - 'src/scheduling-actions.js'
+      - 'src/start-page.js'
+      - 'src/homepage-refresh.js'
+      - 'src/assets/start-page.css'
+      - 'tests/scheduling-actions*'
+      - '.github/workflows/scheduling-actions.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  scheduling-actions:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: npm run check
+      - run: npm run verify:publication
+      - run: python -m pip install playwright==1.57.0
+      - run: python -m playwright install --with-deps chromium
+      - name: Verify choices and actual public destinations without signing in
+        run: python tests/scheduling-actions-browser.py
+        env:
+          MFT_BASE_URL: ${{ github.ref == 'refs/heads/main' && 'https://www.mft.care' || '' }}
+          MFT_VERIFY_SCHEDULER: 'true'
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: scheduling-actions-verification
+          path: tmp/scheduling-actions/
+          retention-days: 14

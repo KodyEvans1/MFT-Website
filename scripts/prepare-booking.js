@@ -17,7 +17,10 @@ if (matches.length) fs.writeFileSync(script,js.replace(legacy,''));
 const report = {version:1, measurementEnabled, pages:[], clinicians:config.clinicians.map(c=>({key:c.key,id:c.id,slug:c.slug}))};
 for (const file of walk(dist).filter(f=>f.endsWith('.html'))) {
   const relative = path.relative(dist,file).split(path.sep).join('/');
-  if (relative === '404.html') continue;
+  if (relative === '404.html') {
+    fs.writeFileSync(file,require('../src/scheduling-actions').apply(fs.readFileSync(file,'utf8')));
+    continue;
+  }
   const route = '/' + relative.replace(/index\.html$/,'');
   const mrPrepared = require('../src/marriage-reset').prepare(fs.readFileSync(file,'utf8'),route.replace(/^\/+|\/+$/g,''));
   const cleanHero = require('../src/hero-media').apply(mrPrepared,route.replace(/^\/+|\/+$/g,''));

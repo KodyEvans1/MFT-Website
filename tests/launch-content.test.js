@@ -22,7 +22,9 @@ test('homepage feedback is anonymized and not represented as Google reviews',()=
   const t=text(page(''));assert.match(t,/paraphrased and anonymized/);assert.match(t,/Individual experiences vary/);assert.doesNotMatch(t,/Google review/i);
 });
 test('individual and couples consultation choices use the approved different starting paths',()=>{
-  const individual=text(page('new-page')),couples=text(page('marriage-and-couples-therapy-counseling'));
+  // Shared appointment shortcuts offer both services; the service bodies stay distinct.
+  const body=h=>h.match(/<main\b[^>]*>[\s\S]*?<\/main>/)[0];
+  const individual=text(body(page('new-page'))),couples=text(body(page('marriage-and-couples-therapy-counseling')));
   assert.match(individual,/30-minute private-pay/);assert.match(individual,/Diagnostic evaluation \(90791\)/);assert.doesNotMatch(individual,/30-minute couples consultation/);
   assert.match(couples,/30-minute couples consultation/);assert.match(couples,/couples therapy/i);assert.match(couples,/Couples consultations and couples sessions are private pay/);assert.doesNotMatch(couples,/53-minute first clinical session/);
 });

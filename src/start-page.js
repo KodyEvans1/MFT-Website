@@ -5,6 +5,7 @@ const SCHEDULE = 'https://marriagefamilytherapy.clientsecure.me/';
 const BENEFITS = 'mailto:support@mft.care?subject=Benefits%20verification';
 const QUESTION = 'mailto:support@mft.care?subject=Website%20question';
 const MR_ACCESS = 'https://ops.mft.care/';
+const scheduling = require('./scheduling-actions');
 
 function startMain() {
   return `<main id="main" class="start-guide" data-scheduling-journey="20261025" data-plaud-review="2026-10-02">
@@ -13,14 +14,15 @@ function startMain() {
       <p class="kicker">Marriage.Family.Therapy</p>
       <h1 id="start-heading">Your path into care.</h1>
       <p class="start-lead">Know what to schedule, what each appointment is for, and what happens next. Individual care and couples care have different starting paths.</p>
-      <nav class="journey-jump" aria-label="Choose your care journey"><a href="#individual-journey">Individual care</a><a href="#couples-journey">Couples care</a><a href="#consultation-call">Your 10-minute call</a></nav>
+      <nav class="journey-jump" aria-label="Choose your care journey"><a href="#individual-journey">Individual care</a><a href="#couples-journey">Couples care</a><a href="#consultation-call">Your 10-minute call</a><a href="#existing-clients">Existing clients</a></nav>
       <a class="start-text-link" href="#start-steps">How to request an appointment <span aria-hidden="true">&darr;</span></a>
     </div>
     <aside class="start-options" id="appointment-options" aria-labelledby="start-options-heading">
       <p class="kicker">Choose where to begin</p><h2 id="start-options-heading">A conversation, or your first appointment.</h2>
       <a class="start-button start-button-gold" href="${SCHEDULE}">Free 10-minute phone consultation <span aria-hidden="true">&rarr;</span></a>
       <a class="start-button start-button-outline" href="${SCHEDULE}">Request an appointment <span aria-hidden="true">&rarr;</span></a>
-      <p class="start-helper">Both buttons open SimplePractice. Choose the appointment type there; a request is not a confirmed appointment. For couples, choose the 30-minute couples consultation before evaluations or ongoing sessions.</p>
+      <div class="mft-guide-scheduling">${scheduling.couplesButton()}${scheduling.existingButton()}</div>
+      <p class="start-helper">Consultation and new-appointment buttons open SimplePractice scheduling. Existing-client buttons open the Client Portal sign-in. Choose the appointment type there; a request is not a confirmed appointment. For couples, choose the 30-minute couples consultation before evaluations or ongoing sessions.</p>
       <div class="start-benefits"><h3>Have a benefits question first?</h3><a class="start-button start-button-outline" href="${BENEFITS}">Verify benefits <span aria-hidden="true">&nearr;</span></a><p class="start-helper">Opens your email app to contact support@mft.care. Please leave insurance numbers and clinical details out of the initial email.</p></div>
     </aside>
   </section>
@@ -38,8 +40,9 @@ function startMain() {
     <ol class="start-step-grid journey-grid">
       <li><span class="journey-stage">01 &middot; Required first step</span><h3>30-minute couples consultation</h3><p>Meet with your couples therapist to discuss what brings you in, begin aligning goals, and agree on the rhythm and frequency of care. This is a paid consultation, separate from ongoing couples sessions.</p></li>
       <li><span class="journey-stage">02 &middot; Each partner separately</span><h3>One diagnostic evaluation per partner</h3><p>Each partner has a separate, one-time diagnostic evaluation with the couples therapist. These appointments gather each person&rsquo;s history, concerns, and perspective to help build a treatment plan that reflects both partners&rsquo; goals.</p></li>
-      <li><span class="journey-stage">03 &middot; Back together</span><h3>53-minute couples sessions</h3><p>After both partner evaluations, return together for couples sessions. Work from a shared, measurable treatment plan, using an evidence-based approach suited to your presenting concerns and reviewing progress along the way.</p></li>
+      <li><span class="journey-stage">03 &middot; Back together</span><h3>53-minute couples sessions</h3><p>Only after the 30-minute consultation and both partner evaluations are completed, return together for the initial 53-minute couples session and then ongoing couples sessions. Work from a shared, measurable treatment plan, using an evidence-based approach suited to your presenting concerns and reviewing progress along the way.</p></li>
     </ol>
+    <p class="mft-scheduling-warning"><strong>Do not request a 53-minute couples session before all three preparation appointments are complete:</strong> the 30-minute consultation and a separate evaluation for each partner. A 10-minute introduction is optional; you may schedule the 30-minute consultation directly. Existing individual clients follow this same couples pathway.</p>
     <aside class="journey-note" aria-labelledby="couples-role-heading"><h3 id="couples-role-heading">A couples therapist, not your ongoing individual therapist.</h3><p>The separate diagnostic evaluations are part of the couples assessment. They do not establish ongoing individual therapy with your couples therapist. If you also need individual therapy, that care is with a separate individual therapist.</p><p>Discuss privacy, records, and how information from the individual evaluations is handled with your couples therapist before those appointments. The practice&rsquo;s disclosure and consent process governs those arrangements.</p></aside>
     <div class="journey-actions"><a class="start-button start-button-green" href="${SCHEDULE}">Request a 30-minute couples consultation <span aria-hidden="true">&rarr;</span></a></div>
     <p class="start-helper">Couples consultations and couples sessions are private pay. Confirm the fees and any applicable coverage for diagnostic evaluations separately; this pathway does not establish insurance eligibility.</p>
@@ -53,6 +56,7 @@ function startMain() {
     </div>
     <p class="start-helper">The phone fallback described here applies to the 10-minute consultation. Confirm the format and any interruption plan for clinical appointments with your clinician.</p>
   </section>
+  ${scheduling.existingSection()}
   <section class="start-section" id="start-steps" aria-labelledby="start-steps-heading">
     <div class="start-section-heading"><p class="kicker">Requesting your appointment</p><h2 id="start-steps-heading">Three practical steps to schedule.</h2></div>
     <ol class="start-step-grid">
@@ -78,7 +82,7 @@ function addJourneyLinks(html) {
   // Shared discovery, before booking decoration and protected-page fingerprints.
   let out=html.replace(/<nav\b[^>]*class="primary-nav"[^>]*>[\s\S]*?<\/nav>/,nav=>nav.includes('href="/how-to-start-therapy/"')?nav:nav.replace('<a href="/services/">','<a href="/how-to-start-therapy/">How to start</a><a href="/services/">'));
   out=out.replace(/<footer\b[^>]*>[\s\S]*?<\/footer>/,foot=>foot.includes('href="/how-to-start-therapy/"')?foot:foot.replace('<h2>Start here</h2><p>','<h2>Start here</h2><p><a href="/how-to-start-therapy/">How scheduling works</a><br>'));
-  return out;
+  return scheduling.apply(out);
 }
 
 function applyPlaudEdits(html, route) {

@@ -17,7 +17,7 @@ jobs:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           ref: ${{ github.sha }}
-          fetch-depth: 2
+          fetch-depth: 3
       - uses: actions/setup-node@v4
         with:
           node-version: 20
@@ -28,7 +28,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          test "$(git rev-parse HEAD^)" = 38b45d81a9403143057df46b856343bc69b7fa3d
+          test "$(git rev-parse HEAD~2)" = 38b45d81a9403143057df46b856343bc69b7fa3d
           python - <<'PY'
           from pathlib import Path
           import hashlib,lzma,subprocess
@@ -57,9 +57,13 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          export CHROME_PATH="$(command -v google-chrome || command -v chromium)"
-          test -n "$CHROME_PATH"
-          python tests/clinician-update-browser.py --public-inspection
+          mkdir -p tmp/clinician-update
+          {
+            export CHROME_PATH="$(command -v google-chrome || command -v chromium || command -v chromium-browser || true)"
+            printf 'Chrome executable: %s\n' "$CHROME_PATH"
+            test -n "$CHROME_PATH"
+            python -u tests/clinician-update-browser.py --public-inspection
+          } 2>&1 | tee tmp/clinician-update/browser-verification.log
       - name: Commit verified source and regenerated dist to this review branch only
         shell: bash
         run: |

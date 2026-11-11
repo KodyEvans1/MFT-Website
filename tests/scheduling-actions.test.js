@@ -6,12 +6,17 @@ const read=slug=>fs.readFileSync(path.join(dist,slug,'index.html'),'utf8');
 const walk=d=>fs.readdirSync(d,{withFileTypes:true}).flatMap(e=>e.isDirectory()?walk(path.join(d,e.name)):[path.join(d,e.name)]);
 const pages=()=>walk(dist).filter(f=>f.endsWith('.html')&&!f.endsWith('/assets/mft-ga4-frame.html'));
 const plain=h=>h.replace(/<[^>]+>/g,' ').replace(/\s+/g,' ');
-test('Every care page has visible native existing-client and couples consultation shortcuts',()=>{
+test('Care pages retain native scheduling; the approved teen preview has its own focused path',()=>{
  for(const f of pages()){
   const h=fs.readFileSync(f,'utf8');
-  assert.match(h,/data-scheduling-actions="20261029"/,f);
+  const teen = /data-teen-appointment-pathway="1"/.test(h);
+  if(teen){
+   assert.ok(f.endsWith('/teen-counseling/index.html'));
+   assert.match(h,/data-teen-primary="true"/);
+   assert.doesNotMatch(h,/data-mft-couples-consultation=|class="mft-schedule-shortcuts"/);
+  }else assert.match(h,/data-scheduling-actions="20261029"/,f);
   assert.match(h,/data-mft-existing-client="true"[^>]*href="https:\/\/marriagefamilytherapy\.clientsecure\.me\/sign-in"/,f);
-  assert.match(h,/data-mft-couples-consultation="true"/,f);
+  if(!teen)assert.match(h,/data-mft-couples-consultation="true"/,f);
   assert.match(h,/class="mft-footer-scheduling"/,f);
  }
 });

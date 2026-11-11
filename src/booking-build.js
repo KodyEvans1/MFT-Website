@@ -29,7 +29,11 @@ function decorateHtml(html, route) {
       return whole.replace(m[0], 'href="mailto:support@mft.care?subject=Benefits%20verification"');
     }
     if (!core.isAppointment(href,label)) return whole;
-    const clinician = inSection('header',pos) || inSection('footer',pos) ? null : routeClinician;
+    // Match the browser's existing explicit-clinician support in static HTML.
+    const explicitKey = attrs.match(/\bdata-mft-clinician="([^"]*)"/i)?.[1];
+    const explicit = explicitKey ? config.clinicians.find(c => c.key === explicitKey) : null;
+    if (explicitKey && !explicit) throw new Error('Unknown explicit booking clinician');
+    const clinician = explicit || (inSection('header',pos) || inSection('footer',pos) ? null : routeClinician);
     attrs = attrs.replace(/\sdata-(?:spwidget-[a-z-]+|mft-booking(?:-mode)?)(?:="[^"]*")?/gi,'');
     attrs = attrs.replace(/\shref="[^"]*"/i,'').replace(/\srel="[^"]*"/i,'').replace(/\starget="[^"]*"/i,'').replace(/\sdata-mft-booking-mode="[^"]*"/i,'');
     const widgetAttrs = Object.entries(core.attributes(config, clinician)).map(([k,v]) => `${k}="${esc(v)}"`).join(' ');

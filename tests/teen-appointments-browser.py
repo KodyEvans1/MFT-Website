@@ -3,6 +3,7 @@ import base64, functools, hashlib, json, mimetypes, os, re, shutil, threading, t
 from pathlib import Path
 from urllib.parse import urlsplit, parse_qs
 from urllib.request import Request, urlopen
+from urllib.error import HTTPError
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from playwright.sync_api import sync_playwright, expect
 ROOT=Path(__file__).resolve().parents[1]
@@ -74,6 +75,11 @@ def hosted_revision():
             with urlopen(BASE+'/reports/review-build.json',timeout=20) as r:build=json.load(r)
             if expected:assert build['commit']==expected,('Wrong preview commit',build['commit'])
             REPORT['previewCommit']=build['commit'];record('Hosted preview revision and CSS match',commit=build['commit']);return
+        except HTTPError as exc:
+            if exc.code in (401,403):
+                REPORT["previewAccess"]={"status":exc.code,"reason":"Authentication required; protection unchanged"};raise
+            if time.monotonic()>=deadline:raise
+            time.sleep(6)
         except Exception:
             if time.monotonic()>=deadline:raise
             time.sleep(6)
@@ -120,11 +126,14 @@ def actual_handoff(page,selector,clinician=None):
     else:page.get_by_text('Emily Johnsrud',exact=True).first.wait_for(timeout=30000)
     text=page.locator('body').inner_text()
     record('Actual public SimplePractice destination loaded',selector=selector,clinician=clinician['key'] if clinician else None,host=urlsplit(page.url).hostname,path=urlsplit(page.url).path,sameTab=True,diagnosticEvaluationVisible=bool(re.search(r'90791|diagnostic|initial.*(?:assessment|evaluation)',text,re.I)))
+    if clinician:
+        REPORT.setdefault('publicServiceEvidence',[]).append({'clinician':clinician['key'],'lines':[line for line in text.splitlines() if re.search(r'90791|diagnostic|consult|therapy|telehealth|in person',line,re.I)][:30]})
     return text
 
 try:
-    if MODE=='hosted':hosted_revision();public_inspection()
-    if MODE=='local':
+    if MODE in ['hosted','handoff']:public_inspection()
+    if MODE=='hosted':hosted_revision()
+    if MODE in ['local','handoff']:
         class Quiet(SimpleHTTPRequestHandler):
             def log_message(self,*args):pass
         server=ThreadingHTTPServer(('127.0.0.1',0),functools.partial(Quiet,directory=str(DIST)))
@@ -152,8 +161,8 @@ try:
         go=dialog.locator('[data-consultation-continue]');assert go.get_attribute('href') is None
         page.keyboard.press('Escape');expect(dialog).not_to_be_visible();assert ten.evaluate('(a)=>a===document.activeElement');ten.press('Enter');dialog.locator('input').check();assert go.get_attribute('href')==destination();dialog.get_by_role('button',name='Cancel',exact=True).click();record('Optional introduction: acknowledgement, Escape, cancel and focus return')
         assert not errors,errors
-        if MODE!='offline':synthetic_privacy(browser)
-        if MODE=='hosted':
+        if MODE in ['local','hosted']:synthetic_privacy(browser)
+        if MODE in ['hosted','handoff']:
             for width in [1440,390]:
                 page.set_viewport_size({'width':width,'height':950});actual_handoff(page,'[data-teen-primary]')
                 for person in PEOPLE:actual_handoff(page,'[data-teen-clinician="'+person['key']+'"]',person)

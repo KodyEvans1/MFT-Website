@@ -43,10 +43,16 @@ jobs:
             python -m playwright install --with-deps chromium
           fi
       - name: Local HTTP layout, keyboard, consultation and synthetic consent tests
+        id: local
         run: python tests/teen-appointments-browser.py
         env:
           MFT_TEEN_MODE: local
-      - name: Hosted preview and read-only real SimplePractice routes
+      - name: Built candidate to real public SimplePractice routes
+        run: python tests/teen-appointments-browser.py
+        env:
+          MFT_TEEN_MODE: handoff
+      - name: Hosted preview verification without changing protection
+        if: always() && steps.local.outcome == 'success'
         run: python tests/teen-appointments-browser.py
         env:
           MFT_TEEN_MODE: hosted

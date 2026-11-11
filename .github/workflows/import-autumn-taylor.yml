@@ -1,0 +1,96 @@
+name: Verify and materialize scoped clinician update
+on:
+  push:
+    branches: [review/autumn-taylor-profiles-20261111]
+    paths: ['.profile-import/**', '.github/workflows/import-autumn-taylor.yml']
+permissions:
+  contents: write
+concurrency:
+  group: clinician-profile-import
+  cancel-in-progress: false
+jobs:
+  verify:
+    if: github.repository == 'KodyEvans1/MFT-Website' && github.ref == 'refs/heads/review/autumn-taylor-profiles-20261111'
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 2
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify transport hashes and apply reviewed website patch
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD^)" = 38b45d81a9403143057df46b856343bc69b7fa3d
+          python - <<'PY'
+          from pathlib import Path
+          import hashlib,lzma,subprocess
+          p=Path('.profile-import')
+          patch=lzma.decompress((p/'patch0.xzpart').read_bytes()+(p/'patch1.xzpart').read_bytes())
+          assert hashlib.sha256(patch).hexdigest()=='dfcdec5e4f045a47398ed82fd58286f98842f2647ed67b9d7e7daa6f440ff71a'
+          for line in patch.decode().splitlines():
+              if line.startswith('+++ b/'):
+                  name=line[6:]
+                  assert name.startswith(('src/','content/','tests/','reports/')) and '..' not in Path(name).parts
+          (p/'update.patch').write_bytes(patch)
+          subprocess.run(['git','apply','--unidiff-zero','--check',str(p/'update.patch')],check=True)
+          subprocess.run(['git','apply','--unidiff-zero',str(p/'update.patch')],check=True)
+          image=b''.join((p/f'photo{i}.part').read_bytes() for i in range(3))
+          assert hashlib.sha256(image).hexdigest()=='b4c5e9fc23335cf091c20aa0e88c7688ee97dcf900787f8274ae97a07b9738f5'
+          Path('src/assets/autumn-alexander-b4c5e9fc2333.webp').write_bytes(image)
+          print('Reviewed source patch and supplied portrait hashes verified.')
+          PY
+      - name: Build and regression checks
+        run: npm run check
+      - name: Publication-policy rehearsals
+        run: npm run verify:publication
+      - name: Install browser driver only
+        run: python -m pip install playwright==1.57.0
+      - name: Verify desktop, mobile and keyboard behavior without appointments
+        shell: bash
+        run: |
+          set -euo pipefail
+          export CHROME_PATH="$(command -v google-chrome || command -v chromium)"
+          test -n "$CHROME_PATH"
+          python tests/clinician-update-browser.py --public-inspection
+      - name: Commit verified source and regenerated dist to this review branch only
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REF" = refs/heads/review/autumn-taylor-profiles-20261111
+          test "$(git ls-remote origin refs/heads/review/autumn-taylor-profiles-20261111 | cut -f1)" = "$GITHUB_SHA"
+          rm -rf .profile-import
+          rm .github/workflows/import-autumn-taylor.yml
+          git add -A src content tests reports dist .profile-import .github/workflows/import-autumn-taylor.yml
+          git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m "Add Autumn Alexander profile and portrait; clarify Taylor adult scope"
+          git push origin HEAD:refs/heads/review/autumn-taylor-profiles-20261111
+          git rev-parse HEAD > tmp/clinician-update/verified-commit.txt
+      - name: Save read-only verification evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: clinician-profile-verification
+          path: tmp/clinician-update/
+          retention-days: 7
+          if-no-files-found: warn
+      - name: Save exact review source
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: clinician-profile-source
+          path: |
+            src/
+            content/
+            scripts/
+            tests/
+            reports/
+            package.json
+            netlify.toml
+          retention-days: 7

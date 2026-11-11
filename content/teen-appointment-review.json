@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "contentRevision": "teen-appointments-v1",
+  "route": "/teen-counseling/",
+  "approvals": {
+    "clinical": {"status":"pending","reviewer":null,"evidence":null,"reviewedRevision":null},
+    "operational": {"status":"pending","reviewer":null,"evidence":null,"reviewedRevision":null},
+    "publication": {"status":"pending","reviewer":null,"evidence":null,"reviewedRevision":null}
+  },
+  "clinicalScope": "Confirm retained consent, confidentiality, caregiver and telehealth copy plus the new appointment explanation. Existing review notice must remain until actual approval is documented.",
+  "operationalScope": "Confirm teen-specific age eligibility and current in-person/telehealth service options for Emily Johnsrud, Gary Ashley and Sonia Hassan. No precise age bounds or openings have been inferred.",
+  "sources": ["content/clinician-registry.json","content/simplepractice-booking.json","content/service-guides/teen-counseling.json","src/start-page.js","https://marriagefamilytherapy.clientsecure.me/request/clinician-search"],
+  "measurement": "Reuse the existing consent-protected integration only. Scheduling-intent measurement remains disabled in the baseline; unmerged PR #11 is outside this change. No booking or attendance outcome is established.",
+  "brief": "User pasted implementation requirements in this conversation. The separately named Markdown attachment was not located."
+}

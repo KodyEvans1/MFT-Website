@@ -6,15 +6,16 @@ const fs = require('node:fs');
 const path = require('node:path');
 const {applyPlaudEdits} = require('./start-page');
 const {decorateHtml} = require('./booking-build');
+const teenAppointments = require('./teen-appointments');
 const root = path.resolve(__dirname,'..');
 const dist = path.join(root,'dist');
 const bookingFile = path.join(dist,'reports/booking-integration.json');
 const booking = JSON.parse(fs.readFileSync(bookingFile,'utf8'));
 const updates = [];
-for (const route of ['/how-to-start-therapy/', '/', '/marriagereset/']) {
+for (const route of ['/how-to-start-therapy/', '/', '/marriagereset/', ...(teenAppointments.enabled() ? ['/teen-counseling/'] : [])]) {
   const file = path.join(dist, route.replace(/^\/+|\/+$/g,''), 'index.html');
   const before = fs.readFileSync(file,'utf8');
-  const result = decorateHtml(applyPlaudEdits(before,route),route);
+  const result = decorateHtml(teenAppointments.apply(applyPlaudEdits(before,route),route),route);
   fs.writeFileSync(file,result.html);
   const row = booking.pages.find(p => p.route === route);
   if (!row) throw new Error('Missing booking inventory for edited page: ' + route);

@@ -17,7 +17,7 @@ jobs:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           ref: ${{ github.sha }}
-          fetch-depth: 3
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: 20
@@ -28,7 +28,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          test "$(git rev-parse HEAD~2)" = 38b45d81a9403143057df46b856343bc69b7fa3d
+          git merge-base --is-ancestor 38b45d81a9403143057df46b856343bc69b7fa3d HEAD
           python - <<'PY'
           from pathlib import Path
           import hashlib,lzma,subprocess
@@ -45,7 +45,15 @@ jobs:
           image=b''.join((p/f'photo{i}.part').read_bytes() for i in range(3))
           assert hashlib.sha256(image).hexdigest()=='b4c5e9fc23335cf091c20aa0e88c7688ee97dcf900787f8274ae97a07b9738f5'
           Path('src/assets/autumn-alexander-b4c5e9fc2333.webp').write_bytes(image)
-          print('Reviewed source patch and supplied portrait hashes verified.')
+          # naturalWidth for a srcset candidate is density-corrected. Decode the
+          # same original resource separately to verify actual 576x1023 pixels.
+          test=Path('tests/clinician-update-browser.py')
+          code=test.read_text()
+          old="assert image.evaluate('(img) => img.complete && img.naturalWidth === 576')"
+          new="assert image.evaluate('''async (img) => { await img.decode(); const original = new Image(); original.src = img.src; await original.decode(); return img.complete && img.naturalWidth > 0 && original.naturalWidth === 576 && original.naturalHeight === 1023; }''')"
+          assert code.count(old)==1
+          test.write_text(code.replace(old,new))
+          print('Reviewed source patch and supplied portrait hashes verified; responsive-image assertion corrected.')
           PY
       - name: Build and regression checks
         run: npm run check

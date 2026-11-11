@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "recordingDate": "2026-10-02",
+  "updates": [
+    {
+      "route": "/how-to-start-therapy/",
+      "changed": true,
+      "appointmentButtons": 12
+    },
+    {
+      "route": "/",
+      "changed": false,
+      "appointmentButtons": 7
+    },
+    {
+      "route": "/marriagereset/",
+      "changed": false,
+      "appointmentButtons": 6
+    }
+  ],
+  "productionRelease": false
+}

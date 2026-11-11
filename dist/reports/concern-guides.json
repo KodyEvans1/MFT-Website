@@ -1,0 +1,151 @@
+{
+  "version": 1,
+  "reviewOnly": true,
+  "authoredGuideCount": 9,
+  "directoryGuideCount": 10,
+  "anxietyContentPreserved": true,
+  "entries": [
+    {
+      "slug": "adhd-neurodivergence-therapy",
+      "revision": "5b16055b1a757b563bcbad607e0ebb430b8c3af8991831931ae290233e4ba0ae",
+      "sections": 8,
+      "activeInBuild": true,
+      "clinicians": [
+        "kody-evans-bio"
+      ],
+      "sources": [
+        "https://www.nimh.nih.gov/health/publications/adhd-what-you-need-to-know",
+        "https://www.nimh.nih.gov/health/topics/psychotherapies"
+      ]
+    },
+    {
+      "slug": "depression-therapy",
+      "revision": "4bd374b74640c11f112060c8ad3fccb4811cb62f7f903f418ad72ea338e3496e",
+      "sections": 8,
+      "activeInBuild": true,
+      "clinicians": [
+        "kody-evans-bio",
+        "emily-johnsrud-bio",
+        "gary-ashley",
+        "sonia-hassan-bio"
+      ],
+      "sources": [
+        "https://www.nimh.nih.gov/health/publications/depression",
+        "https://www.nimh.nih.gov/health/topics/psychotherapies"
+      ]
+    },
+    {
+      "slug": "grief-counseling",
+      "revision": "bee394a6182e2022327704fdb6332a0844fa475baab82bc0c038a0728716f09a",
+      "sections": 8,
+      "activeInBuild": true,
+      "clinicians": [
+        "dr-nolan",
+        "emily-johnsrud-bio",
+        "gary-ashley",
+        "sonia-hassan-bio"
+      ],
+      "sources": [
+        "https://www.nhs.uk/mental-health/feelings-symptoms-behaviours/feelings-and-symptoms/grief-bereavement-loss/",
+        "https://www.nimh.nih.gov/health/topics/psychotherapies"
+      ]
+    },
+    {
+      "slug": "parenting-family-stress-therapy",
+      "revision": "6b281805d5c5d7a2597401b513a470cc2ef25352f057aa018869ba68a9bb423f",
+      "sections": 8,
+      "activeInBuild": true,
+      "clinicians": [
+        "kody-evans-bio",
+        "emily-johnsrud-bio",
+        "autumn-alexander"
+      ],
+      "sources": [
+        "https://www.hhs.gov/surgeongeneral/reports-and-publications/parents/index.html",
+        "https://www.theafsp.org/get-help/what-is-family-and-systemic-therapy/",
+        "https://www.thehotline.org/resources/should-i-go-to-couples-therapy-with-my-abusive-partner/"
+      ]
+    },
+    {
+      "slug": "relationship-issues-therapy",
+      "revision": "beb3f3a29bd7f03072658a7d0ca8029a327b09e3081f328316cda983dc4273b8",
+      "sections": 8,
+      "activeInBuild": true,
+      "clinicians": [
+        "kody-evans-bio",
+        "dr-nolan",
+        "emily-johnsrud-bio",
+        "gary-ashley",
+        "sonia-hassan-bio"
+      ],
+      "sources": [
+        "https://www.gottman.com/blog/the-four-horsemen-the-antidotes/",
+        "https://www.thehotline.org/resources/should-i-go-to-couples-therapy-with-my-abusive-partner/",
+        "https://www.nimh.nih.gov/health/topics/psychotherapies"
+      ]
+    },
+    {
+      "slug": "self-esteem-identity-therapy",
+      "revision": "dd52a068d4a01f805e6724d966382b5c47a2d22cb577a9781a05028d2920cc2a",
+      "sections": 8,
+      "activeInBuild": true,
+      "clinicians": [
+        "kody-evans-bio",
+        "dr-nolan",
+        "gary-ashley",
+        "sonia-hassan-bio",
+        "autumn-alexander"
+      ],
+      "sources": [
+        "https://www.nhs.uk/mental-health/self-help/tips-and-support/raise-low-self-esteem/",
+        "https://www.nimh.nih.gov/health/topics/psychotherapies"
+      ]
+    },
+    {
+      "slug": "substance-use-recovery-therapy",
+      "revision": "d0c075a5ab5af2a0fb1561e1cf32aac457de6068722998a75416ccf526ccbf61",
+      "sections": 8,
+      "activeInBuild": true,
+      "clinicians": [],
+      "sources": [
+        "https://www.nhs.uk/conditions/alcohol-use-disorder/",
+        "https://www.nimh.nih.gov/health/topics/psychotherapies"
+      ]
+    },
+    {
+      "slug": "life-transitions-therapy",
+      "revision": "05e566bfb43aaacf7bbdf365c6f3696f47773715f316e2cbbf91cf101798ae28",
+      "sections": 8,
+      "activeInBuild": true,
+      "clinicians": [
+        "kody-evans-bio",
+        "dr-nolan",
+        "emily-johnsrud-bio",
+        "gary-ashley",
+        "sonia-hassan-bio"
+      ],
+      "sources": [
+        "https://www.nhs.uk/every-mind-matters/mental-wellbeing-tips/how-to-deal-with-change/",
+        "https://www.nimh.nih.gov/health/topics/psychotherapies"
+      ]
+    },
+    {
+      "slug": "trauma-therapy",
+      "revision": "20d8b08d7f397b6d8eff2f06b36321cd6c439c7e53fc3c913c66d374d138b3e1",
+      "sections": 8,
+      "activeInBuild": true,
+      "clinicians": [
+        "emily-johnsrud-bio",
+        "gary-ashley",
+        "sonia-hassan-bio",
+        "autumn-alexander"
+      ],
+      "sources": [
+        "https://www.nimh.nih.gov/health/publications/post-traumatic-stress-disorder-ptsd",
+        "https://www.nimh.nih.gov/health/topics/psychotherapies",
+        "https://www.thehotline.org/resources/should-i-go-to-couples-therapy-with-my-abusive-partner/"
+      ]
+    }
+  ],
+  "errors": []
+}

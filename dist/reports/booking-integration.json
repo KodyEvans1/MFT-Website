@@ -1,0 +1,383 @@
+{
+  "version": 1,
+  "measurementEnabled": false,
+  "pages": [
+    {
+      "route": "/about/",
+      "buttons": 6,
+      "widget": false
+    },
+    {
+      "route": "/adhd-neurodivergence-therapy/",
+      "buttons": 6,
+      "widget": false
+    },
+    {
+      "route": "/anxiety-stress-therapy/",
+      "buttons": 6,
+      "widget": false
+    },
+    {
+      "route": "/attachment-based-therapy/",
+      "buttons": 6,
+      "widget": false
+    },
+    {
+      "route": "/autumn-alexander/",
+      "buttons": 6,
+      "widget": false
+    },
+    {
+      "route": "/check-my-coverage/",
+      "buttons": 6,
+      "widget": false
+    },
+    {
+      "route": "/childrentherapy/",
+      "buttons": 7,
+      "widget": false
+    },
+    {
+      "route": "/cognitive-behavioral-therapy-cbt/",
+      "buttons": 6,
+      "widget": false
+    },
+    {
+      "route": "/depression-therapy/",
+      "buttons": 6,
+      "widget": false
+    },
+    {
+      "route": "/dialectical-behavior-therapy-dbt/",
+      "buttons": 6,
+      "widget": false
+    },
+    {
+      "route": "/dr-nolan/",
+      "buttons": 7,
+      "widget": false
+    },
+    {
+      "route": "/emily-johnsrud-bio/",
+      "buttons": 7,
+      "widget": false
+    },
+    {
+      "route": "/emotionally-focused-therapy-eft/",
+      "buttons": 6,
+      "widget": false
+    },
+    {
+      "route": "/family-systems-therapy/",
+      "buttons": 6,
+      "widget": false
+    },
+    {
+      "route": "/family-therapy-group-counseling/",
+      "buttons": 7,
+      "widget": false
+    },
+    {
+      "route": "/gary-ashley/",
+      "buttons": 7,
+      "widget": false
+    },
+    {
+      "route": "/google/couples-therapy/",
+      "buttons": 8,
+      "widget": false
+    },
+    {
+      "route": "/google/individual-therapy/",
+      "buttons": 9,
+      "widget": false
+    },
+    {
+      "route": "/google/online-therapy-washington/",
+      "buttons": 10,
+      "widget": false
+    },
+    {
+      "route": "/google/therapy-woodinville/",
+      "buttons": 6,
+      "widget": false
+    },
+    {
+      "route": "/gottman-method-couples-therapy/",
+      "buttons": 6,
+      "widget": false
+    },
+    {
+      "route": "/grief-counseling/",
+      "buttons": 6,
+      "widget": false
+    },
+    {
+      "route": "/how-to-choose-a-therapist/",
+      "buttons": 7,
+      "widget": false
+    },
+    {
+      "route": "/how-to-start-therapy/",
+      "buttons": 12,
+      "widget": false
+    },
+    {
+      "route": "/",
+      "buttons": 7,
+      "widget": false
+    },
+    {
+      "route": "/internal-family-systems-ifs/",
+      "buttons": 6,
+      "widget": false
+    },
+    {
+      "route": "/kody-evans-bio/",
+      "buttons": 7,
+      "widget": false
+    },
+    {
+      "route": "/life-transitions-therapy/",
+      "buttons": 6,
+      "widget": false
+    },
+    {
+      "route": "/marriage-and-couples-therapy-counseling/",
+      "buttons": 7,
+      "widget": false
+    },
+    {
+      "route": "/marriage-reset-assessment/",
+      "buttons": 5,
+      "widget": false
+    },
+    {
+      "route": "/marriage-reset-assessment/thanks/",
+      "buttons": 5,
+      "widget": false
+    },
+    {
+      "route": "/marriagereset/",
+      "buttons": 6,
+      "widget": false
+    },
+    {
+      "route": "/mindfulness-based-therapy/",
+      "buttons": 6,
+      "widget": false
+    },
+    {
+      "route": "/motivational-interviewing/",
+      "buttons": 6,
+      "widget": false
+    },
+    {
+      "route": "/narrative-therapy/",
+      "buttons": 6,
+      "widget": false
+    },
+    {
+      "route": "/new-page/",
+      "buttons": 7,
+      "widget": false
+    },
+    {
+      "route": "/new-page-1/",
+      "buttons": 7,
+      "widget": false
+    },
+    {
+      "route": "/new-page-2/",
+      "buttons": 7,
+      "widget": false
+    },
+    {
+      "route": "/new-page-4/",
+      "buttons": 7,
+      "widget": false
+    },
+    {
+      "route": "/online-therapy-bothell-wa/",
+      "buttons": 7,
+      "widget": false
+    },
+    {
+      "route": "/online-therapy-bremerton-wa/",
+      "buttons": 7,
+      "widget": false
+    },
+    {
+      "route": "/online-therapy-fircrest-wa/",
+      "buttons": 7,
+      "widget": false
+    },
+    {
+      "route": "/online-therapy-king-county-wa/",
+      "buttons": 7,
+      "widget": false
+    },
+    {
+      "route": "/online-therapy-kirkland-wa/",
+      "buttons": 7,
+      "widget": false
+    },
+    {
+      "route": "/online-therapy-locations/",
+      "buttons": 9,
+      "widget": false
+    },
+    {
+      "route": "/online-therapy-redmond-wa/",
+      "buttons": 7,
+      "widget": false
+    },
+    {
+      "route": "/online-therapy-snohomish-county-wa/",
+      "buttons": 7,
+      "widget": false
+    },
+    {
+      "route": "/online-therapy-spokane-wa/",
+      "buttons": 7,
+      "widget": false
+    },
+    {
+      "route": "/online-therapy-tri-cities-wa/",
+      "buttons": 7,
+      "widget": false
+    },
+    {
+      "route": "/online-therapy-vancouver-wa/",
+      "buttons": 7,
+      "widget": false
+    },
+    {
+      "route": "/online-therapy-washington/",
+      "buttons": 10,
+      "widget": false
+    },
+    {
+      "route": "/online-therapy-wenatchee-wa/",
+      "buttons": 7,
+      "widget": false
+    },
+    {
+      "route": "/online-therapy-yakima-wa/",
+      "buttons": 7,
+      "widget": false
+    },
+    {
+      "route": "/online-vs-in-person-therapy/",
+      "buttons": 7,
+      "widget": false
+    },
+    {
+      "route": "/parenting-family-stress-therapy/",
+      "buttons": 6,
+      "widget": false
+    },
+    {
+      "route": "/relationship-issues-therapy/",
+      "buttons": 6,
+      "widget": false
+    },
+    {
+      "route": "/resources/",
+      "buttons": 9,
+      "widget": false
+    },
+    {
+      "route": "/self-esteem-identity-therapy/",
+      "buttons": 6,
+      "widget": false
+    },
+    {
+      "route": "/services/",
+      "buttons": 9,
+      "widget": false
+    },
+    {
+      "route": "/solution-focused-brief-therapy/",
+      "buttons": 6,
+      "widget": false
+    },
+    {
+      "route": "/sonia-hassan-bio/",
+      "buttons": 7,
+      "widget": false
+    },
+    {
+      "route": "/substance-use-recovery-therapy/",
+      "buttons": 6,
+      "widget": false
+    },
+    {
+      "route": "/team/",
+      "buttons": 9,
+      "widget": false
+    },
+    {
+      "route": "/teen-counseling/",
+      "buttons": 7,
+      "widget": false
+    },
+    {
+      "route": "/therapy-approaches/",
+      "buttons": 9,
+      "widget": false
+    },
+    {
+      "route": "/therapy-contact-woodinville/",
+      "buttons": 7,
+      "widget": false
+    },
+    {
+      "route": "/therapy-insurance-benefits/",
+      "buttons": 7,
+      "widget": false
+    },
+    {
+      "route": "/trauma-informed-therapy/",
+      "buttons": 6,
+      "widget": false
+    },
+    {
+      "route": "/trauma-therapy/",
+      "buttons": 6,
+      "widget": false
+    },
+    {
+      "route": "/what-we-help-with/",
+      "buttons": 10,
+      "widget": false
+    }
+  ],
+  "clinicians": [
+    {
+      "key": "gary",
+      "id": "2154633",
+      "slug": "gary-ashley"
+    },
+    {
+      "key": "kody",
+      "id": "1701440",
+      "slug": "kody-evans-bio"
+    },
+    {
+      "key": "emily",
+      "id": "2027366",
+      "slug": "emily-johnsrud-bio"
+    },
+    {
+      "key": "taylor",
+      "id": "2031820",
+      "slug": "dr-nolan"
+    },
+    {
+      "key": "sonia",
+      "id": "2065412",
+      "slug": "sonia-hassan-bio"
+    }
+  ]
+}

@@ -22,11 +22,13 @@ const heroSources = Object.freeze({
   'dr-nolan': {width:561,height:628,maxWidth:400},
   'emily-johnsrud-bio': {width:512,height:641,maxWidth:380},
   'gary-ashley': {width:1254,height:1254,maxWidth:500},
-  'sonia-hassan-bio': {width:1891,height:2553,maxWidth:440}
+  'sonia-hassan-bio': {width:1891,height:2553,maxWidth:440},
+  'autumn-alexander': {width:576,height:1023,maxWidth:440}
 });
 function heroPortrait(p) {
   const source=heroSources[p.slug];
   if(!source)throw Error('Missing verified hero source dimensions: '+p.slug);
+  if(p.image.startsWith('/assets/')) return `<div class="mft-portrait-frame mft-portrait--hero" data-portrait-frame data-portrait-variant="hero"><img class="hero-media" src="${esc(href(p.image))}" srcset="${esc(href(p.image))} ${source.width}w" sizes="(max-width:600px) 88vw, 440px" width="${source.width}" height="${source.height}" alt="${esc(p.name)}" data-portrait-fit="contain" data-source-width="${source.width}" fetchpriority="high" decoding="async" referrerpolicy="no-referrer"></div>`;
   const url=new URL(href(p.image));
   const rendition=w=>{const u=new URL(url);u.searchParams.set('format',w+'w');return u.href;};
   const widths=[500,750,1000,1500].filter(w=>w<source.width);

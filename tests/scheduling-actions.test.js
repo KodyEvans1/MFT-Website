@@ -6,12 +6,15 @@ const read=slug=>fs.readFileSync(path.join(dist,slug,'index.html'),'utf8');
 const walk=d=>fs.readdirSync(d,{withFileTypes:true}).flatMap(e=>e.isDirectory()?walk(path.join(d,e.name)):[path.join(d,e.name)]);
 const pages=()=>walk(dist).filter(f=>f.endsWith('.html')&&!f.endsWith('/assets/mft-ga4-frame.html'));
 const plain=h=>h.replace(/<[^>]+>/g,' ').replace(/\s+/g,' ');
-test('Every care page has visible native existing-client and couples consultation shortcuts',()=>{
+test('Care pages keep native existing-client access and service-appropriate consultation shortcuts',()=>{
  for(const f of pages()){
   const h=fs.readFileSync(f,'utf8');
   assert.match(h,/data-scheduling-actions="20261029"/,f);
   assert.match(h,/data-mft-existing-client="true"[^>]*href="https:\/\/marriagefamilytherapy\.clientsecure\.me\/sign-in"/,f);
-  assert.match(h,/data-mft-couples-consultation="true"/,f);
+  if(f===path.join(dist,'autumn-alexander','index.html')) {
+   assert.doesNotMatch(h,/data-mft-couples-consultation="true"/,f);
+   assert.match(h,/Ask about appointments with Autumn/,f);
+  } else assert.match(h,/data-mft-couples-consultation="true"/,f);
   assert.match(h,/class="mft-footer-scheduling"/,f);
  }
 });

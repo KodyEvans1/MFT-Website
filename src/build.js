@@ -49,9 +49,12 @@ const clinicianData = [
   ['Sonia Hassan','sonia-hassan-bio','Licensed Social Work Associate Independent Clinical (LSWAIC)','Teens, adults, elder adults, and couples','Anxiety; Depression; Trauma; Grief and loss; Relationship challenges; Caregiver stress; Life transitions; Chronic pain; Stress management; Emotional regulation; Self-esteem; Communication challenges; Emotional adjustment; Women’s counseling','Sonia supports teens, adults, elder adults, and couples navigating anxiety, depression, trauma, grief, chronic pain, caregiver stress, relationship challenges, emotional regulation, and life transitions.',images.sonia]
 ];
 
+const autumnProfile = require('../content/autumn-profile.json');
+clinicianData.push([autumnProfile.name, autumnProfile.slug, autumnProfile.credential, autumnProfile.clients, autumnProfile.focusAreas.join('; '), autumnProfile.summary, autumnProfile.portrait.path]);
+
 const clinicians = clinicianData.map(([name,slug,credential,clients,specialties,summary,image]) => ({
   type:'clinician', name:presentation.person(slug).name, slug, credential, clients, specialties, eyebrow:credential, h1:presentation.person(slug).name, summary, image,
-  title:`${name} | Marriage.Family.Therapy`, description:`Meet ${name}, serving clients through Marriage.Family.Therapy in Woodinville and online in Washington.`,
+  title:`${name} | Marriage.Family.Therapy`, description:slug===autumnProfile.slug?'Meet Autumn Alexander, LMHCA, working with children ages 6+, teens, and adults at Marriage.Family.Therapy. Contact the practice about appointments.':`Meet ${name}, serving clients through Marriage.Family.Therapy in Woodinville and online in Washington.`,
   body:`Therapy is tailored to the client’s needs, goals, relationships, and experiences. Review populations served and focus areas, then use the secure appointment pathway for current availability.`,
   items:specialties.split('; '), index:true, review:'Clinician must confirm credentials, scope, specialties, availability, and photo'
 }));
@@ -203,6 +206,8 @@ function relatedFor(p) {
   if (p.type === 'concern') return [...services.slice(0,2), ...clinicians.slice(0,2)];
   if (p.type === 'approach') return clinicians.slice(0,4);
   if (p.type === 'location') return [core.find(x=>x.slug==='online-therapy-washington'), ...services.slice(0,3)];
+  if (p.slug === 'dr-nolan') return services.filter(s=>['new-page','marriage-and-couples-therapy-counseling'].includes(s.slug));
+  if (p.slug === 'autumn-alexander') return services.filter(s=>['new-page','childrentherapy','teen-counseling'].includes(s.slug));
   if (p.type === 'clinician') return services.slice(0,4);
   if (p.type === 'resource') return [core.find(x=>x.slug==='team'), core.find(x=>x.slug==='check-my-coverage'), core.find(x=>x.slug==='online-therapy-washington')];
   if (p.type.startsWith('assessment')) return [assessment, services.find(x=>x.slug==='marriagereset'), services.find(x=>x.slug==='marriage-and-couples-therapy-counseling')];
@@ -243,7 +248,7 @@ function related(p) {
 }
 
 function teamGrid() {
-  return `<section class="section team-section"><div class="section-heading"><p class="kicker">Clinicians</p><h2>Meet the therapy team.</h2><p>Review each profile for populations served, credentials, focus areas, and current pathways.</p></div><div class="people-grid">${clinicians.map(c=>`<a class="person" href="${localFor(c)}">${presentation.portrait(c.image,c.name,'directory')}${presentation.identity(c.slug,'b')}</a>`).join('')}</div><div class="staff-note"><h3>Clinical operations</h3><p><b>Charlene Brister, Clinical Manager</b><br>Client support, clinical operations, care coordination, and practice growth.</p></div></section>`;
+  return `<section class="section team-section"><div class="section-heading"><p class="kicker">Clinicians</p><h2>Meet the therapy team.</h2><p>Review each profile for populations served, credentials, focus areas, and current pathways.</p></div><div class="people-grid" data-clinician-count="${clinicians.length}">${clinicians.map(c=>`<a class="person" href="${localFor(c)}">${presentation.portrait(c.image,c.name,'directory')}${presentation.identity(c.slug,'b')}</a>`).join('')}</div><div class="staff-note"><h3>Clinical operations</h3><p><b>Charlene Brister, Clinical Manager</b><br>Client support, clinical operations, care coordination, and practice growth.</p></div></section>`;
 }
 
 function assessmentBody() {
@@ -276,7 +281,7 @@ function pageHtml(p) {
   const heroAlt = p.type === 'clinician' ? `${p.name}, clinician at Marriage.Family.Therapy` : 'Marriage.Family.Therapy counseling space in Woodinville, Washington';
   const breadcrumbHtml = crumbs.map((c,i)=>`${i?'<span aria-hidden="true">/</span>':''}<a href="${c.href}"${i===crumbs.length-1?' aria-current="page"':''}>${esc(c.name)}</a>`).join('');
   const extra = p.type === 'team' ? teamGrid() : '';
-  const heroActions = p.type === 'assessment' ? '<a class="button primary" href="#request-access">Request free access</a><a class="button ghost" href="#how-it-works">How it works</a>' : p.type === 'assessment-thanks' ? '<a class="button primary" href="/marriagereset/">Learn about Marriage.Reset</a>' : p.slug === 'marriagereset' ? '<a class="button primary" href="/marriage-reset-assessment/">Start the free assessment</a><a class="button ghost" href="https://ops.mft.care/">Request appointment</a>' : `<a class="button primary" href="${APPOINTMENT}">Request appointment</a><a class="button ghost" href="${INSURANCE}">Verify insurance</a>`;
+  const heroActions = p.slug === autumnProfile.slug ? `<a class="button primary" href="${esc(autumnProfile.booking.contactUrl)}">${esc(autumnProfile.booking.label)}</a><a class="button ghost" href="/team/">Meet the team</a>` : p.type === 'assessment' ? '<a class="button primary" href="#request-access">Request free access</a><a class="button ghost" href="#how-it-works">How it works</a>' : p.type === 'assessment-thanks' ? '<a class="button primary" href="/marriagereset/">Learn about Marriage.Reset</a>' : p.slug === 'marriagereset' ? '<a class="button primary" href="/marriage-reset-assessment/">Start the free assessment</a><a class="button ghost" href="https://ops.mft.care/">Request appointment</a>' : `<a class="button primary" href="${APPOINTMENT}">Request appointment</a><a class="button ghost" href="${INSURANCE}">Verify insurance</a>`;
   const finalCta = p.type.startsWith('assessment') ? '' : `<section class="section final-cta reveal"><p class="kicker">Next step</p><h2>Start through the secure client-care system.</h2><p>Review current appointment options without placing private clinical or insurance information in this public website.</p><div class="actions"><a class="button light" href="${APPOINTMENT}">Request appointment</a><a class="button ghost" href="${PORTAL}">Existing client portal</a></div></section>`;
   return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(p.title)}</title><meta name="description" content="${esc(p.description)}"><meta name="robots" content="${robots}"><link rel="canonical" href="${canonical}"><meta property="og:type" content="website"><meta property="og:site_name" content="Marriage.Family.Therapy"><meta property="og:title" content="${esc(p.title)}"><meta property="og:description" content="${esc(p.description)}"><meta property="og:url" content="${canonical}"><meta property="og:image" content="${esc(p.image)}"><meta name="twitter:card" content="summary_large_image">${VERIFY?`<meta name="google-site-verification" content="${esc(VERIFY)}">`:''}<meta name="theme-color" content="#163f3d"><link rel="stylesheet" href="/assets/styles.css"><script type="application/ld+json">${safeJson(schema)}</script></head><body><a class="skip-link" href="#main">Skip to content</a>${nav()}<main id="main"><nav class="breadcrumbs" aria-label="Breadcrumb">${breadcrumbHtml}</nav>${p.type==='clinician'?presentation.hero(p,heroActions):`<section class="hero"><img class="hero-media" src="${p.image}" alt="${esc(heroAlt)}" fetchpriority="high" referrerpolicy="no-referrer"><div class="hero-shade"></div><div class="hero-copy reveal"><p class="kicker">${esc(p.eyebrow)}</p><h1>${esc(p.h1)}</h1><p class="hero-summary">${esc(p.summary)}</p><div class="actions">${heroActions}</div></div></section>`}${pageBody(p)}${extra}${related(p)}${finalCta}</main>${footer()}<script src="/assets/site.js" defer></script></body></html>`;
 }
@@ -290,6 +295,7 @@ const js = `document.querySelector('.menu-button')?.addEventListener('click',e=>
 fs.rmSync(DIST, {recursive:true, force:true});
 write(path.join(DIST,'assets/styles.css'), css + formCss);
 write(path.join(DIST,'assets/site.js'), js);
+fs.copyFileSync(path.join(ROOT,'src',autumnProfile.portrait.path),path.join(DIST,autumnProfile.portrait.path));
 for (const p of allPages) {
   const file = p.slug ? path.join(DIST,p.slug,'index.html') : path.join(DIST,'index.html');
   write(file, pageHtml(p));

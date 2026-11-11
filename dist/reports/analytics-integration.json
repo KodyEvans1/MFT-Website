@@ -1,0 +1,361 @@
+{
+  "version": 1,
+  "measurementId": "G-BTK39BBNRE",
+  "enabled": false,
+  "approvalSource": "production sitemap only",
+  "allowedRoutes": [
+    "/",
+    "/about/",
+    "/adhd-neurodivergence-therapy/",
+    "/anxiety-stress-therapy/",
+    "/attachment-based-therapy/",
+    "/autumn-alexander/",
+    "/check-my-coverage/",
+    "/childrentherapy/",
+    "/cognitive-behavioral-therapy-cbt/",
+    "/depression-therapy/",
+    "/dialectical-behavior-therapy-dbt/",
+    "/dr-nolan/",
+    "/emily-johnsrud-bio/",
+    "/emotionally-focused-therapy-eft/",
+    "/family-systems-therapy/",
+    "/family-therapy-group-counseling/",
+    "/gary-ashley/",
+    "/gottman-method-couples-therapy/",
+    "/grief-counseling/",
+    "/how-to-choose-a-therapist/",
+    "/how-to-start-therapy/",
+    "/internal-family-systems-ifs/",
+    "/kody-evans-bio/",
+    "/life-transitions-therapy/",
+    "/marriage-and-couples-therapy-counseling/",
+    "/marriage-reset-assessment/",
+    "/marriagereset/",
+    "/mindfulness-based-therapy/",
+    "/motivational-interviewing/",
+    "/narrative-therapy/",
+    "/new-page-1/",
+    "/new-page/",
+    "/online-therapy-bothell-wa/",
+    "/online-therapy-bremerton-wa/",
+    "/online-therapy-fircrest-wa/",
+    "/online-therapy-king-county-wa/",
+    "/online-therapy-kirkland-wa/",
+    "/online-therapy-locations/",
+    "/online-therapy-redmond-wa/",
+    "/online-therapy-snohomish-county-wa/",
+    "/online-therapy-spokane-wa/",
+    "/online-therapy-tri-cities-wa/",
+    "/online-therapy-vancouver-wa/",
+    "/online-therapy-washington/",
+    "/online-therapy-wenatchee-wa/",
+    "/online-therapy-yakima-wa/",
+    "/online-vs-in-person-therapy/",
+    "/parenting-family-stress-therapy/",
+    "/relationship-issues-therapy/",
+    "/resources/",
+    "/self-esteem-identity-therapy/",
+    "/services/",
+    "/solution-focused-brief-therapy/",
+    "/sonia-hassan-bio/",
+    "/substance-use-recovery-therapy/",
+    "/team/",
+    "/teen-counseling/",
+    "/therapy-approaches/",
+    "/therapy-contact-woodinville/",
+    "/therapy-insurance-benefits/",
+    "/trauma-informed-therapy/",
+    "/trauma-therapy/",
+    "/what-we-help-with/"
+  ],
+  "injected": [],
+  "excluded": [
+    {
+      "route": "/404.html/",
+      "reason": "disabled-or-not-approved"
+    },
+    {
+      "route": "/about/",
+      "reason": "disabled-or-not-approved"
+    },
+    {
+      "route": "/adhd-neurodivergence-therapy/",
+      "reason": "disabled-or-not-approved"
+    },
+    {
+      "route": "/anxiety-stress-therapy/",
+      "reason": "disabled-or-not-approved"
+    },
+    {
+      "route": "/attachment-based-therapy/",
+      "reason": "disabled-or-not-approved"
+    },
+    {
+      "route": "/autumn-alexander/",
+      "reason": "disabled-or-not-approved"
+    },
+    {
+      "route": "/check-my-coverage/",
+      "reason": "disabled-or-not-approved"
+    },
+    {
+      "route": "/childrentherapy/",
+      "reason": "disabled-or-not-approved"
+    },
+    {
+      "route": "/cognitive-behavioral-therapy-cbt/",
+      "reason": "disabled-or-not-approved"
+    },
+    {
+      "route": "/depression-therapy/",
+      "reason": "disabled-or-not-approved"
+    },
+    {
+      "route": "/dialectical-behavior-therapy-dbt/",
+      "reason": "disabled-or-not-approved"
+    },
+    {
+      "route": "/dr-nolan/",
+      "reason": "disabled-or-not-approved"
+    },
+    {
+      "route": "/emily-johnsrud-bio/",
+      "reason": "disabled-or-not-approved"
+    },
+    {
+      "route": "/emotionally-focused-therapy-eft/",
+      "reason": "disabled-or-not-approved"
+    },
+    {
+      "route": "/family-systems-therapy/",
+      "reason": "disabled-or-not-approved"
+    },
+    {
+      "route": "/family-therapy-group-counseling/",
+      "reason": "disabled-or-not-approved"
+    },
+    {
+      "route": "/gary-ashley/",
+      "reason": "disabled-or-not-approved"
+    },
+    {
+      "route": "/google/couples-therapy/",
+      "reason": "disabled-or-not-approved"
+    },
+    {
+      "route": "/google/individual-therapy/",
+      "reason": "disabled-or-not-approved"
+    },
+    {
+      "route": "/google/online-therapy-washington/",
+      "reason": "disabled-or-not-approved"
+    },
+    {
+      "route": "/google/therapy-woodinville/",
+      "reason": "disabled-or-not-approved"
+    },
+    {
+      "route": "/gottman-method-couples-therapy/",
+      "reason": "disabled-or-not-approved"
+    },
+    {
+      "route": "/grief-counseling/",
+      "reason": "disabled-or-not-approved"
+    },
+    {
+      "route": "/how-to-choose-a-therapist/",
+      "reason": "disabled-or-not-approved"
+    },
+    {
+      "route": "/how-to-start-therapy/",
+      "reason": "disabled-or-not-approved"
+    },
+    {
+      "route": "/",
+      "reason": "disabled-or-not-approved"
+    },
+    {
+      "route": "/internal-family-systems-ifs/",
+      "reason": "disabled-or-not-approved"
+    },
+    {
+      "route": "/kody-evans-bio/",
+      "reason": "disabled-or-not-approved"
+    },
+    {
+      "route": "/life-transitions-therapy/",
+      "reason": "disabled-or-not-approved"
+    },
+    {
+      "route": "/marriage-and-couples-therapy-counseling/",
+      "reason": "disabled-or-not-approved"
+    },
+    {
+      "route": "/marriage-reset-assessment/",
+      "reason": "disabled-or-not-approved"
+    },
+    {
+      "route": "/marriage-reset-assessment/thanks/",
+      "reason": "disabled-or-not-approved"
+    },
+    {
+      "route": "/marriagereset/",
+      "reason": "disabled-or-not-approved"
+    },
+    {
+      "route": "/mindfulness-based-therapy/",
+      "reason": "disabled-or-not-approved"
+    },
+    {
+      "route": "/motivational-interviewing/",
+      "reason": "disabled-or-not-approved"
+    },
+    {
+      "route": "/narrative-therapy/",
+      "reason": "disabled-or-not-approved"
+    },
+    {
+      "route": "/new-page/",
+      "reason": "disabled-or-not-approved"
+    },
+    {
+      "route": "/new-page-1/",
+      "reason": "disabled-or-not-approved"
+    },
+    {
+      "route": "/new-page-2/",
+      "reason": "disabled-or-not-approved"
+    },
+    {
+      "route": "/new-page-4/",
+      "reason": "disabled-or-not-approved"
+    },
+    {
+      "route": "/online-therapy-bothell-wa/",
+      "reason": "disabled-or-not-approved"
+    },
+    {
+      "route": "/online-therapy-bremerton-wa/",
+      "reason": "disabled-or-not-approved"
+    },
+    {
+      "route": "/online-therapy-fircrest-wa/",
+      "reason": "disabled-or-not-approved"
+    },
+    {
+      "route": "/online-therapy-king-county-wa/",
+      "reason": "disabled-or-not-approved"
+    },
+    {
+      "route": "/online-therapy-kirkland-wa/",
+      "reason": "disabled-or-not-approved"
+    },
+    {
+      "route": "/online-therapy-locations/",
+      "reason": "disabled-or-not-approved"
+    },
+    {
+      "route": "/online-therapy-redmond-wa/",
+      "reason": "disabled-or-not-approved"
+    },
+    {
+      "route": "/online-therapy-snohomish-county-wa/",
+      "reason": "disabled-or-not-approved"
+    },
+    {
+      "route": "/online-therapy-spokane-wa/",
+      "reason": "disabled-or-not-approved"
+    },
+    {
+      "route": "/online-therapy-tri-cities-wa/",
+      "reason": "disabled-or-not-approved"
+    },
+    {
+      "route": "/online-therapy-vancouver-wa/",
+      "reason": "disabled-or-not-approved"
+    },
+    {
+      "route": "/online-therapy-washington/",
+      "reason": "disabled-or-not-approved"
+    },
+    {
+      "route": "/online-therapy-wenatchee-wa/",
+      "reason": "disabled-or-not-approved"
+    },
+    {
+      "route": "/online-therapy-yakima-wa/",
+      "reason": "disabled-or-not-approved"
+    },
+    {
+      "route": "/online-vs-in-person-therapy/",
+      "reason": "disabled-or-not-approved"
+    },
+    {
+      "route": "/parenting-family-stress-therapy/",
+      "reason": "disabled-or-not-approved"
+    },
+    {
+      "route": "/relationship-issues-therapy/",
+      "reason": "disabled-or-not-approved"
+    },
+    {
+      "route": "/resources/",
+      "reason": "disabled-or-not-approved"
+    },
+    {
+      "route": "/self-esteem-identity-therapy/",
+      "reason": "disabled-or-not-approved"
+    },
+    {
+      "route": "/services/",
+      "reason": "disabled-or-not-approved"
+    },
+    {
+      "route": "/solution-focused-brief-therapy/",
+      "reason": "disabled-or-not-approved"
+    },
+    {
+      "route": "/sonia-hassan-bio/",
+      "reason": "disabled-or-not-approved"
+    },
+    {
+      "route": "/substance-use-recovery-therapy/",
+      "reason": "disabled-or-not-approved"
+    },
+    {
+      "route": "/team/",
+      "reason": "disabled-or-not-approved"
+    },
+    {
+      "route": "/teen-counseling/",
+      "reason": "disabled-or-not-approved"
+    },
+    {
+      "route": "/therapy-approaches/",
+      "reason": "disabled-or-not-approved"
+    },
+    {
+      "route": "/therapy-contact-woodinville/",
+      "reason": "disabled-or-not-approved"
+    },
+    {
+      "route": "/therapy-insurance-benefits/",
+      "reason": "disabled-or-not-approved"
+    },
+    {
+      "route": "/trauma-informed-therapy/",
+      "reason": "disabled-or-not-approved"
+    },
+    {
+      "route": "/trauma-therapy/",
+      "reason": "disabled-or-not-approved"
+    },
+    {
+      "route": "/what-we-help-with/",
+      "reason": "disabled-or-not-approved"
+    }
+  ],
+  "finalVerified": true,
+  "finalPages": [],
+  "removedInheritedTags": 0
+}

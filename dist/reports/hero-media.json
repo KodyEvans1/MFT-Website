@@ -1,0 +1,49 @@
+{
+  "version": 1,
+  "policy": "one canonical page per photographic hero asset",
+  "heroImages": 8,
+  "duplicateAssets": 0,
+  "entries": [
+    {
+      "slug": "autumn-alexander",
+      "key": "https://www.mft.care/assets/autumn-alexander-b4c5e9fc2333.webp",
+      "src": "/assets/autumn-alexander-b4c5e9fc2333.webp"
+    },
+    {
+      "slug": "dr-nolan",
+      "key": "83275db3-920a-42f3-9c8e-618474a34b52",
+      "src": "https://images.squarespace-cdn.com/content/v1/65b78566ba645b4f0f011c30/83275db3-920a-42f3-9c8e-618474a34b52/Screenshot%2B2026-05-19%2B131341.png?format=1000w"
+    },
+    {
+      "slug": "emily-johnsrud-bio",
+      "key": "832941fe-27a3-4b13-97d9-720a96c1bed2",
+      "src": "https://images.squarespace-cdn.com/content/v1/65b78566ba645b4f0f011c30/832941fe-27a3-4b13-97d9-720a96c1bed2/share_11d04f47-8070-419a-8260-d34a52f6984e.jpg?format=1000w"
+    },
+    {
+      "slug": "gary-ashley",
+      "key": "b81f7500-fa68-425b-b2a9-8b0029f1fc04",
+      "src": "https://images.squarespace-cdn.com/content/v1/65b78566ba645b4f0f011c30/b81f7500-fa68-425b-b2a9-8b0029f1fc04/Gary%2BAshley%2BNew.png?format=1000w"
+    },
+    {
+      "slug": "",
+      "key": "1cbcf430-dfe2-4b69-9d9f-7ac53733849e",
+      "src": "https://images.squarespace-cdn.com/content/v1/65b78566ba645b4f0f011c30/1cbcf430-dfe2-4b69-9d9f-7ac53733849e/Individual%2BTherapy%2BLobby.png?format=1000w"
+    },
+    {
+      "slug": "kody-evans-bio",
+      "key": "ed7383ec-060e-4649-93bb-7e71fcea4a21",
+      "src": "https://images.squarespace-cdn.com/content/v1/65b78566ba645b4f0f011c30/ed7383ec-060e-4649-93bb-7e71fcea4a21/Kody%2B026FINAL.jpg?format=1000w"
+    },
+    {
+      "slug": "sonia-hassan-bio",
+      "key": "adfbbf96-f0ab-49ce-9f82-3c3a2906adc0",
+      "src": "https://images.squarespace-cdn.com/content/v1/65b78566ba645b4f0f011c30/adfbbf96-f0ab-49ce-9f82-3c3a2906adc0/sonia.jpg?format=1000w"
+    },
+    {
+      "slug": "therapy-contact-woodinville",
+      "key": "0dac4deb-e22c-42de-9d48-eaf4df2628e5",
+      "src": "https://images.squarespace-cdn.com/content/v1/65b78566ba645b4f0f011c30/0dac4deb-e22c-42de-9d48-eaf4df2628e5/Family%2Btherapy%2Bspace%2Bserving%2BSammamish%2Band%2BWoodinville%2Bclients..jpg?format=1500w"
+    }
+  ],
+  "errors": []
+}

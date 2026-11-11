@@ -1,0 +1,110 @@
+{
+  "version": 1,
+  "publication": "review-only",
+  "pages": [
+    {
+      "slug": "new-page",
+      "family": "service",
+      "sections": 9,
+      "components": [
+        "cards",
+        "story",
+        "steps",
+        "example",
+        "comparison",
+        "cards",
+        "comparison",
+        "clinicians",
+        "faq"
+      ],
+      "sources": [
+        "psychotherapy",
+        "prepare",
+        "nhs-cbt",
+        "telehealth",
+        "self-care"
+      ],
+      "clinicians": [
+        "kody-evans-bio",
+        "dr-nolan",
+        "emily-johnsrud-bio",
+        "gary-ashley",
+        "sonia-hassan-bio",
+        "autumn-alexander"
+      ],
+      "status": "draft",
+      "visualApproval": false,
+      "clinicalApproval": false,
+      "ownerApproval": false
+    },
+    {
+      "slug": "anxiety-stress-therapy",
+      "family": "concern",
+      "sections": 8,
+      "components": [
+        "comparison",
+        "disclosures",
+        "example",
+        "story",
+        "steps",
+        "cards",
+        "clinicians",
+        "faq"
+      ],
+      "sources": [
+        "stress",
+        "anxiety",
+        "gad",
+        "panic",
+        "rcpsych",
+        "nhs-cbt",
+        "prepare",
+        "self-care"
+      ],
+      "clinicians": [
+        "kody-evans-bio",
+        "dr-nolan",
+        "emily-johnsrud-bio",
+        "gary-ashley",
+        "sonia-hassan-bio"
+      ],
+      "status": "draft",
+      "visualApproval": false,
+      "clinicalApproval": false,
+      "ownerApproval": false
+    },
+    {
+      "slug": "cognitive-behavioral-therapy-cbt",
+      "family": "approach",
+      "sections": 8,
+      "components": [
+        "story",
+        "example",
+        "disclosures",
+        "steps",
+        "comparison",
+        "cards",
+        "clinicians",
+        "faq"
+      ],
+      "sources": [
+        "beck",
+        "rcpsych",
+        "nhs-cbt",
+        "psychotherapy",
+        "self-care"
+      ],
+      "clinicians": [
+        "kody-evans-bio",
+        "dr-nolan",
+        "emily-johnsrud-bio",
+        "gary-ashley",
+        "sonia-hassan-bio"
+      ],
+      "status": "draft",
+      "visualApproval": false,
+      "clinicalApproval": false,
+      "ownerApproval": false
+    }
+  ]
+}

@@ -59,7 +59,17 @@
         "sex-therapy"
       ],
       "status": "current",
-      "license": "Ph.D.; LMHC (WA); LCPC (MT)"
+      "license": "Ph.D.; LMHC (WA); LCPC (MT)",
+      "scopeLabel": "Adult individuals, couples, and partners",
+      "excludedPopulations": [
+        "children",
+        "teens"
+      ],
+      "excludedModalities": [
+        "play-therapy",
+        "child-centered-play-therapy"
+      ],
+      "scopeSource": "Practice owner correction: Taylor is not a play therapist and does not work with children; existing adult scope preserved."
     },
     {
       "slug": "emily-johnsrud-bio",
@@ -169,6 +179,38 @@
         "Grief and Bereavement",
         "Counseling"
       ]
+    },
+    {
+      "slug": "autumn-alexander",
+      "name": "Autumn Alexander",
+      "credential": "Licensed Mental Health Counselor Associate (LMHCA)",
+      "license": "LMHCA",
+      "populations": [
+        "children",
+        "teens",
+        "young-adults",
+        "adults",
+        "individuals"
+      ],
+      "minimumAge": 6,
+      "scopeLabel": "Children ages 6+, teens, young adults, and adults",
+      "concerns": [
+        "trauma",
+        "emotion-regulation",
+        "behavioral-challenges",
+        "family-stress",
+        "parenting",
+        "identity",
+        "cultural-concerns",
+        "coping-skills"
+      ],
+      "modalities": [
+        "person-centered-therapy",
+        "trauma-informed-therapy",
+        "integrative-therapy"
+      ],
+      "status": "current",
+      "bookingStatus": "contact-practice"
     }
   ],
   "staff": [

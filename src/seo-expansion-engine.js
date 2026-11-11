@@ -96,7 +96,7 @@ function clinicianMatches(type,e){
   // A shared population tag is not evidence of approach training/use.
   if(type==='modality') return (CLIN.clinicians||[]).filter(cl=>LIBRARY.profiles.get(cl.slug)?.approaches.includes(e.slug)).map(cl=>({cl,score:6,reasons:['approach named in published profile']}));
   const tags=new Set((e.tags||[]).map(normalizeTag));
-  return (CLIN.clinicians||[]).map(cl=>{
+  return (CLIN.clinicians||[]).filter(cl=>require('./clinician-scope').eligibleForTopic(cl,type,e)).map(cl=>{
     let score=0;
     const reasons=[];
     if(type==='modality' && (cl.modalities||[]).includes(e.slug)){score+=6;reasons.push('listed approach')}

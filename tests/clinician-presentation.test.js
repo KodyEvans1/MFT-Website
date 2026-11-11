@@ -11,7 +11,7 @@ test('One canonical name and separate license are used in all clinician identiti
  for(const p of people){const html=ui.identity(p.slug);assert.ok(html.includes('>'+p.name+'</h3>'));assert.ok(html.includes('class="mft-clinician-license">'));assert.ok(html.includes(p.license));}
  for(const f of files)assert.doesNotMatch(fs.readFileSync(f,'utf8'),/Kody Evans, LMFT/,'Legacy name on '+f);
 });
-test('All five biography heroes place credentials after the name and contain their own source portrait',()=>{
+test('All biography heroes place credentials after the name and contain their own source portrait',()=>{
  for(const p of people){const h=fs.readFileSync(path.join(dist,p.slug,'index.html'),'utf8');assert.match(h,new RegExp('data-clinician-hero="'+p.slug+'"'));assert.ok(h.indexOf('class="mft-clinician-name"')<h.indexOf('class="mft-clinician-license"'));assert.ok(h.includes('data-portrait-variant="hero"'));assert.ok(h.includes('data-portrait-fit="contain"'));assert.ok(h.includes('data-hero-treatment="green-blend"'));assert.ok(h.includes('>'+p.name+'</h1>'));assert.doesNotMatch(h,/<div class="hero-shade">/);}
 });
 test('Every actual clinician and staff photo is wrapped by the shared portrait frame',()=>{
@@ -27,8 +27,11 @@ test('Shared presentation rejects unknown people, invalid variants and unsafe so
  const h=ui.portrait('/photo.jpg','<script>');assert.ok(h.includes('&lt;script&gt;'));assert.doesNotMatch(h,/<script>/);
 });
 test('Portrait correction never changes clinician booking identifiers or source photographs',()=>{
- const expected=['1701440','2031820','2027366','2154633','2065412'];const booking=require('../content/simplepractice-booking.json');assert.deepEqual(people.map(p=>booking.clinicians.find(c=>c.slug===p.slug).id),expected);
- for(const p of people)assert.match(fs.readFileSync(path.join(dist,p.slug,'index.html'),'utf8'),/class="hero-media" src="https:\/\/images.squarespace-cdn.com/);
+ const expected=['1701440','2031820','2027366','2154633','2065412'];const booking=require('../content/simplepractice-booking.json');assert.deepEqual(people.filter(p=>p.slug!=='autumn-alexander').map(p=>booking.clinicians.find(c=>c.slug===p.slug).id),expected);
+ assert.equal(people.find(p=>p.slug==='autumn-alexander').bookingStatus,'contact-practice');
+ assert.equal(booking.clinicians.some(p=>p.slug==='autumn-alexander'),false);
+ for(const p of people.filter(p=>p.slug!=='autumn-alexander'))assert.match(fs.readFileSync(path.join(dist,p.slug,'index.html'),'utf8'),/class="hero-media" src="https:\/\/images.squarespace-cdn.com/);
+ assert.ok(fs.readFileSync(path.join(dist,'autumn-alexander/index.html'),'utf8').includes(require('../content/autumn-profile.json').portrait.path));
 });
 
 test('Biography source renditions respect real pixel dimensions, including small originals',()=>{

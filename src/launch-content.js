@@ -1,6 +1,8 @@
 'use strict';
 // Owner-approved launch content applied after the shared page-family composition.
+const autumn=require('../content/autumn-profile.json');
 const education={
+ [autumn.slug]:{education:autumn.education,training:autumn.training},
  'kody-evans-bio':{training:['ADHD-CCSP','Level 1 Gottman Training']},
  'dr-nolan':{education:['Ph.D. in Clinical Sexology — Modern Sex Therapy Institutes, 2022','M.S. in Mental Health Counseling — The Johns Hopkins University, 2016'],training:['Clinical sexology focus','Gottman-informed therapy','Sex therapy-informed care']},
  'emily-johnsrud-bio':{education:['M.A. in Couples & Family Therapy — Seattle University, 2023'],training:['EMDR Trained','CBT training']},

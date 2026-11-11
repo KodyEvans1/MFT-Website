@@ -1,0 +1,3169 @@
+{
+  "version": 1,
+  "indexingEnabled": false,
+  "context": "local",
+  "coreSitemapCandidates": [
+    "https://www.mft.care/",
+    "https://www.mft.care/services",
+    "https://www.mft.care/what-we-help-with",
+    "https://www.mft.care/therapy-approaches",
+    "https://www.mft.care/resources",
+    "https://www.mft.care/team",
+    "https://www.mft.care/about",
+    "https://www.mft.care/therapy-contact-woodinville",
+    "https://www.mft.care/check-my-coverage",
+    "https://www.mft.care/online-therapy-washington",
+    "https://www.mft.care/online-therapy-locations",
+    "https://www.mft.care/new-page",
+    "https://www.mft.care/marriage-and-couples-therapy-counseling",
+    "https://www.mft.care/marriagereset",
+    "https://www.mft.care/teen-counseling",
+    "https://www.mft.care/childrentherapy",
+    "https://www.mft.care/family-therapy-group-counseling",
+    "https://www.mft.care/new-page-1",
+    "https://www.mft.care/marriage-reset-assessment",
+    "https://www.mft.care/kody-evans-bio",
+    "https://www.mft.care/dr-nolan",
+    "https://www.mft.care/emily-johnsrud-bio",
+    "https://www.mft.care/gary-ashley",
+    "https://www.mft.care/sonia-hassan-bio",
+    "https://www.mft.care/autumn-alexander",
+    "https://www.mft.care/online-therapy-spokane-wa",
+    "https://www.mft.care/online-therapy-yakima-wa",
+    "https://www.mft.care/online-therapy-tri-cities-wa",
+    "https://www.mft.care/online-therapy-wenatchee-wa",
+    "https://www.mft.care/online-therapy-vancouver-wa",
+    "https://www.mft.care/online-therapy-bothell-wa",
+    "https://www.mft.care/online-therapy-kirkland-wa",
+    "https://www.mft.care/online-therapy-redmond-wa",
+    "https://www.mft.care/online-therapy-bremerton-wa",
+    "https://www.mft.care/online-therapy-fircrest-wa",
+    "https://www.mft.care/online-therapy-king-county-wa",
+    "https://www.mft.care/online-therapy-snohomish-county-wa",
+    "https://www.mft.care/anxiety-stress-therapy",
+    "https://www.mft.care/depression-therapy",
+    "https://www.mft.care/adhd-neurodivergence-therapy",
+    "https://www.mft.care/trauma-therapy",
+    "https://www.mft.care/grief-counseling",
+    "https://www.mft.care/self-esteem-identity-therapy",
+    "https://www.mft.care/relationship-issues-therapy",
+    "https://www.mft.care/parenting-family-stress-therapy",
+    "https://www.mft.care/life-transitions-therapy",
+    "https://www.mft.care/substance-use-recovery-therapy",
+    "https://www.mft.care/cognitive-behavioral-therapy-cbt",
+    "https://www.mft.care/dialectical-behavior-therapy-dbt",
+    "https://www.mft.care/emotionally-focused-therapy-eft",
+    "https://www.mft.care/gottman-method-couples-therapy",
+    "https://www.mft.care/internal-family-systems-ifs",
+    "https://www.mft.care/solution-focused-brief-therapy",
+    "https://www.mft.care/narrative-therapy",
+    "https://www.mft.care/motivational-interviewing",
+    "https://www.mft.care/attachment-based-therapy",
+    "https://www.mft.care/family-systems-therapy",
+    "https://www.mft.care/mindfulness-based-therapy",
+    "https://www.mft.care/trauma-informed-therapy",
+    "https://www.mft.care/how-to-start-therapy",
+    "https://www.mft.care/how-to-choose-a-therapist",
+    "https://www.mft.care/online-vs-in-person-therapy",
+    "https://www.mft.care/therapy-insurance-benefits"
+  ],
+  "generatedRoutes": [
+    {
+      "slug": "acceptance-commitment-therapy-act",
+      "status": "draft"
+    },
+    {
+      "slug": "person-centered-therapy",
+      "status": "draft"
+    },
+    {
+      "slug": "strengths-based-therapy",
+      "status": "draft"
+    },
+    {
+      "slug": "experiential-therapy",
+      "status": "draft"
+    },
+    {
+      "slug": "structural-family-therapy",
+      "status": "draft"
+    },
+    {
+      "slug": "bowen-family-systems-therapy",
+      "status": "draft"
+    },
+    {
+      "slug": "psychodynamic-therapy",
+      "status": "draft"
+    },
+    {
+      "slug": "existential-therapy",
+      "status": "draft"
+    },
+    {
+      "slug": "behavioral-activation",
+      "status": "draft"
+    },
+    {
+      "slug": "exposure-based-therapy",
+      "status": "draft"
+    },
+    {
+      "slug": "somatic-therapy-informed",
+      "status": "draft"
+    },
+    {
+      "slug": "play-therapy",
+      "status": "draft"
+    },
+    {
+      "slug": "child-centered-play-therapy",
+      "status": "draft"
+    },
+    {
+      "slug": "parent-coaching",
+      "status": "draft"
+    },
+    {
+      "slug": "discernment-counseling",
+      "status": "draft"
+    },
+    {
+      "slug": "sex-therapy",
+      "status": "draft"
+    },
+    {
+      "slug": "grief-therapy",
+      "status": "draft"
+    },
+    {
+      "slug": "emotion-regulation-skills",
+      "status": "draft"
+    },
+    {
+      "slug": "solution-focused-couples-therapy",
+      "status": "draft"
+    },
+    {
+      "slug": "integrative-therapy",
+      "status": "draft"
+    },
+    {
+      "slug": "panic-attacks-therapy",
+      "status": "draft"
+    },
+    {
+      "slug": "social-anxiety-therapy",
+      "status": "draft"
+    },
+    {
+      "slug": "burnout-therapy",
+      "status": "draft"
+    },
+    {
+      "slug": "perfectionism-therapy",
+      "status": "draft"
+    },
+    {
+      "slug": "caregiver-stress-therapy",
+      "status": "draft"
+    },
+    {
+      "slug": "loneliness-therapy",
+      "status": "draft"
+    },
+    {
+      "slug": "anger-management-therapy",
+      "status": "draft"
+    },
+    {
+      "slug": "work-stress-therapy",
+      "status": "draft"
+    },
+    {
+      "slug": "divorce-adjustment-therapy",
+      "status": "draft"
+    },
+    {
+      "slug": "co-parenting-counseling",
+      "status": "draft"
+    },
+    {
+      "slug": "blended-family-therapy",
+      "status": "draft"
+    },
+    {
+      "slug": "betrayal-trauma-therapy",
+      "status": "draft"
+    },
+    {
+      "slug": "emotional-distance-couples",
+      "status": "draft"
+    },
+    {
+      "slug": "communication-problems-couples",
+      "status": "draft"
+    },
+    {
+      "slug": "school-stress-therapy",
+      "status": "draft"
+    },
+    {
+      "slug": "friendship-stress-therapy",
+      "status": "draft"
+    },
+    {
+      "slug": "identity-exploration-therapy",
+      "status": "draft"
+    },
+    {
+      "slug": "men-mental-health-therapy",
+      "status": "draft"
+    },
+    {
+      "slug": "young-adult-therapy",
+      "status": "draft"
+    },
+    {
+      "slug": "chronic-pain-adjustment-therapy",
+      "status": "draft"
+    },
+    {
+      "slug": "repeated-conflict",
+      "status": "draft"
+    },
+    {
+      "slug": "emotional-distance",
+      "status": "draft"
+    },
+    {
+      "slug": "rebuilding-trust",
+      "status": "draft"
+    },
+    {
+      "slug": "infidelity-recovery",
+      "status": "draft"
+    },
+    {
+      "slug": "intimacy-and-connection",
+      "status": "draft"
+    },
+    {
+      "slug": "division-of-labor",
+      "status": "draft"
+    },
+    {
+      "slug": "resentment-in-relationships",
+      "status": "draft"
+    },
+    {
+      "slug": "parenting-differences",
+      "status": "draft"
+    },
+    {
+      "slug": "money-conflict",
+      "status": "draft"
+    },
+    {
+      "slug": "in-law-conflict",
+      "status": "draft"
+    },
+    {
+      "slug": "attachment-patterns-in-couples",
+      "status": "draft"
+    },
+    {
+      "slug": "discernment-and-stay-or-leave-decisions",
+      "status": "draft"
+    },
+    {
+      "slug": "premarital-communication",
+      "status": "draft"
+    },
+    {
+      "slug": "blended-family-relationships",
+      "status": "draft"
+    },
+    {
+      "slug": "co-parenting-after-separation",
+      "status": "draft"
+    },
+    {
+      "slug": "communication-cycles",
+      "status": "draft"
+    },
+    {
+      "slug": "repair-after-conflict",
+      "status": "draft"
+    },
+    {
+      "slug": "fairness-and-equality",
+      "status": "draft"
+    },
+    {
+      "slug": "boundaries-in-relationships",
+      "status": "draft"
+    },
+    {
+      "slug": "affection-and-belonging",
+      "status": "draft"
+    },
+    {
+      "slug": "therapy-for-men",
+      "status": "draft"
+    },
+    {
+      "slug": "therapy-for-young-adults",
+      "status": "draft"
+    },
+    {
+      "slug": "therapy-for-college-students",
+      "status": "draft"
+    },
+    {
+      "slug": "therapy-for-parents",
+      "status": "draft"
+    },
+    {
+      "slug": "therapy-for-caregivers",
+      "status": "draft"
+    },
+    {
+      "slug": "therapy-for-older-adults",
+      "status": "draft"
+    },
+    {
+      "slug": "therapy-for-neurodivergent-adults",
+      "status": "draft"
+    },
+    {
+      "slug": "therapy-for-teens-with-anxiety",
+      "status": "draft"
+    },
+    {
+      "slug": "therapy-for-children-experiencing-divorce",
+      "status": "draft"
+    },
+    {
+      "slug": "therapy-for-couples-becoming-parents",
+      "status": "draft"
+    },
+    {
+      "slug": "therapy-for-professionals",
+      "status": "draft"
+    },
+    {
+      "slug": "therapy-for-blended-families",
+      "status": "draft"
+    },
+    {
+      "slug": "therapist-vs-counselor",
+      "status": "draft"
+    },
+    {
+      "slug": "lmft-vs-lmhc",
+      "status": "draft"
+    },
+    {
+      "slug": "what-happens-first-therapy-session",
+      "status": "draft"
+    },
+    {
+      "slug": "does-insurance-cover-therapy",
+      "status": "draft"
+    },
+    {
+      "slug": "how-long-does-therapy-take",
+      "status": "draft"
+    },
+    {
+      "slug": "how-often-should-i-go-to-therapy",
+      "status": "draft"
+    },
+    {
+      "slug": "what-happens-in-couples-therapy",
+      "status": "draft"
+    },
+    {
+      "slug": "what-is-90791",
+      "status": "draft"
+    },
+    {
+      "slug": "online-vs-in-person-couples-therapy",
+      "status": "draft"
+    },
+    {
+      "slug": "how-to-know-if-couples-therapy-is-right",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-adams-county-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-asotin-county-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-benton-county-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-chelan-county-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-clallam-county-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-clark-county-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-columbia-county-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-cowlitz-county-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-douglas-county-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-ferry-county-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-franklin-county-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-garfield-county-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-grant-county-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-grays-harbor-county-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-island-county-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-jefferson-county-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-kitsap-county-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-kittitas-county-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-klickitat-county-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-lewis-county-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-lincoln-county-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-mason-county-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-okanogan-county-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-pacific-county-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-pend-oreille-county-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-pierce-county-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-san-juan-county-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-skagit-county-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-skamania-county-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-spokane-county-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-stevens-county-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-thurston-county-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-wahkiakum-county-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-walla-walla-county-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-whatcom-county-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-whitman-county-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-yakima-county-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-northwest-region-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-puget-sound-region-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-peninsula-kitsap-region-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-south-sound-coast-region-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-southwest-gorge-region-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-central-region-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-northeast-region-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-southeast-region-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-aberdeen-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-airway-heights-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-albion-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-algona-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-almira-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-anacortes-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-arlington-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-asotin-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-auburn-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-bainbridge-island-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-battle-ground-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-beaux-arts-village-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-bellevue-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-bellingham-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-benton-city-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-bingen-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-black-diamond-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-blaine-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-bonney-lake-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-brewster-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-bridgeport-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-brier-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-buckley-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-bucoda-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-burien-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-burlington-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-camas-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-carbonado-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-carnation-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-cashmere-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-castle-rock-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-cathlamet-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-centralia-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-chehalis-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-chelan-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-cheney-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-chewelah-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-clarkston-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-cle-elum-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-clyde-hill-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-colfax-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-college-place-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-colton-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-colville-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-conconully-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-concrete-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-connell-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-cosmopolis-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-coulee-city-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-coulee-dam-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-coupeville-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-covington-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-creston-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-cusick-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-darrington-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-davenport-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-dayton-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-deer-park-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-des-moines-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-dupont-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-duvall-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-east-wenatchee-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-eatonville-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-edgewood-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-edmonds-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-electric-city-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-ellensburg-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-elma-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-elmer-city-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-endicott-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-entiat-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-enumclaw-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-ephrata-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-everett-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-everson-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-fairfield-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-farmington-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-federal-way-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-ferndale-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-fife-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-forks-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-friday-harbor-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-garfield-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-george-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-gig-harbor-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-gold-bar-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-goldendale-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-grand-coulee-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-grandview-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-granger-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-granite-falls-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-hamilton-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-harrah-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-harrington-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-hartline-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-hatton-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-hoquiam-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-hunts-point-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-ilwaco-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-index-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-ione-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-issaquah-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-kahlotus-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-kalama-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-kelso-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-kenmore-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-kennewick-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-kent-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-kettle-falls-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-kittitas-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-krupp-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-la-center-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-la-conner-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-lacrosse-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-lacey-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-lake-forest-park-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-lake-stevens-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-lakewood-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-lamont-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-langley-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-latah-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-leavenworth-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-liberty-lake-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-lind-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-long-beach-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-longview-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-lyman-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-lynden-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-lynnwood-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-mabton-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-malden-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-mansfield-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-maple-valley-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-marcus-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-marysville-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-mattawa-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-mccleary-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-medical-lake-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-medina-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-mercer-island-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-mesa-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-metaline-falls-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-metaline-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-mill-creek-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-millwood-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-milton-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-monroe-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-montesano-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-morton-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-moses-lake-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-mossyrock-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-mount-vernon-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-mountlake-terrace-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-moxee-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-mukilteo-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-naches-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-napavine-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-nespelem-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-newcastle-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-newport-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-nooksack-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-normandy-park-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-north-bend-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-north-bonneville-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-northport-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-oak-harbor-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-oakesdale-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-oakville-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-ocean-shores-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-odessa-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-okanogan-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-olympia-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-omak-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-oroville-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-orting-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-othello-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-pacific-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-palouse-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-pasco-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-pateros-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-pe-ell-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-pomeroy-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-port-angeles-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-port-orchard-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-port-townsend-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-poulsbo-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-prescott-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-prosser-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-pullman-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-puyallup-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-quincy-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-rainier-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-raymond-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-reardan-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-renton-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-republic-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-richland-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-ridgefield-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-ritzville-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-riverside-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-rock-island-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-rockford-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-rosalia-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-roslyn-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-roy-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-royal-city-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-ruston-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-sammamish-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-seatac-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-seattle-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-sedro-woolley-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-selah-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-sequim-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-shelton-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-shoreline-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-skykomish-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-snohomish-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-snoqualmie-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-soap-lake-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-south-bend-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-south-cle-elum-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-south-prairie-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-spangle-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-spokane-valley-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-sprague-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-springdale-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-st-john-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-stanwood-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-starbuck-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-steilacoom-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-stevenson-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-sultan-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-sumas-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-sumner-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-sunnyside-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-tacoma-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-tekoa-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-tenino-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-tieton-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-toledo-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-tonasket-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-toppenish-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-tukwila-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-tumwater-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-twisp-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-union-gap-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-uniontown-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-university-place-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-vader-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-waitsburg-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-walla-walla-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-wapato-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-warden-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-washougal-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-washtucna-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-waterville-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-waverly-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-west-richland-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-westport-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-white-salmon-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-wilbur-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-wilkeson-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-wilson-creek-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-winlock-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-winthrop-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-woodinville-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-woodland-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-woodway-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-yacolt-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-yarrow-point-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-yelm-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-zillah-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-aberdeen-gardens-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-acme-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-addy-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-ahtanum-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-alder-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-alderton-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-alderwood-manor-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-alger-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-allyn-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-altoona-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-amanda-park-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-amboy-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-ames-lake-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-anatone-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-anderson-island-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-arlington-heights-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-artondale-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-ashford-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-bangor-base-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-banks-lake-south-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-barberton-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-baring-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-barney-s-junction-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-barstow-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-basin-city-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-bay-center-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-bay-view-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-beacon-hill-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-belfair-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-bell-hill-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-bethel-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-beverly-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-bickleton-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-big-lake-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-birch-bay-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-blyn-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-bothell-east-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-bothell-west-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-boulevard-park-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-bow-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-boyds-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-brady-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-brinnon-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-browns-point-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-brush-prairie-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-bryant-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-bryn-mawr-skyway-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-buena-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-bunk-foss-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-burbank-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-burley-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-camano-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-canterwood-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-canyon-creek-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-carlsborg-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-carson-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-cascade-valley-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-cathcart-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-cavalero-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-centerville-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-central-park-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-chain-lake-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-chelan-falls-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-cherry-grove-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-chico-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-chinook-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-clallam-bay-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-clarkston-heights-vineland-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-clayton-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-clear-lake-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-clear-lake-cdp-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-clearview-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-cliffdell-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-clinton-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-clover-creek-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-cohassett-beach-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-conway-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-copalis-beach-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-cottage-lake-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-cougar-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-country-homes-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-cowiche-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-crescent-bar-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-crocker-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-curlew-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-curlew-lake-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-custer-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-dallesport-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-danville-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-dash-point-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-deep-river-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-deming-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-desert-aire-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-disautel-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-dixie-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-dollars-corner-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-donald-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-duluth-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-east-cathlamet-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-east-port-orchard-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-east-renton-highlands-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-eastmont-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-easton-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-edison-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-elbe-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-elk-plain-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-enetai-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-erlands-point-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-eschbach-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-esperance-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-fairchild-afb-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-fairwood-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-fairwood-cdp-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-fall-city-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-felida-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-fern-prairie-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-fife-heights-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-finley-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-five-corners-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-fobes-hill-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-fords-prairie-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-fort-lewis-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-four-lakes-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-fox-island-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-frederickson-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-freeland-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-garrett-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-geneva-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-glacier-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-gleed-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-glenwood-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-gorst-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-graham-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-grand-mound-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-grapeview-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-grayland-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-grays-river-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-green-bluff-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-greenwater-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-hansville-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-hat-island-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-hazel-dell-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-herron-island-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-high-bridge-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-hobart-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-hockinson-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-hogans-corner-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-home-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-hoodsport-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-humptulips-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-inchelium-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-indianola-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-jamestown-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-kapowsin-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-kayak-point-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-keller-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-kendall-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-ketron-island-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-key-center-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-keyport-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-kingston-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-kitsap-lake-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-klickitat-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-la-grande-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-lake-bosworth-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-lake-cassidy-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-lake-cavanaugh-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-lake-goodwin-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-lake-holm-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-lake-ketchum-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-lake-marcel-stillwater-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-lake-mcmurray-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-lake-morton-berrydale-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-lake-roesiger-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-lake-shore-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-lake-stickney-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-lake-tapps-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-lakeland-north-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-lakeland-south-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-lakeview-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-larch-way-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-laurier-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-lebam-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-lewisville-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-lexington-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-lochsloy-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-lofall-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-longbranch-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-longview-heights-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-loomis-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-loon-lake-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-lower-elochoman-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-lyle-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-machias-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-malo-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-malone-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-malott-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-maltby-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-manchester-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-manson-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-maple-falls-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-maple-heights-lake-desire-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-maplewood-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-marblemount-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-marietta-alderwood-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-marine-view-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-markham-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-marrowstone-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-martha-lake-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-maryhill-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-may-creek-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-mcchord-afb-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-mckenna-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-mcmillin-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-mead-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-meadow-glade-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-meadowdale-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-methow-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-midland-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-mill-creek-east-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-mineral-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-minnehaha-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-mirrormont-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-moclips-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-monroe-north-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-moses-lake-north-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-mount-vista-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-naselle-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-navy-yard-city-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-neah-bay-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-neilton-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-nespelem-community-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-nile-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-nisqually-indian-community-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-north-fort-lewis-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-north-lynnwood-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-north-omak-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-north-puyallup-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-north-sultan-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-north-yelm-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-northwest-stanwood-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-ocean-city-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-ocean-park-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-ocosta-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-onalaska-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-orchards-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-orient-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-oso-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-otis-orchards-east-farms-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-outlook-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-oyehut-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-pacific-beach-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-packwood-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-parker-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-parkland-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-parkwood-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-pataha-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-peaceful-valley-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-picnic-point-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-pine-grove-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-point-roberts-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-port-angeles-east-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-port-gamble-tribal-community-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-port-hadlock-irondale-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-port-ludlow-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-porter-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-prairie-heights-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-prairie-ridge-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-puget-island-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-purdy-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-queets-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-qui-nai-elt-village-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-quilcene-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-raft-island-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-ravensdale-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-river-road-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-riverbend-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-riverpoint-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-roche-harbor-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-rochester-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-rockport-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-rocky-point-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-ronald-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-roosevelt-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-rosburg-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-rosedale-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-ryderwood-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-salmon-creek-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-santiago-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-satsop-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-schwana-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-seabeck-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-sekiu-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-shadow-lake-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-silvana-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-silver-firs-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-silverdale-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-sisco-heights-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-skamokawa-valley-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-skokomish-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-snoqualmie-pass-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-south-creek-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-south-hill-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-south-wenatchee-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-southworth-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-spanaway-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-stansberry-lake-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-startup-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-steptoe-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-sudden-valley-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-summit-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-summit-view-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-summitview-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-suncrest-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-sunday-lake-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-sunland-estates-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-sunnyslope-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-suquamish-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-swede-heaven-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-taholah-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-tampico-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-tanglewilde-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-tehaleh-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-terrace-heights-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-thorp-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-three-lakes-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-tokeland-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-torboy-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-touchet-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-town-and-country-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-tracyton-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-trout-lake-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-twin-lakes-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-union-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-union-hill-novelty-hill-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-upper-elochoman-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-valley-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-vantage-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-vashon-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-vaughn-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-venersborg-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-verlot-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-walla-walla-east-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-waller-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-wallula-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-warm-beach-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-wauna-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-west-clarkston-highland-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-west-pasco-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-wheeler-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-whidbey-island-station-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-white-center-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-white-swan-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-wilderness-rim-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-willapa-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-wishram-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-wollochet-wa",
+      "status": "draft"
+    },
+    {
+      "slug": "online-therapy-woods-creek-wa",
+      "status": "draft"
+    }
+  ],
+  "preservedRoutes": [
+    {
+      "slug": "online-therapy-king-county-wa",
+      "owner": "core",
+      "registryStatus": "existing",
+      "sha256": "e67a9f19f7422d8cb81f96201d821eb8eb21bcb46153588f2d95110702859f10"
+    },
+    {
+      "slug": "online-therapy-snohomish-county-wa",
+      "owner": "core",
+      "registryStatus": "existing",
+      "sha256": "ed7e0ae07cc53f881d6d8039ca071bae1651924bdbc33709d913702cb5602420"
+    },
+    {
+      "slug": "online-therapy-bothell-wa",
+      "owner": "core",
+      "registryStatus": "draft",
+      "sha256": "bd52f074f9df5e3a02e46c5ab083d0f5d3cb314c9e022cfd23a692a78a370d2f"
+    },
+    {
+      "slug": "online-therapy-bremerton-wa",
+      "owner": "core",
+      "registryStatus": "draft",
+      "sha256": "00f6a653136697971e201d041544fdeff3e2950a57b3b4781e95503a04836ca6"
+    },
+    {
+      "slug": "online-therapy-fircrest-wa",
+      "owner": "core",
+      "registryStatus": "draft",
+      "sha256": "41a8029c4b6c6c9c4b1790c534068121ef5c4399aebee37426bcd7ff1283c722"
+    },
+    {
+      "slug": "online-therapy-kirkland-wa",
+      "owner": "core",
+      "registryStatus": "draft",
+      "sha256": "1d2632205ad3f4d76091569897e00fe8944e62f806fd120bba66a577edf6e3a8"
+    },
+    {
+      "slug": "online-therapy-redmond-wa",
+      "owner": "core",
+      "registryStatus": "draft",
+      "sha256": "02523d40a56975312a73b8a265fc3085dead6b0fb652f41236a28fc1d2b3fb1e"
+    },
+    {
+      "slug": "online-therapy-spokane-wa",
+      "owner": "core",
+      "registryStatus": "draft",
+      "sha256": "76b5fbda46d3d9aa4557f1e8cac913612abe7ebd9597e63f60ec7e8a2ae8ed93"
+    },
+    {
+      "slug": "online-therapy-vancouver-wa",
+      "owner": "core",
+      "registryStatus": "draft",
+      "sha256": "200ad90543b608d14dda23bfcc564c00c332fce95e76d3f9586f948cd070cb59"
+    },
+    {
+      "slug": "online-therapy-wenatchee-wa",
+      "owner": "core",
+      "registryStatus": "draft",
+      "sha256": "20b0a3c13a8c2c54f51e7c78d55a2bda871661a6a2ffd283002132ec839d379f"
+    },
+    {
+      "slug": "online-therapy-yakima-wa",
+      "owner": "core",
+      "registryStatus": "draft",
+      "sha256": "30eddda56f13a2a523eab664f32c637996ecda961d5702c7027afa5d2cc1537a"
+    }
+  ],
+  "expectedSitemapUrls": []
+}

@@ -14,6 +14,9 @@ const legacy = /;\(\(\)=>\{const q=new URLSearchParams\(location\.search\);const
 const matches = js.match(legacy) || [];
 if (matches.length > 1) throw new Error('Unexpected duplicate legacy attribution scripts; inspect before changing');
 if (matches.length) fs.writeFileSync(script,js.replace(legacy,''));
+// Compose care pages before binding scheduling links and fingerprinting assets.
+require('../src/care-pathways').prepare(root);
+require('../src/care-discovery').prepare(root);
 const report = {version:1, measurementEnabled, pages:[], clinicians:config.clinicians.map(c=>({key:c.key,id:c.id,slug:c.slug}))};
 for (const file of walk(dist).filter(f=>f.endsWith('.html'))) {
   const relative = path.relative(dist,file).split(path.sep).join('/');

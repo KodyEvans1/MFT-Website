@@ -1,0 +1,92 @@
+name: Clinician profile release verification
+on:
+  pull_request:
+    paths: ['content/autumn-profile.json', 'content/clinician-registry.json', 'src/autumn-profile.js', 'src/clinician-scope.js', 'tests/clinician-update-browser.py', '.github/workflows/clinician-profile-update.yml']
+  push:
+    branches: [main]
+    paths: ['content/autumn-profile.json', 'content/clinician-registry.json', 'src/autumn-profile.js', 'src/clinician-scope.js', 'tests/clinician-update-browser.py', '.github/workflows/clinician-profile-update.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Build, regressions and isolated publication rehearsals
+        run: npm run check && npm run verify:publication
+      - name: Install browser driver
+        run: python -m pip install playwright==1.57.0
+      - name: Verify local HTTP desktop, mobile, keyboard and native links
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p tmp/clinician-update
+          export CHROME_PATH="$(command -v google-chrome || command -v chromium)"
+          python -u tests/clinician-update-browser.py --public-inspection 2>&1 | tee tmp/clinician-update/browser-verification.log
+      - name: Verify actual production content after an authorized main release
+        if: github.ref == 'refs/heads/main'
+        shell: bash
+        run: |
+          python - <<'PY'
+          import hashlib,html,json,re,time,urllib.request
+          from pathlib import Path
+          profile=json.loads(Path('content/autumn-profile.json').read_text())
+          out=Path('tmp/clinician-update/production-verification.json')
+          def fetch(route):
+              req=urllib.request.Request('https://www.mft.care'+route,headers={'Cache-Control':'no-cache','User-Agent':'MFT-profile-release-verification'})
+              with urllib.request.urlopen(req,timeout=20) as r:
+                  assert r.status==200,(route,r.status)
+                  return r.read()
+          def main_text(raw):
+              text=raw.decode()
+              m=re.search(r'<main\b[^>]*>([\s\S]*?)</main>',text)
+              assert m,'Missing main'
+              return m.group(1)
+          last=''
+          for attempt in range(18):
+              try:
+                  evidence=[]
+                  raw=fetch('/autumn-alexander/');m=main_text(raw)
+                  plain=html.unescape(re.sub(r'<[^>]+>','',m))
+                  assert profile['name'] in plain and 'Children ages 6+' in plain
+                  assert profile['booking']['contactUrl'] in m
+                  for entry in profile['therapyFor']+profile['approaches']:
+                      assert entry['text'] in plain,entry['heading']
+                  assert profile['portrait']['path'] in m
+                  evidence.append({'route':'/autumn-alexander/','sha256':hashlib.sha256(raw).hexdigest()})
+                  photo=fetch(profile['portrait']['path'])
+                  assert hashlib.sha256(photo).hexdigest()==profile['portrait']['sha256']
+                  evidence.append({'route':profile['portrait']['path'],'sha256':profile['portrait']['sha256']})
+                  raw=fetch('/dr-nolan/');m=main_text(raw)
+                  assert 'Taylor works with adult individuals, couples, and partners.' in html.unescape(re.sub(r'<[^>]+>','',m))
+                  assert 'clinicianId=2031820' in m
+                  assert not re.search(r'href="/(?:play-therapy|child-centered-play-therapy|childrentherapy|teen-counseling)/',m)
+                  evidence.append({'route':'/dr-nolan/','sha256':hashlib.sha256(raw).hexdigest()})
+                  for route in ['/','/team/','/childrentherapy/','/teen-counseling/']:
+                      raw=fetch(route);assert 'href="/autumn-alexander/"' in raw.decode(),route
+                      evidence.append({'route':route,'sha256':hashlib.sha256(raw).hexdigest()})
+                  out.write_text(json.dumps({'status':'PASS','environment':'actual public production, read-only HTTP','checkedAt':time.strftime('%Y-%m-%dT%H:%M:%SZ',time.gmtime()),'checks':evidence,'limits':'No appointment, email, login, payment or analytics event submitted.'},indent=2))
+                  print('Production profile, source portrait hash, team discovery and Taylor adult scope verified.')
+                  break
+              except Exception as err:
+                  last=str(err)
+                  if attempt<17:time.sleep(10)
+          else:
+              out.write_text(json.dumps({'status':'FAIL','environment':'public production','error':last},indent=2))
+              raise SystemExit('Published profile verification not established: '+last)
+          PY
+      - name: Save separated local and production evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: clinician-profile-release-verification
+          path: tmp/clinician-update/
+          retention-days: 7

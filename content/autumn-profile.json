@@ -1,0 +1,105 @@
+{
+  "slug": "autumn-alexander",
+  "reviewStatus": "owner-approved",
+  "name": "Autumn Alexander",
+  "license": "LMHCA",
+  "credential": "Licensed Mental Health Counselor Associate (LMHCA)",
+  "sourceNotes": {
+    "approvalSource": "Practice owner supplied this portrait and biography and requested website publication in this conversation.",
+    "approvedOn": "2026-11-11",
+    "basis": [
+      "Owner-supplied content; spelling, punctuation and heading consistency only.",
+      "No independently verified license number, booking ID, clinician format, insurance participation, availability or additional certification is asserted."
+    ]
+  },
+  "portrait": {
+    "path": "/assets/autumn-alexander-b4c5e9fc2333.webp",
+    "width": 576,
+    "height": 1023,
+    "source": "Owner-uploaded Autumn Alexander.jpg",
+    "sourceSha256": "0f44e9bae06ad500ac202aa9720f35d53fc354c80f8c959857a48c5bb2a63560",
+    "sha256": "b4c5e9fc23335cf091c20aa0e88c7688ee97dcf900787f8274ae97a07b9738f5"
+  },
+  "summary": "Autumn works with children (6+), teens, and adults navigating emotional and behavioral challenges, trauma-related concerns, and difficulties with emotional regulation. Her background also includes supporting families through intensive behavioral health services.",
+  "clients": "Children ages 6+, teens, young adults, and adults; experience supporting families",
+  "focusAreas": [
+    "Trauma-informed care",
+    "Emotional regulation",
+    "Behavioral challenges",
+    "Family support",
+    "Identity and cultural concerns",
+    "Coping skills",
+    "Crisis support"
+  ],
+  "sections": [
+    {
+      "heading": "How this clinician describes their work",
+      "paragraphs": [
+        "Autumn takes a relational, person-centered, and trauma-informed approach to therapy. Drawing from her experience in youth behavioral health, adult outpatient counseling, and intensive family support services, she emphasizes understanding each client's unique experiences, relationships, and cultural background. Her work focuses on creating a supportive, collaborative environment while helping clients develop practical skills to navigate emotional and behavioral challenges."
+      ]
+    },
+    {
+      "heading": "Who she works with",
+      "paragraphs": [
+        "Children ages 6+, teens, young adults, and adults; experience supporting families."
+      ]
+    }
+  ],
+  "therapyFor": [
+    {
+      "heading": "Parenting and family stress",
+      "text": "Support for families navigating children's behavioral and emotional challenges, strengthening communication, and developing practical strategies to support their child's well-being."
+    },
+    {
+      "heading": "Emotional regulation",
+      "text": "Support for understanding difficult emotions, developing coping strategies, and building skills to manage emotional responses in everyday life."
+    },
+    {
+      "heading": "Behavioral challenges",
+      "text": "Support for children and adolescents experiencing behavioral difficulties, with an emphasis on emotional awareness, coping skills, and positive behavioral strategies."
+    },
+    {
+      "heading": "Trauma-related concerns",
+      "text": "Trauma-informed support that emphasizes emotional safety, understanding difficult experiences, and developing healthy coping strategies."
+    },
+    {
+      "heading": "Identity and cultural concerns",
+      "text": "A supportive space to explore personal identity, cultural experiences, and the ways relationships and social environments influence emotional well-being."
+    }
+  ],
+  "approaches": [
+    {
+      "heading": "Person-centered therapy",
+      "text": "A collaborative approach that emphasizes empathy, understanding, and each client's unique experiences, strengths, and personal goals."
+    },
+    {
+      "heading": "Trauma-informed care",
+      "text": "An approach that prioritizes emotional safety, trust, and understanding how difficult experiences can influence emotions, behaviors, and relationships."
+    },
+    {
+      "heading": "Liberation psychology",
+      "text": "An approach that considers how cultural identity, lived experiences, relationships, and broader social systems influence mental health and personal well-being."
+    },
+    {
+      "heading": "Relational, integrative approach",
+      "text": "An approach that considers the influence of relationships and personal experiences while drawing from different therapeutic perspectives to meet each client's individual needs."
+    }
+  ],
+  "education": [
+    "M.A. in Clinical Mental Health Counseling — Antioch University Seattle, 2026",
+    "B.A. in Community Psychology — University of Washington, 2018"
+  ],
+  "training": [
+    "Trauma-Informed Care",
+    "Liberation Psychology",
+    "Certified Peer Counselor",
+    "WISe Program experience"
+  ],
+  "booking": {
+    "status": "contact-practice",
+    "contactUrl": "mailto:support@mft.care?subject=Appointments%20with%20Autumn",
+    "label": "Ask about appointments with Autumn",
+    "note": "Our team can help arrange the right starting appointment with Autumn. Contact the practice to confirm her appointment formats and current availability. Please leave clinical details and insurance member numbers out of initial email."
+  },
+  "urgentNote": "Crisis support describes an area of experience, not an emergency or on-call service. For a mental health crisis in the U.S., call or text 988. For a life-threatening emergency, call 911. Ordinary scheduling and support email are not crisis services."
+}

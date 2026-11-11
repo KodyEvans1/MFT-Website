@@ -49,3 +49,8 @@ body.page-clinician .mft-clinician-blend{position:absolute;z-index:1;inset:0;poi
  body.page-clinician .mft-clinician-hero .mft-portrait--hero{height:300px;max-width:340px}
  body.page-clinician .mft-clinician-hero .hero-copy{padding:1rem 1.25rem 2.5rem}
 }
+
+/* Six current clinicians: balanced rows instead of a stranded sixth card. */
+.people-grid[data-clinician-count="6"],.mh-team-grid[data-clinician-count="6"]{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media(max-width:760px){.people-grid[data-clinician-count="6"],.mh-team-grid[data-clinician-count="6"]{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:420px){.people-grid[data-clinician-count="6"],.mh-team-grid[data-clinician-count="6"]{grid-template-columns:1fr}}

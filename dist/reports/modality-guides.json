@@ -1,0 +1,374 @@
+{
+  "version": 1,
+  "guideCount": 31,
+  "reviewOnly": true,
+  "entries": [
+    {
+      "slug": "acceptance-commitment-therapy-act",
+      "revision": "36c1ea6eb4aef1b7a90a5afeeed0047bae1a0c12d69dee1b7b03c9f22ada29de",
+      "activeInBuild": true,
+      "sourceUrls": [
+        "https://contextualscience.org/publications/acceptance_commitment_therapy_unified_model_behavior_change",
+        "https://www.nimh.nih.gov/health/topics/psychotherapies"
+      ],
+      "clinicians": [
+        "sonia-hassan-bio"
+      ]
+    },
+    {
+      "slug": "attachment-based-therapy",
+      "revision": "0136c21a8e5415b72397df806b86a3aa124393e0036913a1f9df2c93b799825e",
+      "activeInBuild": true,
+      "sourceUrls": [
+        "https://thebowlbycentre.org.uk/psychotherapy/attachment-based-psychotherapy/",
+        "https://iceeft.com/what-is-eft-public/",
+        "https://www.nimh.nih.gov/health/topics/psychotherapies"
+      ],
+      "clinicians": [
+        "emily-johnsrud-bio"
+      ]
+    },
+    {
+      "slug": "behavioral-activation",
+      "revision": "e2009c4d1eba424c3d5987c6942547f1904516a2ebba7e7a173e52dda8972d4e",
+      "activeInBuild": true,
+      "sourceUrls": [
+        "https://www.gmmh.nhs.uk/behavioural-activation/",
+        "https://www.nimh.nih.gov/health/topics/psychotherapies"
+      ],
+      "clinicians": []
+    },
+    {
+      "slug": "bowen-family-systems-therapy",
+      "revision": "a0c0a793bfc59756c3eb856fb7733df3cdf9fb20ed0b5fec0814149eaa69d50b",
+      "activeInBuild": true,
+      "sourceUrls": [
+        "https://www.thebowencenter.org/core-concepts-diagrams",
+        "https://www.theafsp.org/get-help/what-is-family-and-systemic-therapy/"
+      ],
+      "clinicians": []
+    },
+    {
+      "slug": "child-centered-play-therapy",
+      "revision": "ceee59c45f6eae8993adecab88e68dad7e78d2f461b00d0810ac2dd4c66b8550",
+      "activeInBuild": true,
+      "sourceUrls": [
+        "https://cpt.unt.edu/about-play-therapy/child-centered-play-therapy",
+        "https://www.a4pt.org/page/WhyPlayTherapy"
+      ],
+      "clinicians": []
+    },
+    {
+      "slug": "dialectical-behavior-therapy-dbt",
+      "revision": "6bab267648befba10d82582bd85f7a6140b4b5cbfad8beda70f2365e6fcdce82",
+      "activeInBuild": true,
+      "sourceUrls": [
+        "https://behavioraltech.org/dialectical-behavior-therapy-dbt/",
+        "https://www.nimh.nih.gov/health/topics/psychotherapies"
+      ],
+      "clinicians": [
+        "kody-evans-bio",
+        "emily-johnsrud-bio",
+        "sonia-hassan-bio"
+      ]
+    },
+    {
+      "slug": "discernment-counseling",
+      "revision": "281fa7998f117a9484f6a3f23616c5493c3486dce5c5e1fe8088d64403846026",
+      "activeInBuild": true,
+      "sourceUrls": [
+        "https://discernmentcounseling.com/",
+        "https://www.thehotline.org/resources/should-i-go-to-couples-therapy-with-my-abusive-partner/"
+      ],
+      "clinicians": []
+    },
+    {
+      "slug": "emotion-regulation-skills",
+      "revision": "107d0b05ca173b7ea3a2ed96c67235b0b669e2dc814c8cfcaac2b2bfdd77e200",
+      "activeInBuild": true,
+      "sourceUrls": [
+        "https://behavioraltech.org/dialectical-behavior-therapy-dbt/",
+        "https://www.nimh.nih.gov/health/topics/psychotherapies",
+        "https://www.nimh.nih.gov/health/topics/caring-for-your-mental-health"
+      ],
+      "clinicians": []
+    },
+    {
+      "slug": "emotionally-focused-therapy-eft",
+      "revision": "5eda63edc5f591084f2bf0539384729ff30cb958150236f2eeafa5f2b7ab52b8",
+      "activeInBuild": true,
+      "sourceUrls": [
+        "https://iceeft.com/what-is-eft-public/",
+        "https://www.theafsp.org/get-help/what-is-family-and-systemic-therapy/",
+        "https://www.thehotline.org/resources/should-i-go-to-couples-therapy-with-my-abusive-partner/"
+      ],
+      "clinicians": [
+        "kody-evans-bio"
+      ]
+    },
+    {
+      "slug": "existential-therapy",
+      "revision": "cff95ed8667aba0416bdc10d27453316137bc99768ffc4268e0ae36faf92322e",
+      "activeInBuild": true,
+      "sourceUrls": [
+        "https://www.bacp.co.uk/about-therapy/types-of-therapy/existential-therapy/",
+        "https://www.nimh.nih.gov/health/topics/psychotherapies"
+      ],
+      "clinicians": []
+    },
+    {
+      "slug": "experiential-therapy",
+      "revision": "331ea08a3f3c3b7a96d96af38d09f20a5b89bf243cd1bc50a414ea4bc0341fde",
+      "activeInBuild": true,
+      "sourceUrls": [
+        "https://www.iseft.org/What-is-EFT",
+        "https://www.nimh.nih.gov/health/topics/psychotherapies",
+        "https://www.samhsa.gov/mental-health/trauma-violence/trauma-informed-approaches-programs"
+      ],
+      "clinicians": []
+    },
+    {
+      "slug": "exposure-based-therapy",
+      "revision": "c4761c8bb04a3ce323af9b5a0806762cff037a127ee84b6e2cd26904baa789b6",
+      "activeInBuild": true,
+      "sourceUrls": [
+        "https://www.ptsd.va.gov/apps/decisionaid/prolonged-exposure/",
+        "https://www.nhs.uk/tests-and-treatments/cognitive-behavioural-therapy-cbt/",
+        "https://www.nimh.nih.gov/health/topics/psychotherapies"
+      ],
+      "clinicians": []
+    },
+    {
+      "slug": "family-systems-therapy",
+      "revision": "bd12432d1daa16be1f0e0828e06369dc4c68dd7658286bc132e5c04a5a74da27",
+      "activeInBuild": true,
+      "sourceUrls": [
+        "https://www.theafsp.org/get-help/what-is-family-and-systemic-therapy/",
+        "https://www.nimh.nih.gov/health/topics/psychotherapies",
+        "https://www.thehotline.org/resources/should-i-go-to-couples-therapy-with-my-abusive-partner/"
+      ],
+      "clinicians": [
+        "emily-johnsrud-bio"
+      ]
+    },
+    {
+      "slug": "gottman-method-couples-therapy",
+      "revision": "a0677587cd7e3a594bd0a0770da8a1b769d80b809251ed552557b709b0098274",
+      "activeInBuild": true,
+      "sourceUrls": [
+        "https://www.gottman.com/blog/the-gottman-method/",
+        "https://www.gottman.com/blog/the-four-horsemen-the-antidotes/",
+        "https://www.thehotline.org/resources/should-i-go-to-couples-therapy-with-my-abusive-partner/"
+      ],
+      "clinicians": [
+        "kody-evans-bio",
+        "dr-nolan",
+        "gary-ashley"
+      ]
+    },
+    {
+      "slug": "grief-therapy",
+      "revision": "c94daa7392c7a29150c383e2e18dc74a7e5cddf5bf31c3c3bb5662b643040861",
+      "activeInBuild": true,
+      "sourceUrls": [
+        "https://prolongedgrief.columbia.edu/content/prolonged-grief-therapy",
+        "https://www.nimh.nih.gov/health/topics/psychotherapies"
+      ],
+      "clinicians": []
+    },
+    {
+      "slug": "integrative-therapy",
+      "revision": "69cb97b9efaed5aeb44aef7e7f8861a864f989746a6f434d279560fb4465cd0b",
+      "activeInBuild": true,
+      "sourceUrls": [
+        "https://www.bacp.co.uk/about-therapy/types-of-therapy/integrative-counselling/",
+        "https://www.nimh.nih.gov/health/topics/psychotherapies"
+      ],
+      "clinicians": [
+        "autumn-alexander"
+      ]
+    },
+    {
+      "slug": "internal-family-systems-ifs",
+      "revision": "add6febc5a2247547623c1e84c93da21c94bd78cad1681a8d247fd44009e9d16",
+      "activeInBuild": true,
+      "sourceUrls": [
+        "https://ifs-institute.com/resources/articles/internal-family-systems-model-outline",
+        "https://www.nimh.nih.gov/health/topics/psychotherapies"
+      ],
+      "clinicians": [
+        "kody-evans-bio"
+      ]
+    },
+    {
+      "slug": "mindfulness-based-therapy",
+      "revision": "d07ec73a5afe175806815914f5600ebc32a80babc02e07fc6efd88448ae5e6ea",
+      "activeInBuild": true,
+      "sourceUrls": [
+        "https://www.nccih.nih.gov/health/meditation-and-mindfulness-effectiveness-and-safety",
+        "https://www.nimh.nih.gov/health/topics/psychotherapies"
+      ],
+      "clinicians": [
+        "sonia-hassan-bio"
+      ]
+    },
+    {
+      "slug": "motivational-interviewing",
+      "revision": "151ac80b9114e85f0598121e77a097dc52aee2abc14a3a6ad6e66000e13f095c",
+      "activeInBuild": true,
+      "sourceUrls": [
+        "https://motivationalinterviewing.org/understanding-motivational-interviewing",
+        "https://www.nimh.nih.gov/health/topics/psychotherapies"
+      ],
+      "clinicians": [
+        "gary-ashley",
+        "sonia-hassan-bio"
+      ]
+    },
+    {
+      "slug": "narrative-therapy",
+      "revision": "48b12855fc1858bf28fd3bcf65d1115bbc88fc9957648a666234eb06f6d224be",
+      "activeInBuild": true,
+      "sourceUrls": [
+        "https://dulwichcentre.com.au/what-is-narrative-therapy/",
+        "https://www.nimh.nih.gov/health/topics/psychotherapies"
+      ],
+      "clinicians": [
+        "kody-evans-bio",
+        "sonia-hassan-bio"
+      ]
+    },
+    {
+      "slug": "parent-coaching",
+      "revision": "42af2df7cf951512923b4105828e1f2117f18bf620281ff50b3badc6e1afceec",
+      "activeInBuild": true,
+      "sourceUrls": [
+        "https://www.cdc.gov/adhd/treatment/behavior-therapy.html",
+        "https://www.theafsp.org/get-help/what-is-family-and-systemic-therapy/",
+        "https://www.nimh.nih.gov/health/topics/psychotherapies"
+      ],
+      "clinicians": []
+    },
+    {
+      "slug": "person-centered-therapy",
+      "revision": "fe1ed0dfb00b2115d1602130eafd6ceadb7063a1fa7b707702d336ac2cc63994",
+      "activeInBuild": true,
+      "sourceUrls": [
+        "https://www.bacp.co.uk/about-therapy/types-of-therapy/person-centred-counselling/",
+        "https://www.nimh.nih.gov/health/topics/psychotherapies"
+      ],
+      "clinicians": [
+        "dr-nolan",
+        "gary-ashley",
+        "autumn-alexander"
+      ]
+    },
+    {
+      "slug": "play-therapy",
+      "revision": "ac3899b65ac8d29a1ac75c395251413e825644ca5f0fabb8405c7aaf56c80627",
+      "activeInBuild": true,
+      "sourceUrls": [
+        "https://www.a4pt.org/page/WhyPlayTherapy",
+        "https://cpt.unt.edu/about-play-therapy/child-centered-play-therapy",
+        "https://www.nimh.nih.gov/health/topics/psychotherapies"
+      ],
+      "clinicians": []
+    },
+    {
+      "slug": "psychodynamic-therapy",
+      "revision": "d23ad76bbc956f6dc9e32afaed857368d07ef521f835a1af4de52a8594315bce",
+      "activeInBuild": true,
+      "sourceUrls": [
+        "https://www.bacp.co.uk/about-therapy/types-of-therapy/psychodynamic-therapy/",
+        "https://www.nimh.nih.gov/health/topics/psychotherapies"
+      ],
+      "clinicians": []
+    },
+    {
+      "slug": "sex-therapy",
+      "revision": "8fc247a6d5ddb17d5fd6edfacc5c44e0ddc7e43c18dee69d0eb745d046f6b3cc",
+      "activeInBuild": true,
+      "sourceUrls": [
+        "https://my.clevelandclinic.org/health/articles/24524-sex-therapist",
+        "https://www.nimh.nih.gov/health/topics/psychotherapies",
+        "https://www.thehotline.org/resources/should-i-go-to-couples-therapy-with-my-abusive-partner/"
+      ],
+      "clinicians": [
+        "dr-nolan"
+      ]
+    },
+    {
+      "slug": "solution-focused-brief-therapy",
+      "revision": "1de25557e3a352a06ddd7fcd753f5bae2a46043f0752edf89d914b167b2a2625",
+      "activeInBuild": true,
+      "sourceUrls": [
+        "https://solutionfocused.net/what-is-solution-focused-therapy/",
+        "https://www.nimh.nih.gov/health/topics/psychotherapies"
+      ],
+      "clinicians": [
+        "kody-evans-bio"
+      ]
+    },
+    {
+      "slug": "solution-focused-couples-therapy",
+      "revision": "86e4cfa95704f3170ea9d454f905005054919892ae606d74dbe73315e15dd007",
+      "activeInBuild": true,
+      "sourceUrls": [
+        "https://solutionfocused.net/what-is-solution-focused-therapy/",
+        "https://www.theafsp.org/get-help/what-is-family-and-systemic-therapy/",
+        "https://www.thehotline.org/resources/should-i-go-to-couples-therapy-with-my-abusive-partner/"
+      ],
+      "clinicians": []
+    },
+    {
+      "slug": "somatic-therapy-informed",
+      "revision": "c550c6dae2c812b548715639acf916c286473235df26d39645ceb31a492b1be9",
+      "activeInBuild": true,
+      "sourceUrls": [
+        "https://traumahealing.org/se-101/",
+        "https://www.nimh.nih.gov/health/topics/psychotherapies",
+        "https://www.nccih.nih.gov/health/meditation-and-mindfulness-effectiveness-and-safety"
+      ],
+      "clinicians": [
+        "sonia-hassan-bio"
+      ]
+    },
+    {
+      "slug": "strengths-based-therapy",
+      "revision": "503b4b75f14828583d7573e535be055baa1df7b8833c927cec9e5ad08362da17",
+      "activeInBuild": true,
+      "sourceUrls": [
+        "https://www.scie.org.uk/strengths-based-approaches/",
+        "https://solutionfocused.net/what-is-solution-focused-therapy/",
+        "https://www.nimh.nih.gov/health/topics/psychotherapies"
+      ],
+      "clinicians": [
+        "gary-ashley"
+      ]
+    },
+    {
+      "slug": "structural-family-therapy",
+      "revision": "493ba382a95c552e25971634e5f323ea53b0928d59cdc1c0576bed8aec8b771f",
+      "activeInBuild": true,
+      "sourceUrls": [
+        "https://minuchincenter.org/introduction-to-structural-family-therapy/",
+        "https://www.theafsp.org/get-help/what-is-family-and-systemic-therapy/",
+        "https://www.thehotline.org/resources/should-i-go-to-couples-therapy-with-my-abusive-partner/"
+      ],
+      "clinicians": []
+    },
+    {
+      "slug": "trauma-informed-therapy",
+      "revision": "4a981c6aee53671dc5b395aebecef01c06a5462509ee6f5252802add637d4d8e",
+      "activeInBuild": true,
+      "sourceUrls": [
+        "https://www.samhsa.gov/mental-health/trauma-violence/trauma-informed-approaches-programs",
+        "https://www.nimh.nih.gov/health/topics/psychotherapies"
+      ],
+      "clinicians": [
+        "autumn-alexander"
+      ]
+    }
+  ],
+  "errors": []
+}

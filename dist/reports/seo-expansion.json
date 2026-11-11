@@ -1,0 +1,1537 @@
+{
+  "generatedPages": 757,
+  "generatedDraftPages": 757,
+  "preservedCorePages": 11,
+  "preservedCoreRoutes": [
+    "online-therapy-king-county-wa",
+    "online-therapy-snohomish-county-wa",
+    "online-therapy-bothell-wa",
+    "online-therapy-bremerton-wa",
+    "online-therapy-fircrest-wa",
+    "online-therapy-kirkland-wa",
+    "online-therapy-redmond-wa",
+    "online-therapy-spokane-wa",
+    "online-therapy-vancouver-wa",
+    "online-therapy-wenatchee-wa",
+    "online-therapy-yakima-wa"
+  ],
+  "indexingEnabled": false,
+  "sitemapUrls": 0,
+  "counts": {
+    "modality": 20,
+    "concern": 20,
+    "relationship": 20,
+    "population": 12,
+    "decision": 10,
+    "location": 675
+  },
+  "approved": 0,
+  "draft": 757,
+  "similarityThreshold": 0.78,
+  "similarityFlagCount": 196895,
+  "similarityFlagsSample": [
+    {
+      "a": "panic-attacks-therapy",
+      "b": "social-anxiety-therapy",
+      "type": "concern",
+      "similarity": 1
+    },
+    {
+      "a": "panic-attacks-therapy",
+      "b": "burnout-therapy",
+      "type": "concern",
+      "similarity": 0.931
+    },
+    {
+      "a": "panic-attacks-therapy",
+      "b": "perfectionism-therapy",
+      "type": "concern",
+      "similarity": 0.957
+    },
+    {
+      "a": "panic-attacks-therapy",
+      "b": "caregiver-stress-therapy",
+      "type": "concern",
+      "similarity": 0.891
+    },
+    {
+      "a": "panic-attacks-therapy",
+      "b": "loneliness-therapy",
+      "type": "concern",
+      "similarity": 0.872
+    },
+    {
+      "a": "panic-attacks-therapy",
+      "b": "anger-management-therapy",
+      "type": "concern",
+      "similarity": 0.868
+    },
+    {
+      "a": "panic-attacks-therapy",
+      "b": "work-stress-therapy",
+      "type": "concern",
+      "similarity": 0.927
+    },
+    {
+      "a": "panic-attacks-therapy",
+      "b": "divorce-adjustment-therapy",
+      "type": "concern",
+      "similarity": 0.872
+    },
+    {
+      "a": "panic-attacks-therapy",
+      "b": "co-parenting-counseling",
+      "type": "concern",
+      "similarity": 0.824
+    },
+    {
+      "a": "panic-attacks-therapy",
+      "b": "blended-family-therapy",
+      "type": "concern",
+      "similarity": 0.824
+    },
+    {
+      "a": "panic-attacks-therapy",
+      "b": "betrayal-trauma-therapy",
+      "type": "concern",
+      "similarity": 0.876
+    },
+    {
+      "a": "panic-attacks-therapy",
+      "b": "emotional-distance-couples",
+      "type": "concern",
+      "similarity": 0.84
+    },
+    {
+      "a": "panic-attacks-therapy",
+      "b": "communication-problems-couples",
+      "type": "concern",
+      "similarity": 0.84
+    },
+    {
+      "a": "panic-attacks-therapy",
+      "b": "school-stress-therapy",
+      "type": "concern",
+      "similarity": 0.878
+    },
+    {
+      "a": "panic-attacks-therapy",
+      "b": "friendship-stress-therapy",
+      "type": "concern",
+      "similarity": 0.858
+    },
+    {
+      "a": "panic-attacks-therapy",
+      "b": "identity-exploration-therapy",
+      "type": "concern",
+      "similarity": 0.965
+    },
+    {
+      "a": "panic-attacks-therapy",
+      "b": "men-mental-health-therapy",
+      "type": "concern",
+      "similarity": 0.927
+    },
+    {
+      "a": "panic-attacks-therapy",
+      "b": "young-adult-therapy",
+      "type": "concern",
+      "similarity": 0.827
+    },
+    {
+      "a": "panic-attacks-therapy",
+      "b": "chronic-pain-adjustment-therapy",
+      "type": "concern",
+      "similarity": 0.931
+    },
+    {
+      "a": "social-anxiety-therapy",
+      "b": "burnout-therapy",
+      "type": "concern",
+      "similarity": 0.931
+    },
+    {
+      "a": "social-anxiety-therapy",
+      "b": "perfectionism-therapy",
+      "type": "concern",
+      "similarity": 0.957
+    },
+    {
+      "a": "social-anxiety-therapy",
+      "b": "caregiver-stress-therapy",
+      "type": "concern",
+      "similarity": 0.891
+    },
+    {
+      "a": "social-anxiety-therapy",
+      "b": "loneliness-therapy",
+      "type": "concern",
+      "similarity": 0.872
+    },
+    {
+      "a": "social-anxiety-therapy",
+      "b": "anger-management-therapy",
+      "type": "concern",
+      "similarity": 0.868
+    },
+    {
+      "a": "social-anxiety-therapy",
+      "b": "work-stress-therapy",
+      "type": "concern",
+      "similarity": 0.927
+    },
+    {
+      "a": "social-anxiety-therapy",
+      "b": "divorce-adjustment-therapy",
+      "type": "concern",
+      "similarity": 0.872
+    },
+    {
+      "a": "social-anxiety-therapy",
+      "b": "co-parenting-counseling",
+      "type": "concern",
+      "similarity": 0.824
+    },
+    {
+      "a": "social-anxiety-therapy",
+      "b": "blended-family-therapy",
+      "type": "concern",
+      "similarity": 0.824
+    },
+    {
+      "a": "social-anxiety-therapy",
+      "b": "betrayal-trauma-therapy",
+      "type": "concern",
+      "similarity": 0.876
+    },
+    {
+      "a": "social-anxiety-therapy",
+      "b": "emotional-distance-couples",
+      "type": "concern",
+      "similarity": 0.84
+    },
+    {
+      "a": "social-anxiety-therapy",
+      "b": "communication-problems-couples",
+      "type": "concern",
+      "similarity": 0.84
+    },
+    {
+      "a": "social-anxiety-therapy",
+      "b": "school-stress-therapy",
+      "type": "concern",
+      "similarity": 0.878
+    },
+    {
+      "a": "social-anxiety-therapy",
+      "b": "friendship-stress-therapy",
+      "type": "concern",
+      "similarity": 0.858
+    },
+    {
+      "a": "social-anxiety-therapy",
+      "b": "identity-exploration-therapy",
+      "type": "concern",
+      "similarity": 0.965
+    },
+    {
+      "a": "social-anxiety-therapy",
+      "b": "men-mental-health-therapy",
+      "type": "concern",
+      "similarity": 0.927
+    },
+    {
+      "a": "social-anxiety-therapy",
+      "b": "young-adult-therapy",
+      "type": "concern",
+      "similarity": 0.827
+    },
+    {
+      "a": "social-anxiety-therapy",
+      "b": "chronic-pain-adjustment-therapy",
+      "type": "concern",
+      "similarity": 0.931
+    },
+    {
+      "a": "burnout-therapy",
+      "b": "perfectionism-therapy",
+      "type": "concern",
+      "similarity": 0.974
+    },
+    {
+      "a": "burnout-therapy",
+      "b": "caregiver-stress-therapy",
+      "type": "concern",
+      "similarity": 0.956
+    },
+    {
+      "a": "burnout-therapy",
+      "b": "loneliness-therapy",
+      "type": "concern",
+      "similarity": 0.903
+    },
+    {
+      "a": "burnout-therapy",
+      "b": "anger-management-therapy",
+      "type": "concern",
+      "similarity": 0.899
+    },
+    {
+      "a": "burnout-therapy",
+      "b": "work-stress-therapy",
+      "type": "concern",
+      "similarity": 0.996
+    },
+    {
+      "a": "burnout-therapy",
+      "b": "divorce-adjustment-therapy",
+      "type": "concern",
+      "similarity": 0.903
+    },
+    {
+      "a": "burnout-therapy",
+      "b": "co-parenting-counseling",
+      "type": "concern",
+      "similarity": 0.862
+    },
+    {
+      "a": "burnout-therapy",
+      "b": "blended-family-therapy",
+      "type": "concern",
+      "similarity": 0.862
+    },
+    {
+      "a": "burnout-therapy",
+      "b": "betrayal-trauma-therapy",
+      "type": "concern",
+      "similarity": 0.867
+    },
+    {
+      "a": "burnout-therapy",
+      "b": "emotional-distance-couples",
+      "type": "concern",
+      "similarity": 0.87
+    },
+    {
+      "a": "burnout-therapy",
+      "b": "communication-problems-couples",
+      "type": "concern",
+      "similarity": 0.87
+    },
+    {
+      "a": "burnout-therapy",
+      "b": "school-stress-therapy",
+      "type": "concern",
+      "similarity": 0.878
+    },
+    {
+      "a": "burnout-therapy",
+      "b": "friendship-stress-therapy",
+      "type": "concern",
+      "similarity": 0.849
+    },
+    {
+      "a": "burnout-therapy",
+      "b": "identity-exploration-therapy",
+      "type": "concern",
+      "similarity": 0.906
+    },
+    {
+      "a": "burnout-therapy",
+      "b": "men-mental-health-therapy",
+      "type": "concern",
+      "similarity": 0.996
+    },
+    {
+      "a": "burnout-therapy",
+      "b": "young-adult-therapy",
+      "type": "concern",
+      "similarity": 0.819
+    },
+    {
+      "a": "burnout-therapy",
+      "b": "chronic-pain-adjustment-therapy",
+      "type": "concern",
+      "similarity": 1
+    },
+    {
+      "a": "perfectionism-therapy",
+      "b": "caregiver-stress-therapy",
+      "type": "concern",
+      "similarity": 0.931
+    },
+    {
+      "a": "perfectionism-therapy",
+      "b": "loneliness-therapy",
+      "type": "concern",
+      "similarity": 0.887
+    },
+    {
+      "a": "perfectionism-therapy",
+      "b": "anger-management-therapy",
+      "type": "concern",
+      "similarity": 0.884
+    },
+    {
+      "a": "perfectionism-therapy",
+      "b": "work-stress-therapy",
+      "type": "concern",
+      "similarity": 0.969
+    },
+    {
+      "a": "perfectionism-therapy",
+      "b": "divorce-adjustment-therapy",
+      "type": "concern",
+      "similarity": 0.887
+    },
+    {
+      "a": "perfectionism-therapy",
+      "b": "co-parenting-counseling",
+      "type": "concern",
+      "similarity": 0.84
+    },
+    {
+      "a": "perfectionism-therapy",
+      "b": "blended-family-therapy",
+      "type": "concern",
+      "similarity": 0.84
+    },
+    {
+      "a": "perfectionism-therapy",
+      "b": "betrayal-trauma-therapy",
+      "type": "concern",
+      "similarity": 0.852
+    },
+    {
+      "a": "perfectionism-therapy",
+      "b": "emotional-distance-couples",
+      "type": "concern",
+      "similarity": 0.855
+    },
+    {
+      "a": "perfectionism-therapy",
+      "b": "communication-problems-couples",
+      "type": "concern",
+      "similarity": 0.855
+    },
+    {
+      "a": "perfectionism-therapy",
+      "b": "school-stress-therapy",
+      "type": "concern",
+      "similarity": 0.855
+    },
+    {
+      "a": "perfectionism-therapy",
+      "b": "friendship-stress-therapy",
+      "type": "concern",
+      "similarity": 0.835
+    },
+    {
+      "a": "perfectionism-therapy",
+      "b": "identity-exploration-therapy",
+      "type": "concern",
+      "similarity": 0.923
+    },
+    {
+      "a": "perfectionism-therapy",
+      "b": "men-mental-health-therapy",
+      "type": "concern",
+      "similarity": 0.969
+    },
+    {
+      "a": "perfectionism-therapy",
+      "b": "young-adult-therapy",
+      "type": "concern",
+      "similarity": 0.812
+    },
+    {
+      "a": "perfectionism-therapy",
+      "b": "chronic-pain-adjustment-therapy",
+      "type": "concern",
+      "similarity": 0.974
+    },
+    {
+      "a": "caregiver-stress-therapy",
+      "b": "loneliness-therapy",
+      "type": "concern",
+      "similarity": 0.871
+    },
+    {
+      "a": "caregiver-stress-therapy",
+      "b": "anger-management-therapy",
+      "type": "concern",
+      "similarity": 0.868
+    },
+    {
+      "a": "caregiver-stress-therapy",
+      "b": "work-stress-therapy",
+      "type": "concern",
+      "similarity": 0.961
+    },
+    {
+      "a": "caregiver-stress-therapy",
+      "b": "divorce-adjustment-therapy",
+      "type": "concern",
+      "similarity": 0.871
+    },
+    {
+      "a": "caregiver-stress-therapy",
+      "b": "co-parenting-counseling",
+      "type": "concern",
+      "similarity": 0.862
+    },
+    {
+      "a": "caregiver-stress-therapy",
+      "b": "blended-family-therapy",
+      "type": "concern",
+      "similarity": 0.862
+    },
+    {
+      "a": "caregiver-stress-therapy",
+      "b": "betrayal-trauma-therapy",
+      "type": "concern",
+      "similarity": 0.86
+    },
+    {
+      "a": "caregiver-stress-therapy",
+      "b": "emotional-distance-couples",
+      "type": "concern",
+      "similarity": 0.863
+    },
+    {
+      "a": "caregiver-stress-therapy",
+      "b": "communication-problems-couples",
+      "type": "concern",
+      "similarity": 0.863
+    },
+    {
+      "a": "caregiver-stress-therapy",
+      "b": "school-stress-therapy",
+      "type": "concern",
+      "similarity": 0.902
+    },
+    {
+      "a": "caregiver-stress-therapy",
+      "b": "friendship-stress-therapy",
+      "type": "concern",
+      "similarity": 0.842
+    },
+    {
+      "a": "caregiver-stress-therapy",
+      "b": "identity-exploration-therapy",
+      "type": "concern",
+      "similarity": 0.866
+    },
+    {
+      "a": "caregiver-stress-therapy",
+      "b": "men-mental-health-therapy",
+      "type": "concern",
+      "similarity": 0.961
+    },
+    {
+      "a": "caregiver-stress-therapy",
+      "b": "young-adult-therapy",
+      "type": "concern",
+      "similarity": 0.819
+    },
+    {
+      "a": "caregiver-stress-therapy",
+      "b": "chronic-pain-adjustment-therapy",
+      "type": "concern",
+      "similarity": 0.956
+    },
+    {
+      "a": "loneliness-therapy",
+      "b": "anger-management-therapy",
+      "type": "concern",
+      "similarity": 0.944
+    },
+    {
+      "a": "loneliness-therapy",
+      "b": "work-stress-therapy",
+      "type": "concern",
+      "similarity": 0.899
+    },
+    {
+      "a": "loneliness-therapy",
+      "b": "divorce-adjustment-therapy",
+      "type": "concern",
+      "similarity": 0.948
+    },
+    {
+      "a": "loneliness-therapy",
+      "b": "co-parenting-counseling",
+      "type": "concern",
+      "similarity": 0.882
+    },
+    {
+      "a": "loneliness-therapy",
+      "b": "blended-family-therapy",
+      "type": "concern",
+      "similarity": 0.882
+    },
+    {
+      "a": "loneliness-therapy",
+      "b": "betrayal-trauma-therapy",
+      "type": "concern",
+      "similarity": 0.895
+    },
+    {
+      "a": "loneliness-therapy",
+      "b": "emotional-distance-couples",
+      "type": "concern",
+      "similarity": 0.899
+    },
+    {
+      "a": "loneliness-therapy",
+      "b": "communication-problems-couples",
+      "type": "concern",
+      "similarity": 0.899
+    },
+    {
+      "a": "loneliness-therapy",
+      "b": "school-stress-therapy",
+      "type": "concern",
+      "similarity": 0.859
+    },
+    {
+      "a": "loneliness-therapy",
+      "b": "friendship-stress-therapy",
+      "type": "concern",
+      "similarity": 0.926
+    },
+    {
+      "a": "loneliness-therapy",
+      "b": "identity-exploration-therapy",
+      "type": "concern",
+      "similarity": 0.848
+    },
+    {
+      "a": "loneliness-therapy",
+      "b": "men-mental-health-therapy",
+      "type": "concern",
+      "similarity": 0.899
+    },
+    {
+      "a": "loneliness-therapy",
+      "b": "chronic-pain-adjustment-therapy",
+      "type": "concern",
+      "similarity": 0.903
+    },
+    {
+      "a": "anger-management-therapy",
+      "b": "work-stress-therapy",
+      "type": "concern",
+      "similarity": 0.895
+    },
+    {
+      "a": "anger-management-therapy",
+      "b": "divorce-adjustment-therapy",
+      "type": "concern",
+      "similarity": 0.996
+    },
+    {
+      "a": "anger-management-therapy",
+      "b": "co-parenting-counseling",
+      "type": "concern",
+      "similarity": 0.927
+    },
+    {
+      "a": "anger-management-therapy",
+      "b": "blended-family-therapy",
+      "type": "concern",
+      "similarity": 0.927
+    },
+    {
+      "a": "anger-management-therapy",
+      "b": "betrayal-trauma-therapy",
+      "type": "concern",
+      "similarity": 0.892
+    },
+    {
+      "a": "anger-management-therapy",
+      "b": "emotional-distance-couples",
+      "type": "concern",
+      "similarity": 0.944
+    },
+    {
+      "a": "anger-management-therapy",
+      "b": "communication-problems-couples",
+      "type": "concern",
+      "similarity": 0.944
+    },
+    {
+      "a": "anger-management-therapy",
+      "b": "school-stress-therapy",
+      "type": "concern",
+      "similarity": 0.81
+    },
+    {
+      "a": "anger-management-therapy",
+      "b": "friendship-stress-therapy",
+      "type": "concern",
+      "similarity": 0.874
+    },
+    {
+      "a": "anger-management-therapy",
+      "b": "identity-exploration-therapy",
+      "type": "concern",
+      "similarity": 0.883
+    },
+    {
+      "a": "anger-management-therapy",
+      "b": "men-mental-health-therapy",
+      "type": "concern",
+      "similarity": 0.895
+    },
+    {
+      "a": "anger-management-therapy",
+      "b": "young-adult-therapy",
+      "type": "concern",
+      "similarity": 0.806
+    },
+    {
+      "a": "anger-management-therapy",
+      "b": "chronic-pain-adjustment-therapy",
+      "type": "concern",
+      "similarity": 0.899
+    },
+    {
+      "a": "work-stress-therapy",
+      "b": "divorce-adjustment-therapy",
+      "type": "concern",
+      "similarity": 0.899
+    },
+    {
+      "a": "work-stress-therapy",
+      "b": "co-parenting-counseling",
+      "type": "concern",
+      "similarity": 0.866
+    },
+    {
+      "a": "work-stress-therapy",
+      "b": "blended-family-therapy",
+      "type": "concern",
+      "similarity": 0.866
+    },
+    {
+      "a": "work-stress-therapy",
+      "b": "betrayal-trauma-therapy",
+      "type": "concern",
+      "similarity": 0.871
+    },
+    {
+      "a": "work-stress-therapy",
+      "b": "emotional-distance-couples",
+      "type": "concern",
+      "similarity": 0.874
+    },
+    {
+      "a": "work-stress-therapy",
+      "b": "communication-problems-couples",
+      "type": "concern",
+      "similarity": 0.874
+    },
+    {
+      "a": "work-stress-therapy",
+      "b": "school-stress-therapy",
+      "type": "concern",
+      "similarity": 0.881
+    },
+    {
+      "a": "work-stress-therapy",
+      "b": "friendship-stress-therapy",
+      "type": "concern",
+      "similarity": 0.853
+    },
+    {
+      "a": "work-stress-therapy",
+      "b": "identity-exploration-therapy",
+      "type": "concern",
+      "similarity": 0.902
+    },
+    {
+      "a": "work-stress-therapy",
+      "b": "men-mental-health-therapy",
+      "type": "concern",
+      "similarity": 1
+    },
+    {
+      "a": "work-stress-therapy",
+      "b": "young-adult-therapy",
+      "type": "concern",
+      "similarity": 0.815
+    },
+    {
+      "a": "work-stress-therapy",
+      "b": "chronic-pain-adjustment-therapy",
+      "type": "concern",
+      "similarity": 0.996
+    },
+    {
+      "a": "divorce-adjustment-therapy",
+      "b": "co-parenting-counseling",
+      "type": "concern",
+      "similarity": 0.931
+    },
+    {
+      "a": "divorce-adjustment-therapy",
+      "b": "blended-family-therapy",
+      "type": "concern",
+      "similarity": 0.931
+    },
+    {
+      "a": "divorce-adjustment-therapy",
+      "b": "betrayal-trauma-therapy",
+      "type": "concern",
+      "similarity": 0.895
+    },
+    {
+      "a": "divorce-adjustment-therapy",
+      "b": "emotional-distance-couples",
+      "type": "concern",
+      "similarity": 0.948
+    },
+    {
+      "a": "divorce-adjustment-therapy",
+      "b": "communication-problems-couples",
+      "type": "concern",
+      "similarity": 0.948
+    },
+    {
+      "a": "divorce-adjustment-therapy",
+      "b": "school-stress-therapy",
+      "type": "concern",
+      "similarity": 0.814
+    },
+    {
+      "a": "divorce-adjustment-therapy",
+      "b": "friendship-stress-therapy",
+      "type": "concern",
+      "similarity": 0.878
+    },
+    {
+      "a": "divorce-adjustment-therapy",
+      "b": "identity-exploration-therapy",
+      "type": "concern",
+      "similarity": 0.887
+    },
+    {
+      "a": "divorce-adjustment-therapy",
+      "b": "men-mental-health-therapy",
+      "type": "concern",
+      "similarity": 0.899
+    },
+    {
+      "a": "divorce-adjustment-therapy",
+      "b": "young-adult-therapy",
+      "type": "concern",
+      "similarity": 0.809
+    },
+    {
+      "a": "divorce-adjustment-therapy",
+      "b": "chronic-pain-adjustment-therapy",
+      "type": "concern",
+      "similarity": 0.903
+    },
+    {
+      "a": "co-parenting-counseling",
+      "b": "blended-family-therapy",
+      "type": "concern",
+      "similarity": 0.991
+    },
+    {
+      "a": "co-parenting-counseling",
+      "b": "betrayal-trauma-therapy",
+      "type": "concern",
+      "similarity": 0.894
+    },
+    {
+      "a": "co-parenting-counseling",
+      "b": "emotional-distance-couples",
+      "type": "concern",
+      "similarity": 0.947
+    },
+    {
+      "a": "co-parenting-counseling",
+      "b": "communication-problems-couples",
+      "type": "concern",
+      "similarity": 0.947
+    },
+    {
+      "a": "co-parenting-counseling",
+      "b": "school-stress-therapy",
+      "type": "concern",
+      "similarity": 0.811
+    },
+    {
+      "a": "co-parenting-counseling",
+      "b": "friendship-stress-therapy",
+      "type": "concern",
+      "similarity": 0.892
+    },
+    {
+      "a": "co-parenting-counseling",
+      "b": "identity-exploration-therapy",
+      "type": "concern",
+      "similarity": 0.854
+    },
+    {
+      "a": "co-parenting-counseling",
+      "b": "men-mental-health-therapy",
+      "type": "concern",
+      "similarity": 0.866
+    },
+    {
+      "a": "co-parenting-counseling",
+      "b": "young-adult-therapy",
+      "type": "concern",
+      "similarity": 0.822
+    },
+    {
+      "a": "co-parenting-counseling",
+      "b": "chronic-pain-adjustment-therapy",
+      "type": "concern",
+      "similarity": 0.862
+    },
+    {
+      "a": "blended-family-therapy",
+      "b": "betrayal-trauma-therapy",
+      "type": "concern",
+      "similarity": 0.902
+    },
+    {
+      "a": "blended-family-therapy",
+      "b": "emotional-distance-couples",
+      "type": "concern",
+      "similarity": 0.947
+    },
+    {
+      "a": "blended-family-therapy",
+      "b": "communication-problems-couples",
+      "type": "concern",
+      "similarity": 0.947
+    },
+    {
+      "a": "blended-family-therapy",
+      "b": "school-stress-therapy",
+      "type": "concern",
+      "similarity": 0.811
+    },
+    {
+      "a": "blended-family-therapy",
+      "b": "friendship-stress-therapy",
+      "type": "concern",
+      "similarity": 0.892
+    },
+    {
+      "a": "blended-family-therapy",
+      "b": "identity-exploration-therapy",
+      "type": "concern",
+      "similarity": 0.854
+    },
+    {
+      "a": "blended-family-therapy",
+      "b": "men-mental-health-therapy",
+      "type": "concern",
+      "similarity": 0.866
+    },
+    {
+      "a": "blended-family-therapy",
+      "b": "young-adult-therapy",
+      "type": "concern",
+      "similarity": 0.822
+    },
+    {
+      "a": "blended-family-therapy",
+      "b": "chronic-pain-adjustment-therapy",
+      "type": "concern",
+      "similarity": 0.862
+    },
+    {
+      "a": "betrayal-trauma-therapy",
+      "b": "emotional-distance-couples",
+      "type": "concern",
+      "similarity": 0.944
+    },
+    {
+      "a": "betrayal-trauma-therapy",
+      "b": "communication-problems-couples",
+      "type": "concern",
+      "similarity": 0.944
+    },
+    {
+      "a": "betrayal-trauma-therapy",
+      "b": "school-stress-therapy",
+      "type": "concern",
+      "similarity": 0.84
+    },
+    {
+      "a": "betrayal-trauma-therapy",
+      "b": "friendship-stress-therapy",
+      "type": "concern",
+      "similarity": 0.93
+    },
+    {
+      "a": "betrayal-trauma-therapy",
+      "b": "identity-exploration-therapy",
+      "type": "concern",
+      "similarity": 0.851
+    },
+    {
+      "a": "betrayal-trauma-therapy",
+      "b": "men-mental-health-therapy",
+      "type": "concern",
+      "similarity": 0.871
+    },
+    {
+      "a": "betrayal-trauma-therapy",
+      "b": "young-adult-therapy",
+      "type": "concern",
+      "similarity": 0.798
+    },
+    {
+      "a": "betrayal-trauma-therapy",
+      "b": "chronic-pain-adjustment-therapy",
+      "type": "concern",
+      "similarity": 0.867
+    },
+    {
+      "a": "emotional-distance-couples",
+      "b": "communication-problems-couples",
+      "type": "concern",
+      "similarity": 1
+    },
+    {
+      "a": "emotional-distance-couples",
+      "b": "school-stress-therapy",
+      "type": "concern",
+      "similarity": 0.805
+    },
+    {
+      "a": "emotional-distance-couples",
+      "b": "friendship-stress-therapy",
+      "type": "concern",
+      "similarity": 0.893
+    },
+    {
+      "a": "emotional-distance-couples",
+      "b": "identity-exploration-therapy",
+      "type": "concern",
+      "similarity": 0.854
+    },
+    {
+      "a": "emotional-distance-couples",
+      "b": "men-mental-health-therapy",
+      "type": "concern",
+      "similarity": 0.874
+    },
+    {
+      "a": "emotional-distance-couples",
+      "b": "young-adult-therapy",
+      "type": "concern",
+      "similarity": 0.807
+    },
+    {
+      "a": "emotional-distance-couples",
+      "b": "chronic-pain-adjustment-therapy",
+      "type": "concern",
+      "similarity": 0.87
+    },
+    {
+      "a": "communication-problems-couples",
+      "b": "school-stress-therapy",
+      "type": "concern",
+      "similarity": 0.805
+    },
+    {
+      "a": "communication-problems-couples",
+      "b": "friendship-stress-therapy",
+      "type": "concern",
+      "similarity": 0.893
+    },
+    {
+      "a": "communication-problems-couples",
+      "b": "identity-exploration-therapy",
+      "type": "concern",
+      "similarity": 0.854
+    },
+    {
+      "a": "communication-problems-couples",
+      "b": "men-mental-health-therapy",
+      "type": "concern",
+      "similarity": 0.874
+    },
+    {
+      "a": "communication-problems-couples",
+      "b": "young-adult-therapy",
+      "type": "concern",
+      "similarity": 0.807
+    },
+    {
+      "a": "communication-problems-couples",
+      "b": "chronic-pain-adjustment-therapy",
+      "type": "concern",
+      "similarity": 0.87
+    },
+    {
+      "a": "school-stress-therapy",
+      "b": "friendship-stress-therapy",
+      "type": "concern",
+      "similarity": 0.9
+    },
+    {
+      "a": "school-stress-therapy",
+      "b": "identity-exploration-therapy",
+      "type": "concern",
+      "similarity": 0.869
+    },
+    {
+      "a": "school-stress-therapy",
+      "b": "men-mental-health-therapy",
+      "type": "concern",
+      "similarity": 0.881
+    },
+    {
+      "a": "school-stress-therapy",
+      "b": "young-adult-therapy",
+      "type": "concern",
+      "similarity": 0.799
+    },
+    {
+      "a": "school-stress-therapy",
+      "b": "chronic-pain-adjustment-therapy",
+      "type": "concern",
+      "similarity": 0.878
+    },
+    {
+      "a": "friendship-stress-therapy",
+      "b": "identity-exploration-therapy",
+      "type": "concern",
+      "similarity": 0.849
+    },
+    {
+      "a": "friendship-stress-therapy",
+      "b": "men-mental-health-therapy",
+      "type": "concern",
+      "similarity": 0.853
+    },
+    {
+      "a": "friendship-stress-therapy",
+      "b": "young-adult-therapy",
+      "type": "concern",
+      "similarity": 0.794
+    },
+    {
+      "a": "friendship-stress-therapy",
+      "b": "chronic-pain-adjustment-therapy",
+      "type": "concern",
+      "similarity": 0.849
+    },
+    {
+      "a": "identity-exploration-therapy",
+      "b": "men-mental-health-therapy",
+      "type": "concern",
+      "similarity": 0.902
+    },
+    {
+      "a": "identity-exploration-therapy",
+      "b": "young-adult-therapy",
+      "type": "concern",
+      "similarity": 0.857
+    },
+    {
+      "a": "identity-exploration-therapy",
+      "b": "chronic-pain-adjustment-therapy",
+      "type": "concern",
+      "similarity": 0.906
+    },
+    {
+      "a": "men-mental-health-therapy",
+      "b": "young-adult-therapy",
+      "type": "concern",
+      "similarity": 0.815
+    },
+    {
+      "a": "men-mental-health-therapy",
+      "b": "chronic-pain-adjustment-therapy",
+      "type": "concern",
+      "similarity": 0.996
+    },
+    {
+      "a": "young-adult-therapy",
+      "b": "chronic-pain-adjustment-therapy",
+      "type": "concern",
+      "similarity": 0.819
+    },
+    {
+      "a": "rebuilding-trust",
+      "b": "infidelity-recovery",
+      "type": "relationship",
+      "similarity": 0.987
+    },
+    {
+      "a": "rebuilding-trust",
+      "b": "intimacy-and-connection",
+      "type": "relationship",
+      "similarity": 0.987
+    },
+    {
+      "a": "rebuilding-trust",
+      "b": "division-of-labor",
+      "type": "relationship",
+      "similarity": 0.987
+    },
+    {
+      "a": "rebuilding-trust",
+      "b": "resentment-in-relationships",
+      "type": "relationship",
+      "similarity": 0.991
+    },
+    {
+      "a": "rebuilding-trust",
+      "b": "parenting-differences",
+      "type": "relationship",
+      "similarity": 0.987
+    },
+    {
+      "a": "rebuilding-trust",
+      "b": "money-conflict",
+      "type": "relationship",
+      "similarity": 0.991
+    },
+    {
+      "a": "rebuilding-trust",
+      "b": "in-law-conflict",
+      "type": "relationship",
+      "similarity": 0.996
+    },
+    {
+      "a": "rebuilding-trust",
+      "b": "attachment-patterns-in-couples",
+      "type": "relationship",
+      "similarity": 0.982
+    },
+    {
+      "a": "rebuilding-trust",
+      "b": "discernment-and-stay-or-leave-decisions",
+      "type": "relationship",
+      "similarity": 0.978
+    },
+    {
+      "a": "rebuilding-trust",
+      "b": "premarital-communication",
+      "type": "relationship",
+      "similarity": 0.987
+    },
+    {
+      "a": "rebuilding-trust",
+      "b": "blended-family-relationships",
+      "type": "relationship",
+      "similarity": 0.982
+    },
+    {
+      "a": "rebuilding-trust",
+      "b": "co-parenting-after-separation",
+      "type": "relationship",
+      "similarity": 0.982
+    },
+    {
+      "a": "rebuilding-trust",
+      "b": "communication-cycles",
+      "type": "relationship",
+      "similarity": 0.987
+    },
+    {
+      "a": "rebuilding-trust",
+      "b": "fairness-and-equality",
+      "type": "relationship",
+      "similarity": 0.987
+    },
+    {
+      "a": "rebuilding-trust",
+      "b": "boundaries-in-relationships",
+      "type": "relationship",
+      "similarity": 0.982
+    },
+    {
+      "a": "rebuilding-trust",
+      "b": "affection-and-belonging",
+      "type": "relationship",
+      "similarity": 0.982
+    },
+    {
+      "a": "infidelity-recovery",
+      "b": "intimacy-and-connection",
+      "type": "relationship",
+      "similarity": 0.982
+    },
+    {
+      "a": "infidelity-recovery",
+      "b": "division-of-labor",
+      "type": "relationship",
+      "similarity": 0.982
+    },
+    {
+      "a": "infidelity-recovery",
+      "b": "resentment-in-relationships",
+      "type": "relationship",
+      "similarity": 0.987
+    },
+    {
+      "a": "infidelity-recovery",
+      "b": "parenting-differences",
+      "type": "relationship",
+      "similarity": 0.982
+    },
+    {
+      "a": "infidelity-recovery",
+      "b": "money-conflict",
+      "type": "relationship",
+      "similarity": 0.987
+    },
+    {
+      "a": "infidelity-recovery",
+      "b": "in-law-conflict",
+      "type": "relationship",
+      "similarity": 0.991
+    },
+    {
+      "a": "infidelity-recovery",
+      "b": "attachment-patterns-in-couples",
+      "type": "relationship",
+      "similarity": 0.978
+    },
+    {
+      "a": "infidelity-recovery",
+      "b": "discernment-and-stay-or-leave-decisions",
+      "type": "relationship",
+      "similarity": 0.974
+    },
+    {
+      "a": "infidelity-recovery",
+      "b": "premarital-communication",
+      "type": "relationship",
+      "similarity": 0.982
+    },
+    {
+      "a": "infidelity-recovery",
+      "b": "blended-family-relationships",
+      "type": "relationship",
+      "similarity": 0.978
+    },
+    {
+      "a": "infidelity-recovery",
+      "b": "co-parenting-after-separation",
+      "type": "relationship",
+      "similarity": 0.978
+    },
+    {
+      "a": "infidelity-recovery",
+      "b": "communication-cycles",
+      "type": "relationship",
+      "similarity": 0.982
+    },
+    {
+      "a": "infidelity-recovery",
+      "b": "fairness-and-equality",
+      "type": "relationship",
+      "similarity": 0.982
+    },
+    {
+      "a": "infidelity-recovery",
+      "b": "boundaries-in-relationships",
+      "type": "relationship",
+      "similarity": 0.978
+    },
+    {
+      "a": "infidelity-recovery",
+      "b": "affection-and-belonging",
+      "type": "relationship",
+      "similarity": 0.978
+    },
+    {
+      "a": "intimacy-and-connection",
+      "b": "division-of-labor",
+      "type": "relationship",
+      "similarity": 0.982
+    },
+    {
+      "a": "intimacy-and-connection",
+      "b": "resentment-in-relationships",
+      "type": "relationship",
+      "similarity": 0.987
+    },
+    {
+      "a": "intimacy-and-connection",
+      "b": "parenting-differences",
+      "type": "relationship",
+      "similarity": 0.982
+    },
+    {
+      "a": "intimacy-and-connection",
+      "b": "money-conflict",
+      "type": "relationship",
+      "similarity": 0.987
+    },
+    {
+      "a": "intimacy-and-connection",
+      "b": "in-law-conflict",
+      "type": "relationship",
+      "similarity": 0.991
+    },
+    {
+      "a": "intimacy-and-connection",
+      "b": "attachment-patterns-in-couples",
+      "type": "relationship",
+      "similarity": 0.978
+    },
+    {
+      "a": "intimacy-and-connection",
+      "b": "discernment-and-stay-or-leave-decisions",
+      "type": "relationship",
+      "similarity": 0.974
+    },
+    {
+      "a": "intimacy-and-connection",
+      "b": "premarital-communication",
+      "type": "relationship",
+      "similarity": 0.982
+    },
+    {
+      "a": "intimacy-and-connection",
+      "b": "blended-family-relationships",
+      "type": "relationship",
+      "similarity": 0.978
+    },
+    {
+      "a": "intimacy-and-connection",
+      "b": "co-parenting-after-separation",
+      "type": "relationship",
+      "similarity": 0.978
+    },
+    {
+      "a": "intimacy-and-connection",
+      "b": "communication-cycles",
+      "type": "relationship",
+      "similarity": 0.982
+    },
+    {
+      "a": "intimacy-and-connection",
+      "b": "fairness-and-equality",
+      "type": "relationship",
+      "similarity": 0.982
+    },
+    {
+      "a": "intimacy-and-connection",
+      "b": "boundaries-in-relationships",
+      "type": "relationship",
+      "similarity": 0.978
+    },
+    {
+      "a": "intimacy-and-connection",
+      "b": "affection-and-belonging",
+      "type": "relationship",
+      "similarity": 0.978
+    },
+    {
+      "a": "division-of-labor",
+      "b": "resentment-in-relationships",
+      "type": "relationship",
+      "similarity": 0.987
+    },
+    {
+      "a": "division-of-labor",
+      "b": "parenting-differences",
+      "type": "relationship",
+      "similarity": 0.982
+    },
+    {
+      "a": "division-of-labor",
+      "b": "money-conflict",
+      "type": "relationship",
+      "similarity": 0.987
+    },
+    {
+      "a": "division-of-labor",
+      "b": "in-law-conflict",
+      "type": "relationship",
+      "similarity": 0.991
+    },
+    {
+      "a": "division-of-labor",
+      "b": "attachment-patterns-in-couples",
+      "type": "relationship",
+      "similarity": 0.978
+    },
+    {
+      "a": "division-of-labor",
+      "b": "discernment-and-stay-or-leave-decisions",
+      "type": "relationship",
+      "similarity": 0.974
+    },
+    {
+      "a": "division-of-labor",
+      "b": "premarital-communication",
+      "type": "relationship",
+      "similarity": 0.982
+    },
+    {
+      "a": "division-of-labor",
+      "b": "blended-family-relationships",
+      "type": "relationship",
+      "similarity": 0.978
+    },
+    {
+      "a": "division-of-labor",
+      "b": "co-parenting-after-separation",
+      "type": "relationship",
+      "similarity": 0.978
+    },
+    {
+      "a": "division-of-labor",
+      "b": "communication-cycles",
+      "type": "relationship",
+      "similarity": 0.982
+    },
+    {
+      "a": "division-of-labor",
+      "b": "fairness-and-equality",
+      "type": "relationship",
+      "similarity": 0.982
+    },
+    {
+      "a": "division-of-labor",
+      "b": "boundaries-in-relationships",
+      "type": "relationship",
+      "similarity": 0.978
+    },
+    {
+      "a": "division-of-labor",
+      "b": "affection-and-belonging",
+      "type": "relationship",
+      "similarity": 0.978
+    },
+    {
+      "a": "resentment-in-relationships",
+      "b": "parenting-differences",
+      "type": "relationship",
+      "similarity": 0.987
+    },
+    {
+      "a": "resentment-in-relationships",
+      "b": "money-conflict",
+      "type": "relationship",
+      "similarity": 0.991
+    },
+    {
+      "a": "resentment-in-relationships",
+      "b": "in-law-conflict",
+      "type": "relationship",
+      "similarity": 0.996
+    }
+  ],
+  "approvedSimilarityFlags": [],
+  "publicationRule": "Only entities with status=approved generate indexable pages. draft entities remain in the registry and expansion report until clinical/editorial review.",
+  "targetIndexablePages": 650
+}

@@ -1,0 +1,65 @@
+{
+  "version": 1,
+  "revision": "e91f4bce1099a882afa853c3a25dc490598ff3fa72aa166ae85a09c0e5ded8fb",
+  "source": {
+    "name": "Marriage.Reset copy supplied by owner",
+    "sha256": "83a3cb6feeaf692f63da0d44a0bd66f69d9db8bd1e6fd692539d91ad8637fbba",
+    "basis": "Only the owner-provided Marriage.Reset copy. No external clinical claims or product implementation claims added. Truncated internal cross-reference labels omitted.",
+    "receivedOn": "2026-10-04"
+  },
+  "pages": [
+    {
+      "slug": "marriagereset",
+      "richExplanation": true,
+      "sourceSections": [
+        "overview",
+        "decision",
+        "cycle",
+        "assessment",
+        "adaptive",
+        "understand",
+        "uncertainty",
+        "sequence",
+        "safety",
+        "practice",
+        "continuity",
+        "participation",
+        "reassessment",
+        "evolve",
+        "history",
+        "privacy",
+        "human",
+        "limitations",
+        "faq",
+        "entry",
+        "closing"
+      ]
+    },
+    {
+      "slug": "marriage-reset-assessment",
+      "richExplanation": true,
+      "sourceSections": [
+        "overview",
+        "decision",
+        "assessment",
+        "adaptive",
+        "understand",
+        "uncertainty",
+        "privacy",
+        "safety",
+        "cycle",
+        "faq",
+        "entry",
+        "closing"
+      ]
+    },
+    {
+      "slug": "marriage-reset-assessment/thanks",
+      "richExplanation": false,
+      "sourceSections": []
+    }
+  ],
+  "errors": [],
+  "productionRelease": true,
+  "appBehaviorVerified": false
+}

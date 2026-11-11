@@ -1,0 +1,251 @@
+{
+  "version": 1,
+  "batch": "relationship-approach-starting-care-20261002",
+  "articleCount": 9,
+  "approved": 0,
+  "evidenceScope": "Nine authored review drafts. Background explanations cite checked primary organizational sources. Preparation sections contain original illustrative questions, not prescribed treatment or validated assessments. Practice-policy statements reflect the owner's September 28 consultation/private-pay direction and require owner approval before publication. No author or clinical reviewer is asserted. Profile evidence describes published use only.",
+  "articles": [
+    {
+      "slug": "person-centered-therapy",
+      "family": "modality",
+      "status": "draft",
+      "revisionHash": "1dde7df324103c2ff46943ff230166425e06e2c216c5298c1c433ead624708d8",
+      "articleWords": 276,
+      "sources": [
+        "person-centered"
+      ],
+      "clinicianLinks": [
+        {
+          "slug": "gary-ashley",
+          "basis": "approach",
+          "approach": "person-centered-therapy"
+        },
+        {
+          "slug": "dr-nolan",
+          "basis": "approach",
+          "approach": "person-centered-therapy"
+        }
+      ],
+      "requiredBeforePublication": [
+        "editorial review",
+        "clinical review",
+        "owner approval",
+        "unchanged revision",
+        "passing site-wide publication checks"
+      ]
+    },
+    {
+      "slug": "strengths-based-therapy",
+      "family": "modality",
+      "status": "draft",
+      "revisionHash": "786b63cd95e63f54fbb17a3438cb848ab7f3a01a52a3e0fb019572297afbfd2c",
+      "articleWords": 285,
+      "sources": [
+        "strengths"
+      ],
+      "clinicianLinks": [
+        {
+          "slug": "gary-ashley",
+          "basis": "approach",
+          "approach": "strengths-based-therapy"
+        }
+      ],
+      "requiredBeforePublication": [
+        "editorial review",
+        "clinical review",
+        "owner approval",
+        "unchanged revision",
+        "passing site-wide publication checks"
+      ]
+    },
+    {
+      "slug": "integrative-therapy",
+      "family": "modality",
+      "status": "draft",
+      "revisionHash": "c72fdc4d762e3bb5f7b0cac3f105252c12a4346aaa39c68c4f945f8f0426b4cf",
+      "articleWords": 278,
+      "sources": [
+        "integrative"
+      ],
+      "clinicianLinks": [
+        {
+          "slug": "kody-evans-bio",
+          "basis": "multi-approach"
+        },
+        {
+          "slug": "emily-johnsrud-bio",
+          "basis": "multi-approach"
+        },
+        {
+          "slug": "sonia-hassan-bio",
+          "basis": "multi-approach"
+        }
+      ],
+      "requiredBeforePublication": [
+        "editorial review",
+        "clinical review",
+        "owner approval",
+        "unchanged revision",
+        "passing site-wide publication checks"
+      ]
+    },
+    {
+      "slug": "repeated-conflict",
+      "family": "relationship",
+      "status": "draft",
+      "revisionHash": "2debfc814146a4f1eba46540fc40ed39958a35f25f0547aad8757f6bde28d975",
+      "articleWords": 289,
+      "sources": [
+        "conflict",
+        "safety"
+      ],
+      "clinicianLinks": [
+        {
+          "slug": "kody-evans-bio",
+          "basis": "couples"
+        },
+        {
+          "slug": "gary-ashley",
+          "basis": "couples"
+        }
+      ],
+      "requiredBeforePublication": [
+        "editorial review",
+        "clinical review",
+        "owner approval",
+        "unchanged revision",
+        "passing site-wide publication checks"
+      ]
+    },
+    {
+      "slug": "emotional-distance",
+      "family": "relationship",
+      "status": "draft",
+      "revisionHash": "ce9a2972df50a8a3aeb5e128bf079b9d50b8cfdab85d3d07e406b6ab0dea614c",
+      "articleWords": 288,
+      "sources": [
+        "connection",
+        "safety"
+      ],
+      "clinicianLinks": [
+        {
+          "slug": "emily-johnsrud-bio",
+          "basis": "couples"
+        },
+        {
+          "slug": "dr-nolan",
+          "basis": "couples"
+        },
+        {
+          "slug": "sonia-hassan-bio",
+          "basis": "couples"
+        }
+      ],
+      "requiredBeforePublication": [
+        "editorial review",
+        "clinical review",
+        "owner approval",
+        "unchanged revision",
+        "passing site-wide publication checks"
+      ]
+    },
+    {
+      "slug": "repair-after-conflict",
+      "family": "relationship",
+      "status": "draft",
+      "revisionHash": "d0f762fa5b5680be2fb70b86eacb42795b606a9bbafc0f48e6d5108a69b008c8",
+      "articleWords": 297,
+      "sources": [
+        "repair",
+        "safety"
+      ],
+      "clinicianLinks": [
+        {
+          "slug": "kody-evans-bio",
+          "basis": "couples"
+        },
+        {
+          "slug": "gary-ashley",
+          "basis": "couples"
+        }
+      ],
+      "requiredBeforePublication": [
+        "editorial review",
+        "clinical review",
+        "owner approval",
+        "unchanged revision",
+        "passing site-wide publication checks"
+      ]
+    },
+    {
+      "slug": "what-happens-first-therapy-session",
+      "family": "decision",
+      "status": "draft",
+      "revisionHash": "bbc08e9bfd28d763e8ba0e189dbee9a7bfb672028656a7631a5cb4e42ac82407",
+      "articleWords": 342,
+      "sources": [
+        "psychotherapy",
+        "preparation"
+      ],
+      "clinicianLinks": [],
+      "requiredBeforePublication": [
+        "editorial review",
+        "clinical review",
+        "owner approval",
+        "unchanged revision",
+        "passing site-wide publication checks"
+      ]
+    },
+    {
+      "slug": "what-happens-in-couples-therapy",
+      "family": "decision",
+      "status": "draft",
+      "revisionHash": "d6b60be381371f0956bc8cfd771a8dfe1e67030bd390cdb64a6ce0c809b653cc",
+      "articleWords": 287,
+      "sources": [
+        "couples-profile",
+        "safety"
+      ],
+      "clinicianLinks": [
+        {
+          "slug": "kody-evans-bio",
+          "basis": "couples"
+        },
+        {
+          "slug": "dr-nolan",
+          "basis": "couples"
+        },
+        {
+          "slug": "emily-johnsrud-bio",
+          "basis": "couples"
+        }
+      ],
+      "requiredBeforePublication": [
+        "editorial review",
+        "clinical review",
+        "owner approval",
+        "unchanged revision",
+        "passing site-wide publication checks"
+      ]
+    },
+    {
+      "slug": "online-vs-in-person-couples-therapy",
+      "family": "decision",
+      "status": "draft",
+      "revisionHash": "24cd4a7b9c73e77edef5cea3638b2db9d428d2fb19376a7141e25aacf62eed3d",
+      "articleWords": 313,
+      "sources": [
+        "telehealth",
+        "safety"
+      ],
+      "clinicianLinks": [],
+      "requiredBeforePublication": [
+        "editorial review",
+        "clinical review",
+        "owner approval",
+        "unchanged revision",
+        "passing site-wide publication checks"
+      ]
+    }
+  ]
+}

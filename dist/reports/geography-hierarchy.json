@@ -1,0 +1,7080 @@
+{
+  "version": 1,
+  "sourceVintage": "2026",
+  "regions": 8,
+  "counties": 39,
+  "places": 639,
+  "multiCountyPlaces": [
+    {
+      "name": "Auburn",
+      "slug": "online-therapy-auburn-wa",
+      "counties": [
+        "King County",
+        "Pierce County"
+      ]
+    },
+    {
+      "name": "Bothell",
+      "slug": "online-therapy-bothell-wa",
+      "counties": [
+        "King County",
+        "Snohomish County"
+      ]
+    },
+    {
+      "name": "Coulee Dam",
+      "slug": "online-therapy-coulee-dam-wa",
+      "counties": [
+        "Douglas County",
+        "Grant County",
+        "Okanogan County"
+      ]
+    },
+    {
+      "name": "Enumclaw",
+      "slug": "online-therapy-enumclaw-wa",
+      "counties": [
+        "King County",
+        "Pierce County"
+      ]
+    },
+    {
+      "name": "Milton",
+      "slug": "online-therapy-milton-wa",
+      "counties": [
+        "King County",
+        "Pierce County"
+      ]
+    },
+    {
+      "name": "Pacific",
+      "slug": "online-therapy-pacific-wa",
+      "counties": [
+        "King County",
+        "Pierce County"
+      ]
+    },
+    {
+      "name": "Woodland",
+      "slug": "online-therapy-woodland-wa",
+      "counties": [
+        "Clark County",
+        "Cowlitz County"
+      ]
+    },
+    {
+      "name": "Queets",
+      "slug": "online-therapy-queets-wa",
+      "counties": [
+        "Grays Harbor County",
+        "Jefferson County"
+      ]
+    }
+  ],
+  "editorialDrafts": [
+    "online-therapy-woodinville-wa",
+    "online-therapy-bothell-wa",
+    "online-therapy-auburn-wa",
+    "online-therapy-coulee-dam-wa",
+    "online-therapy-woodland-wa",
+    "online-therapy-spokane-wa"
+  ],
+  "productionNavigation": false,
+  "geometryNormalizations": [
+    {
+      "geoid": "5300100",
+      "reason": "Ring Self-intersection[-123.794212000049 46.9515550000635]",
+      "method": "shapely.make_valid",
+      "relativeAreaChange": 3.378759759882689e-16
+    },
+    {
+      "geoid": "5304475",
+      "reason": "Ring Self-intersection[-122.531978000426 45.799094000125]",
+      "method": "shapely.make_valid",
+      "relativeAreaChange": 3.324475817637949e-16
+    },
+    {
+      "geoid": "5310495",
+      "reason": "Ring Self-intersection[-120.483669999957 47.5213579998764]",
+      "method": "shapely.make_valid",
+      "relativeAreaChange": 1.5388497361934402e-15
+    },
+    {
+      "geoid": "5313855",
+      "reason": "Ring Self-intersection[-118.377505000196 46.0545830001496]",
+      "method": "shapely.make_valid",
+      "relativeAreaChange": 6.091816696363276e-16
+    },
+    {
+      "geoid": "5351970",
+      "reason": "Ring Self-intersection[-119.422398000255 48.9414529997737]",
+      "method": "shapely.make_valid",
+      "relativeAreaChange": 5.542714758977932e-16
+    },
+    {
+      "geoid": "5353545",
+      "reason": "Ring Self-intersection[-119.183746000406 46.2561580002697]",
+      "method": "shapely.make_valid",
+      "relativeAreaChange": 1.6176778535476364e-15
+    },
+    {
+      "geoid": "5356450",
+      "reason": "Ring Self-intersection[-119.779050999806 46.2208639997803]",
+      "method": "shapely.make_valid",
+      "relativeAreaChange": 5.398213328732118e-16
+    },
+    {
+      "geoid": "5358410",
+      "reason": "Ring Self-intersection[-122.702954999731 45.7930270002441]",
+      "method": "shapely.make_valid",
+      "relativeAreaChange": 1.1272426804889185e-15
+    },
+    {
+      "geoid": "5372905",
+      "reason": "Ring Self-intersection[-122.890676000349 47.0186659999364]",
+      "method": "shapely.make_valid",
+      "relativeAreaChange": 0
+    },
+    {
+      "geoid": "5377612",
+      "reason": "Ring Self-intersection[-119.159171000282 46.243420999835]",
+      "method": "shapely.make_valid",
+      "relativeAreaChange": 3.6804164827734034e-16
+    }
+  ],
+  "nodes": [
+    {
+      "slug": "online-therapy-locations",
+      "kind": "state",
+      "status": "existing",
+      "parents": [],
+      "children": [
+        "online-therapy-puget-sound-region-wa",
+        "online-therapy-central-region-wa",
+        "online-therapy-northeast-region-wa",
+        "online-therapy-northwest-region-wa",
+        "online-therapy-peninsula-kitsap-region-wa",
+        "online-therapy-south-sound-coast-region-wa",
+        "online-therapy-southeast-region-wa",
+        "online-therapy-southwest-gorge-region-wa"
+      ]
+    },
+    {
+      "slug": "online-therapy-adams-county-wa",
+      "kind": "county",
+      "status": "draft",
+      "parents": [
+        "online-therapy-southeast-region-wa"
+      ],
+      "children": [
+        "online-therapy-hatton-wa",
+        "online-therapy-lind-wa",
+        "online-therapy-othello-wa",
+        "online-therapy-ritzville-wa",
+        "online-therapy-washtucna-wa"
+      ]
+    },
+    {
+      "slug": "online-therapy-asotin-county-wa",
+      "kind": "county",
+      "status": "draft",
+      "parents": [
+        "online-therapy-southeast-region-wa"
+      ],
+      "children": [
+        "online-therapy-anatone-wa",
+        "online-therapy-asotin-wa",
+        "online-therapy-clarkston-wa",
+        "online-therapy-clarkston-heights-vineland-wa",
+        "online-therapy-west-clarkston-highland-wa"
+      ]
+    },
+    {
+      "slug": "online-therapy-benton-county-wa",
+      "kind": "county",
+      "status": "draft",
+      "parents": [
+        "online-therapy-southeast-region-wa"
+      ],
+      "children": [
+        "online-therapy-benton-city-wa",
+        "online-therapy-finley-wa",
+        "online-therapy-kennewick-wa",
+        "online-therapy-prosser-wa",
+        "online-therapy-richland-wa",
+        "online-therapy-west-richland-wa"
+      ]
+    },
+    {
+      "slug": "online-therapy-chelan-county-wa",
+      "kind": "county",
+      "status": "draft",
+      "parents": [
+        "online-therapy-central-region-wa"
+      ],
+      "children": [
+        "online-therapy-cashmere-wa",
+        "online-therapy-chelan-wa",
+        "online-therapy-chelan-falls-wa",
+        "online-therapy-entiat-wa",
+        "online-therapy-leavenworth-wa",
+        "online-therapy-manson-wa",
+        "online-therapy-south-wenatchee-wa",
+        "online-therapy-sunnyslope-wa",
+        "online-therapy-wenatchee-wa"
+      ]
+    },
+    {
+      "slug": "online-therapy-clallam-county-wa",
+      "kind": "county",
+      "status": "draft",
+      "parents": [
+        "online-therapy-peninsula-kitsap-region-wa"
+      ],
+      "children": [
+        "online-therapy-bell-hill-wa",
+        "online-therapy-blyn-wa",
+        "online-therapy-carlsborg-wa",
+        "online-therapy-clallam-bay-wa",
+        "online-therapy-forks-wa",
+        "online-therapy-jamestown-wa",
+        "online-therapy-neah-bay-wa",
+        "online-therapy-port-angeles-wa",
+        "online-therapy-port-angeles-east-wa",
+        "online-therapy-river-road-wa",
+        "online-therapy-sekiu-wa",
+        "online-therapy-sequim-wa"
+      ]
+    },
+    {
+      "slug": "online-therapy-clark-county-wa",
+      "kind": "county",
+      "status": "draft",
+      "parents": [
+        "online-therapy-southwest-gorge-region-wa"
+      ],
+      "children": [
+        "online-therapy-amboy-wa",
+        "online-therapy-barberton-wa",
+        "online-therapy-battle-ground-wa",
+        "online-therapy-brush-prairie-wa",
+        "online-therapy-camas-wa",
+        "online-therapy-cherry-grove-wa",
+        "online-therapy-dollars-corner-wa",
+        "online-therapy-duluth-wa",
+        "online-therapy-felida-wa",
+        "online-therapy-fern-prairie-wa",
+        "online-therapy-five-corners-wa",
+        "online-therapy-hazel-dell-wa",
+        "online-therapy-hockinson-wa",
+        "online-therapy-la-center-wa",
+        "online-therapy-lake-shore-wa",
+        "online-therapy-lewisville-wa",
+        "online-therapy-meadow-glade-wa",
+        "online-therapy-minnehaha-wa",
+        "online-therapy-mount-vista-wa",
+        "online-therapy-orchards-wa",
+        "online-therapy-ridgefield-wa",
+        "online-therapy-salmon-creek-wa",
+        "online-therapy-vancouver-wa",
+        "online-therapy-venersborg-wa",
+        "online-therapy-washougal-wa",
+        "online-therapy-woodland-wa",
+        "online-therapy-yacolt-wa"
+      ]
+    },
+    {
+      "slug": "online-therapy-columbia-county-wa",
+      "kind": "county",
+      "status": "draft",
+      "parents": [
+        "online-therapy-southeast-region-wa"
+      ],
+      "children": [
+        "online-therapy-dayton-wa",
+        "online-therapy-starbuck-wa"
+      ]
+    },
+    {
+      "slug": "online-therapy-cowlitz-county-wa",
+      "kind": "county",
+      "status": "draft",
+      "parents": [
+        "online-therapy-southwest-gorge-region-wa"
+      ],
+      "children": [
+        "online-therapy-beacon-hill-wa",
+        "online-therapy-castle-rock-wa",
+        "online-therapy-cougar-wa",
+        "online-therapy-kalama-wa",
+        "online-therapy-kelso-wa",
+        "online-therapy-lexington-wa",
+        "online-therapy-longview-wa",
+        "online-therapy-longview-heights-wa",
+        "online-therapy-ryderwood-wa",
+        "online-therapy-woodland-wa"
+      ]
+    },
+    {
+      "slug": "online-therapy-douglas-county-wa",
+      "kind": "county",
+      "status": "draft",
+      "parents": [
+        "online-therapy-central-region-wa"
+      ],
+      "children": [
+        "online-therapy-bridgeport-wa",
+        "online-therapy-coulee-dam-wa",
+        "online-therapy-east-wenatchee-wa",
+        "online-therapy-mansfield-wa",
+        "online-therapy-rock-island-wa",
+        "online-therapy-waterville-wa"
+      ]
+    },
+    {
+      "slug": "online-therapy-ferry-county-wa",
+      "kind": "county",
+      "status": "draft",
+      "parents": [
+        "online-therapy-northeast-region-wa"
+      ],
+      "children": [
+        "online-therapy-barney-s-junction-wa",
+        "online-therapy-barstow-wa",
+        "online-therapy-boyds-wa",
+        "online-therapy-curlew-wa",
+        "online-therapy-curlew-lake-wa",
+        "online-therapy-danville-wa",
+        "online-therapy-inchelium-wa",
+        "online-therapy-keller-wa",
+        "online-therapy-laurier-wa",
+        "online-therapy-malo-wa",
+        "online-therapy-orient-wa",
+        "online-therapy-pine-grove-wa",
+        "online-therapy-republic-wa",
+        "online-therapy-torboy-wa",
+        "online-therapy-twin-lakes-wa"
+      ]
+    },
+    {
+      "slug": "online-therapy-franklin-county-wa",
+      "kind": "county",
+      "status": "draft",
+      "parents": [
+        "online-therapy-southeast-region-wa"
+      ],
+      "children": [
+        "online-therapy-basin-city-wa",
+        "online-therapy-connell-wa",
+        "online-therapy-kahlotus-wa",
+        "online-therapy-mesa-wa",
+        "online-therapy-pasco-wa",
+        "online-therapy-west-pasco-wa"
+      ]
+    },
+    {
+      "slug": "online-therapy-garfield-county-wa",
+      "kind": "county",
+      "status": "draft",
+      "parents": [
+        "online-therapy-southeast-region-wa"
+      ],
+      "children": [
+        "online-therapy-pataha-wa",
+        "online-therapy-pomeroy-wa"
+      ]
+    },
+    {
+      "slug": "online-therapy-grant-county-wa",
+      "kind": "county",
+      "status": "draft",
+      "parents": [
+        "online-therapy-central-region-wa"
+      ],
+      "children": [
+        "online-therapy-banks-lake-south-wa",
+        "online-therapy-beverly-wa",
+        "online-therapy-cascade-valley-wa",
+        "online-therapy-coulee-city-wa",
+        "online-therapy-coulee-dam-wa",
+        "online-therapy-crescent-bar-wa",
+        "online-therapy-desert-aire-wa",
+        "online-therapy-electric-city-wa",
+        "online-therapy-ephrata-wa",
+        "online-therapy-george-wa",
+        "online-therapy-grand-coulee-wa",
+        "online-therapy-hartline-wa",
+        "online-therapy-krupp-wa",
+        "online-therapy-lakeview-wa",
+        "online-therapy-marine-view-wa",
+        "online-therapy-mattawa-wa",
+        "online-therapy-moses-lake-wa",
+        "online-therapy-moses-lake-north-wa",
+        "online-therapy-quincy-wa",
+        "online-therapy-royal-city-wa",
+        "online-therapy-schwana-wa",
+        "online-therapy-soap-lake-wa",
+        "online-therapy-sunland-estates-wa",
+        "online-therapy-warden-wa",
+        "online-therapy-wheeler-wa",
+        "online-therapy-wilson-creek-wa"
+      ]
+    },
+    {
+      "slug": "online-therapy-grays-harbor-county-wa",
+      "kind": "county",
+      "status": "draft",
+      "parents": [
+        "online-therapy-south-sound-coast-region-wa"
+      ],
+      "children": [
+        "online-therapy-aberdeen-wa",
+        "online-therapy-aberdeen-gardens-wa",
+        "online-therapy-amanda-park-wa",
+        "online-therapy-brady-wa",
+        "online-therapy-central-park-wa",
+        "online-therapy-cohassett-beach-wa",
+        "online-therapy-copalis-beach-wa",
+        "online-therapy-cosmopolis-wa",
+        "online-therapy-elma-wa",
+        "online-therapy-grayland-wa",
+        "online-therapy-hogans-corner-wa",
+        "online-therapy-hoquiam-wa",
+        "online-therapy-humptulips-wa",
+        "online-therapy-malone-wa",
+        "online-therapy-markham-wa",
+        "online-therapy-mccleary-wa",
+        "online-therapy-moclips-wa",
+        "online-therapy-montesano-wa",
+        "online-therapy-neilton-wa",
+        "online-therapy-oakville-wa",
+        "online-therapy-ocean-city-wa",
+        "online-therapy-ocean-shores-wa",
+        "online-therapy-ocosta-wa",
+        "online-therapy-oyehut-wa",
+        "online-therapy-pacific-beach-wa",
+        "online-therapy-porter-wa",
+        "online-therapy-queets-wa",
+        "online-therapy-qui-nai-elt-village-wa",
+        "online-therapy-santiago-wa",
+        "online-therapy-satsop-wa",
+        "online-therapy-taholah-wa",
+        "online-therapy-westport-wa"
+      ]
+    },
+    {
+      "slug": "online-therapy-island-county-wa",
+      "kind": "county",
+      "status": "draft",
+      "parents": [
+        "online-therapy-northwest-region-wa"
+      ],
+      "children": [
+        "online-therapy-camano-wa",
+        "online-therapy-clinton-wa",
+        "online-therapy-coupeville-wa",
+        "online-therapy-freeland-wa",
+        "online-therapy-langley-wa",
+        "online-therapy-oak-harbor-wa",
+        "online-therapy-whidbey-island-station-wa"
+      ]
+    },
+    {
+      "slug": "online-therapy-jefferson-county-wa",
+      "kind": "county",
+      "status": "draft",
+      "parents": [
+        "online-therapy-peninsula-kitsap-region-wa"
+      ],
+      "children": [
+        "online-therapy-brinnon-wa",
+        "online-therapy-marrowstone-wa",
+        "online-therapy-port-hadlock-irondale-wa",
+        "online-therapy-port-ludlow-wa",
+        "online-therapy-port-townsend-wa",
+        "online-therapy-queets-wa",
+        "online-therapy-quilcene-wa"
+      ]
+    },
+    {
+      "slug": "online-therapy-king-county-wa",
+      "kind": "county",
+      "status": "existing",
+      "parents": [
+        "online-therapy-puget-sound-region-wa"
+      ],
+      "children": [
+        "online-therapy-algona-wa",
+        "online-therapy-ames-lake-wa",
+        "online-therapy-auburn-wa",
+        "online-therapy-baring-wa",
+        "online-therapy-beaux-arts-village-wa",
+        "online-therapy-bellevue-wa",
+        "online-therapy-black-diamond-wa",
+        "online-therapy-bothell-wa",
+        "online-therapy-boulevard-park-wa",
+        "online-therapy-bryn-mawr-skyway-wa",
+        "online-therapy-burien-wa",
+        "online-therapy-carnation-wa",
+        "online-therapy-clyde-hill-wa",
+        "online-therapy-cottage-lake-wa",
+        "online-therapy-covington-wa",
+        "online-therapy-des-moines-wa",
+        "online-therapy-duvall-wa",
+        "online-therapy-east-renton-highlands-wa",
+        "online-therapy-enumclaw-wa",
+        "online-therapy-fairwood-wa",
+        "online-therapy-fall-city-wa",
+        "online-therapy-federal-way-wa",
+        "online-therapy-hobart-wa",
+        "online-therapy-hunts-point-wa",
+        "online-therapy-issaquah-wa",
+        "online-therapy-kenmore-wa",
+        "online-therapy-kent-wa",
+        "online-therapy-kirkland-wa",
+        "online-therapy-lake-forest-park-wa",
+        "online-therapy-lake-holm-wa",
+        "online-therapy-lake-marcel-stillwater-wa",
+        "online-therapy-lake-morton-berrydale-wa",
+        "online-therapy-lakeland-north-wa",
+        "online-therapy-lakeland-south-wa",
+        "online-therapy-maple-heights-lake-desire-wa",
+        "online-therapy-maple-valley-wa",
+        "online-therapy-medina-wa",
+        "online-therapy-mercer-island-wa",
+        "online-therapy-milton-wa",
+        "online-therapy-mirrormont-wa",
+        "online-therapy-newcastle-wa",
+        "online-therapy-normandy-park-wa",
+        "online-therapy-north-bend-wa",
+        "online-therapy-pacific-wa",
+        "online-therapy-ravensdale-wa",
+        "online-therapy-redmond-wa",
+        "online-therapy-renton-wa",
+        "online-therapy-riverbend-wa",
+        "online-therapy-riverpoint-wa",
+        "online-therapy-sammamish-wa",
+        "online-therapy-seatac-wa",
+        "online-therapy-seattle-wa",
+        "online-therapy-shadow-lake-wa",
+        "online-therapy-shoreline-wa",
+        "online-therapy-skykomish-wa",
+        "online-therapy-snoqualmie-wa",
+        "online-therapy-tukwila-wa",
+        "online-therapy-union-hill-novelty-hill-wa",
+        "online-therapy-vashon-wa",
+        "online-therapy-white-center-wa",
+        "online-therapy-wilderness-rim-wa",
+        "online-therapy-woodinville-wa",
+        "online-therapy-yarrow-point-wa"
+      ]
+    },
+    {
+      "slug": "online-therapy-kitsap-county-wa",
+      "kind": "county",
+      "status": "draft",
+      "parents": [
+        "online-therapy-peninsula-kitsap-region-wa"
+      ],
+      "children": [
+        "online-therapy-bainbridge-island-wa",
+        "online-therapy-bangor-base-wa",
+        "online-therapy-bethel-wa",
+        "online-therapy-bremerton-wa",
+        "online-therapy-burley-wa",
+        "online-therapy-chico-wa",
+        "online-therapy-east-port-orchard-wa",
+        "online-therapy-enetai-wa",
+        "online-therapy-erlands-point-wa",
+        "online-therapy-gorst-wa",
+        "online-therapy-hansville-wa",
+        "online-therapy-indianola-wa",
+        "online-therapy-keyport-wa",
+        "online-therapy-kingston-wa",
+        "online-therapy-kitsap-lake-wa",
+        "online-therapy-lofall-wa",
+        "online-therapy-manchester-wa",
+        "online-therapy-navy-yard-city-wa",
+        "online-therapy-parkwood-wa",
+        "online-therapy-port-gamble-tribal-community-wa",
+        "online-therapy-port-orchard-wa",
+        "online-therapy-poulsbo-wa",
+        "online-therapy-rocky-point-wa",
+        "online-therapy-seabeck-wa",
+        "online-therapy-silverdale-wa",
+        "online-therapy-southworth-wa",
+        "online-therapy-suquamish-wa",
+        "online-therapy-tracyton-wa"
+      ]
+    },
+    {
+      "slug": "online-therapy-kittitas-county-wa",
+      "kind": "county",
+      "status": "draft",
+      "parents": [
+        "online-therapy-central-region-wa"
+      ],
+      "children": [
+        "online-therapy-cle-elum-wa",
+        "online-therapy-easton-wa",
+        "online-therapy-ellensburg-wa",
+        "online-therapy-kittitas-wa",
+        "online-therapy-ronald-wa",
+        "online-therapy-roslyn-wa",
+        "online-therapy-snoqualmie-pass-wa",
+        "online-therapy-south-cle-elum-wa",
+        "online-therapy-thorp-wa",
+        "online-therapy-vantage-wa"
+      ]
+    },
+    {
+      "slug": "online-therapy-klickitat-county-wa",
+      "kind": "county",
+      "status": "draft",
+      "parents": [
+        "online-therapy-southwest-gorge-region-wa"
+      ],
+      "children": [
+        "online-therapy-bickleton-wa",
+        "online-therapy-bingen-wa",
+        "online-therapy-centerville-wa",
+        "online-therapy-dallesport-wa",
+        "online-therapy-glenwood-wa",
+        "online-therapy-goldendale-wa",
+        "online-therapy-klickitat-wa",
+        "online-therapy-lyle-wa",
+        "online-therapy-maryhill-wa",
+        "online-therapy-roosevelt-wa",
+        "online-therapy-trout-lake-wa",
+        "online-therapy-white-salmon-wa",
+        "online-therapy-wishram-wa"
+      ]
+    },
+    {
+      "slug": "online-therapy-lewis-county-wa",
+      "kind": "county",
+      "status": "draft",
+      "parents": [
+        "online-therapy-south-sound-coast-region-wa"
+      ],
+      "children": [
+        "online-therapy-centralia-wa",
+        "online-therapy-chehalis-wa",
+        "online-therapy-fords-prairie-wa",
+        "online-therapy-mineral-wa",
+        "online-therapy-morton-wa",
+        "online-therapy-mossyrock-wa",
+        "online-therapy-napavine-wa",
+        "online-therapy-onalaska-wa",
+        "online-therapy-packwood-wa",
+        "online-therapy-pe-ell-wa",
+        "online-therapy-toledo-wa",
+        "online-therapy-vader-wa",
+        "online-therapy-winlock-wa"
+      ]
+    },
+    {
+      "slug": "online-therapy-lincoln-county-wa",
+      "kind": "county",
+      "status": "draft",
+      "parents": [
+        "online-therapy-northeast-region-wa"
+      ],
+      "children": [
+        "online-therapy-almira-wa",
+        "online-therapy-creston-wa",
+        "online-therapy-davenport-wa",
+        "online-therapy-harrington-wa",
+        "online-therapy-odessa-wa",
+        "online-therapy-reardan-wa",
+        "online-therapy-sprague-wa",
+        "online-therapy-wilbur-wa"
+      ]
+    },
+    {
+      "slug": "online-therapy-mason-county-wa",
+      "kind": "county",
+      "status": "draft",
+      "parents": [
+        "online-therapy-peninsula-kitsap-region-wa"
+      ],
+      "children": [
+        "online-therapy-allyn-wa",
+        "online-therapy-belfair-wa",
+        "online-therapy-grapeview-wa",
+        "online-therapy-hoodsport-wa",
+        "online-therapy-shelton-wa",
+        "online-therapy-skokomish-wa",
+        "online-therapy-union-wa"
+      ]
+    },
+    {
+      "slug": "online-therapy-okanogan-county-wa",
+      "kind": "county",
+      "status": "draft",
+      "parents": [
+        "online-therapy-central-region-wa"
+      ],
+      "children": [
+        "online-therapy-brewster-wa",
+        "online-therapy-conconully-wa",
+        "online-therapy-coulee-dam-wa",
+        "online-therapy-disautel-wa",
+        "online-therapy-elmer-city-wa",
+        "online-therapy-loomis-wa",
+        "online-therapy-malott-wa",
+        "online-therapy-methow-wa",
+        "online-therapy-nespelem-wa",
+        "online-therapy-nespelem-community-wa",
+        "online-therapy-north-omak-wa",
+        "online-therapy-okanogan-wa",
+        "online-therapy-omak-wa",
+        "online-therapy-oroville-wa",
+        "online-therapy-pateros-wa",
+        "online-therapy-riverside-wa",
+        "online-therapy-tonasket-wa",
+        "online-therapy-twisp-wa",
+        "online-therapy-winthrop-wa"
+      ]
+    },
+    {
+      "slug": "online-therapy-pacific-county-wa",
+      "kind": "county",
+      "status": "draft",
+      "parents": [
+        "online-therapy-south-sound-coast-region-wa"
+      ],
+      "children": [
+        "online-therapy-bay-center-wa",
+        "online-therapy-chinook-wa",
+        "online-therapy-ilwaco-wa",
+        "online-therapy-lebam-wa",
+        "online-therapy-long-beach-wa",
+        "online-therapy-naselle-wa",
+        "online-therapy-ocean-park-wa",
+        "online-therapy-raymond-wa",
+        "online-therapy-south-bend-wa",
+        "online-therapy-tokeland-wa",
+        "online-therapy-willapa-wa"
+      ]
+    },
+    {
+      "slug": "online-therapy-pend-oreille-county-wa",
+      "kind": "county",
+      "status": "draft",
+      "parents": [
+        "online-therapy-northeast-region-wa"
+      ],
+      "children": [
+        "online-therapy-cusick-wa",
+        "online-therapy-ione-wa",
+        "online-therapy-metaline-wa",
+        "online-therapy-metaline-falls-wa",
+        "online-therapy-newport-wa"
+      ]
+    },
+    {
+      "slug": "online-therapy-pierce-county-wa",
+      "kind": "county",
+      "status": "draft",
+      "parents": [
+        "online-therapy-puget-sound-region-wa"
+      ],
+      "children": [
+        "online-therapy-alder-wa",
+        "online-therapy-alderton-wa",
+        "online-therapy-anderson-island-wa",
+        "online-therapy-artondale-wa",
+        "online-therapy-ashford-wa",
+        "online-therapy-auburn-wa",
+        "online-therapy-bonney-lake-wa",
+        "online-therapy-browns-point-wa",
+        "online-therapy-buckley-wa",
+        "online-therapy-canterwood-wa",
+        "online-therapy-carbonado-wa",
+        "online-therapy-clear-lake-cdp-wa",
+        "online-therapy-clover-creek-wa",
+        "online-therapy-crocker-wa",
+        "online-therapy-dash-point-wa",
+        "online-therapy-dupont-wa",
+        "online-therapy-eatonville-wa",
+        "online-therapy-edgewood-wa",
+        "online-therapy-elbe-wa",
+        "online-therapy-elk-plain-wa",
+        "online-therapy-enumclaw-wa",
+        "online-therapy-fife-wa",
+        "online-therapy-fife-heights-wa",
+        "online-therapy-fircrest-wa",
+        "online-therapy-fort-lewis-wa",
+        "online-therapy-fox-island-wa",
+        "online-therapy-frederickson-wa",
+        "online-therapy-gig-harbor-wa",
+        "online-therapy-graham-wa",
+        "online-therapy-greenwater-wa",
+        "online-therapy-herron-island-wa",
+        "online-therapy-home-wa",
+        "online-therapy-kapowsin-wa",
+        "online-therapy-ketron-island-wa",
+        "online-therapy-key-center-wa",
+        "online-therapy-la-grande-wa",
+        "online-therapy-lake-tapps-wa",
+        "online-therapy-lakewood-wa",
+        "online-therapy-longbranch-wa",
+        "online-therapy-maplewood-wa",
+        "online-therapy-mcchord-afb-wa",
+        "online-therapy-mckenna-wa",
+        "online-therapy-mcmillin-wa",
+        "online-therapy-midland-wa",
+        "online-therapy-milton-wa",
+        "online-therapy-north-fort-lewis-wa",
+        "online-therapy-north-puyallup-wa",
+        "online-therapy-orting-wa",
+        "online-therapy-pacific-wa",
+        "online-therapy-parkland-wa",
+        "online-therapy-prairie-heights-wa",
+        "online-therapy-prairie-ridge-wa",
+        "online-therapy-purdy-wa",
+        "online-therapy-puyallup-wa",
+        "online-therapy-raft-island-wa",
+        "online-therapy-rosedale-wa",
+        "online-therapy-roy-wa",
+        "online-therapy-ruston-wa",
+        "online-therapy-south-creek-wa",
+        "online-therapy-south-hill-wa",
+        "online-therapy-south-prairie-wa",
+        "online-therapy-spanaway-wa",
+        "online-therapy-stansberry-lake-wa",
+        "online-therapy-steilacoom-wa",
+        "online-therapy-summit-wa",
+        "online-therapy-summit-view-wa",
+        "online-therapy-sumner-wa",
+        "online-therapy-tacoma-wa",
+        "online-therapy-tehaleh-wa",
+        "online-therapy-university-place-wa",
+        "online-therapy-vaughn-wa",
+        "online-therapy-waller-wa",
+        "online-therapy-wauna-wa",
+        "online-therapy-wilkeson-wa",
+        "online-therapy-wollochet-wa"
+      ]
+    },
+    {
+      "slug": "online-therapy-san-juan-county-wa",
+      "kind": "county",
+      "status": "draft",
+      "parents": [
+        "online-therapy-northwest-region-wa"
+      ],
+      "children": [
+        "online-therapy-friday-harbor-wa",
+        "online-therapy-roche-harbor-wa"
+      ]
+    },
+    {
+      "slug": "online-therapy-skagit-county-wa",
+      "kind": "county",
+      "status": "draft",
+      "parents": [
+        "online-therapy-northwest-region-wa"
+      ],
+      "children": [
+        "online-therapy-alger-wa",
+        "online-therapy-anacortes-wa",
+        "online-therapy-bay-view-wa",
+        "online-therapy-big-lake-wa",
+        "online-therapy-bow-wa",
+        "online-therapy-burlington-wa",
+        "online-therapy-clear-lake-wa",
+        "online-therapy-concrete-wa",
+        "online-therapy-conway-wa",
+        "online-therapy-edison-wa",
+        "online-therapy-hamilton-wa",
+        "online-therapy-la-conner-wa",
+        "online-therapy-lake-cavanaugh-wa",
+        "online-therapy-lake-mcmurray-wa",
+        "online-therapy-lyman-wa",
+        "online-therapy-marblemount-wa",
+        "online-therapy-mount-vernon-wa",
+        "online-therapy-rockport-wa",
+        "online-therapy-sedro-woolley-wa"
+      ]
+    },
+    {
+      "slug": "online-therapy-skamania-county-wa",
+      "kind": "county",
+      "status": "draft",
+      "parents": [
+        "online-therapy-southwest-gorge-region-wa"
+      ],
+      "children": [
+        "online-therapy-carson-wa",
+        "online-therapy-north-bonneville-wa",
+        "online-therapy-stevenson-wa"
+      ]
+    },
+    {
+      "slug": "online-therapy-snohomish-county-wa",
+      "kind": "county",
+      "status": "existing",
+      "parents": [
+        "online-therapy-puget-sound-region-wa"
+      ],
+      "children": [
+        "online-therapy-alderwood-manor-wa",
+        "online-therapy-arlington-wa",
+        "online-therapy-arlington-heights-wa",
+        "online-therapy-bothell-wa",
+        "online-therapy-bothell-east-wa",
+        "online-therapy-bothell-west-wa",
+        "online-therapy-brier-wa",
+        "online-therapy-bryant-wa",
+        "online-therapy-bunk-foss-wa",
+        "online-therapy-canyon-creek-wa",
+        "online-therapy-cathcart-wa",
+        "online-therapy-cavalero-wa",
+        "online-therapy-chain-lake-wa",
+        "online-therapy-clearview-wa",
+        "online-therapy-darrington-wa",
+        "online-therapy-eastmont-wa",
+        "online-therapy-edmonds-wa",
+        "online-therapy-esperance-wa",
+        "online-therapy-everett-wa",
+        "online-therapy-fobes-hill-wa",
+        "online-therapy-gold-bar-wa",
+        "online-therapy-granite-falls-wa",
+        "online-therapy-hat-island-wa",
+        "online-therapy-high-bridge-wa",
+        "online-therapy-index-wa",
+        "online-therapy-kayak-point-wa",
+        "online-therapy-lake-bosworth-wa",
+        "online-therapy-lake-cassidy-wa",
+        "online-therapy-lake-goodwin-wa",
+        "online-therapy-lake-ketchum-wa",
+        "online-therapy-lake-roesiger-wa",
+        "online-therapy-lake-stevens-wa",
+        "online-therapy-lake-stickney-wa",
+        "online-therapy-larch-way-wa",
+        "online-therapy-lochsloy-wa",
+        "online-therapy-lynnwood-wa",
+        "online-therapy-machias-wa",
+        "online-therapy-maltby-wa",
+        "online-therapy-martha-lake-wa",
+        "online-therapy-marysville-wa",
+        "online-therapy-may-creek-wa",
+        "online-therapy-meadowdale-wa",
+        "online-therapy-mill-creek-wa",
+        "online-therapy-mill-creek-east-wa",
+        "online-therapy-monroe-wa",
+        "online-therapy-monroe-north-wa",
+        "online-therapy-mountlake-terrace-wa",
+        "online-therapy-mukilteo-wa",
+        "online-therapy-north-lynnwood-wa",
+        "online-therapy-north-sultan-wa",
+        "online-therapy-northwest-stanwood-wa",
+        "online-therapy-oso-wa",
+        "online-therapy-picnic-point-wa",
+        "online-therapy-silvana-wa",
+        "online-therapy-silver-firs-wa",
+        "online-therapy-sisco-heights-wa",
+        "online-therapy-snohomish-wa",
+        "online-therapy-stanwood-wa",
+        "online-therapy-startup-wa",
+        "online-therapy-sultan-wa",
+        "online-therapy-sunday-lake-wa",
+        "online-therapy-swede-heaven-wa",
+        "online-therapy-three-lakes-wa",
+        "online-therapy-verlot-wa",
+        "online-therapy-warm-beach-wa",
+        "online-therapy-woods-creek-wa",
+        "online-therapy-woodway-wa"
+      ]
+    },
+    {
+      "slug": "online-therapy-spokane-county-wa",
+      "kind": "county",
+      "status": "draft",
+      "parents": [
+        "online-therapy-northeast-region-wa"
+      ],
+      "children": [
+        "online-therapy-airway-heights-wa",
+        "online-therapy-cheney-wa",
+        "online-therapy-country-homes-wa",
+        "online-therapy-deer-park-wa",
+        "online-therapy-fairchild-afb-wa",
+        "online-therapy-fairfield-wa",
+        "online-therapy-fairwood-cdp-wa",
+        "online-therapy-four-lakes-wa",
+        "online-therapy-green-bluff-wa",
+        "online-therapy-latah-wa",
+        "online-therapy-liberty-lake-wa",
+        "online-therapy-mead-wa",
+        "online-therapy-medical-lake-wa",
+        "online-therapy-millwood-wa",
+        "online-therapy-otis-orchards-east-farms-wa",
+        "online-therapy-rockford-wa",
+        "online-therapy-spangle-wa",
+        "online-therapy-spokane-wa",
+        "online-therapy-spokane-valley-wa",
+        "online-therapy-town-and-country-wa",
+        "online-therapy-waverly-wa"
+      ]
+    },
+    {
+      "slug": "online-therapy-stevens-county-wa",
+      "kind": "county",
+      "status": "draft",
+      "parents": [
+        "online-therapy-northeast-region-wa"
+      ],
+      "children": [
+        "online-therapy-addy-wa",
+        "online-therapy-chewelah-wa",
+        "online-therapy-clayton-wa",
+        "online-therapy-colville-wa",
+        "online-therapy-kettle-falls-wa",
+        "online-therapy-loon-lake-wa",
+        "online-therapy-marcus-wa",
+        "online-therapy-northport-wa",
+        "online-therapy-springdale-wa",
+        "online-therapy-suncrest-wa",
+        "online-therapy-valley-wa"
+      ]
+    },
+    {
+      "slug": "online-therapy-thurston-county-wa",
+      "kind": "county",
+      "status": "draft",
+      "parents": [
+        "online-therapy-south-sound-coast-region-wa"
+      ],
+      "children": [
+        "online-therapy-bucoda-wa",
+        "online-therapy-grand-mound-wa",
+        "online-therapy-lacey-wa",
+        "online-therapy-nisqually-indian-community-wa",
+        "online-therapy-north-yelm-wa",
+        "online-therapy-olympia-wa",
+        "online-therapy-rainier-wa",
+        "online-therapy-rochester-wa",
+        "online-therapy-tanglewilde-wa",
+        "online-therapy-tenino-wa",
+        "online-therapy-tumwater-wa",
+        "online-therapy-yelm-wa"
+      ]
+    },
+    {
+      "slug": "online-therapy-wahkiakum-county-wa",
+      "kind": "county",
+      "status": "draft",
+      "parents": [
+        "online-therapy-southwest-gorge-region-wa"
+      ],
+      "children": [
+        "online-therapy-altoona-wa",
+        "online-therapy-cathlamet-wa",
+        "online-therapy-deep-river-wa",
+        "online-therapy-east-cathlamet-wa",
+        "online-therapy-grays-river-wa",
+        "online-therapy-lower-elochoman-wa",
+        "online-therapy-puget-island-wa",
+        "online-therapy-rosburg-wa",
+        "online-therapy-skamokawa-valley-wa",
+        "online-therapy-upper-elochoman-wa"
+      ]
+    },
+    {
+      "slug": "online-therapy-walla-walla-county-wa",
+      "kind": "county",
+      "status": "draft",
+      "parents": [
+        "online-therapy-southeast-region-wa"
+      ],
+      "children": [
+        "online-therapy-burbank-wa",
+        "online-therapy-college-place-wa",
+        "online-therapy-dixie-wa",
+        "online-therapy-garrett-wa",
+        "online-therapy-prescott-wa",
+        "online-therapy-touchet-wa",
+        "online-therapy-waitsburg-wa",
+        "online-therapy-walla-walla-wa",
+        "online-therapy-walla-walla-east-wa",
+        "online-therapy-wallula-wa"
+      ]
+    },
+    {
+      "slug": "online-therapy-whatcom-county-wa",
+      "kind": "county",
+      "status": "draft",
+      "parents": [
+        "online-therapy-northwest-region-wa"
+      ],
+      "children": [
+        "online-therapy-acme-wa",
+        "online-therapy-bellingham-wa",
+        "online-therapy-birch-bay-wa",
+        "online-therapy-blaine-wa",
+        "online-therapy-custer-wa",
+        "online-therapy-deming-wa",
+        "online-therapy-everson-wa",
+        "online-therapy-ferndale-wa",
+        "online-therapy-geneva-wa",
+        "online-therapy-glacier-wa",
+        "online-therapy-kendall-wa",
+        "online-therapy-lynden-wa",
+        "online-therapy-maple-falls-wa",
+        "online-therapy-marietta-alderwood-wa",
+        "online-therapy-nooksack-wa",
+        "online-therapy-peaceful-valley-wa",
+        "online-therapy-point-roberts-wa",
+        "online-therapy-sudden-valley-wa",
+        "online-therapy-sumas-wa"
+      ]
+    },
+    {
+      "slug": "online-therapy-whitman-county-wa",
+      "kind": "county",
+      "status": "draft",
+      "parents": [
+        "online-therapy-southeast-region-wa"
+      ],
+      "children": [
+        "online-therapy-albion-wa",
+        "online-therapy-colfax-wa",
+        "online-therapy-colton-wa",
+        "online-therapy-endicott-wa",
+        "online-therapy-farmington-wa",
+        "online-therapy-garfield-wa",
+        "online-therapy-lacrosse-wa",
+        "online-therapy-lamont-wa",
+        "online-therapy-malden-wa",
+        "online-therapy-oakesdale-wa",
+        "online-therapy-palouse-wa",
+        "online-therapy-pullman-wa",
+        "online-therapy-rosalia-wa",
+        "online-therapy-st-john-wa",
+        "online-therapy-steptoe-wa",
+        "online-therapy-tekoa-wa",
+        "online-therapy-uniontown-wa"
+      ]
+    },
+    {
+      "slug": "online-therapy-yakima-county-wa",
+      "kind": "county",
+      "status": "draft",
+      "parents": [
+        "online-therapy-central-region-wa"
+      ],
+      "children": [
+        "online-therapy-ahtanum-wa",
+        "online-therapy-buena-wa",
+        "online-therapy-cliffdell-wa",
+        "online-therapy-cowiche-wa",
+        "online-therapy-donald-wa",
+        "online-therapy-eschbach-wa",
+        "online-therapy-gleed-wa",
+        "online-therapy-grandview-wa",
+        "online-therapy-granger-wa",
+        "online-therapy-harrah-wa",
+        "online-therapy-mabton-wa",
+        "online-therapy-moxee-wa",
+        "online-therapy-naches-wa",
+        "online-therapy-nile-wa",
+        "online-therapy-outlook-wa",
+        "online-therapy-parker-wa",
+        "online-therapy-selah-wa",
+        "online-therapy-summitview-wa",
+        "online-therapy-sunnyside-wa",
+        "online-therapy-tampico-wa",
+        "online-therapy-terrace-heights-wa",
+        "online-therapy-tieton-wa",
+        "online-therapy-toppenish-wa",
+        "online-therapy-union-gap-wa",
+        "online-therapy-wapato-wa",
+        "online-therapy-white-swan-wa",
+        "online-therapy-yakima-wa",
+        "online-therapy-zillah-wa"
+      ]
+    },
+    {
+      "slug": "online-therapy-northwest-region-wa",
+      "kind": "region",
+      "status": "draft",
+      "parents": [
+        "online-therapy-locations"
+      ],
+      "children": [
+        "online-therapy-island-county-wa",
+        "online-therapy-san-juan-county-wa",
+        "online-therapy-skagit-county-wa",
+        "online-therapy-whatcom-county-wa"
+      ]
+    },
+    {
+      "slug": "online-therapy-puget-sound-region-wa",
+      "kind": "region",
+      "status": "draft",
+      "parents": [
+        "online-therapy-locations"
+      ],
+      "children": [
+        "online-therapy-king-county-wa",
+        "online-therapy-pierce-county-wa",
+        "online-therapy-snohomish-county-wa"
+      ]
+    },
+    {
+      "slug": "online-therapy-peninsula-kitsap-region-wa",
+      "kind": "region",
+      "status": "draft",
+      "parents": [
+        "online-therapy-locations"
+      ],
+      "children": [
+        "online-therapy-clallam-county-wa",
+        "online-therapy-jefferson-county-wa",
+        "online-therapy-kitsap-county-wa",
+        "online-therapy-mason-county-wa"
+      ]
+    },
+    {
+      "slug": "online-therapy-south-sound-coast-region-wa",
+      "kind": "region",
+      "status": "draft",
+      "parents": [
+        "online-therapy-locations"
+      ],
+      "children": [
+        "online-therapy-grays-harbor-county-wa",
+        "online-therapy-lewis-county-wa",
+        "online-therapy-pacific-county-wa",
+        "online-therapy-thurston-county-wa"
+      ]
+    },
+    {
+      "slug": "online-therapy-southwest-gorge-region-wa",
+      "kind": "region",
+      "status": "draft",
+      "parents": [
+        "online-therapy-locations"
+      ],
+      "children": [
+        "online-therapy-clark-county-wa",
+        "online-therapy-cowlitz-county-wa",
+        "online-therapy-klickitat-county-wa",
+        "online-therapy-skamania-county-wa",
+        "online-therapy-wahkiakum-county-wa"
+      ]
+    },
+    {
+      "slug": "online-therapy-central-region-wa",
+      "kind": "region",
+      "status": "draft",
+      "parents": [
+        "online-therapy-locations"
+      ],
+      "children": [
+        "online-therapy-chelan-county-wa",
+        "online-therapy-douglas-county-wa",
+        "online-therapy-grant-county-wa",
+        "online-therapy-kittitas-county-wa",
+        "online-therapy-okanogan-county-wa",
+        "online-therapy-yakima-county-wa"
+      ]
+    },
+    {
+      "slug": "online-therapy-northeast-region-wa",
+      "kind": "region",
+      "status": "draft",
+      "parents": [
+        "online-therapy-locations"
+      ],
+      "children": [
+        "online-therapy-ferry-county-wa",
+        "online-therapy-lincoln-county-wa",
+        "online-therapy-pend-oreille-county-wa",
+        "online-therapy-spokane-county-wa",
+        "online-therapy-stevens-county-wa"
+      ]
+    },
+    {
+      "slug": "online-therapy-southeast-region-wa",
+      "kind": "region",
+      "status": "draft",
+      "parents": [
+        "online-therapy-locations"
+      ],
+      "children": [
+        "online-therapy-adams-county-wa",
+        "online-therapy-asotin-county-wa",
+        "online-therapy-benton-county-wa",
+        "online-therapy-columbia-county-wa",
+        "online-therapy-franklin-county-wa",
+        "online-therapy-garfield-county-wa",
+        "online-therapy-walla-walla-county-wa",
+        "online-therapy-whitman-county-wa"
+      ]
+    },
+    {
+      "slug": "online-therapy-aberdeen-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-grays-harbor-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-airway-heights-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-spokane-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-albion-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-whitman-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-algona-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-king-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-almira-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-lincoln-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-anacortes-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-skagit-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-arlington-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-snohomish-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-asotin-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-asotin-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-auburn-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-king-county-wa",
+        "online-therapy-pierce-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-bainbridge-island-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-kitsap-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-battle-ground-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-clark-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-beaux-arts-village-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-king-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-bellevue-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-king-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-bellingham-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-whatcom-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-benton-city-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-benton-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-bingen-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-klickitat-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-black-diamond-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-king-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-blaine-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-whatcom-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-bonney-lake-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-pierce-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-bothell-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-king-county-wa",
+        "online-therapy-snohomish-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-bremerton-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-kitsap-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-brewster-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-okanogan-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-bridgeport-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-douglas-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-brier-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-snohomish-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-buckley-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-pierce-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-bucoda-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-thurston-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-burien-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-king-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-burlington-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-skagit-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-camas-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-clark-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-carbonado-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-pierce-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-carnation-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-king-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-cashmere-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-chelan-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-castle-rock-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-cowlitz-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-cathlamet-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-wahkiakum-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-centralia-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-lewis-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-chehalis-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-lewis-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-chelan-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-chelan-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-cheney-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-spokane-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-chewelah-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-stevens-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-clarkston-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-asotin-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-cle-elum-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-kittitas-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-clyde-hill-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-king-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-colfax-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-whitman-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-college-place-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-walla-walla-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-colton-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-whitman-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-colville-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-stevens-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-conconully-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-okanogan-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-concrete-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-skagit-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-connell-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-franklin-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-cosmopolis-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-grays-harbor-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-coulee-city-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-grant-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-coulee-dam-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-douglas-county-wa",
+        "online-therapy-grant-county-wa",
+        "online-therapy-okanogan-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-coupeville-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-island-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-covington-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-king-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-creston-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-lincoln-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-cusick-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-pend-oreille-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-darrington-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-snohomish-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-davenport-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-lincoln-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-dayton-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-columbia-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-deer-park-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-spokane-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-des-moines-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-king-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-dupont-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-pierce-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-duvall-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-king-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-east-wenatchee-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-douglas-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-eatonville-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-pierce-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-edgewood-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-pierce-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-edmonds-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-snohomish-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-electric-city-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-grant-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-ellensburg-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-kittitas-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-elma-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-grays-harbor-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-elmer-city-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-okanogan-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-endicott-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-whitman-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-entiat-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-chelan-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-enumclaw-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-king-county-wa",
+        "online-therapy-pierce-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-ephrata-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-grant-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-everett-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-snohomish-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-everson-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-whatcom-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-fairfield-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-spokane-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-farmington-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-whitman-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-federal-way-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-king-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-ferndale-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-whatcom-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-fife-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-pierce-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-fircrest-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-pierce-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-forks-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-clallam-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-friday-harbor-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-san-juan-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-garfield-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-whitman-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-george-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-grant-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-gig-harbor-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-pierce-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-gold-bar-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-snohomish-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-goldendale-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-klickitat-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-grand-coulee-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-grant-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-grandview-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-yakima-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-granger-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-yakima-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-granite-falls-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-snohomish-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-hamilton-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-skagit-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-harrah-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-yakima-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-harrington-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-lincoln-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-hartline-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-grant-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-hatton-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-adams-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-hoquiam-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-grays-harbor-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-hunts-point-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-king-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-ilwaco-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-pacific-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-index-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-snohomish-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-ione-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-pend-oreille-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-issaquah-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-king-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-kahlotus-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-franklin-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-kalama-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-cowlitz-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-kelso-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-cowlitz-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-kenmore-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-king-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-kennewick-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-benton-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-kent-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-king-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-kettle-falls-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-stevens-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-kirkland-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-king-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-kittitas-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-kittitas-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-krupp-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-grant-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-la-center-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-clark-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-la-conner-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-skagit-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-lacrosse-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-whitman-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-lacey-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-thurston-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-lake-forest-park-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-king-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-lake-stevens-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-snohomish-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-lakewood-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-pierce-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-lamont-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-whitman-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-langley-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-island-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-latah-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-spokane-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-leavenworth-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-chelan-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-liberty-lake-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-spokane-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-lind-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-adams-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-long-beach-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-pacific-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-longview-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-cowlitz-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-lyman-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-skagit-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-lynden-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-whatcom-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-lynnwood-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-snohomish-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-mabton-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-yakima-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-malden-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-whitman-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-mansfield-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-douglas-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-maple-valley-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-king-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-marcus-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-stevens-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-marysville-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-snohomish-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-mattawa-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-grant-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-mccleary-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-grays-harbor-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-medical-lake-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-spokane-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-medina-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-king-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-mercer-island-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-king-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-mesa-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-franklin-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-metaline-falls-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-pend-oreille-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-metaline-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-pend-oreille-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-mill-creek-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-snohomish-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-millwood-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-spokane-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-milton-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-king-county-wa",
+        "online-therapy-pierce-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-monroe-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-snohomish-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-montesano-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-grays-harbor-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-morton-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-lewis-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-moses-lake-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-grant-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-mossyrock-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-lewis-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-mount-vernon-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-skagit-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-mountlake-terrace-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-snohomish-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-moxee-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-yakima-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-mukilteo-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-snohomish-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-naches-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-yakima-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-napavine-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-lewis-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-nespelem-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-okanogan-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-newcastle-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-king-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-newport-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-pend-oreille-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-nooksack-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-whatcom-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-normandy-park-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-king-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-north-bend-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-king-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-north-bonneville-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-skamania-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-northport-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-stevens-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-oak-harbor-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-island-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-oakesdale-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-whitman-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-oakville-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-grays-harbor-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-ocean-shores-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-grays-harbor-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-odessa-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-lincoln-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-okanogan-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-okanogan-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-olympia-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-thurston-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-omak-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-okanogan-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-oroville-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-okanogan-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-orting-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-pierce-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-othello-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-adams-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-pacific-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-king-county-wa",
+        "online-therapy-pierce-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-palouse-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-whitman-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-pasco-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-franklin-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-pateros-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-okanogan-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-pe-ell-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-lewis-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-pomeroy-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-garfield-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-port-angeles-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-clallam-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-port-orchard-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-kitsap-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-port-townsend-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-jefferson-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-poulsbo-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-kitsap-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-prescott-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-walla-walla-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-prosser-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-benton-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-pullman-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-whitman-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-puyallup-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-pierce-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-quincy-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-grant-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-rainier-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-thurston-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-raymond-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-pacific-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-reardan-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-lincoln-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-redmond-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-king-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-renton-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-king-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-republic-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-ferry-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-richland-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-benton-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-ridgefield-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-clark-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-ritzville-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-adams-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-riverside-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-okanogan-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-rock-island-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-douglas-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-rockford-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-spokane-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-rosalia-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-whitman-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-roslyn-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-kittitas-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-roy-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-pierce-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-royal-city-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-grant-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-ruston-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-pierce-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-sammamish-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-king-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-seatac-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-king-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-seattle-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-king-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-sedro-woolley-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-skagit-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-selah-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-yakima-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-sequim-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-clallam-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-shelton-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-mason-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-shoreline-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-king-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-skykomish-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-king-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-snohomish-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-snohomish-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-snoqualmie-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-king-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-soap-lake-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-grant-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-south-bend-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-pacific-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-south-cle-elum-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-kittitas-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-south-prairie-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-pierce-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-spangle-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-spokane-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-spokane-valley-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-spokane-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-spokane-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-spokane-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-sprague-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-lincoln-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-springdale-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-stevens-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-st-john-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-whitman-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-stanwood-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-snohomish-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-starbuck-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-columbia-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-steilacoom-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-pierce-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-stevenson-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-skamania-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-sultan-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-snohomish-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-sumas-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-whatcom-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-sumner-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-pierce-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-sunnyside-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-yakima-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-tacoma-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-pierce-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-tekoa-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-whitman-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-tenino-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-thurston-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-tieton-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-yakima-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-toledo-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-lewis-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-tonasket-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-okanogan-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-toppenish-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-yakima-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-tukwila-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-king-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-tumwater-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-thurston-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-twisp-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-okanogan-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-union-gap-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-yakima-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-uniontown-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-whitman-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-university-place-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-pierce-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-vader-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-lewis-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-vancouver-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-clark-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-waitsburg-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-walla-walla-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-walla-walla-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-walla-walla-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-wapato-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-yakima-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-warden-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-grant-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-washougal-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-clark-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-washtucna-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-adams-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-waterville-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-douglas-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-waverly-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-spokane-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-wenatchee-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-chelan-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-west-richland-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-benton-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-westport-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-grays-harbor-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-white-salmon-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-klickitat-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-wilbur-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-lincoln-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-wilkeson-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-pierce-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-wilson-creek-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-grant-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-winlock-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-lewis-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-winthrop-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-okanogan-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-woodinville-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-king-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-woodland-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-clark-county-wa",
+        "online-therapy-cowlitz-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-woodway-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-snohomish-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-yacolt-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-clark-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-yakima-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-yakima-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-yarrow-point-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-king-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-yelm-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-thurston-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-zillah-wa",
+      "kind": "incorporated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-yakima-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-aberdeen-gardens-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-grays-harbor-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-acme-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-whatcom-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-addy-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-stevens-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-ahtanum-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-yakima-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-alder-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-pierce-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-alderton-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-pierce-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-alderwood-manor-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-snohomish-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-alger-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-skagit-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-allyn-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-mason-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-altoona-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-wahkiakum-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-amanda-park-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-grays-harbor-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-amboy-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-clark-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-ames-lake-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-king-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-anatone-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-asotin-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-anderson-island-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-pierce-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-arlington-heights-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-snohomish-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-artondale-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-pierce-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-ashford-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-pierce-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-bangor-base-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-kitsap-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-banks-lake-south-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-grant-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-barberton-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-clark-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-baring-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-king-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-barney-s-junction-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-ferry-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-barstow-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-ferry-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-basin-city-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-franklin-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-bay-center-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-pacific-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-bay-view-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-skagit-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-beacon-hill-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-cowlitz-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-belfair-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-mason-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-bell-hill-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-clallam-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-bethel-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-kitsap-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-beverly-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-grant-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-bickleton-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-klickitat-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-big-lake-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-skagit-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-birch-bay-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-whatcom-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-blyn-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-clallam-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-bothell-east-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-snohomish-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-bothell-west-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-snohomish-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-boulevard-park-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-king-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-bow-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-skagit-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-boyds-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-ferry-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-brady-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-grays-harbor-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-brinnon-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-jefferson-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-browns-point-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-pierce-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-brush-prairie-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-clark-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-bryant-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-snohomish-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-bryn-mawr-skyway-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-king-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-buena-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-yakima-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-bunk-foss-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-snohomish-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-burbank-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-walla-walla-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-burley-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-kitsap-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-camano-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-island-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-canterwood-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-pierce-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-canyon-creek-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-snohomish-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-carlsborg-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-clallam-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-carson-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-skamania-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-cascade-valley-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-grant-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-cathcart-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-snohomish-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-cavalero-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-snohomish-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-centerville-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-klickitat-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-central-park-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-grays-harbor-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-chain-lake-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-snohomish-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-chelan-falls-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-chelan-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-cherry-grove-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-clark-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-chico-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-kitsap-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-chinook-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-pacific-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-clallam-bay-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-clallam-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-clarkston-heights-vineland-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-asotin-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-clayton-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-stevens-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-clear-lake-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-skagit-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-clear-lake-cdp-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-pierce-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-clearview-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-snohomish-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-cliffdell-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-yakima-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-clinton-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-island-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-clover-creek-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-pierce-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-cohassett-beach-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-grays-harbor-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-conway-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-skagit-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-copalis-beach-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-grays-harbor-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-cottage-lake-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-king-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-cougar-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-cowlitz-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-country-homes-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-spokane-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-cowiche-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-yakima-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-crescent-bar-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-grant-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-crocker-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-pierce-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-curlew-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-ferry-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-curlew-lake-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-ferry-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-custer-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-whatcom-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-dallesport-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-klickitat-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-danville-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-ferry-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-dash-point-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-pierce-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-deep-river-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-wahkiakum-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-deming-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-whatcom-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-desert-aire-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-grant-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-disautel-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-okanogan-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-dixie-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-walla-walla-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-dollars-corner-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-clark-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-donald-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-yakima-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-duluth-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-clark-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-east-cathlamet-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-wahkiakum-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-east-port-orchard-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-kitsap-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-east-renton-highlands-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-king-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-eastmont-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-snohomish-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-easton-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-kittitas-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-edison-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-skagit-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-elbe-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-pierce-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-elk-plain-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-pierce-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-enetai-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-kitsap-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-erlands-point-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-kitsap-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-eschbach-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-yakima-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-esperance-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-snohomish-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-fairchild-afb-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-spokane-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-fairwood-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-king-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-fairwood-cdp-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-spokane-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-fall-city-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-king-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-felida-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-clark-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-fern-prairie-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-clark-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-fife-heights-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-pierce-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-finley-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-benton-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-five-corners-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-clark-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-fobes-hill-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-snohomish-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-fords-prairie-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-lewis-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-fort-lewis-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-pierce-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-four-lakes-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-spokane-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-fox-island-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-pierce-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-frederickson-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-pierce-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-freeland-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-island-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-garrett-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-walla-walla-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-geneva-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-whatcom-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-glacier-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-whatcom-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-gleed-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-yakima-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-glenwood-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-klickitat-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-gorst-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-kitsap-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-graham-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-pierce-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-grand-mound-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-thurston-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-grapeview-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-mason-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-grayland-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-grays-harbor-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-grays-river-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-wahkiakum-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-green-bluff-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-spokane-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-greenwater-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-pierce-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-hansville-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-kitsap-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-hat-island-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-snohomish-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-hazel-dell-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-clark-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-herron-island-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-pierce-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-high-bridge-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-snohomish-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-hobart-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-king-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-hockinson-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-clark-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-hogans-corner-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-grays-harbor-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-home-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-pierce-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-hoodsport-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-mason-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-humptulips-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-grays-harbor-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-inchelium-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-ferry-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-indianola-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-kitsap-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-jamestown-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-clallam-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-kapowsin-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-pierce-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-kayak-point-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-snohomish-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-keller-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-ferry-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-kendall-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-whatcom-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-ketron-island-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-pierce-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-key-center-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-pierce-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-keyport-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-kitsap-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-kingston-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-kitsap-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-kitsap-lake-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-kitsap-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-klickitat-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-klickitat-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-la-grande-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-pierce-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-lake-bosworth-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-snohomish-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-lake-cassidy-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-snohomish-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-lake-cavanaugh-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-skagit-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-lake-goodwin-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-snohomish-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-lake-holm-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-king-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-lake-ketchum-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-snohomish-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-lake-marcel-stillwater-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-king-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-lake-mcmurray-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-skagit-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-lake-morton-berrydale-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-king-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-lake-roesiger-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-snohomish-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-lake-shore-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-clark-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-lake-stickney-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-snohomish-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-lake-tapps-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-pierce-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-lakeland-north-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-king-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-lakeland-south-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-king-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-lakeview-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-grant-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-larch-way-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-snohomish-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-laurier-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-ferry-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-lebam-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-pacific-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-lewisville-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-clark-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-lexington-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-cowlitz-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-lochsloy-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-snohomish-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-lofall-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-kitsap-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-longbranch-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-pierce-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-longview-heights-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-cowlitz-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-loomis-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-okanogan-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-loon-lake-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-stevens-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-lower-elochoman-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-wahkiakum-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-lyle-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-klickitat-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-machias-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-snohomish-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-malo-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-ferry-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-malone-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-grays-harbor-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-malott-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-okanogan-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-maltby-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-snohomish-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-manchester-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-kitsap-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-manson-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-chelan-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-maple-falls-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-whatcom-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-maple-heights-lake-desire-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-king-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-maplewood-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-pierce-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-marblemount-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-skagit-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-marietta-alderwood-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-whatcom-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-marine-view-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-grant-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-markham-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-grays-harbor-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-marrowstone-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-jefferson-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-martha-lake-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-snohomish-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-maryhill-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-klickitat-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-may-creek-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-snohomish-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-mcchord-afb-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-pierce-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-mckenna-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-pierce-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-mcmillin-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-pierce-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-mead-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-spokane-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-meadow-glade-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-clark-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-meadowdale-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-snohomish-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-methow-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-okanogan-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-midland-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-pierce-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-mill-creek-east-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-snohomish-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-mineral-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-lewis-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-minnehaha-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-clark-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-mirrormont-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-king-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-moclips-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-grays-harbor-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-monroe-north-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-snohomish-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-moses-lake-north-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-grant-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-mount-vista-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-clark-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-naselle-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-pacific-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-navy-yard-city-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-kitsap-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-neah-bay-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-clallam-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-neilton-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-grays-harbor-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-nespelem-community-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-okanogan-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-nile-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-yakima-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-nisqually-indian-community-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-thurston-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-north-fort-lewis-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-pierce-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-north-lynnwood-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-snohomish-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-north-omak-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-okanogan-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-north-puyallup-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-pierce-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-north-sultan-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-snohomish-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-north-yelm-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-thurston-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-northwest-stanwood-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-snohomish-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-ocean-city-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-grays-harbor-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-ocean-park-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-pacific-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-ocosta-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-grays-harbor-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-onalaska-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-lewis-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-orchards-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-clark-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-orient-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-ferry-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-oso-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-snohomish-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-otis-orchards-east-farms-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-spokane-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-outlook-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-yakima-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-oyehut-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-grays-harbor-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-pacific-beach-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-grays-harbor-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-packwood-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-lewis-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-parker-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-yakima-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-parkland-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-pierce-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-parkwood-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-kitsap-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-pataha-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-garfield-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-peaceful-valley-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-whatcom-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-picnic-point-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-snohomish-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-pine-grove-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-ferry-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-point-roberts-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-whatcom-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-port-angeles-east-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-clallam-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-port-gamble-tribal-community-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-kitsap-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-port-hadlock-irondale-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-jefferson-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-port-ludlow-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-jefferson-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-porter-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-grays-harbor-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-prairie-heights-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-pierce-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-prairie-ridge-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-pierce-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-puget-island-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-wahkiakum-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-purdy-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-pierce-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-queets-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-grays-harbor-county-wa",
+        "online-therapy-jefferson-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-qui-nai-elt-village-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-grays-harbor-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-quilcene-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-jefferson-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-raft-island-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-pierce-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-ravensdale-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-king-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-river-road-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-clallam-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-riverbend-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-king-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-riverpoint-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-king-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-roche-harbor-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-san-juan-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-rochester-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-thurston-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-rockport-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-skagit-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-rocky-point-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-kitsap-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-ronald-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-kittitas-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-roosevelt-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-klickitat-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-rosburg-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-wahkiakum-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-rosedale-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-pierce-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-ryderwood-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-cowlitz-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-salmon-creek-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-clark-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-santiago-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-grays-harbor-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-satsop-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-grays-harbor-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-schwana-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-grant-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-seabeck-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-kitsap-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-sekiu-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-clallam-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-shadow-lake-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-king-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-silvana-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-snohomish-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-silver-firs-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-snohomish-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-silverdale-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-kitsap-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-sisco-heights-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-snohomish-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-skamokawa-valley-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-wahkiakum-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-skokomish-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-mason-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-snoqualmie-pass-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-kittitas-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-south-creek-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-pierce-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-south-hill-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-pierce-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-south-wenatchee-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-chelan-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-southworth-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-kitsap-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-spanaway-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-pierce-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-stansberry-lake-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-pierce-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-startup-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-snohomish-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-steptoe-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-whitman-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-sudden-valley-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-whatcom-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-summit-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-pierce-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-summit-view-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-pierce-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-summitview-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-yakima-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-suncrest-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-stevens-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-sunday-lake-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-snohomish-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-sunland-estates-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-grant-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-sunnyslope-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-chelan-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-suquamish-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-kitsap-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-swede-heaven-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-snohomish-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-taholah-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-grays-harbor-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-tampico-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-yakima-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-tanglewilde-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-thurston-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-tehaleh-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-pierce-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-terrace-heights-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-yakima-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-thorp-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-kittitas-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-three-lakes-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-snohomish-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-tokeland-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-pacific-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-torboy-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-ferry-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-touchet-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-walla-walla-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-town-and-country-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-spokane-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-tracyton-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-kitsap-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-trout-lake-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-klickitat-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-twin-lakes-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-ferry-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-union-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-mason-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-union-hill-novelty-hill-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-king-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-upper-elochoman-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-wahkiakum-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-valley-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-stevens-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-vantage-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-kittitas-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-vashon-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-king-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-vaughn-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-pierce-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-venersborg-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-clark-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-verlot-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-snohomish-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-walla-walla-east-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-walla-walla-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-waller-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-pierce-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-wallula-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-walla-walla-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-warm-beach-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-snohomish-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-wauna-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-pierce-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-west-clarkston-highland-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-asotin-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-west-pasco-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-franklin-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-wheeler-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-grant-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-whidbey-island-station-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-island-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-white-center-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-king-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-white-swan-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-yakima-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-wilderness-rim-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-king-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-willapa-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-pacific-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-wishram-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-klickitat-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-wollochet-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-pierce-county-wa"
+      ],
+      "children": []
+    },
+    {
+      "slug": "online-therapy-woods-creek-wa",
+      "kind": "census-designated-place",
+      "status": "draft",
+      "parents": [
+        "online-therapy-snohomish-county-wa"
+      ],
+      "children": []
+    }
+  ]
+}

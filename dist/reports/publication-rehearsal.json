@@ -1,0 +1,37 @@
+{
+  "results": [
+    {
+      "name": "preview-default",
+      "status": "pass",
+      "environment": "isolated CI build only",
+      "htmlFiles": 829,
+      "sitemapUrls": 0,
+      "generatedPages": 757,
+      "approvedExpansionPages": 0,
+      "preservedCorePages": 11,
+      "warningCount": 251
+    },
+    {
+      "name": "preview-accidental-enable",
+      "status": "pass",
+      "environment": "isolated CI build only",
+      "htmlFiles": 829,
+      "sitemapUrls": 0,
+      "generatedPages": 757,
+      "approvedExpansionPages": 0,
+      "preservedCorePages": 11,
+      "warningCount": 251
+    },
+    {
+      "name": "production-policy-rehearsal",
+      "status": "pass",
+      "environment": "isolated CI build only",
+      "htmlFiles": 829,
+      "sitemapUrls": 63,
+      "generatedPages": 757,
+      "approvedExpansionPages": 0,
+      "preservedCorePages": 11,
+      "warningCount": 251
+    }
+  ]
+}

@@ -121,7 +121,8 @@ def actual_handoff(page,selector,clinician=None):
     page.wait_for_url(re.compile(r'^https://(?:spwidget-)?marriagefamilytherapy\.clientsecure\.me/'),timeout=30000)
     page.get_by_text('Request an appointment',exact=True).first.wait_for(state='attached',timeout=30000)
     if clinician:
-        page.get_by_text(clinician['name'],exact=True).first.wait_for(timeout=30000)
+        page.get_by_text(clinician['name'],exact=True).first.wait_for(state='attached',timeout=30000)
+        page.wait_for_function("document.body && /Individual Therapy Session|Paid Consultation|Complimentary Phone Consultation|diagnostic|evaluation/i.test(document.body.innerText)")
         assert parse_qs(urlsplit(page.url).query).get('clinicianId')==[clinician['id']]
     else:page.get_by_text('Emily Johnsrud',exact=True).first.wait_for(timeout=30000)
     text=page.locator('body').inner_text()

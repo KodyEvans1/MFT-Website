@@ -119,7 +119,7 @@ def synthetic_privacy(browser):
 def actual_handoff(page,selector,clinician=None):
     ready(page);a=page.locator(selector).first;expected=a.get_attribute('href');a.click()
     page.wait_for_url(re.compile(r'^https://(?:spwidget-)?marriagefamilytherapy\.clientsecure\.me/'),timeout=30000)
-    page.get_by_text('Request an appointment',exact=True).first.wait_for(timeout=30000)
+    page.get_by_text('Request an appointment',exact=True).first.wait_for(state='attached',timeout=30000)
     if clinician:
         page.get_by_text(clinician['name'],exact=True).first.wait_for(timeout=30000)
         assert parse_qs(urlsplit(page.url).query).get('clinicianId')==[clinician['id']]
@@ -127,7 +127,8 @@ def actual_handoff(page,selector,clinician=None):
     text=page.locator('body').inner_text()
     record('Actual public SimplePractice destination loaded',selector=selector,clinician=clinician['key'] if clinician else None,host=urlsplit(page.url).hostname,path=urlsplit(page.url).path,sameTab=True,diagnosticEvaluationVisible=bool(re.search(r'90791|diagnostic|initial.*(?:assessment|evaluation)',text,re.I)))
     if clinician:
-        REPORT.setdefault('publicServiceEvidence',[]).append({'clinician':clinician['key'],'lines':[line for line in text.splitlines() if re.search(r'90791|diagnostic|consult|therapy|telehealth|in person',line,re.I)][:30]})
+        REPORT.setdefault('publicServiceEvidence',[]).append({'clinician':clinician['key'],'diagnosticEvaluationVisible':bool(re.search(r'90791|diagnostic|initial.*(?:assessment|evaluation)',text,re.I)),'publicServiceScreen':text[:5000]})
+    if clinician:page.screenshot(path=str(OUT/('public-services-'+clinician['key']+'-'+str(page.viewport_size['width'])+'.png')),full_page=True)
     return text
 
 try:
@@ -136,6 +137,10 @@ try:
     if MODE in ['local','handoff']:
         class Quiet(SimpleHTTPRequestHandler):
             def log_message(self,*args):pass
+            def end_headers(self):
+                self.send_header('Content-Security-Policy',CSP)
+                self.send_header('Referrer-Policy','no-referrer')
+                super().end_headers()
         server=ThreadingHTTPServer(('127.0.0.1',0),functools.partial(Quiet,directory=str(DIST)))
         threading.Thread(target=server.serve_forever,daemon=True).start();BASE='http://127.0.0.1:'+str(server.server_port)
     with sync_playwright() as p:
@@ -154,6 +159,12 @@ try:
             button=page.locator('[data-teen-primary]');button.focus();assert button.evaluate('(a)=>a===document.activeElement')
             page.wait_for_function("document.querySelector('header img')?.complete && document.querySelector('header img').naturalWidth > 0")
             record('Responsive structure and approved links',width=width,primaryButtonTop=round(button.bounding_box()['y']))
+            if MODE!='offline' and width==390:
+                for img in page.locator('.mft-teen-clinicians img').all():
+                    img.scroll_into_view_if_needed();img.evaluate('(el)=>el.loading="eager"')
+                    page.wait_for_function('(el)=>el.complete',arg=img.element_handle())
+                    assert img.evaluate('(el)=>el.naturalWidth>0'),'Clinician portrait did not load'
+                record('Public clinician portraits load when scrolled into view');page.evaluate('window.scrollTo(0,0)')
             if width in [1440,390,320]:page.screenshot(path=str(OUT/('teen-'+str(width)+'-top.png')));page.screenshot(path=str(OUT/('teen-'+str(width)+'.png')),full_page=True)
         ready(page);menu=page.locator('.menu-button');menu.focus();menu.press('Enter');assert menu.get_attribute('aria-expanded')=='true';menu.press('Enter');assert menu.get_attribute('aria-expanded')=='false';record('Mobile menu keyboard toggle')
         faq=page.locator('#questions details').first;summary=faq.locator('summary');summary.focus();summary.press('Enter');assert faq.get_attribute('open') is not None;summary.press('Space');assert faq.get_attribute('open') is None;record('FAQ keyboard toggle')
@@ -167,9 +178,11 @@ try:
                 page.set_viewport_size({'width':width,'height':950});actual_handoff(page,'[data-teen-primary]')
                 for person in PEOPLE:actual_handoff(page,'[data-teen-clinician="'+person['key']+'"]',person)
             actual_handoff(page,'[data-teen-paid-consultation]')
-            ready(page);page.locator('[data-teen-ten-minute]').click();page.locator('.mft-consultation-gate input').check();page.locator('[data-consultation-continue]').click();page.get_by_text('Request an appointment',exact=True).first.wait_for();record('Actual optional phone consultation handoff')
+            ready(page);page.locator('[data-teen-ten-minute]').click();page.locator('.mft-consultation-gate input').check();page.locator('[data-consultation-continue]').click();page.get_by_text('Request an appointment',exact=True).first.wait_for(state='attached');page.get_by_text('Emily Johnsrud',exact=True).first.wait_for();record('Actual optional phone consultation handoff')
             ready(page);page.locator('.mft-teen-existing').click();page.wait_for_url(re.compile('/sign-in'));page.locator('input[type="email"]').wait_for();record('Actual returning-client sign-in route; no login attempted')
             assert len(c.pages)==1
+            services=REPORT.get('publicServiceEvidence',[])
+            REPORT['initialEvaluationReadiness']={'ready':bool(services) and all(item['diagnosticEvaluationVisible'] for item in services),'observedClinicians':sorted(set(item['clinician'] for item in services)),'scope':'Public service-menu visibility only; no slot selection or request submission'}
         REPORT['pass']=True;browser.close()
 except Exception as exc:
     REPORT['error']=str(exc)

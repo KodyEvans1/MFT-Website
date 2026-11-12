@@ -83,12 +83,23 @@ try:
                 a=page.locator('a[data-mft-clinician="autumn"]').first;assert valid(a.get_attribute('href'))
                 a.focus();page.keyboard.press('Enter')
                 page.wait_for_url(re.compile(r'^https://(?:spwidget-)?marriagefamilytherapy\.clientsecure\.me/'))
-                page.get_by_text('Autumn Alexander',exact=True).first.wait_for(state='visible')
-                text=page.locator('body').inner_text();assert re.search(r'request an appointment',text,re.I)
+                names=page.get_by_text('Autumn Alexander',exact=True)
+                names.first.wait_for(state='attached')
+                if width>=760:names.first.wait_for(state='visible')
+                # Compact SimplePractice hides its sidebar name and desktop heading.
+                # Verify selected clinician plus visible service choices, without selecting one.
+                page.get_by_role('button',name=re.compile('^select$',re.I)).first.wait_for(state='visible')
+                name_visible=any(n.is_visible() for n in names.all())
+                page.screenshot(path=str(OUT/('scheduler-inspection-'+str(width)+'.png')))
+                (OUT/('scheduler-visible-'+str(width)+'.txt')).write_text(page.locator('body').inner_text())
+                text=page.locator('body').inner_text()
+                assert re.search(r'Individual Therapy Session',text,re.I), 'Individual service not visible'
+                assert re.search(r'Consultation',text,re.I), 'Consultation choices not visible'
+                if width>=760:assert re.search(r'request an appointment',text,re.I)
                 assert parse_qs(urlsplit(page.url).query).get('clinicianId')==['2183370']
                 assert len(context.pages)==1,'Unexpected popup'
                 page.screenshot(path=str(OUT/('simplepractice-'+str(width)+'.png')))
-                report['scheduler'].append({'from':route,'width':width,'destinationHost':urlsplit(page.url).hostname,'clinicianId':'2183370','displayName':'Autumn Alexander','sameTab':True,'readOnly':True,'pass':True})
+                report['scheduler'].append({'from':route,'width':width,'destinationHost':urlsplit(page.url).hostname,'clinicianId':'2183370','displayName':'Autumn Alexander','nameVisibleInCurrentLayout':name_visible,'selectedClinicianVerifiedBy':'exact URL clinicianId and scheduler DOM name','serviceControlsVisible':True,'sameTab':True,'readOnly':True,'pass':True})
                 context.close()
         browser.close()
     report['pass']=True

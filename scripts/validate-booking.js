@@ -18,7 +18,10 @@ for (const f of walk(dist).filter(f => f.endsWith('.html') && !f.endsWith('/404.
     if (href.startsWith('https://ops.mft.care/')) errors.push(`Appointment still uses Ops redirect: ${route}`);
     const clinician = core.clinicianForPath(config,route);
     const inTag = tag => h.lastIndexOf('<'+tag,m.index) > h.lastIndexOf('</'+tag+'>',m.index);
-    const targetClinician = clinician && !inTag('header') && !inTag('footer') ? clinician : null;
+    const explicitKey = m[1].match(/\bdata-mft-clinician="([^"]+)"/i)?.[1];
+    const explicit = config.clinicians.find(c => c.key === explicitKey);
+    if (explicitKey && !explicit) errors.push(`Unknown explicit clinician: ${route}`);
+    const targetClinician = explicit || (clinician && !inTag('header') && !inTag('footer') ? clinician : null);
     if (href !== core.destination(config,targetClinician)) errors.push(`Wrong ${targetClinician ? 'clinician' : 'general calendar'} fallback: ${route}`);
     if (/gclid=|gbraid=|wbraid=|utm_/i.test(href)) errors.push(`Attribution forwarded to scheduling: ${route}`);
   }

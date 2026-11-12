@@ -54,3 +54,9 @@ body.page-clinician .mft-clinician-blend{position:absolute;z-index:1;inset:0;poi
 .people-grid[data-clinician-count="6"],.mh-team-grid[data-clinician-count="6"]{grid-template-columns:repeat(3,minmax(0,1fr))}
 @media(max-width:760px){.people-grid[data-clinician-count="6"],.mh-team-grid[data-clinician-count="6"]{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:420px){.people-grid[data-clinician-count="6"],.mh-team-grid[data-clinician-count="6"]{grid-template-columns:1fr}}
+
+/* Native Autumn calendar actions stay separate from profile links. */
+.mft-autumn-card-action{display:flex;align-items:center;min-height:44px;margin-top:.5rem;line-height:1.6;text-underline-offset:.2em;overflow-wrap:anywhere}
+.mft-autumn-team-card>a:first-child{display:block;text-decoration:none}
+.mh-person[data-home-clinician="autumn-alexander"] .mh-person-link{height:auto}
+.mft-autumn-card-action:focus-visible{outline:3px solid var(--gold,#b88b32);outline-offset:4px}

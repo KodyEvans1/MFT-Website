@@ -1,7 +1,7 @@
 {
   "version": 1,
   "htmlPages": 828,
-  "clinicianMappings": 5,
+  "clinicianMappings": 6,
   "errors": [],
   "pages": [
     {
@@ -52,7 +52,7 @@
     {
       "code": "p-62922b9c",
       "route": "/autumn-alexander/",
-      "appointmentButtons": 2
+      "appointmentButtons": 5
     },
     {
       "code": "p-e1300b35",
@@ -107,7 +107,7 @@
     {
       "code": "p-9f56e45f",
       "route": "/childrentherapy/",
-      "appointmentButtons": 5
+      "appointmentButtons": 6
     },
     {
       "code": "p-77dc1dce",
@@ -317,7 +317,7 @@
     {
       "code": "p-2a0c975e",
       "route": "/",
-      "appointmentButtons": 7
+      "appointmentButtons": 8
     },
     {
       "code": "p-34a00c3a",
@@ -327,7 +327,7 @@
     {
       "code": "p-e508be59",
       "route": "/integrative-therapy/",
-      "appointmentButtons": 4
+      "appointmentButtons": 5
     },
     {
       "code": "p-90a7211d",
@@ -407,7 +407,7 @@
     {
       "code": "p-371ad211",
       "route": "/new-page/",
-      "appointmentButtons": 6
+      "appointmentButtons": 7
     },
     {
       "code": "p-5b467493",
@@ -3897,7 +3897,7 @@
     {
       "code": "p-06a691ad",
       "route": "/parenting-family-stress-therapy/",
-      "appointmentButtons": 4
+      "appointmentButtons": 5
     },
     {
       "code": "p-01142cc3",
@@ -3907,7 +3907,7 @@
     {
       "code": "p-d887341f",
       "route": "/person-centered-therapy/",
-      "appointmentButtons": 4
+      "appointmentButtons": 5
     },
     {
       "code": "p-3612260d",
@@ -3962,7 +3962,7 @@
     {
       "code": "p-b92e7f54",
       "route": "/self-esteem-identity-therapy/",
-      "appointmentButtons": 4
+      "appointmentButtons": 5
     },
     {
       "code": "p-e4a6ebe7",
@@ -4017,12 +4017,12 @@
     {
       "code": "p-aabd8868",
       "route": "/team/",
-      "appointmentButtons": 8
+      "appointmentButtons": 9
     },
     {
       "code": "p-0eae69a9",
       "route": "/teen-counseling/",
-      "appointmentButtons": 5
+      "appointmentButtons": 6
     },
     {
       "code": "p-de85e57c",
@@ -4107,12 +4107,12 @@
     {
       "code": "p-b78deacc",
       "route": "/trauma-informed-therapy/",
-      "appointmentButtons": 4
+      "appointmentButtons": 5
     },
     {
       "code": "p-165e3ca5",
       "route": "/trauma-therapy/",
-      "appointmentButtons": 4
+      "appointmentButtons": 5
     },
     {
       "code": "p-06a48ac3",

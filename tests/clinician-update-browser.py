@@ -18,6 +18,10 @@ args = parser.parse_args()
 OUT = ROOT / 'tmp' / 'clinician-update'
 OUT.mkdir(parents=True, exist_ok=True)
 profile = json.loads((ROOT / 'content/autumn-profile.json').read_text())
+from urllib.parse import urlsplit, parse_qs
+def autumn_calendar(href):
+    u=urlsplit(href); q=parse_qs(u.query)
+    return u.scheme=='https' and u.netloc=='clientsecure.me' and u.path=='/widget-redirect' and q.get('clinicianId')==['2183370'] and q.get('channel')==['client_portal']
 results = []
 class Handler(http.server.SimpleHTTPRequestHandler):
     def log_message(self, *args):
@@ -56,7 +60,7 @@ try:
                     assert image.evaluate('''async (img) => { await img.decode(); const original = new Image(); original.src = img.src; await original.decode(); return img.complete && img.naturalWidth > 0 && original.naturalWidth === 576 && original.naturalHeight === 1023; }''')
                     assert image.get_attribute('src') == profile['portrait']['path']
                     primary = page.locator('.mft-clinician-hero a').first
-                    assert primary.get_attribute('href') == profile['booking']['contactUrl']
+                    assert autumn_calendar(primary.get_attribute('href'))
                     primary.focus()
                     assert primary.evaluate('(el) => el === document.activeElement')
                     assert '6+' in page.locator('main').inner_text()
@@ -86,10 +90,10 @@ try:
         context=browser.new_context(java_script_enabled=False)
         context.route('**/*',lambda route:route.continue_() if route.request.url.startswith(base) else route.abort())
         page=context.new_page();page.goto(base+'/autumn-alexander/')
-        assert page.locator('.mft-clinician-hero a').first.get_attribute('href')==profile['booking']['contactUrl']
+        assert autumn_calendar(page.locator('.mft-clinician-hero a').first.get_attribute('href'))
         page.goto(base+'/dr-nolan/')
         assert 'clinicianId=2031820' in page.locator('.mft-clinician-hero a').first.get_attribute('href')
-        results.append({'environment':'local HTTP, JavaScript disabled','check':'native contact and Taylor calendar links','result':'PASS'})
+        results.append({'environment':'local HTTP, JavaScript disabled','check':'native Autumn and Taylor calendar links','result':'PASS'})
         context.close();browser.close()
 finally:
     server.shutdown()

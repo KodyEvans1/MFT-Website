@@ -96,10 +96,10 @@
     "WISe Program experience"
   ],
   "booking": {
-    "status": "contact-practice",
+    "status": "configured",
     "contactUrl": "mailto:support@mft.care?subject=Appointments%20with%20Autumn",
-    "label": "Ask about appointments with Autumn",
-    "note": "Our team can help arrange the right starting appointment with Autumn. Contact the practice to confirm her appointment formats and current availability. Please leave clinical details and insurance member numbers out of initial email."
+    "label": "Request an appointment with Autumn",
+    "note": "Open Autumn's SimplePractice calendar to choose the appropriate appointment type and view the options shown there. Confirm appointment format and age eligibility before requesting. A request is not a confirmed booking until accepted by the practice."
   },
   "urgentNote": "Crisis support describes an area of experience, not an emergency or on-call service. For a mental health crisis in the U.S., call or text 988. For a life-threatening emergency, call 911. Ordinary scheduling and support email are not crisis services."
 }

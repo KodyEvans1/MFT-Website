@@ -28,8 +28,8 @@ test('Shared presentation rejects unknown people, invalid variants and unsafe so
 });
 test('Portrait correction never changes clinician booking identifiers or source photographs',()=>{
  const expected=['1701440','2031820','2027366','2154633','2065412'];const booking=require('../content/simplepractice-booking.json');assert.deepEqual(people.filter(p=>p.slug!=='autumn-alexander').map(p=>booking.clinicians.find(c=>c.slug===p.slug).id),expected);
- assert.equal(people.find(p=>p.slug==='autumn-alexander').bookingStatus,'contact-practice');
- assert.equal(booking.clinicians.some(p=>p.slug==='autumn-alexander'),false);
+ assert.equal(people.find(p=>p.slug==='autumn-alexander').bookingStatus,'configured');
+ assert.equal(booking.clinicians.find(p=>p.slug==='autumn-alexander').id,'2183370');
  for(const p of people.filter(p=>p.slug!=='autumn-alexander'))assert.match(fs.readFileSync(path.join(dist,p.slug,'index.html'),'utf8'),/class="hero-media" src="https:\/\/images.squarespace-cdn.com/);
  assert.ok(fs.readFileSync(path.join(dist,'autumn-alexander/index.html'),'utf8').includes(require('../content/autumn-profile.json').portrait.path));
 });

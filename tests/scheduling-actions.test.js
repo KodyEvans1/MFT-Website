@@ -13,7 +13,7 @@ test('Care pages keep native existing-client access and service-appropriate cons
   assert.match(h,/data-mft-existing-client="true"[^>]*href="https:\/\/marriagefamilytherapy\.clientsecure\.me\/sign-in"/,f);
   if(f===path.join(dist,'autumn-alexander','index.html')) {
    assert.doesNotMatch(h,/data-mft-couples-consultation="true"/,f);
-   assert.match(h,/Ask about appointments with Autumn/,f);
+   assert.match(h,/Request an appointment with Autumn/,f);
   } else assert.match(h,/data-mft-couples-consultation="true"/,f);
   assert.match(h,/class="mft-footer-scheduling"/,f);
  }

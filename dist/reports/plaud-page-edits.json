@@ -10,7 +10,7 @@
     {
       "route": "/",
       "changed": false,
-      "appointmentButtons": 7
+      "appointmentButtons": 8
     },
     {
       "route": "/marriagereset/",

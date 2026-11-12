@@ -26,7 +26,7 @@ function profileCards(dist) {
     if (url.hostname === 'images.squarespace-cdn.com') url.searchParams.set('format','500w');
     const population = p.scopeLabel || p.populations.filter(x => ['children','teens','adults','couples','families','older-adults'].includes(x)).map(x => x === 'older-adults' ? 'Older adults' : x[0].toUpperCase()+x.slice(1)).join(' \u00b7 ');
     const portrait = presentation.portrait(source.startsWith('/') ? source : url.href,p.name,'directory').replace('mft-portrait--directory"','mft-portrait--directory mh-portrait"').replace(' loading="lazy"',' width="400" height="500" decoding="async" loading="lazy"');
-    return `<article class="mh-person" data-home-clinician="${ui.esc(p.slug)}"><a href="/${ui.esc(p.slug)}/" class="mh-person-link">${portrait}<div class="mh-person-copy"><h3>${ui.esc(p.name)}</h3><p class="mh-license">${ui.esc(p.license)}</p><p class="mh-populations">${ui.esc(population)}</p><span class="mh-text-link">View profile <span aria-hidden="true">&rarr;</span></span></div></a></article>`;
+    return `<article class="mh-person" data-home-clinician="${ui.esc(p.slug)}"><a href="/${ui.esc(p.slug)}/" class="mh-person-link">${portrait}<div class="mh-person-copy"><h3>${ui.esc(p.name)}</h3><p class="mh-license">${ui.esc(p.license)}</p><p class="mh-populations">${ui.esc(population)}</p><span class="mh-text-link">View profile <span aria-hidden="true">&rarr;</span></span></div></a>${p.slug==='autumn-alexander'?`<div class="mh-person-copy">${require('./autumn-booking').button('mh-text-link mft-autumn-card-action')}</div>`:''}</article>`;
   }).join('');
 }
 function paths() {

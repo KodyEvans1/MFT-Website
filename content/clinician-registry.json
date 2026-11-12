@@ -210,7 +210,7 @@
         "integrative-therapy"
       ],
       "status": "current",
-      "bookingStatus": "contact-practice"
+      "bookingStatus": "configured"
     }
   ],
   "staff": [

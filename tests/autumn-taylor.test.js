@@ -26,12 +26,12 @@ test('Autumn is visible in team, homepage and appropriate age-based services wit
  const person=registry.find(p=>p.slug===profile.slug);assert.equal(person.minimumAge,6);
  assert.ok(!person.populations.includes('couples'));assert.ok(!person.populations.includes('families'));
 });
-test('Autumn has an honest practice-contact action and no invented clinician booking identity',()=>{
+test('Autumn uses the owner-supplied calendar and retains secondary practice contact',()=>{
  const h=read(profile.slug),hero=h.match(/<section class="hero mft-clinician-hero"[\s\S]*?<\/section>/)[0];
- assert.ok(hero.includes(profile.booking.contactUrl));assert.ok(hero.includes(profile.booking.label));
- assert.equal(booking.clinicians.some(p=>p.slug===profile.slug),false);
- assert.doesNotMatch(hero,/clinicianId=|data-mft-clinician=|https:\/\/ops\./);
- assert.match(h,/Our team can help arrange the right starting appointment/);
+ assert.match(hero,/clinicianId=2183370/);assert.ok(hero.includes(profile.booking.label));
+ assert.equal(booking.clinicians.find(p=>p.slug===profile.slug).id,'2183370');
+ assert.doesNotMatch(hero,/mailto:|https:\/\/ops\./);
+ assert.ok(h.includes(profile.booking.contactUrl));assert.match(h,/A request is not a confirmed booking/);
 });
 test('Taylor adult-only scope is explicit and does not imply child or play-therapy services',()=>{
  const p=registry.find(p=>p.slug==='dr-nolan'),h=read(p.slug),main=h.match(/<main\b[^>]*>[\s\S]*?<\/main>/)[0];
@@ -55,5 +55,5 @@ test('Neither Taylor nor Autumn is represented as a play therapist',()=>{
 test('Profile publication does not manufacture article, teen-pathway or campaign approval',()=>{
  assert.equal(profile.reviewStatus,'owner-approved');assert.equal(profile.sourceNotes.approvedOn,'2026-11-11');
  const basic=require('../content/editorial-library.json');assert.ok(basic.articles.every(p=>p.status==='draft'));
- assert.equal(booking.clinicians.length,5);
+ assert.equal(booking.clinicians.length,6);
 });

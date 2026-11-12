@@ -24,7 +24,7 @@
     },
     {
       "route": "/autumn-alexander/",
-      "buttons": 6,
+      "buttons": 7,
       "widget": false
     },
     {
@@ -124,7 +124,7 @@
     },
     {
       "route": "/",
-      "buttons": 7,
+      "buttons": 8,
       "widget": false
     },
     {
@@ -314,7 +314,7 @@
     },
     {
       "route": "/team/",
-      "buttons": 9,
+      "buttons": 10,
       "widget": false
     },
     {
@@ -378,6 +378,11 @@
       "key": "sonia",
       "id": "2065412",
       "slug": "sonia-hassan-bio"
+    },
+    {
+      "key": "autumn",
+      "id": "2183370",
+      "slug": "autumn-alexander"
     }
   ]
 }

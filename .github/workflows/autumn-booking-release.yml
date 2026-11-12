@@ -1,0 +1,38 @@
+name: Autumn scheduling verification
+on:
+  pull_request:
+    paths: ['content/simplepractice-booking.json', 'src/autumn-booking.js', 'src/booking-core.js', 'src/booking-build.js', 'tests/autumn-booking*', '.github/workflows/autumn-booking-release.yml']
+  push:
+    branches: [main]
+    paths: ['content/simplepractice-booking.json', 'src/autumn-booking.js', 'src/booking-core.js', 'src/booking-build.js', 'tests/autumn-booking*', '.github/workflows/autumn-booking-release.yml']
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: npm run check && npm run verify:publication
+      - run: python -m pip install playwright==1.57.0
+      - name: Built-site browser and read-only SimplePractice handoffs
+        run: |
+          export CHROME_PATH="$(command -v google-chrome || command -v chromium)"
+          python tests/autumn-booking-browser.py --scheduler
+      - name: Actual production verification after authorized release
+        if: github.ref == 'refs/heads/main'
+        run: |
+          export CHROME_PATH="$(command -v google-chrome || command -v chromium)"
+          python tests/autumn-booking-browser.py --production --scheduler
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: autumn-booking-verification
+          path: tmp/autumn-booking/
+          retention-days: 7

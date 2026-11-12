@@ -1,0 +1,55 @@
+name: Materialize verified Autumn calendar update
+on:
+  push:
+    branches: [review/autumn-scheduling-20261112]
+    paths: ['.booking-import/**', '.github/workflows/materialize-autumn-booking.yml']
+permissions:
+  contents: write
+concurrency:
+  group: autumn-calendar-materialization
+  cancel-in-progress: false
+jobs:
+  verify:
+    if: github.repository == 'KodyEvans1/MFT-Website' && github.ref == 'refs/heads/review/autumn-scheduling-20261112'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify exact base source and apply scoped scheduling edits
+        run: python .booking-import/edit.py
+      - name: Build and regression checks
+        run: npm run check && npm run verify:publication
+      - run: python -m pip install playwright==1.57.0
+      - name: Browser, keyboard, privacy and read-only calendar verification
+        run: |
+          export CHROME_PATH="$(command -v google-chrome || command -v chromium)"
+          python tests/clinician-update-browser.py
+          python tests/autumn-booking-browser.py --scheduler
+      - name: Commit tested source and regenerated output to review branch only
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REF" = refs/heads/review/autumn-scheduling-20261112
+          test "$(git ls-remote origin "$GITHUB_REF" | cut -f1)" = "$GITHUB_SHA"
+          rm -rf .booking-import
+          rm .github/workflows/materialize-autumn-booking.yml
+          git add -A src content scripts tests dist .booking-import .github/workflows
+          git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m "Connect Autumn's owner-supplied calendar across profile and clinician cards"
+          git push origin HEAD:"$GITHUB_REF"
+          git rev-parse HEAD > tmp/autumn-booking/verified-commit.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: autumn-calendar-candidate
+          path: |
+            tmp/autumn-booking/
+            tmp/clinician-update/
+          retention-days: 7

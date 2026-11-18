@@ -15,6 +15,7 @@ const matches = js.match(legacy) || [];
 if (matches.length > 1) throw new Error('Unexpected duplicate legacy attribution scripts; inspect before changing');
 if (matches.length) fs.writeFileSync(script,js.replace(legacy,''));
 const report = {version:1, measurementEnabled, pages:[], clinicians:config.clinicians.map(c=>({key:c.key,id:c.id,slug:c.slug}))};
+require('../src/marketing-improvements').prepare(dist);
 for (const file of walk(dist).filter(f=>f.endsWith('.html'))) {
   const relative = path.relative(dist,file).split(path.sep).join('/');
   if (relative === '404.html') {

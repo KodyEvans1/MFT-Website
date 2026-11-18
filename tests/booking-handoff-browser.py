@@ -21,6 +21,10 @@ CSP=re.search(r'Content-Security-Policy: ([^\n]+)',(ROOT/'dist/_headers').read_t
 BASE=os.environ.get('MFT_BASE_URL','').rstrip('/')
 report={'pass':False,'checks':[],'states':[],'blockedWrites':[],
         'scope':'Real full-page scheduling, no embedded SDK, no slot selection or submitted client data.'}
+requested_engine=os.environ.get('MFT_BROWSER','all')
+if requested_engine not in ('all','chromium','webkit'):
+    raise ValueError('MFT_BROWSER must be all, chromium, or webkit')
+report['requestedEngines']=['chromium','webkit'] if requested_engine=='all' else [requested_engine]
 server=None
 class Handler(SimpleHTTPRequestHandler):
     def log_message(self,*args):pass
@@ -89,7 +93,11 @@ try:
         for c in CONFIG['clinicians']:
             cases.append((c['key']+'-profile','/'+c['slug']+'/','main a[data-spwidget-clinician-id="'+c['id']+'"]',1440,c))
         for engine,engine_cases in [('chromium',cases),('webkit',[cases[0],cases[3]])]:
-            browser=getattr(p,engine).launch(headless=True)
+            if engine not in report['requestedEngines']:continue
+            options={'headless':True}
+            if engine=='chromium' and (os.getenv('CHROME_PATH') or os.getenv('MFT_CHROMIUM')):
+                options['executable_path']=os.getenv('CHROME_PATH') or os.getenv('MFT_CHROMIUM')
+            browser=getattr(p,engine).launch(**options)
             for label,path,selector,width,clinician in engine_cases:
                 label=engine+'-'+label
                 context=browser.new_context(viewport={'width':width,'height':950},reduced_motion='reduce')
@@ -111,11 +119,14 @@ try:
                     gate.locator('input[type=checkbox]').check();expect(go).to_be_enabled()
                     assert go.get_attribute('href')==href
                     go.click()
-                host=WIDGET if clinician else PORTAL
+                host=WIDGET if clinician and clinician.get('channel')!='client_portal' else PORTAL
                 page.wait_for_url(re.compile('^https://'+re.escape(host)+'/'))
-                page.wait_for_function('document.body && /request an appointment/i.test(document.body.innerText)')
+                page.get_by_role('button',name=re.compile('^select$',re.I)).first.wait_for(state='visible')
+                if width>=760:page.wait_for_function('document.body && /request an appointment/i.test(document.body.innerText)')
                 if clinician:
-                    page.get_by_text(clinician['name'].replace('Dr. ',''),exact=True).first.wait_for(state='visible')
+                    # Compact SimplePractice hides its clinician sidebar. Verify
+                    # selected identity in the DOM + URL and usable visible controls.
+                    page.get_by_text(clinician['name'].replace('Dr. ',''),exact=True).first.wait_for(state='visible' if width>=760 else 'attached')
                     assert parse_qs(urlsplit(page.url).query).get('clinicianId')==[clinician['id']]
                 else:page.get_by_text('Kody Evans',exact=True).first.wait_for(state='visible')
                 assert len(context.pages)==1,'Booking unexpectedly opened a popup'

@@ -1,0 +1,59 @@
+name: Marketing website acceptance
+on:
+  pull_request:
+    paths:
+      - 'content/marketing-improvements*.json'
+      - 'content/simplepractice-booking.json'
+      - 'src/marketing-improvements.js'
+      - 'src/assets/marketing-improvements.css'
+      - 'src/scheduling-actions.js'
+      - 'src/booking-core.js'
+      - 'src/booking-build.js'
+      - 'src/assets/mft-booking.js'
+      - 'scripts/prepare-booking.js'
+      - 'tests/marketing-improvements*'
+      - '.github/workflows/marketing-improvements.yml'
+  workflow_dispatch:
+    inputs:
+      preview_url:
+        description: 'Optional actual HTTPS preview origin (no credentials or protection bypass)'
+        required: false
+        type: string
+permissions:
+  contents: read
+jobs:
+  candidate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Build and unit regressions
+        run: npm run check
+      - name: Publication-policy rehearsal
+        run: npm run verify:publication
+      - name: Restore review-only candidate build
+        run: npm run build
+      - run: python -m pip install playwright==1.57.0
+      - name: Desktop and mobile candidate acceptance; external scheduling intercepted
+        run: |
+          export CHROME_PATH="$(command -v google-chrome || command -v chromium)"
+          python tests/marketing-improvements-browser.py
+      - name: Actual hosted preview acceptance; no access-control bypass
+        if: github.event_name == 'workflow_dispatch' && inputs.preview_url != ''
+        env:
+          MFT_BASE_URL: ${{ inputs.preview_url }}
+        run: |
+          export CHROME_PATH="$(command -v google-chrome || command -v chromium)"
+          python tests/marketing-improvements-browser.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: marketing-improvements-acceptance
+          path: tmp/marketing-improvements/
+          retention-days: 7

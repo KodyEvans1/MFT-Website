@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "revision": "1491c3cdbce08bc3b743db544de393e0c0b342d19c8842a9f6070e552cfe6f80",
+  "recordedRevision": "1491c3cdbce08bc3b743db544de393e0c0b342d19c8842a9f6070e552cfe6f80",
+  "publicationApproved": false,
+  "candidateRendered": true,
+  "routes": [
+    "online-therapy-tri-cities-wa",
+    "gary-ashley",
+    "sonia-hassan-bio",
+    "new-page",
+    "marriage-and-couples-therapy-counseling"
+  ],
+  "approvals": {
+    "clinical": {
+      "status": "pending",
+      "reviewer": null,
+      "evidence": null,
+      "reviewedRevision": null
+    },
+    "operational": {
+      "status": "pending",
+      "reviewer": null,
+      "evidence": null,
+      "reviewedRevision": null
+    },
+    "publication": {
+      "status": "pending",
+      "reviewer": null,
+      "evidence": null,
+      "reviewedRevision": null
+    }
+  },
+  "measurement": "separate existing consent/privacy gate"
+}

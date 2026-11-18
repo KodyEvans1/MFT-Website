@@ -28,20 +28,26 @@ jobs:
       - run: npm run check
       - run: npm run verify:publication
       - run: npm install --no-save --package-lock=false playwright@1.57.0
-      - run: npx playwright install --with-deps chromium
-      - run: node tests/sonia-profile-browser.cjs
+      - name: Sonia profile candidate in installed Chrome
+        run: |
+          export CHROME_PATH="$(command -v google-chrome || command -v chromium)"
+          node tests/sonia-profile-browser.cjs
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
       - run: python -m pip install playwright==1.57.0
-      - run: python -m playwright install --with-deps chromium webkit
-      - name: Verify real SimplePractice navigation without submitting appointments
-        run: python tests/booking-handoff-browser.py
+      - name: Verify real SimplePractice navigation in installed Chrome without appointments
+        run: |
+          export CHROME_PATH="$(command -v google-chrome || command -v chromium)"
+          python tests/booking-handoff-browser.py
         env:
+          MFT_BROWSER: chromium
           MFT_BASE_URL: ${{ github.ref == 'refs/heads/main' && 'https://www.mft.care' || '' }}
       - name: Verify published Sonia content and redirects
         if: github.ref == 'refs/heads/main'
-        run: node tests/sonia-profile-browser.cjs
+        run: |
+          export CHROME_PATH="$(command -v google-chrome || command -v chromium)"
+          node tests/sonia-profile-browser.cjs
         env:
           SONIA_BASE_URL: https://www.mft.care
       - uses: actions/upload-artifact@v4
@@ -54,4 +60,33 @@ jobs:
             tmp/booking-handoff/
             dist/sonia-hassan-bio/
             reports/SONIA-PROFILE-REVIEW.md
+          retention-days: 7
+  webkit-handoff:
+    name: WebKit scheduling handoff
+    # Playwright 1.57 supports this explicit dependency baseline. Keep WebKit a
+    # required separately reported gate; an installation error remains a failure.
+    runs-on: ubuntu-22.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: npm run build
+      - run: python -m pip install playwright==1.57.0
+      - name: Install the supported WebKit browser and dependencies
+        run: python -m playwright install --with-deps webkit
+      - name: Verify desktop and mobile handoff in WebKit without appointments
+        run: python tests/booking-handoff-browser.py
+        env:
+          MFT_BROWSER: webkit
+          MFT_BASE_URL: ${{ github.ref == 'refs/heads/main' && 'https://www.mft.care' || '' }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: sonia-webkit-handoff
+          path: tmp/booking-handoff/
           retention-days: 7

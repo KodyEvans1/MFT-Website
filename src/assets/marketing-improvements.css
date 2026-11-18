@@ -1,0 +1,36 @@
+/* Scoped to the five reviewed routes; shared branding and other pages stay intact. */
+body[data-marketing-candidate] .marketing-returning{padding:.35rem clamp(1rem,4vw,4rem);text-align:right;background:var(--mist,#eef3ed);font-size:.8rem;line-height:1.5}
+body[data-marketing-candidate] .marketing-returning a{display:inline-block;padding:.35rem .4rem;text-underline-offset:.2em}
+body[data-marketing-candidate] a:focus-visible,body[data-marketing-candidate] summary:focus-visible{outline:3px solid #9b6925;outline-offset:5px}
+body[data-marketing-candidate] header [data-marketing-appointment]{font-size:.78rem;min-height:42px;max-width:20rem;text-align:center;padding:.65rem .9rem;white-space:normal}
+body[data-marketing-candidate] .marketing-help-wrap{padding:.8rem clamp(1rem,5vw,5rem) 1.5rem;background:var(--cream,#f7f3ea)}
+body[data-marketing-candidate] .marketing-help{padding:1rem 1.2rem;border:1px solid var(--line,#b8cbc5);border-radius:10px;max-width:78ch;background:#fff;color:var(--ink,#143d3a);margin-bottom:1.2rem}
+body[data-marketing-candidate] .marketing-help summary{cursor:pointer;font-weight:650;min-height:24px}
+body[data-marketing-candidate] .marketing-help p{line-height:1.7;font-size:.95rem}
+body[data-marketing-candidate] .marketing-repeat{background:var(--mist,#eef3ed)}
+body[data-marketing-candidate] .marketing-repeat p{max-width:76ch;line-height:1.75}
+body[data-marketing-candidate] .marketing-repeat .button{margin-top:.6rem}
+body[data-marketing-candidate] .marketing-profile-note{font-size:.9rem;line-height:1.65;max-width:59ch}
+body[data-marketing-candidate] .button{white-space:normal;overflow-wrap:break-word;max-width:100%;text-align:center;min-height:44px}
+body[data-marketing-candidate] .mft-footer-scheduling .actions{display:flex;flex-wrap:wrap;gap:1rem;align-items:center}
+.marketing-tricities .home-hero{min-height:0;padding:clamp(2rem,4.5vw,4.5rem) clamp(1rem,5vw,5rem);gap:clamp(1.5rem,4vw,4rem);grid-template-columns:minmax(0,1.35fr) minmax(0,.85fr)}
+.marketing-tricities .home-hero h1{font-size:clamp(2.1rem,4.1vw,3.8rem);line-height:1.08;max-width:20ch;margin:.7rem 0 1rem}
+.marketing-tricities .hero-summary{font-size:1.05rem;line-height:1.7;max-width:58ch}
+.marketing-tricities .home-hero .actions{gap:.8rem;margin:1.3rem 0 .7rem}
+.marketing-tricities .home-hero-panel{align-self:start;padding:clamp(1.4rem,3vw,2.4rem)}
+.marketing-tricities .home-hero-panel h2{font-size:clamp(1.6rem,2.3vw,2.2rem)}
+.marketing-tricities .home-hero-panel p{font-size:.94rem;line-height:1.7}
+.marketing-tricities .mft-hero-note{font-size:.84rem;line-height:1.65;max-width:65ch}
+.marketing-tricities .marketing-benefits{font-size:.86rem}
+.marketing-tricities .section{padding:clamp(2.5rem,5vw,4.5rem) clamp(1rem,5vw,5rem)}
+.marketing-tricities .section h2{font-size:clamp(1.8rem,3vw,2.7rem);line-height:1.15}
+.marketing-tricities .section p{line-height:1.75;max-width:76ch}
+.marketing-clinician-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1.3rem;margin-top:1.5rem}
+.marketing-clinician-grid>article{padding:clamp(1.2rem,2.5vw,2rem);border:1px solid var(--line,#b8cbc5);border-radius:12px;background:var(--cream,#f7f3ea);min-width:0}
+.marketing-clinician-grid h3{font-size:1.5rem;line-height:1.2}
+.marketing-clinician-grid .marketing-credential{font-size:.88rem}
+.marketing-tricities .marketing-payment,.marketing-tricities .marketing-consultations{background:var(--mist,#eef3ed)}
+.marketing-tricities .marketing-related{border-top:1px solid var(--line,#b8cbc5);font-size:.9rem}
+@media(max-width:900px){.marketing-tricities .home-hero{grid-template-columns:1fr}.marketing-tricities .home-hero-panel{max-width:none}.marketing-tricities .home-hero h1{max-width:22ch}}
+@media(max-width:600px){.marketing-clinician-grid{grid-template-columns:1fr}.marketing-tricities .home-hero{padding-top:1.4rem}.marketing-tricities .home-hero h1{font-size:2.15rem}.marketing-tricities .home-hero .actions{align-items:stretch;flex-direction:column}.marketing-tricities .home-hero .actions .button{width:100%}.marketing-tricities .kicker{font-size:.67rem;letter-spacing:.1em}.marketing-tricities .hero-summary{font-size:.96rem}.marketing-tricities .home-hero-panel{margin-top:.5rem}body[data-marketing-candidate] .marketing-returning{text-align:left}}
+@media(prefers-reduced-motion:reduce){body[data-marketing-candidate] *{scroll-behavior:auto!important}}

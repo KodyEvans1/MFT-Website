@@ -39,7 +39,7 @@ test('team, related care, and clinician recommendations target the canonical Son
  for(const s of ['depression-therapy','grief-counseling','life-transitions-therapy','narrative-therapy','motivational-interviewing'])assert.ok(read(s).includes('href="/sonia-hassan-bio/"'),s);
  for(const s of ['new-page','teen-counseling','marriage-and-couples-therapy-counseling'])assert.ok(read(s).includes('href="/sonia-hassan-bio/"'),s);
 });
-test('canonical and legacy profile paths retain Sonia direct scheduling; general navigation stays practice-wide',()=>{
+test('canonical and legacy paths retain Sonia scheduling; reviewed profile header preserves its selected clinician',()=>{
  const sonia=booking.clinicians.find(c=>c.key==='sonia');assert.equal(sonia.id,'2065412');
  for(const route of ['/sonia-hassan-bio','/sonia-hassan-bio/','/new-page-47','/new-page-47/?utm_source=test'])assert.equal(core.clinicianForPath(booking,route),sonia);
  const main=h.match(/<main\b[^>]*>([\s\S]*?)<\/main>/)[1];let count=0;
@@ -48,7 +48,12 @@ test('canonical and legacy profile paths retain Sonia direct scheduling; general
   count++;assert.equal(new URL(href).searchParams.get('clinicianId'),'2065412');assert.doesNotMatch(m[1],/target="_blank"/);assert.match(m[1],/data-mft-booking-mode="direct"/);
  }
  assert.ok(count>=1);
- const header=h.match(/<header\b[\s\S]*?<\/header>/)[0];assert.match(header,/href="https:\/\/marriagefamilytherapy\.clientsecure\.me\/request"/);
+ const header=h.match(/<header\b[\s\S]*?<\/header>/)[0];
+ if(h.includes('data-marketing-candidate=')) {
+  assert.match(header,/data-mft-clinician="sonia"/);
+  assert.match(header,/clinicianId=2065412/);
+  assert.match(header,/Request an Online Appointment With Sonia/);
+ } else assert.match(header,/href="https:\/\/marriagefamilytherapy\.clientsecure\.me\/request"/);
  assert.doesNotMatch(h,/data-spwidget-autobind|src="https:\/\/widget-cdn/);
 });
 test('other clinician biography prose is unchanged',()=>{

@@ -28,12 +28,13 @@ function decorateHtml(html, route) {
     if (href === 'https://ops.mft.care/' && /verify insurance|verify benefits/i.test(label)) {
       return whole.replace(m[0], 'href="mailto:support@mft.care?subject=Benefits%20verification"');
     }
-    if (!core.isAppointment(href,label)) return whole;
+    const intent = attrs.match(/\bdata-mft-booking-intent="(appointment|consultation)"/i)?.[1];
+    if (!core.isAppointment(href,label,intent)) return whole;
     // Match browser behavior: an explicit clinician card stays specific without JavaScript.
     const explicitKey = attrs.match(/\bdata-mft-clinician="([^"]+)"/i)?.[1];
     const explicit = config.clinicians.find(c => c.key === explicitKey);
     const clinician = explicit || (inSection('header',pos) || inSection('footer',pos) ? null : routeClinician);
-    attrs = attrs.replace(/\sdata-(?:spwidget-[a-z-]+|mft-booking(?:-mode)?)(?:="[^"]*")?/gi,'');
+    attrs = attrs.replace(/\sdata-(?:spwidget-[a-z-]+|mft-booking(?:-mode)?)(?=\s|=|$)(?:="[^"]*")?/gi,'');
     attrs = attrs.replace(/\shref="[^"]*"/i,'').replace(/\srel="[^"]*"/i,'').replace(/\starget="[^"]*"/i,'').replace(/\sdata-mft-booking-mode="[^"]*"/i,'');
     const widgetAttrs = Object.entries(core.attributes(config, clinician)).map(([k,v]) => `${k}="${esc(v)}"`).join(' ');
     count++;

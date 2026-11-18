@@ -23,7 +23,7 @@ const coreSitemapUrls=sitemapUrls(fs.readFileSync(path.join(DIST,'sitemap.xml'),
 const coreSlugs=fs.readdirSync(DIST,{withFileTypes:true}).filter(e=>e.isDirectory()&&fs.existsSync(path.join(DIST,e.name,'index.html'))).map(e=>e.name);
 const sourceTemplates=new Map(coreSlugs.map(slug=>[slug,fs.readFileSync(path.join(DIST,slug,'index.html'),'utf8')]));
 const EXPERIENCE=experience.createContext(DIST,REG,process.env.CONTEXT==='production'||indexingEnabled());
-const finish=(html,slug)=>launchContent.apply(experience.applyExperience(html,slug?'/'+slug+'/':'/',EXPERIENCE),slug);
+const finish=(html,slug)=>require('./marketing-improvements').apply(launchContent.apply(experience.applyExperience(html,slug?'/'+slug+'/':'/',EXPERIENCE),slug),slug?'/'+slug+'/':'/');
 const LIBRARY=editorial.createLibrary({content:require('../content/editorial-library.json'),registry:REG,clinicians:CLIN,evidence:require('../content/clinician-evidence.json'),coreSlugs,production:process.env.CONTEXT==='production'||indexingEnabled()});
 const familyMeta={
   modalities:{type:'modality',source:'cognitive-behavioral-therapy-cbt',hub:'/therapy-approaches/',label:'Therapy approach'},

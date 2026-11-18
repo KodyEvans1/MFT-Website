@@ -30,4 +30,16 @@ function apply(html) {
   });
   return out;
 }
-module.exports = {PORTAL, REQUEST, GUIDE, existingButton, couplesButton, homeActions, existingSection, apply};
+// Explicit page configuration keeps unrelated shortcut bars unchanged. A selected
+// clinician is carried by the caller's native primary link, including in chrome.
+function forPage(html, options) {
+  let out = html.replace(/<header\b[^>]*>[\s\S]*?<\/header>/, header =>
+    header.replace(/<a\b[^>]*class="nav-action"[^>]*>[\s\S]*?<\/a>/,
+      options.primary.replace('class="button primary"', 'class="nav-action button primary"')));
+  out = out.replace(/<aside class="mft-schedule-shortcuts"[\s\S]*?<\/aside>/,
+    `<aside class="marketing-returning" data-scheduling-actions="20261029" aria-label="Existing client scheduling"><a data-mft-existing-client="true" href="${PORTAL}" rel="noopener noreferrer">Existing Client Portal</a></aside>`);
+  out = out.replace(/<div class="mft-footer-scheduling">[\s\S]*?<\/p><\/div>/,
+    `<div class="mft-footer-scheduling"><h2>Choose your next step</h2><div class="actions">${options.footerPrimary}${existingButton()}</div><p>${options.note || ''}</p><p><a href="${GUIDE}${options.couples ? '#couples-journey' : '#individual-journey'}">Read the care journey</a>${options.couples ? '' : ` · <a href="/marriage-and-couples-therapy-counseling/">Explore couples care</a>`}</p></div>`);
+  return out;
+}
+module.exports = {PORTAL, REQUEST, GUIDE, existingButton, couplesButton, homeActions, existingSection, apply, forPage};

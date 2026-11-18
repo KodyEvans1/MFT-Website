@@ -1,0 +1,46 @@
+{
+  "version": 1,
+  "contentRevision": "1491c3cdbce08bc3b743db544de393e0c0b342d19c8842a9f6070e552cfe6f80",
+  "brief": "MFT_Website_Marketing_Improvements_2026-11-17.md",
+  "approvals": {
+    "clinical": {
+      "status": "pending",
+      "reviewer": null,
+      "evidence": null,
+      "reviewedRevision": null
+    },
+    "operational": {
+      "status": "pending",
+      "reviewer": null,
+      "evidence": null,
+      "reviewedRevision": null
+    },
+    "publication": {
+      "status": "pending",
+      "reviewer": null,
+      "evidence": null,
+      "reviewedRevision": null
+    }
+  },
+  "clinicalScope": "Review the five proposed page introductions and scheduling instructions. Existing service-guide clinical publication notices and safety information remain intact.",
+  "operationalScope": "Clinic Manager confirms the adult telehealth roster, appointment types, and current payer participation by clinician. Gary and Sonia cards use maintained profiles and identifiers, not a claim of openings or approved Tri-Cities availability. Verify the intended evaluation and telehealth options in SimplePractice.",
+  "publicationScope": "Owner approves the exact reviewed candidate revision and production release. Existing rich-route authorization does not approve this new marketing copy. Pending or stale approval leaves current production page content unchanged.",
+  "measurement": "Scheduling measurement has its separate existing privacy and release gate. This review record grants no new analytics or advertising permission.",
+  "preserved": [
+    "/online-therapy-tri-cities-wa/",
+    "/gary-ashley/",
+    "/sonia-hassan-bio/",
+    "/new-page/",
+    "/marriage-and-couples-therapy-counseling/",
+    "separate teen-page PR #15",
+    "merged Autumn and Taylor fixes"
+  ],
+  "sourceEvidence": [
+    "content/clinician-registry.json",
+    "content/clinician-evidence.json",
+    "content/sonia-profile.json",
+    "content/simplepractice-booking.json",
+    "content/launch-release.json",
+    "PR #14 Tri-Cities draft"
+  ]
+}

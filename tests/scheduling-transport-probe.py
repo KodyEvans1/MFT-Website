@@ -44,7 +44,7 @@ def guard(route):
         route.fulfill(status=204,body='')
     elif u.hostname in ['clientsecure.me','marriagefamilytherapy.clientsecure.me']:
         if req.is_navigation_request():network.append({'t':now(),'destination':'intercepted-scheduler'})
-        route.fulfill(status=200,content_type='text/html',body='<h1>Intercepted scheduling. No real request.</h1>')
+        route.fulfill(status=200,content_type='text/html',body='<!doctype html><html><head><link rel="icon" href="data:,"></head><body><h1>Intercepted scheduling. No real request.</h1></body></html>')
     else:
         network.append({'t':now(),'kind':'blocked-endpoint','host':u.hostname,'path':u.path,'resourceType':req.resource_type})
         route.abort()

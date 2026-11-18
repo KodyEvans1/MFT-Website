@@ -50,7 +50,7 @@ def guard(route):
   else:route.fulfill(status=204,body='')
  elif u.hostname in ['marriagefamilytherapy.clientsecure.me','clientsecure.me']:
   if req.is_navigation_request():destinations.append(req.url)
-  route.fulfill(status=200,content_type='text/html',body='<h1>Intercepted scheduler. No real appointment request.</h1>')
+  route.fulfill(status=200,content_type='text/html',body='<!doctype html><html><head><link rel="icon" href="data:,"></head><body><h1>Intercepted scheduler. No real appointment request.</h1></body></html>')
  else:route.abort()
 
 def start(browser,path='/',consent=None,legacy=None,viewport=None,signal=None):

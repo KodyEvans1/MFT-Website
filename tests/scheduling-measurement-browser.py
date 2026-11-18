@@ -140,7 +140,7 @@ try:
   assert time.monotonic()-begin<1.5 and not hits and not loaders
   check('Optional controller-script failure leaves native scheduling usable');c.close();blocked_optional=False
   c,page=start(browser,consent='granted');wait_event(page,'page_view')
-  page.evaluate("window.MFTSchedulingMeasurement.track=()=>{throw new Error('synthetic optional measurement failure')}")
+  page.evaluate("() => { window.MFTSchedulingMeasurement.track=()=>{throw new Error('synthetic optional measurement failure')}; }")
   begin=time.monotonic();page.locator(GENERAL_FOOTER).first.click();page.wait_for_url('https://marriagefamilytherapy.clientsecure.me/request')
   assert time.monotonic()-begin<1.5
   check('Analytics runtime exception cannot stop native scheduling');c.close()

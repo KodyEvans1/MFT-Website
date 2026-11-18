@@ -178,5 +178,10 @@ test('frame rejects completed booking names, free-text placement and extra dupli
 test('all supported intent names are observation-only and contain no clinical identity field',()=>{
  const x=frameFixture();x.init();x.send({type:'mft:analytics:intent',id:'m1',names:['appointment_request_click','clinician_schedule_click','consultation_click','simplepractice_exit'],placement:'dialog'});
  assert.equal(x.events().length,5);
- for(const e of x.events().slice(1)){assert.equal(e[2].measurement_kind,'scheduling_intent');assert.equal(e[2].button_location,'dialog');assert.equal(e[2].clinician_slug,undefined);assert.equal(e[2].link_url,undefined);}
+ const common=['send_to','page_location','page_title','page_referrer','event_callback','event_timeout'];
+ assert.deepEqual(Object.keys(x.events()[0][2]).sort(),common.slice().sort());
+ for(const e of x.events().slice(1)){
+  assert.equal(e[2].measurement_kind,'scheduling_intent');assert.equal(e[2].button_location,'dialog');
+  assert.deepEqual(Object.keys(e[2]).sort(),[...common,'measurement_kind','button_location'].sort());
+ }
 });

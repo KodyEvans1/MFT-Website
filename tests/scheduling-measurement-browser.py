@@ -10,6 +10,7 @@ OUT=ROOT/'tmp/scheduling-measurement';OUT.mkdir(parents=True,exist_ok=True)
 BASE='https://www.mft.care';MID='G-BTK39BBNRE'
 CSP=re.search(r'Content-Security-Policy: ([^\n]+)',(ROOT/'dist/_headers').read_text())[1]
 EVENTS={'page_view','first_visit','session_start','user_engagement','appointment_request_click','clinician_schedule_click','consultation_click','simplepractice_exit'}
+INTENTS={'appointment_request_click','clinician_schedule_click','consultation_click','simplepractice_exit'}
 report={'passed':False,'checks':[],'scope':'Production-origin candidate with real Google script; collector and SimplePractice navigation intercepted; no appointments or client data. Outgoing payload observation is not GA4 receipt.'}
 hits=[];loaders=[];destinations=[];errors=[];blocked=False;blocked_collector=False;blocked_optional=False
 GENERAL_FOOTER='footer a[data-mft-booking="true"]:not([data-mft-couples-consultation]):not([data-mft-ten-minute-consultation])'
@@ -34,6 +35,12 @@ def guard(route):
    assert data.get('en',[''])[0] in EVENTS,data.get('en')
    assert re.fullmatch(r'https://www\.mft\.care/p/[a-f0-9]{16}/',data.get('dl',[''])[0]),data.get('dl')
    assert data.get('dt')==['M.F.T. Public Website']
+   custom={key for key in data if key.startswith(('ep.','epn.','up.','upn.'))}
+   expected_custom={'ep.button_location','ep.measurement_kind'} if data.get('en',[''])[0] in INTENTS else set()
+   assert custom==expected_custom,('unapproved or missing explicit custom parameters',sorted(custom))
+   if expected_custom:
+    assert data.get('ep.button_location',[''])[0] in {'header','footer','body','dialog'}
+    assert data.get('ep.measurement_kind')==['scheduling_intent']
    raw=unquote(json.dumps(data)).lower()
    for word in ['private-canary','example.invalid','secret-click','clinicianid','2065412','link_url','form_submit','form_start','appointment_booked','member_id','utm_term','gclid','gbraid','wbraid']:
     assert word not in raw,('unexpected payload field',word)
@@ -103,13 +110,23 @@ try:
   assert count('appointment_request_click')==1 and count('simplepractice_exit')==1,diagnostic()
   check('Keyboard footer request: one subtype and one handoff, not two acquisitions');c.close()
   c,page=start(browser,'/sonia-hassan-bio/',consent='granted');wait_event(page,'page_view')
-  link=page.locator('a[data-spwidget-clinician-id="2065412"]').first
+  paid=page.locator('.mft-schedule-shortcuts a[data-mft-couples-consultation="true"][data-spwidget-clinician-id="2065412"]')
+  assert paid.count()==1 and '30-minute couples consultation' in paid.inner_text().lower()
+  expected=paid.get_attribute('href');paid.click();page.wait_for_url('https://clientsecure.me/widget-redirect?*');page.wait_for_timeout(500)
+  assert destinations==[expected],{'expected':expected,**diagnostic()}
+  assert count('consultation_click')==1 and count('simplepractice_exit')==1,diagnostic()
+  assert count('clinician_schedule_click')==0 and count('appointment_request_click')==0,diagnostic()
+  check('Direct paid couples consultation: one consultation and one handoff, without clinician-action misclassification');c.close()
+  c,page=start(browser,'/sonia-hassan-bio/',consent='granted');wait_event(page,'page_view')
+  link=page.locator('.mft-clinician-hero a[data-spwidget-clinician-id="2065412"]')
+  assert link.count()==1 and 'consultation' not in link.inner_text().lower()
   expected=link.get_attribute('href')
   report['clinicianBeforeClick']=link.evaluate('(a)=>({label:a.textContent,booking:a.dataset.mftBooking,consultation:a.dataset.mftTenMinuteConsultation||null,hasClinician:a.hasAttribute("data-spwidget-clinician-id"),status:window.MFTAnalyticsConsent.status(),measurement:typeof window.MFTSchedulingMeasurement.track})')
   link.click();page.wait_for_url('https://clientsecure.me/widget-redirect?*');page.wait_for_timeout(500)
   assert destinations==[expected],{'expected':expected,**diagnostic()}
   assert count('clinician_schedule_click')==1,diagnostic()
   assert count('simplepractice_exit')==1,diagnostic()
+  assert count('consultation_click')==0 and count('appointment_request_click')==0,diagnostic()
   check('Clinician destination preserved without clinician identity in Google payload');c.close()
   c,page=start(browser,consent='denied',viewport={'width':390,'height':844});page.locator(GENERAL_FOOTER).first.click();page.wait_for_url('https://marriagefamilytherapy.clientsecure.me/request')
   assert not hits and not loaders

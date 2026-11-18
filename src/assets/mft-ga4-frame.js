@@ -26,7 +26,7 @@ function emit(name,extra,done){
  // Do not toggle ga-disable between events: that opt-out flag can discard queued
  // events. Consent withdrawal is owned by the parent, which disables/removes
  // this empty helper. Automatic metadata remains the same sanitized values.
- window.gtag('event',name,{send_to:id,page_location:pageLocation,page_title:'M.F.T. Public Website',page_referrer:referrer,...source,...extra,transport_type:'beacon',event_callback:complete,event_timeout:2000});
+ window.gtag('event',name,{send_to:id,page_location:pageLocation,page_title:'M.F.T. Public Website',page_referrer:referrer,...source,...extra,event_callback:complete,event_timeout:2000});
  setTimeout(complete,2200);
 }
 function receiveIntent(data){

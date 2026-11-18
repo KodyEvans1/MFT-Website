@@ -3,7 +3,9 @@
 ## Candidate and release boundary
 
 Implements `MFT_Website_Marketing_Improvements_2026-11-17.md` on exact current
-main `ef336ae9d12423273d598e247bdf1adf32e71dca`. This is a review candidate;
+main `ef336ae9d12423273d598e247bdf1adf32e71dca` in
+[draft PR #18](https://github.com/KodyEvans1/MFT-Website/pull/18), branch
+`review/marketing-improvements-20261118`. This is a review candidate;
 it has not been merged or deployed to the public website. No advertising
 settings, campaigns, Ops, financial releases, tablet software, client records,
 or appointment requests were changed.
@@ -24,6 +26,11 @@ and canonical redirect, and existing care journeys are preserved.
 | `/new-page/` | Direct individual-evaluation primary action, optional consultation secondary action, qualified coverage copy and repeated action. The existing evaluation card now enters `/request` instead of the bare portal homepage. |
 | `/marriage-and-couples-therapy-counseling/` | Couples-consultation primary action, private-pay framing, repeated action and explicit required consultation → one evaluation per partner → first couples-session sequence. Existing safety guidance remains. |
 
+Both footer entry points are covered: the prominent action and the preserved
+utility request link use the page-specific destination. Gary and Sonia retain
+their clinician in both. The existing-client utility link now opens `/sign-in`
+on all five candidate pages and is excluded from new-client measurement.
+
 Links do not invent service or location parameters. Visitors are told to confirm
 the clinician, initial evaluation and Telehealth in SimplePractice when offered,
 and to contact the practice if the needed option is absent. The website does
@@ -40,6 +47,8 @@ so generated drafts cannot inherit the new landing-page text.
 `content/marketing-improvements-review.json` follows the existing review-record
 pattern: clinical, operational and publication decisions each need a named
 reviewer, evidence and the exact current content revision. All remain pending.
+The review revision is
+`65c60c3257652c3db952954908cd2eef562c1f444d5db230c380e14053e1f1d5`.
 Pending or stale evidence suppresses these new page changes in production,
 including production builds with indexing disabled. The review candidate remains
 available in local/preview builds. Neither existing rich-route authorization nor
@@ -53,7 +62,7 @@ promise openings or plan participation.
 
 ## Fresh production baseline and actual booking inspection
 
-At `2026-11-18T20:33:39Z`, the five requested public HTML routes plus Autumn's
+At 12:33:39 p.m. PST on November 18 (`2026-11-18T20:33:39Z`), the five requested public HTML routes plus Autumn's
 profile byte-matched an isolated production-context build of exact main
 `ef336ae9...`. This establishes the starting deployed source independently of
 older crawled page text. Production is built with indexing and its existing
@@ -77,6 +86,15 @@ Read-only desktop browser inspection explicitly declined website analytics:
 - The free consultation dialog disables Continue until acknowledged. Cancel
   stays on the page and restores focus; acknowledged Continue opens clinician
   search. Paid consultation links do not use that free-introduction dialog.
+
+CI subsequently exercised the built candidate against real SimplePractice:
+Chrome passed 14 same-tab handoffs, including all six current clinician
+profiles. Gary Ashley, Sonia Hassan and Autumn Alexander were identified in
+the rendered service screen, rather than inferred from an HTTP response alone.
+WebKit separately passed two general desktop/mobile handoffs to clinician
+search; its scope does not include clinician-specific service or calendar
+verification. Chrome also reached Kody's optional consultation/Telehealth
+calendar and verified a static link with JavaScript disabled.
 
 No slot was selected, no patient data was entered, and no appointment was
 submitted. Calendar navigation is not evidence of a confirmed appointment.
@@ -105,23 +123,44 @@ Google Ads conversion setting was modified.
 
 ## Test environments and evidence
 
-- Local full build/unit suite: passing; exact final count is recorded in the PR.
-- Isolated publication rehearsals: preview default, accidental preview indexing,
-  and production policy all pass; 829 HTML pages and the pre-existing 251 draft
-  catalogue warnings remain. No warning threshold was relaxed.
-- Independent marketing-only scope audit: exactly five review-page bodies
-  changed across 829 outputs. With approvals pending, production page content
-  matches the baseline after normalizing the shared stylesheet version; teen,
-  Autumn and Taylor content remain unchanged.
-- Local Chromium cannot start because its process-singleton socket is denied.
-  Unit/VM checks are not called local browser passes.
-- Hosted CI candidate browser suites and real Google-library/intercepted-collector
-  transport checks are required on the actual PR revision. Their results must
-  be recorded separately from local and production evidence.
-- The existing PR #14 hosted Netlify preview returns HTTP 401. The new PR's
-  preview must be checked independently; no protection is disabled or bypassed.
-- Production GA4 receipt in property `558962239` is not verified by these local
-  tests or by intercepted collector traffic. No confirmed appointment was created.
+| Environment | Verified result and limits |
+| --- | --- |
+| Local source build | `npm run check`: 327 Node tests pass. Four Python regression checks also pass for detached-frame interception, complete request bodies and failing closed on a rejected payload. |
+| Isolated publication builds | Preview default, accidental preview indexing and production policy all pass: 829 HTML pages, 757 generated pages, 11 preserved core pages, and 251 pre-existing draft warnings; zero validator errors. Preview sitemaps contain zero URLs; the production-policy rehearsal contains 63. These are not deployments. |
+| Independent output audit | Exactly five review-page bodies change among 829 outputs after normalizing the stylesheet version. Pending approvals suppress new production copy across all 829 outputs. Teen, Autumn and Taylor content remain unchanged. |
+| CI candidate UI | 136/136 cases pass: 20 layout, 40 primary/header/repeated/prominent-footer handoffs, 10 returning-client links, 20 utility links, 4 clinician cards, 2 consultation interactions and 40 privacy/script/no-JavaScript resilience cases. All scheduler traffic is mocked in this suite. No script/console errors or attempted writes. |
+| CI real scheduler | Chrome 14/14 and WebKit 2/2 same-tab handoffs pass, with the scope described above. No appointment is submitted. Provider telemetry writes are blocked; those are separate from the UI suite's zero attempted writes. |
+| CI actual Google library | The original exact one-handoff assertion and keyboard-footer subtype/handoff assertions pass with the browser-wide collector observer. The final complete suite and current commit/run IDs are recorded in the PR and measurement report; a callback is never accepted in place of a collector payload. |
+| Netlify hosted preview | Provider reports preview build success. Direct access to preview #18 returned HTTP 401 on November 18. The existing browser session also could not acquire preview access: automatic approval review rejected attempted access to `app.netlify.com` outside the named preview origin because it could expose a private dashboard. No preview DOM was returned. Hosted page behavior remains unverified. |
+| Live production | Five requested routes and Autumn byte-matched exact main at 12:33:39 p.m. PST on November 18. Real public scheduling was inspected separately. This candidate has not been merged or deployed to production. |
+
+The UI was exercised at 1440, 768, 390 and 320 pixels. At 390 × 844, the Tri-Cities
+primary action spans y=431.19–511.97 and is fully on the first screen. Desktop
+and mobile screenshots were visually reviewed; focus indicators and the final
+footer utilities are readable. Local Chromium cannot start because its
+process-singleton socket is denied, so local VM results are not represented as
+local browser passes.
+
+The passing UI and real-scheduler artifacts are linked from PR #18. Candidate
+screenshots do not establish hosted-preview access, initial-evaluation
+availability, production GA4 receipt, or a confirmed appointment.
+
+## Separate GA4 receipt check
+
+At 12:58:55 p.m. PST on November 18, an authenticated, uncached, read-only Supermetrics
+query reached property `558962239` using only aggregate date, event name and
+event count for November 17–18. It confirmed existing page-view receipt but did
+not verify any scheduling-candidate event. Missing current-day event rows are
+not a verified zero because standard reports can lag. No patient-level
+dimensions, new events, settings, or advertising writes were involved.
+
+Credentials are available. The exposed connector does not document a Realtime
+or DebugView operation. The repository's existing live diagnostic permits a
+consented homepage view only after deployed assets match `main`; it does not
+authorize a new pre-release scheduling-event send. Candidate receipt therefore
+remains a separate post-release verification under an approved controlled
+scheduling diagnostic. See Google's
+[data freshness guidance](https://support.google.com/analytics/answer/11198161).
 
 ## Remaining release actions
 
@@ -129,11 +168,13 @@ Google Ads conversion setting was modified.
    Telehealth path in SimplePractice, plus roster and payer details.
 2. Clinical/content reviewer and owner: review this candidate and record the
    exact revision-specific approvals before a production release.
-3. Browser verification: require successful candidate layout/navigation and
-   actual-library transport CI; record any protected-preview limitation.
-4. After an authorized release: verify the live page revision and separately
-   confirm permitted synthetic diagnostic receipt in GA4 property `558962239`
-   using the approved procedure. Keep actual accepted appointments and attendance
+3. Authorized preview reviewer: open preview #18 through permitted Netlify
+   access and verify the hosted candidate; the build success and local CI
+   screenshots do not resolve its access restriction.
+4. Require the final actual-library transport CI result on the candidate,
+   then follow the existing owner-controlled release process. After release,
+   verify the live revision and separately confirm the approved diagnostic in
+   GA4 property `558962239`. Keep accepted appointments and attendance
    reconciliation in the protected practice/Operations process.
 
 Local service ads remain on their existing destinations. Once approved and live,

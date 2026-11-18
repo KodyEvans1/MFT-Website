@@ -13,6 +13,7 @@ EVENTS={'page_view','first_visit','session_start','user_engagement','appointment
 INTENTS={'appointment_request_click','clinician_schedule_click','consultation_click','simplepractice_exit'}
 report={'passed':False,'checks':[],'scope':'Production-origin candidate with real Google script; collector and SimplePractice navigation intercepted; no appointments or client data. Outgoing payload observation is not GA4 receipt.'}
 hits=[];loaders=[];destinations=[];errors=[];blocked=False;blocked_collector=False;blocked_optional=False
+interceptors=[]
 GENERAL_FOOTER='footer a[data-mft-booking="true"]:not([data-mft-couples-consultation]):not([data-mft-ten-minute-consultation])'
 
 def guard(route):
@@ -82,6 +83,7 @@ try:
  with sync_playwright() as p:
   browser=harness.launch_isolated_chromium(p);report['collectorDNSPreflight']='ERR_NAME_NOT_RESOLVED before routing or event scripts'
   interceptor=harness.install_browser_interceptor(browser,guard)
+  interceptors.append(interceptor)
   report['collectorObserver']='Single browser-target CDP Fetch request-stage interceptor; complete bodies required'
   c,page=start(browser,legacy='granted');page.wait_for_timeout(400)
   assert page.locator('#mft-analytics-consent').is_visible() and not loaders and not hits
@@ -147,8 +149,17 @@ try:
   c,page=start(browser,consent='granted');wait_event(page,'page_view');blocked_collector=True
   begin=time.monotonic();page.locator(GENERAL_FOOTER).first.click();page.wait_for_url('https://marriagefamilytherapy.clientsecure.me/request')
   assert time.monotonic()-begin<1.5
+  # Navigation is already complete. Keep collection blocked until the actual
+  # unload batch is observed, instead of changing the next scenario's counters.
+  wait_event(page,'simplepractice_exit')
+  assert count('appointment_request_click')==1 and count('simplepractice_exit')==1,diagnostic()
   check('Blocked collection cannot stop native scheduling');c.close();blocked_collector=False
   for signal in ['globalPrivacyControl','doNotTrack']:
+   # Browser-owned keepalive requests can outlive a closed context. Give each
+   # refusal case a fresh process, preserving its exact zero-request assertion.
+   browser.close();interceptor.assert_ok()
+   browser=harness.launch_isolated_chromium(p)
+   interceptor=harness.install_browser_interceptor(browser,guard);interceptors.append(interceptor)
    c,page=start(browser,consent='granted',signal=signal);page.wait_for_timeout(300)
    assert not loaders and not hits;check(signal+' overrides stored grant');c.close()
   c,page=start(browser,'/?utm_source=google&utm_medium=cpc&utm_campaign_id=24362234053',consent='granted');wait_event(page,'page_view')
@@ -165,7 +176,8 @@ try:
    c,page=start(browser,route,consent='granted');page.wait_for_timeout(200)
    assert not page.locator('script[data-mft-measurement-id]').count() and not hits and not loaders
    check('Sensitive route unmeasured: '+route);c.close()
-  interceptor.assert_ok();report['interceptedRequests']=interceptor.request_count;browser.close()
+  browser.close()
+  for observer in interceptors:observer.assert_ok()
  report['passed']=True
 except Exception as e:
  report['error']=str(e);report['failureDiagnostics']=diagnostic()
@@ -173,9 +185,10 @@ except Exception as e:
  except Exception:pass
  raise
 finally:
- if 'interceptor' in globals():
-  report['interceptorErrors']=interceptor.errors
-  report['cancelledResources']=interceptor.cancelled_resources
-  report['interceptedRequests']=interceptor.request_count
+ if interceptors:
+  report['interceptorErrors']=[error for observer in interceptors for error in observer.errors]
+  report['cancelledResources']=[resource for observer in interceptors for resource in observer.cancelled_resources]
+  report['interceptedRequests']=sum(observer.request_count for observer in interceptors)
+  report['browserProcesses']=len(interceptors)
  (OUT/'result.json').write_text(json.dumps(report,indent=2))
  print(json.dumps(report,indent=2))

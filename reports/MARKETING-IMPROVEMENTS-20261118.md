@@ -42,6 +42,11 @@ is in `content/marketing-improvements.json`; styles are scoped to the five pages
 It runs after existing page composition and before protected-route fingerprints,
 so generated drafts cannot inherit the new landing-page text.
 
+The review diff contains 33 source, configuration, test and report files plus
+839 regenerated tracked `dist` files. Most generated HTML changes are the shared
+stylesheet cache version; the independent body audit confirms exactly five
+pages receive the proposed marketing copy.
+
 ## Approval process
 
 `content/marketing-improvements-review.json` follows the existing review-record
@@ -130,7 +135,7 @@ Google Ads conversion setting was modified.
 | Independent output audit | Exactly five review-page bodies change among 829 outputs after normalizing the stylesheet version. Pending approvals suppress new production copy across all 829 outputs. Teen, Autumn and Taylor content remain unchanged. |
 | CI candidate UI | 136/136 cases pass: 20 layout, 40 primary/header/repeated/prominent-footer handoffs, 10 returning-client links, 20 utility links, 4 clinician cards, 2 consultation interactions and 40 privacy/script/no-JavaScript resilience cases. All scheduler traffic is mocked in this suite. No script/console errors or attempted writes. |
 | CI real scheduler | Chrome 14/14 and WebKit 2/2 same-tab handoffs pass, with the scope described above. No appointment is submitted. Provider telemetry writes are blocked; those are separate from the UI suite's zero attempted writes. |
-| CI actual Google library | The original exact one-handoff assertion and keyboard-footer subtype/handoff assertions pass with the browser-wide collector observer. The final complete suite and current commit/run IDs are recorded in the PR and measurement report; a callback is never accepted in place of a collector payload. |
+| CI actual Google library | 21/21 browser checks pass, including the original exact one-handoff assertion, intent counts, complete allowed payloads, consent/refusal, GPC/DNT, revocation, sensitive-route exclusions and blocked/failed analytics. Zero interceptor errors or canceled resources. The current Google library runs unchanged in DNS-denied browsers; complete collector requests are intercepted and validated. These are outgoing-request checks, not GA4 receipt. |
 | Netlify hosted preview | Provider reports preview build success. Direct access to preview #18 returned HTTP 401 on November 18. The existing browser session also could not acquire preview access: automatic approval review rejected attempted access to `app.netlify.com` outside the named preview origin because it could expose a private dashboard. No preview DOM was returned. Hosted page behavior remains unverified. |
 | Live production | Five requested routes and Autumn byte-matched exact main at 12:33:39 p.m. PST on November 18. Real public scheduling was inspected separately. This candidate has not been merged or deployed to production. |
 
@@ -144,6 +149,30 @@ local browser passes.
 The passing UI and real-scheduler artifacts are linked from PR #18. Candidate
 screenshots do not establish hosted-preview access, initial-evaluation
 availability, production GA4 receipt, or a confirmed appointment.
+
+### Exact passing candidate and workflow links
+
+All six workflows passed on
+`0ec4c2bad6ec98ad3de20c60e008594093e2b8cd`. Website runtime and built assets
+are unchanged from `bd8633a9d2dcddf870320c4f0d4eba36eee38efa`; later changes
+correct the test fixtures and browser observation harness. The closeout edit
+that records these results changes only the two Markdown reports.
+
+| Workflow | Passing evidence |
+| --- | --- |
+| Website quality | [44400475026](https://github.com/KodyEvans1/MFT-Website/actions/runs/44400475026) |
+| Marketing website acceptance | [44400475007](https://github.com/KodyEvans1/MFT-Website/actions/runs/44400475007) |
+| Verify scheduling measurement | [44400475025](https://github.com/KodyEvans1/MFT-Website/actions/runs/44400475025) |
+| Sonia profile review | [44400475109](https://github.com/KodyEvans1/MFT-Website/actions/runs/44400475109) |
+| Autumn scheduling verification | [44400475111](https://github.com/KodyEvans1/MFT-Website/actions/runs/44400475111) |
+| Marriage.Reset explanation review | [44400475112](https://github.com/KodyEvans1/MFT-Website/actions/runs/44400475112) |
+
+Netlify reports a successful preview deployment of the same tested commit:
+[deploy `6afe16a39146f15d1761b72d`](https://app.netlify.com/projects/marriagefamilytherapy/deploys/6afe16a39146f15d1761b72d).
+The review URL is
+[preview #18](https://deploy-preview-18--marriagefamilytherapy.netlify.app).
+That provider build status does not override the protected-preview access
+limitation above. Production remains on main `ef336ae9...`.
 
 ## Separate GA4 receipt check
 
@@ -171,8 +200,9 @@ scheduling diagnostic. See Google's
 3. Authorized preview reviewer: open preview #18 through permitted Netlify
    access and verify the hosted candidate; the build success and local CI
    screenshots do not resolve its access restriction.
-4. Require the final actual-library transport CI result on the candidate,
-   then follow the existing owner-controlled release process. After release,
+4. The actual-library browser transport gate has passed, 21/21. After the
+   separate approvals above, follow the existing owner-controlled release
+   process. After release,
    verify the live revision and separately confirm the approved diagnostic in
    GA4 property `558962239`. Keep accepted appointments and attendance
    reconciliation in the protected practice/Operations process.

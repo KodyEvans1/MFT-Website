@@ -56,7 +56,12 @@ before any routes or event scripts are installed. The current Google library
 is fetched separately without browser data and served byte-for-byte to the
 test browser, with source URL and SHA-256 recorded in its artifact. Ordinary
 collector/scheduler routes remain intercepted; an orphaned request cannot
-escape through DNS. The exact
+escape through DNS. The next bounded harness correction uses one browser-target
+CDP Fetch interceptor for all requests, replacing Playwright's frame-dependent
+routes. It requires the complete request body before payload validation and
+keeps the same event counts and privacy assertions. The page-target diagnostic
+also missed unload lifecycle and requests, so that evidence alone does not
+establish whether Google attempted the final batch. The exact
 one-handoff assertion remains a release gate; an invoked tag or callback alone
 does not satisfy it.
 

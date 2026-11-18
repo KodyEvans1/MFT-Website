@@ -48,13 +48,16 @@ def guard(route):
 
 def start(browser,path='/',consent=None,legacy=None,viewport=None,signal=None):
  hits.clear();loaders.clear();destinations.clear();errors.clear()
- c=browser.new_context(viewport=viewport or {'width':1440,'height':1000},reduced_motion='reduce');c.route('**/*',guard)
+ interceptor.assert_ok()
+ c=browser.new_context(viewport=viewport or {'width':1440,'height':1000},reduced_motion='reduce')
  if consent:c.add_init_script("localStorage.setItem('mft.analytics.consent.v3',"+json.dumps(consent)+")")
  if legacy:c.add_init_script("localStorage.setItem('mft.analytics.consent.v2',"+json.dumps(legacy)+")")
  if signal:c.add_init_script("Object.defineProperty(Navigator.prototype,"+json.dumps(signal)+",{get:()=>"+('true' if signal=='globalPrivacyControl' else "'1'")+"})")
  page=c.new_page();page.on('pageerror',lambda e:errors.append(str(e)));page.goto(BASE+path,wait_until='domcontentloaded');return c,page
 
-def count(name):return sum(h.get('en')==[name] for h in hits)
+def count(name):
+ interceptor.assert_ok()
+ return sum(h.get('en')==[name] for h in hits)
 def diagnostic():return {'events':[h.get('en',[''])[0] for h in hits],'destinations':destinations,'pageErrors':errors,'tagLoads':len(loaders)}
 def wait_event(page,name):
  deadline=time.monotonic()+12
@@ -63,6 +66,7 @@ def wait_event(page,name):
   page.wait_for_timeout(100)
  raise AssertionError('No event received: '+name+' '+json.dumps(diagnostic()))
 def check(name):
+ interceptor.assert_ok()
  assert not errors,errors
  report['checks'].append({'name':name,'pass':True})
 
@@ -70,6 +74,8 @@ try:
  tag_source,provenance=harness.fetch_real_tag();report['googleLibrary']=provenance
  with sync_playwright() as p:
   browser=harness.launch_isolated_chromium(p);report['collectorDNSPreflight']='ERR_NAME_NOT_RESOLVED before routing or event scripts'
+  interceptor=harness.install_browser_interceptor(browser,guard)
+  report['collectorObserver']='Single browser-target CDP Fetch request-stage interceptor; complete bodies required'
   c,page=start(browser,legacy='granted');page.wait_for_timeout(400)
   assert page.locator('#mft-analytics-consent').is_visible() and not loaders and not hits
   check('Prior visit-only grant requires a fresh analytics choice');c.close()
@@ -142,7 +148,7 @@ try:
    c,page=start(browser,route,consent='granted');page.wait_for_timeout(200)
    assert not page.locator('script[data-mft-measurement-id]').count() and not hits and not loaders
    check('Sensitive route unmeasured: '+route);c.close()
-  browser.close()
+  interceptor.assert_ok();report['interceptedRequests']=interceptor.request_count;browser.close()
  report['passed']=True
 except Exception as e:
  report['error']=str(e);report['failureDiagnostics']=diagnostic()
@@ -150,5 +156,8 @@ except Exception as e:
  except Exception:pass
  raise
 finally:
+ if 'interceptor' in globals():
+  report['interceptorErrors']=interceptor.errors
+  report['interceptedRequests']=interceptor.request_count
  (OUT/'result.json').write_text(json.dumps(report,indent=2))
  print(json.dumps(report,indent=2))

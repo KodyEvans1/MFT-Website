@@ -79,7 +79,9 @@ try:
     tag_source,provenance=harness.fetch_real_tag();result['googleLibrary']=provenance
     with sync_playwright() as p:
         browser=harness.launch_isolated_chromium(p);result['collectorDNSPreflight']='ERR_NAME_NOT_RESOLVED before routing or event scripts'
-        context=browser.new_context(viewport={'width':1440,'height':1000},reduced_motion='reduce');context.route('**/*',guard)
+        interceptor=harness.install_browser_interceptor(browser,guard)
+        result['collectorObserver']='Single browser-target CDP Fetch request-stage interceptor; complete bodies required'
+        context=browser.new_context(viewport={'width':1440,'height':1000},reduced_motion='reduce')
         context.add_init_script("if(location.origin==='https://www.mft.care')localStorage.setItem('mft.analytics.consent.v3','granted')")
         context.add_init_script(path=ROOT/'tests/fixtures/scheduling-network-probe.js')
         context.on('request',lambda req:observe(req,'request'))
@@ -99,10 +101,13 @@ try:
         page.locator('.mft-consultation-gate button[value="cancel"]').last.click();page.wait_for_timeout(100)
         free.click();page.locator('.mft-consultation-gate input[type="checkbox"]').check()
         page.locator('[data-consultation-continue]').click();page.wait_for_url('https://marriagefamilytherapy.clientsecure.me/request');page.wait_for_timeout(1000)
-        context.close();browser.close()
+        context.close();interceptor.assert_ok();result['interceptedRequests']=interceptor.request_count;browser.close()
 except Exception as error:
     result['error']=str(error)
     raise
 finally:
+    if 'interceptor' in globals():
+        result['interceptorErrors']=interceptor.errors
+        result['interceptedRequests']=interceptor.request_count
     (OUT/'transport-probe.json').write_text(json.dumps(result,indent=2))
     print(json.dumps(result,indent=2))

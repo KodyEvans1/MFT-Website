@@ -10,6 +10,7 @@ on:
       - 'tests/scheduling-measurement*'
       - 'tests/scheduling-transport-probe.py'
       - 'tests/scheduling-browser-harness.py'
+      - 'tests/scheduling-browser-harness.test.py'
       - 'tests/fixtures/scheduling-transport-probe.js'
       - 'tests/fixtures/scheduling-network-probe.js'
       - '.github/workflows/scheduling-measurement.yml'
@@ -22,6 +23,7 @@ on:
       - 'src/booking-*.js'
       - 'tests/scheduling-measurement*'
       - 'tests/scheduling-browser-harness.py'
+      - 'tests/scheduling-browser-harness.test.py'
       - '.github/workflows/scheduling-measurement.yml'
 permissions:
   contents: read
@@ -46,6 +48,7 @@ jobs:
           node --check tests/fixtures/scheduling-transport-probe.js
           node --check tests/fixtures/scheduling-network-probe.js
           python -m py_compile tests/scheduling-measurement-browser.py tests/scheduling-transport-probe.py tests/scheduling-browser-harness.py
+          python tests/scheduling-browser-harness.test.py
       - name: Build a production-origin candidate without deployment
         id: build
         run: npm run build

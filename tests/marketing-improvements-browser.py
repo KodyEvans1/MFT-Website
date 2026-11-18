@@ -145,7 +145,7 @@ def main():
         p = COPY["routes"][slug]
         person = PEOPLE.get(p.get("clinician"))
         expected = expected_destination(person)
-        for placement in PLACEMENTS:
+        for placement in (*PLACEMENTS, "footer-utility"):
             a = page.locator(MARKER.format(placement))
             assert a.count() == 1, f"Expected one {placement} action on {slug}"
             assert a.inner_text().strip() == p["primary"], (slug, placement, "action label")
@@ -156,6 +156,12 @@ def main():
             assert a.locator("xpath=ancestor::a").count() == 0, "Nested scheduling anchor"
             described = (a.get_attribute("aria-describedby") or "").split()
             assert described and all(page.locator("[id=" + json.dumps(id_) + "]").count() == 1 for id_ in described), "Unresolved accessible instructions"
+        utility_request = page.locator('.site-footer a[data-mft-booking-utility="request"]')
+        assert utility_request.count() == 1 and utility_request.get_attribute("data-marketing-appointment") == "footer-utility", "Footer utility request does not preserve this page's scheduling path"
+        utility_portal = page.locator('.site-footer a[data-mft-booking-utility="portal"]')
+        assert utility_portal.count() == 1 and utility_portal.get_attribute("href") == PORTAL, "Footer utility portal must open sign-in"
+        assert utility_portal.get_attribute("data-mft-existing-client") == "true"
+        assert utility_portal.get_attribute("data-mft-booking-intent") is None and utility_portal.get_attribute("data-spwidget-clinician-id") is None, "Footer sign-in must remain independent of new-client scheduling"
         existing = page.locator("a[data-mft-existing-client]")
         assert existing.count() >= 2, "Returning-client access absent"
         for a in existing.all():
@@ -235,6 +241,13 @@ def main():
                         expect(primary).to_be_focused()
                         assert primary.evaluate("el => { const s=getComputedStyle(el); return el.matches(':focus-visible') && s.outlineStyle !== 'none' && parseFloat(s.outlineWidth) >= 2; }"), "Keyboard focus indicator absent"
                         if width in (1440, 390):
+                            # Preserve the real keyboard-focus view, then return to
+                            # the top before full-page capture. A focused control
+                            # below the first viewport scrolls the page; capturing
+                            # there makes sticky/fixed chrome appear mid-document.
+                            page.screenshot(path=str(OUT / (slug + "-" + str(width) + "-focus.png")))
+                            page.evaluate("window.scrollTo({top: 0, left: 0, behavior: 'instant'})")
+                            page.wait_for_function("window.scrollY === 0")
                             page.screenshot(path=str(OUT / (slug + "-" + str(width) + ".png")), full_page=True)
                         return {"route": "/" + slug + "/", "width": width, "primaryBox": box, "focusVisible": True}
                     record("layout-" + str(width) + "-" + slug, layout)
@@ -250,6 +263,10 @@ def main():
                                lambda slug=slug, placement=placement, person=person: handoff(page, slug, MARKER.format(placement), expected_destination(person)))
                     record("returning-" + str(width) + "-" + slug,
                            lambda slug=slug: handoff(page, slug, '.marketing-returning a[data-mft-existing-client]', PORTAL))
+                    record("utility-request-" + str(width) + "-" + slug,
+                           lambda slug=slug, person=person: handoff(page, slug, '.site-footer a[data-mft-booking-utility="request"]', expected_destination(person)))
+                    record("utility-portal-" + str(width) + "-" + slug,
+                           lambda slug=slug: handoff(page, slug, '.site-footer a[data-mft-booking-utility="portal"]', PORTAL))
                 for key in COPY["routes"][TRICITIES]["profileKeys"]:
                     record("card-" + str(width) + "-" + key,
                            lambda key=key: handoff(page, TRICITIES, f'a[data-marketing-appointment="clinician"][data-mft-clinician="{key}"]', expected_destination(PEOPLE[key])))

@@ -49,6 +49,11 @@ window.addEventListener('message',event=>{
  if(!data||typeof data!=='object')return;
  if(data.type==='mft:analytics:init'){
   if(initialized||!/^[a-f0-9]{16}$/.test(data.pageKey||''))return;
+  // Google documents immediate event transport when fetch is unavailable.
+  // Use that native sendBeacon fallback only in this empty helper: batching
+  // outlives same-tab navigation, and a gtag callback is not a flush signal.
+  // The care page retains its own fetch implementation and native navigation.
+  try{Object.defineProperty(window,'fetch',{value:undefined,writable:false,configurable:false});}catch{return;}
   initialized=true;
   pageLocation='https://www.mft.care/p/'+data.pageKey+'/';
   referrer=['https://www.google.com/','https://www.bing.com/','https://google.com/','https://bing.com/'].includes(data.referrer)?data.referrer:'';

@@ -147,6 +147,23 @@ test('frame init is exactly once and rejects wrong origin/source',()=>{
  x.send({type:'mft:analytics:init',pageKey:'0123456789abcdef'},{source:{}});assert.equal(x.scripts.length,0);
  x.init();x.init();assert.equal(x.scripts.length,1);assert.equal(x.events().length,1);
 });
+test('only the empty helper selects Google unbatched transport before loading its tag',()=>{
+ const x=frameFixture();x.c.fetch=()=>{throw new Error('fetch batching must not be selected');};
+ const parentFetch=()=>Promise.resolve('care-page fetch is unchanged');x.c.parent.fetch=parentFetch;
+ const append=x.c.document.head.appendChild;
+ x.c.document.head.appendChild=script=>{assert.equal(x.c.fetch,undefined,'restriction must precede tag insertion');append(script);};
+ x.init();assert.equal(x.c.fetch,undefined);assert.equal(x.scripts.length,1);
+ assert.equal(x.c.parent.fetch,parentFetch);
+ assert.doesNotMatch(parentCode,/window\.fetch\s*=/);
+ assert.doesNotMatch(frameCode,/parent\.fetch|top\.fetch|navigator\.sendBeacon\s*=/);
+});
+test('a nonconfigurable fetch capability fails closed without a tag or a broken event receiver',()=>{
+ const x=frameFixture(),original=()=>{};
+ Object.defineProperty(x.c,'fetch',{value:original,configurable:false,writable:false});
+ assert.doesNotThrow(()=>x.init());assert.equal(x.c.fetch,original);
+ assert.equal(x.scripts.length,0);assert.equal(x.events().length,0);
+ assert.equal(x.c.MFTAnalyticsReceiveIntent({type:'mft:analytics:intent',id:'m1',names:['simplepractice_exit'],placement:'body'}),false);
+});
 test('frame payload scrubs URLs, arbitrary fields and unapproved campaign IDs',()=>{
  const x=frameFixture();x.init({referrer:'https://private.example.invalid/name',source:{source:'google',medium:'cpc',campaignId:'12345',email:'private@example.invalid'},pageLocation:'https://evil.invalid/'});
  const e=x.events()[0][2];assert.equal(e.page_location,'https://www.mft.care/p/0123456789abcdef/');

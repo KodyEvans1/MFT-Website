@@ -52,10 +52,10 @@ test('Tri-Cities practical FAQ and getting-started text use the supplied brief',
  const paid=anchors(read(routes[0]),'data-mft-booking-intent').find(a=>plain(a[2])==='Request a Paid 30-minute Individual Consultation');
  assert.ok(paid);assert.match(paid[1],/data-mft-booking-intent="consultation"/);
 });
-test('Gary and Sonia preserve selected clinician for primary, repeated, header and footer native actions',()=>{
+test('Gary and Sonia preserve selected clinician for primary, repeated, header and both footer native actions',()=>{
  for(const [slug,key,id] of [['gary-ashley','gary','2154633'],['sonia-hassan-bio','sonia','2065412']]){
-  const h=read(slug),found=anchors(h);assert.equal(found.length,4,slug);
-  assert.deepEqual(new Set(found.map(a=>a[1].match(/data-marketing-appointment="([^"]+)"/)[1])),new Set(['header','primary','repeated','footer']));
+  const h=read(slug),found=anchors(h);assert.equal(found.length,5,slug);
+  assert.deepEqual(new Set(found.map(a=>a[1].match(/data-marketing-appointment="([^"]+)"/)[1])),new Set(['header','primary','repeated','footer','footer-utility']));
   for(const a of found){
    assert.match(a[1],new RegExp(`data-mft-clinician="${key}"`));
    const url=new URL(a[1].match(/href="([^"]+)"/)[1].replace(/&amp;/g,'&'));
@@ -66,6 +66,18 @@ test('Gary and Sonia preserve selected clinician for primary, repeated, header a
   assert.match(h,/service, format, and time are not preselected/);
   assert.match(h,/data-portrait-fit="contain"/);
   assert.match(plain(h),/teens/);assert.match(plain(h),/couples/);
+ }
+});
+test('all five footer utility entry points preserve request intent and returning-client sign-in',()=>{
+ for(const slug of routes){
+  const h=read(slug),utility=anchors(h,'data-mft-booking-utility');assert.equal(utility.length,2,slug);
+  const request=utility.find(a=>a[1].includes('data-mft-booking-utility="request"'));
+  const portal=utility.find(a=>a[1].includes('data-mft-booking-utility="portal"'));
+  assert.ok(request);assert.ok(portal);
+  assert.match(request[1],new RegExp(`data-mft-booking-intent="${marketing.copy.routes[slug].kind==='couples'?'consultation':'appointment'}"`));
+  assert.match(portal[1],/href="https:\/\/marriagefamilytherapy\.clientsecure\.me\/sign-in"/);
+  assert.match(portal[1],/data-mft-existing-client="true"/);
+  assert.doesNotMatch(portal[1],/data-mft-booking=|data-mft-ten-minute|data-spwidget-/);
  }
 });
 test('Individual evaluation card enters the native request process despite qualified insurance prose',()=>{

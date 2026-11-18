@@ -125,7 +125,8 @@ function apply(html, route, env = process.env) {
   const slug=String(route).replace(/^\/+|\/+$/g,''), p=copy.routes[slug];
   if(!p || !enabled(env) || html.includes('data-marketing-candidate='))return html;
   let out=p.kind==='regional-individual' ? metadata(html.replace(/<main\b[^>]*>[\s\S]*?<\/main>/,triCities(p)),p) : p.kind==='clinician' ? profile(html,p) : service(html,slug,p);
-  out=scheduling.forPage(out,{primary:button(p,'header'),footerPrimary:button(p,'footer','light'),couples:p.kind==='couples',note:ui.esc(p.note||p.summary)});
+  const footerRequest=button(p,'footer-utility').replace('class="button primary" data-ui="button"','data-mft-booking-utility="request"');
+  out=scheduling.forPage(out,{primary:button(p,'header'),footerPrimary:button(p,'footer','light'),footerRequest,couples:p.kind==='couples',note:ui.esc(p.note||p.summary)});
   out=out.replace(/<body\b/,'<body data-marketing-candidate="20261118"');
   const version=crypto.createHash('sha256').update(fs.readFileSync(path.join(__dirname,'assets',CSS))).digest('hex').slice(0,16);
   out=out.replace('</head>',`<link rel="stylesheet" href="/assets/${CSS}?v=${version}"></head>`);

@@ -40,6 +40,12 @@ function forPage(html, options) {
     `<aside class="marketing-returning" data-scheduling-actions="20261029" aria-label="Existing client scheduling"><a data-mft-existing-client="true" href="${PORTAL}" rel="noopener noreferrer">Existing Client Portal</a></aside>`);
   out = out.replace(/<div class="mft-footer-scheduling">[\s\S]*?<\/p><\/div>/,
     `<div class="mft-footer-scheduling"><h2>Choose your next step</h2><div class="actions">${options.footerPrimary}${existingButton()}</div><p>${options.note || ''}</p><p><a href="${GUIDE}${options.couples ? '#couples-journey' : '#individual-journey'}">Read the care journey</a>${options.couples ? '' : ` · <a href="/marriage-and-couples-therapy-counseling/">Explore couples care</a>`}</p></div>`);
+  // Preserved footer utility links are additional scheduling entry points.
+  // Keep them consistent with the selected page and returning-client sign-in.
+  out = out.replace(/<footer\b[^>]*>[\s\S]*?<\/footer>/, footer =>
+    footer.replace(/<a\b[^>]*>Request appointment<\/a>/, options.footerRequest)
+      .replace(/<a\b[^>]*>Existing client portal<\/a>/,
+        `<a data-mft-booking-utility="portal" data-mft-existing-client="true" href="${PORTAL}" rel="noopener noreferrer">Existing client portal</a>`));
   return out;
 }
 module.exports = {PORTAL, REQUEST, GUIDE, existingButton, couplesButton, homeActions, existingSection, apply, forPage};

@@ -119,8 +119,12 @@ try:
                     gate.locator('input[type=checkbox]').check();expect(go).to_be_enabled()
                     assert go.get_attribute('href')==href
                     go.click()
-                host=WIDGET if clinician and clinician.get('channel')!='client_portal' else PORTAL
-                page.wait_for_url(re.compile('^https://'+re.escape(host)+'/'))
+                # SimplePractice may use either approved practice hostname for
+                # a selected clinician, including channel=client_portal. Match
+                # the existing Autumn verifier and then verify the exact ID.
+                destination_pattern=r'^https://(?:spwidget-)?marriagefamilytherapy\.clientsecure\.me/' if clinician else '^https://'+re.escape(PORTAL)+'/'
+                page.wait_for_url(re.compile(destination_pattern))
+                host=urlsplit(page.url).hostname
                 page.get_by_role('button',name=re.compile('^select$',re.I)).first.wait_for(state='visible')
                 if width>=760:page.wait_for_function('document.body && /request an appointment/i.test(document.body.innerText)')
                 if clinician:

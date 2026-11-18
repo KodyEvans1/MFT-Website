@@ -43,6 +43,21 @@ Optional diagnostic callbacks have no authority over navigation. Measurement
 is best effort: a blocked or unloaded tag may produce no event while scheduling
 continues. A callback indicates processing, not Google receipt.
 
+The first real-browser candidate reproduced the missing handoff even with
+synchronous helper delivery. Its trace established that Google processed the
+event and called its callback before navigation, while the outgoing batch was
+absent. The helper therefore selects Google's documented unbatched fallback by
+making `fetch` unavailable in that empty document before the tag loads. Native
+`sendBeacon` remains available; the public care page's `fetch` is unchanged.
+This does not mark the event as a key event, alter advertising settings, or
+construct an undocumented collection request. See Google's [event batching
+documentation](https://support.google.com/analytics/answer/9322688).
+The capability restriction is an implementation inference from that documented
+fallback, not a vendor-endorsed workaround. If the helper cannot restrict its
+own capability, it does not initialize measurement; scheduling remains native.
+The real browser gate must verify this transport change before it is called
+working; VM configuration checks alone are insufficient.
+
 ## Verification boundary
 
 Targeted VM/unit checks exercise payload rejection, campaign allowlists,

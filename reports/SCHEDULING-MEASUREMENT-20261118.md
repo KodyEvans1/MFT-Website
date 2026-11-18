@@ -45,18 +45,20 @@ continues. A callback indicates processing, not Google receipt.
 
 The first real-browser candidate reproduced the missing handoff even with
 synchronous helper delivery. Its trace established that Google processed the
-event and called its callback before navigation, while the outgoing batch was
-absent. The helper therefore selects Google's documented unbatched fallback by
-making `fetch` unavailable in that empty document before the tag loads. Native
-`sendBeacon` remains available; the public care page's `fetch` is unchanged.
-This does not mark the event as a key event, alter advertising settings, or
-construct an undocumented collection request. See Google's [event batching
-documentation](https://support.google.com/analytics/answer/9322688).
-The capability restriction is an implementation inference from that documented
-fallback, not a vendor-endorsed workaround. If the helper cannot restrict its
-own capability, it does not initialize measurement; scheduling remains native.
-The real browser gate must verify this transport change before it is called
-working; VM configuration checks alone are insufficient.
+event and called its callback before navigation, while collector interception
+observed no handoff request. A second experiment restricting `fetch` in the helper did not improve
+the observed result and was removed. The diagnostic now observes the helper's
+native transport calls, lifecycle, browser requests, and independent CDP
+network events. Because Playwright can auto-continue requests after a frame
+detaches, the browser also disables proxy use and denies all DNS resolution.
+A request to a real collector hostname must fail with `ERR_NAME_NOT_RESOLVED`
+before any routes or event scripts are installed. The current Google library
+is fetched separately without browser data and served byte-for-byte to the
+test browser, with source URL and SHA-256 recorded in its artifact. Ordinary
+collector/scheduler routes remain intercepted; an orphaned request cannot
+escape through DNS. The exact
+one-handoff assertion remains a release gate; an invoked tag or callback alone
+does not satisfy it.
 
 ## Verification boundary
 
@@ -73,8 +75,9 @@ avoiding the unrelated browser-download installation failure.
 
 Local Chromium execution is unavailable in this workspace because its process
 singleton socket is denied. Consequently local VM/build results are not a
-browser transport pass. The controlled CI browser uses the actual Google tag,
-intercepts all collection requests and all scheduler navigation, and creates
+browser transport pass. The controlled CI browser uses freshly fetched actual
+Google tag bytes, intercepts collection and scheduler navigation with an
+independent browser DNS backstop, and creates
 no live appointments. Record its candidate SHA and outcome before release.
 
 Outgoing request observation, Google collector acceptance, receipt in GA4

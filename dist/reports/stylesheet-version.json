@@ -1,6 +1,6 @@
 {
-  "version": "b1fbbdf12293e850",
-  "href": "/assets/styles.css?v=b1fbbdf12293e850",
+  "version": "685629435f915e10",
+  "href": "/assets/styles.css?v=685629435f915e10",
   "corePages": 71,
   "strategy": "Version all CSS and JavaScript stylesheet-generating source inputs before protected-page fingerprints; never reuse the unversioned URL for a new build."
 }

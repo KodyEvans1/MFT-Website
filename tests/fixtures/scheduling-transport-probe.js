@@ -1,5 +1,5 @@
 () => {
-  const log = (kind, data) => console.log('MFTPROBE ' + JSON.stringify({t: performance.now(), kind, data}));
+  const log = (kind, data) => console.log('MFTPROBE ' + JSON.stringify({t: performance.timeOrigin + performance.now(), surface: window.parent === window ? 'parent' : 'helper', kind, data}));
   window.addEventListener('message', event => {
     if (event.data && String(event.data.type).startsWith('mft:')) {
       log('message', {type: event.data.type, id: event.data.id, names: event.data.names});

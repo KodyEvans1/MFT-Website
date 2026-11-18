@@ -9,7 +9,9 @@ on:
       - 'src/marketing-improvements.js'
       - 'tests/scheduling-measurement*'
       - 'tests/scheduling-transport-probe.py'
+      - 'tests/scheduling-browser-harness.py'
       - 'tests/fixtures/scheduling-transport-probe.js'
+      - 'tests/fixtures/scheduling-network-probe.js'
       - '.github/workflows/scheduling-measurement.yml'
   push:
     branches: [main]
@@ -19,6 +21,7 @@ on:
       - 'src/assets/mft-booking.js'
       - 'src/booking-*.js'
       - 'tests/scheduling-measurement*'
+      - 'tests/scheduling-browser-harness.py'
       - '.github/workflows/scheduling-measurement.yml'
 permissions:
   contents: read
@@ -41,7 +44,8 @@ jobs:
       - name: Validate the transport diagnostic before opening a browser
         run: |
           node --check tests/fixtures/scheduling-transport-probe.js
-          python -m py_compile tests/scheduling-measurement-browser.py tests/scheduling-transport-probe.py
+          node --check tests/fixtures/scheduling-network-probe.js
+          python -m py_compile tests/scheduling-measurement-browser.py tests/scheduling-transport-probe.py tests/scheduling-browser-harness.py
       - name: Build a production-origin candidate without deployment
         id: build
         run: npm run build

@@ -1,16 +1,17 @@
 """Candidate rehearsal: real Google script, intercepted collector and scheduling. No booking submitted."""
-import json, mimetypes, os, re, shutil, time
+import importlib.util, json, mimetypes, re, time
 from pathlib import Path
 from urllib.parse import urlsplit, parse_qs, unquote
 from playwright.sync_api import sync_playwright
 ROOT=Path(__file__).resolve().parents[1]
+spec=importlib.util.spec_from_file_location('mft_scheduling_browser_harness',ROOT/'tests/scheduling-browser-harness.py')
+harness=importlib.util.module_from_spec(spec);spec.loader.exec_module(harness)
 OUT=ROOT/'tmp/scheduling-measurement';OUT.mkdir(parents=True,exist_ok=True)
 BASE='https://www.mft.care';MID='G-BTK39BBNRE'
 CSP=re.search(r'Content-Security-Policy: ([^\n]+)',(ROOT/'dist/_headers').read_text())[1]
 EVENTS={'page_view','first_visit','session_start','user_engagement','appointment_request_click','clinician_schedule_click','consultation_click','simplepractice_exit'}
 report={'passed':False,'checks':[],'scope':'Production-origin candidate with real Google script; collector and SimplePractice navigation intercepted; no appointments or client data. Outgoing payload observation is not GA4 receipt.'}
 hits=[];loaders=[];destinations=[];errors=[];blocked=False;blocked_collector=False;blocked_optional=False
-fixture=os.getenv('MFT_GTAG_FIXTURE')
 GENERAL_FOOTER='footer a[data-mft-booking="true"]:not([data-mft-couples-consultation]):not([data-mft-ten-minute-consultation])'
 
 def guard(route):
@@ -24,8 +25,7 @@ def guard(route):
  elif u.hostname=='www.googletagmanager.com' and u.path=='/gtag/js':
   assert not req.headers.get('referer');loaders.append(req.url)
   if blocked:route.abort()
-  elif fixture:route.fulfill(status=200,content_type='text/javascript',body=Path(fixture).read_bytes())
-  else:route.continue_()
+  else:route.fulfill(status=200,content_type='text/javascript',body=tag_source)
  elif u.hostname in ['www.google-analytics.com','region1.google-analytics.com'] and u.path.endswith('/collect'):
   base=parse_qs(u.query,keep_blank_values=True)
   for line in (req.post_data or '').splitlines() or ['']:
@@ -67,9 +67,9 @@ def check(name):
  report['checks'].append({'name':name,'pass':True})
 
 try:
+ tag_source,provenance=harness.fetch_real_tag();report['googleLibrary']=provenance
  with sync_playwright() as p:
-  chrome=os.getenv('CHROME_PATH') or os.getenv('MFT_CHROMIUM') or shutil.which('google-chrome') or shutil.which('chromium')
-  browser=p.chromium.launch(headless=True,**({'executable_path':chrome} if chrome else {}))
+  browser=harness.launch_isolated_chromium(p);report['collectorDNSPreflight']='ERR_NAME_NOT_RESOLVED before routing or event scripts'
   c,page=start(browser,legacy='granted');page.wait_for_timeout(400)
   assert page.locator('#mft-analytics-consent').is_visible() and not loaders and not hits
   check('Prior visit-only grant requires a fresh analytics choice');c.close()

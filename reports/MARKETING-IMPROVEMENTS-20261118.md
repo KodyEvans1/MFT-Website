@@ -125,7 +125,7 @@ Google Ads conversion setting was modified.
 
 | Environment | Verified result and limits |
 | --- | --- |
-| Local source build | `npm run check`: 327 Node tests pass. Four Python regression checks also pass for detached-frame interception, complete request bodies and failing closed on a rejected payload. |
+| Local source build | `npm run check`: 327 Node tests pass. Six Python regression checks also pass for detached-frame interception, complete request bodies, canceled static assets and failing closed on a rejected or unverifiable measurement payload. |
 | Isolated publication builds | Preview default, accidental preview indexing and production policy all pass: 829 HTML pages, 757 generated pages, 11 preserved core pages, and 251 pre-existing draft warnings; zero validator errors. Preview sitemaps contain zero URLs; the production-policy rehearsal contains 63. These are not deployments. |
 | Independent output audit | Exactly five review-page bodies change among 829 outputs after normalizing the stylesheet version. Pending approvals suppress new production copy across all 829 outputs. Teen, Autumn and Taylor content remain unchanged. |
 | CI candidate UI | 136/136 cases pass: 20 layout, 40 primary/header/repeated/prominent-footer handoffs, 10 returning-client links, 20 utility links, 4 clinician cards, 2 consultation interactions and 40 privacy/script/no-JavaScript resilience cases. All scheduler traffic is mocked in this suite. No script/console errors or attempted writes. |

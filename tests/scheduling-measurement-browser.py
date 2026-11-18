@@ -175,6 +175,7 @@ except Exception as e:
 finally:
  if 'interceptor' in globals():
   report['interceptorErrors']=interceptor.errors
+  report['cancelledResources']=interceptor.cancelled_resources
   report['interceptedRequests']=interceptor.request_count
  (OUT/'result.json').write_text(json.dumps(report,indent=2))
  print(json.dumps(report,indent=2))

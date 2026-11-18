@@ -108,6 +108,7 @@ except Exception as error:
 finally:
     if 'interceptor' in globals():
         result['interceptorErrors']=interceptor.errors
+        result['cancelledResources']=interceptor.cancelled_resources
         result['interceptedRequests']=interceptor.request_count
     (OUT/'transport-probe.json').write_text(json.dumps(result,indent=2))
     print(json.dumps(result,indent=2))

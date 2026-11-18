@@ -85,6 +85,41 @@ class HarnessTests(unittest.TestCase):
         with self.assertRaisesRegex(AssertionError, 'Synthetic privacy violation'):
             interceptor.assert_ok()
 
+    def test_canceled_decorative_resource_is_recorded_but_canceled_collector_still_fails(self):
+        def reject_fulfillment(name, payload):
+            if name == 'Fetch.fulfillRequest':
+                raise RuntimeError('CDPSession.send: Protocol error (Fetch.fulfillRequest): Invalid InterceptionId.')
+
+        browser = Browser()
+        browser.session.send = reject_fulfillment
+        interceptor = harness.install_browser_interceptor(browser, lambda route: route.fulfill(status=204))
+        image = {'requestId': 'image-1', 'resourceType': 'Image',
+                 'request': {'url': 'https://www.mft.care/assets/synthetic.webp', 'method': 'GET'}}
+        browser.session.listeners['Fetch.requestPaused'](image)
+        interceptor.assert_ok()
+        self.assertEqual(len(interceptor.cancelled_resources), 1)
+        browser.session.listeners['Fetch.requestPaused'](collector('en=simplepractice_exit', True))
+        with self.assertRaisesRegex(AssertionError, 'Invalid InterceptionId'):
+            interceptor.assert_ok()
+
+    def test_canceled_scripts_documents_and_post_requests_remain_failed_gates(self):
+        for resource_type, path, method in [('Script', '/assets/mft-analytics.js', 'GET'), ('Document', '/', 'GET'), ('Image', '/assets/synthetic.webp', 'POST')]:
+            with self.subTest(resource_type=resource_type):
+                browser = Browser()
+
+                def reject_fulfillment(name, payload):
+                    if name == 'Fetch.fulfillRequest':
+                        raise RuntimeError('CDPSession.send: Protocol error (Fetch.fulfillRequest): Invalid InterceptionId.')
+
+                browser.session.send = reject_fulfillment
+                interceptor = harness.install_browser_interceptor(browser, lambda route: route.fulfill(status=200))
+                event = {'requestId': 'critical-1', 'resourceType': resource_type,
+                         'request': {'url': 'https://www.mft.care' + path, 'method': method}}
+                browser.session.listeners['Fetch.requestPaused'](event)
+                self.assertEqual(interceptor.cancelled_resources, [])
+                with self.assertRaisesRegex(AssertionError, 'Invalid InterceptionId'):
+                    interceptor.assert_ok()
+
 
 if __name__ == '__main__':
     unittest.main()

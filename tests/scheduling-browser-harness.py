@@ -4,6 +4,7 @@ import hashlib
 import os
 import shutil
 from urllib.request import Request, urlopen
+from urllib.parse import urlsplit
 
 TAG_URL = 'https://www.googletagmanager.com/gtag/js?id=G-BTK39BBNRE'
 
@@ -34,6 +35,7 @@ class BrowserRoute:
         self.session = session
         self.request_id = event['requestId']
         self.handled = False
+        self.operation = None
         self.request = BrowserRequest(event)
 
     def fulfill(self, *, status=200, body='', headers=None, content_type=None):
@@ -42,6 +44,7 @@ class BrowserRoute:
         if content_type:
             response_headers['Content-Type'] = content_type
         payload = body.encode('utf-8') if isinstance(body, str) else body
+        self.operation = 'fulfill'
         self.session.send('Fetch.fulfillRequest', {
             'requestId': self.request_id, 'responseCode': status,
             'responseHeaders': [{'name': name, 'value': value} for name, value in response_headers.items()],
@@ -51,6 +54,7 @@ class BrowserRoute:
 
     def abort(self):
         assert not self.handled, 'A CDP request must be fulfilled or aborted exactly once'
+        self.operation = 'abort'
         self.session.send('Fetch.failRequest', {'requestId': self.request_id, 'errorReason': 'BlockedByClient'})
         self.handled = True
 
@@ -61,6 +65,7 @@ class BrowserInterceptor:
         self.session = browser.new_browser_cdp_session()
         self.guard = guard
         self.errors = []
+        self.cancelled_resources = []
         self.request_count = 0
         self.session.on('Fetch.requestPaused', self._paused)
         self.session.send('Fetch.enable', {'patterns': [{'urlPattern': '*', 'requestStage': 'Request'}]})
@@ -73,7 +78,22 @@ class BrowserInterceptor:
             self.guard(route)
             assert route.handled, 'Guard left a request paused without a decision'
         except Exception as error:
-            self.errors.append(str(error))
+            request = event['request']
+            url = urlsplit(request['url'])
+            details = {'message': str(error), 'method': request['method'], 'host': url.hostname, 'path': url.path,
+                       'resourceType': event['resourceType'].lower(),
+                       'operation': route.operation if route else None}
+            # A renderer may cancel a decorative resource as a context closes.
+            # This cannot excuse a collector, script, or navigation failure.
+            optional = details['resourceType'] in {'image', 'font', 'stylesheet', 'media'} or (
+                details['resourceType'] == 'other' and url.path == '/favicon.ico')
+            cancelled = (route is not None and route.operation == 'fulfill' and
+                         str(error).endswith('Protocol error (Fetch.fulfillRequest): Invalid InterceptionId.') and
+                         request['method'] == 'GET' and url.scheme == 'https' and url.hostname == 'www.mft.care' and optional)
+            if cancelled:
+                self.cancelled_resources.append(details)
+                return
+            self.errors.append(details)
             if route is None or not route.handled:
                 try:
                     self.session.send('Fetch.failRequest', {'requestId': event['requestId'], 'errorReason': 'BlockedByClient'})

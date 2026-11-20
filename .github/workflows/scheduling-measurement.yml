@@ -8,6 +8,8 @@ on:
       - 'src/booking-*.js'
       - 'src/marketing-improvements.js'
       - 'tests/scheduling-measurement*'
+      - 'tests/ops-handoff*'
+      - 'tests/ops_handoff_fixture.py'
       - 'tests/scheduling_confirmation_fixture.py'
       - 'tests/scheduling-transport-probe.py'
       - 'tests/scheduling-browser-harness.py'
@@ -23,6 +25,8 @@ on:
       - 'src/assets/mft-booking.js'
       - 'src/booking-*.js'
       - 'tests/scheduling-measurement*'
+      - 'tests/ops-handoff*'
+      - 'tests/ops_handoff_fixture.py'
       - 'tests/scheduling_confirmation_fixture.py'
       - 'tests/scheduling-browser-harness.py'
       - 'tests/scheduling-browser-harness.test.py'
@@ -49,7 +53,7 @@ jobs:
         run: |
           node --check tests/fixtures/scheduling-transport-probe.js
           node --check tests/fixtures/scheduling-network-probe.js
-          python -m py_compile tests/scheduling-measurement-browser.py tests/scheduling-transport-probe.py tests/scheduling-browser-harness.py tests/scheduling_confirmation_fixture.py
+          python -m py_compile tests/scheduling-measurement-browser.py tests/scheduling-transport-probe.py tests/scheduling-browser-harness.py tests/scheduling_confirmation_fixture.py tests/ops-handoff-browser.py tests/ops_handoff_fixture.py
           python tests/scheduling-browser-harness.test.py
       - name: Build a production-origin candidate without deployment
         id: build
@@ -58,6 +62,7 @@ jobs:
           CONTEXT: production
           SITE_INDEXING_ENABLED: 'true'
           GA4_BASIC_MEASUREMENT_ENABLED: 'true'
+          OPS_HANDOFF_COLLECTION_ENABLED: 'true'
       - run: python -m pip install playwright==1.57.0
       - name: Trace synthetic transport and navigation order
         run: |
@@ -68,11 +73,17 @@ jobs:
         run: |
           export CHROME_PATH="$(command -v google-chrome || command -v chromium)"
           python tests/scheduling-measurement-browser.py
+      - name: First-party handoffs with intercepted Ops and blocked Google
+        if: ${{ !cancelled() && steps.build.outcome == 'success' }}
+        run: |
+          export CHROME_PATH="$(command -v google-chrome || command -v chromium)"
+          python tests/ops-handoff-browser.py
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: scheduling-measurement-verification
           path: |
             tmp/scheduling-measurement/
+            tmp/ops-handoff/
             dist/reports/analytics-integration.json
           retention-days: 7

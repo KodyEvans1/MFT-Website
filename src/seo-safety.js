@@ -2,7 +2,7 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const crypto = require('node:crypto');
-const SITE = 'https://www.mft.care';
+const { SITE, pageUrl: canonicalPageUrl } = require('./site-urls');
 const STATUSES = new Set(['draft', 'reviewed', 'approved', 'existing']);
 
 // An explicit flag is necessary, never sufficient on a preview deployment.
@@ -22,7 +22,7 @@ function assertSlug(slug) {
     throw new Error(`Invalid SEO route slug: ${slug}`);
   return slug;
 }
-function pageUrl(slug) { return `${SITE}/${assertSlug(slug)}/`; }
+function pageUrl(slug) { return canonicalPageUrl(assertSlug(slug)); }
 function sha256(file) { return crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex'); }
 function sitemapUrls(xml) {
   if (!/<urlset\b[^>]*>[\s\S]*<\/urlset>/.test(xml)) throw new Error('Invalid sitemap: missing urlset');
@@ -34,7 +34,8 @@ function fileForUrl(dist, url) {
   const parsed = new URL(url);
   if (parsed.origin !== SITE || parsed.search || parsed.hash || parsed.username || parsed.password)
     throw new Error(`Invalid sitemap URL: ${url}`);
-  // Keep the existing canonical spelling; both /about and /about/ map to its file.
+  // Legacy slashless requests still map to the same file; publication uses the
+  // final trailing-slash spelling, avoiding a redirect in canonical targets.
   const slug = parsed.pathname.slice(1).replace(/\/$/, '');
   if (slug) assertSlug(slug);
   return path.join(dist, slug, 'index.html');
@@ -67,7 +68,11 @@ function planRoutes(entities, dist, coreOwnedSlugs) {
   return { generate, preserved };
 }
 function expectedSitemap(coreUrls, generated, env = process.env) {
-  const candidates = [...coreUrls, ...generated.filter(e => e.status === 'approved').map(e => pageUrl(e.slug))];
+  const canonicalCoreUrls = coreUrls.map(url => {
+    fileForUrl('', url); // Validate the origin, path and absence of query/hash.
+    return canonicalPageUrl(new URL(url).pathname.slice(1).replace(/\/$/, ''));
+  });
+  const candidates = [...canonicalCoreUrls, ...generated.filter(e => e.status === 'approved').map(e => pageUrl(e.slug))];
   if (new Set(candidates).size !== candidates.length) throw new Error('Duplicate publication candidate');
   return indexingEnabled(env) ? candidates.sort() : [];
 }

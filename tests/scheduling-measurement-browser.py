@@ -4,6 +4,7 @@ from pathlib import Path
 from urllib.parse import urlsplit, parse_qs, unquote
 from playwright.sync_api import sync_playwright
 from scheduling_confirmation_fixture import acknowledge_scheduling_dialog
+from ops_handoff_fixture import is_handoff_request, validate_handoff, accept_handoff
 ROOT=Path(__file__).resolve().parents[1]
 spec=importlib.util.spec_from_file_location('mft_scheduling_browser_harness',ROOT/'tests/scheduling-browser-harness.py')
 harness=importlib.util.module_from_spec(spec);spec.loader.exec_module(harness)
@@ -19,7 +20,10 @@ GENERAL_FOOTER='footer a[data-mft-booking="true"]:not([data-mft-couples-consulta
 
 def guard(route):
  req=route.request;u=urlsplit(req.url)
- if u.hostname=='www.mft.care':
+ if is_handoff_request(req):
+  validate_handoff(req)
+  accept_handoff(route)
+ elif u.hostname=='www.mft.care':
   if blocked_optional and u.path=='/assets/mft-analytics.js':route.abort();return
   f=ROOT/'dist'/u.path.lstrip('/')
   if u.path.endswith('/') or not f.suffix:f=f/'index.html'
@@ -55,12 +59,12 @@ def guard(route):
   route.fulfill(status=200,content_type='text/html',body='<!doctype html><html><head><link rel="icon" href="data:,"></head><body><h1>Intercepted scheduler. No real appointment request.</h1></body></html>')
  else:route.abort()
 
-def start(browser,path='/',consent=None,legacy=None,viewport=None,signal=None):
+def start(browser,path='/',consent=None,legacy=None,viewport=None,signal=None,legacy_key='mft.analytics.consent.v2'):
  hits.clear();loaders.clear();destinations.clear();errors.clear()
  interceptor.assert_ok()
  c=browser.new_context(viewport=viewport or {'width':1440,'height':1000},reduced_motion='reduce')
- if consent:c.add_init_script("localStorage.setItem('mft.analytics.consent.v3',"+json.dumps(consent)+")")
- if legacy:c.add_init_script("localStorage.setItem('mft.analytics.consent.v2',"+json.dumps(legacy)+")")
+ if consent:c.add_init_script("if(window.top===window && location.origin==='https://www.mft.care')localStorage.setItem('mft.analytics.consent.v4',"+json.dumps(consent)+")")
+ if legacy:c.add_init_script("if(window.top===window && location.origin==='https://www.mft.care')localStorage.setItem("+json.dumps(legacy_key)+","+json.dumps(legacy)+")")
  if signal:c.add_init_script("Object.defineProperty(Navigator.prototype,"+json.dumps(signal)+",{get:()=>"+('true' if signal=='globalPrivacyControl' else "'1'")+"})")
  page=c.new_page();page.on('pageerror',lambda e:errors.append(str(e)));page.goto(BASE+path,wait_until='domcontentloaded');return c,page
 
@@ -98,12 +102,13 @@ try:
   interceptor=harness.install_browser_interceptor(browser,guard)
   interceptors.append(interceptor)
   report['collectorObserver']='Single browser-target CDP Fetch request-stage interceptor; complete bodies required'
-  c,page=start(browser,legacy='granted');page.wait_for_timeout(400)
-  assert page.locator('#mft-analytics-consent').is_visible() and not loaders and not hits
-  check('Prior visit-only grant requires a fresh analytics choice');c.close()
-  c,page=start(browser,legacy='denied');page.wait_for_timeout(250)
-  assert not page.locator('#mft-analytics-consent').count() and not loaders
-  check('Previous refusal remains respected');c.close()
+  for legacy_key,label in [('mft.analytics.consent.v2','visit-only'),('mft.analytics.consent.v3','Google-only')]:
+   c,page=start(browser,legacy='granted',legacy_key=legacy_key);page.wait_for_timeout(400)
+   assert page.locator('#mft-analytics-consent').is_visible() and not loaders and not hits
+   check('Prior '+label+' grant requires a fresh analytics choice');c.close()
+   c,page=start(browser,legacy='denied',legacy_key=legacy_key);page.wait_for_timeout(250)
+   assert not page.locator('#mft-analytics-consent').count() and not loaders
+   check('Previous '+label+' refusal remains respected');c.close()
   for campaign_id,landing in [('24530528782','/emily-johnsrud-bio/'),('24524392745','/autumn-alexander/')]:
    # Full configured suffix, with synthetic ad-group/creative values. Only the
    # reviewed campaign ID and normalized source/medium may reach Google.

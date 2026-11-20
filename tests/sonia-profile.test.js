@@ -22,7 +22,7 @@ test('Sonia registry, evidence, and displayed concerns and modalities agree',()=
  assert.match(h,/DBT\) skills/);assert.match(h,/Narrative Therapy/);assert.match(h,/somatic approaches/);
 });
 test('canonical, metadata and JSON-LD use one profile route with legacy 301 compatibility',()=>{
- const canonical='https://www.mft.care/'+slug;
+ const canonical='https://www.mft.care/'+slug+'/';
  assert.ok(h.includes('<link rel="canonical" href="'+canonical+'">'));
  assert.ok(h.includes('property="og:url" content="'+canonical+'"'));
  const schemas=[...h.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map(m=>JSON.parse(m[1]));

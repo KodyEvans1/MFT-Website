@@ -36,6 +36,20 @@ test('page identifiers do not expose route text',()=>{
   assert.equal(key.includes('anxiety'),false);
 });
 
+test('first-party handoff collection requires its explicit production gate and stays out of excluded pages',()=>{
+ const prod={CONTEXT:'production',SITE_INDEXING_ENABLED:'true',GA4_BASIC_MEASUREMENT_ENABLED:'true',OPS_HANDOFF_COLLECTION_ENABLED:'true'};
+ const html='<html><body>Public page</body></html>';
+ const allowed=new Set(['/','/marriage-reset-assessment/']);
+ assert.equal(a.handoffEnabled(prod),true);
+ assert.match(a.inject(html,'/',allowed,prod).html,/data-mft-handoff-endpoint="https:\/\/ops\.mft\.care\/api\/marketing\/attribution"/);
+ for(const env of [{...prod,OPS_HANDOFF_COLLECTION_ENABLED:'false'},{...prod,CONTEXT:'deploy-preview'},{...prod,SITE_INDEXING_ENABLED:'false'},{...prod,GA4_BASIC_MEASUREMENT_ENABLED:'false'},{...prod,NETLIFY_PREVIEW_SERVER:'true'}]){
+  assert.equal(a.handoffEnabled(env),false);
+  assert.doesNotMatch(a.inject(html,'/',allowed,env).html,/data-mft-handoff-endpoint/);
+ }
+ for(const route of ['/draft/','/marriage-reset-assessment/'])assert.equal(a.inject(html,route,allowed,prod).injected,false);
+ assert.equal(a.inject('<html><body><form></form></body></html>','/',allowed,prod).injected,false);
+});
+
 test('browser analytics asset does not read sensitive page or form values',()=>{
   const js=fs.readFileSync(path.join(__dirname,'../src/assets/mft-analytics.js'),'utf8');
   assert.doesNotMatch(js,/document\.title|location\.href|FormData|querySelector\(['"][^'"]*(?:input|textarea|form)/);

@@ -1,5 +1,5 @@
 'use strict';
-const { enabled } = require('./analytics-build');
+const { enabled, handoffEnabled, HANDOFF_ENDPOINT } = require('./analytics-build');
 
 // Compatibility with the retired first-party booking/Ops collection design.
 // This flag does not control the consent-required GA4 runtime.
@@ -8,7 +8,7 @@ const FINAL_VERIFIED_SCOPE = 'generated HTML inventory, route eligibility, and p
 
 function measurementReport(env = process.env) {
   return {
-    version: 1,
+    version: 2,
     legacyBookingCollector: {
       enabled: LEGACY_BOOKING_MEASUREMENT_ENABLED,
       compatibilityFlag: 'MFT_BOOKING_CONFIG.measurementEnabled',
@@ -19,6 +19,19 @@ function measurementReport(env = process.env) {
       runtimeConsentRequired: true,
       runtimeEntryPoint: 'MFTSchedulingMeasurement.track',
       inventoryReport: '/reports/analytics-integration.json'
+    },
+    consentControlledOps: {
+      buildEnabled: handoffEnabled(env),
+      endpoint: handoffEnabled(env) ? HANDOFF_ENDPOINT : null,
+      event: 'simplepractice_exit',
+      consentVersion: 'mft.analytics.consent.v4',
+      runtimeConsentRequired: true,
+      actionId: 'one random UUID per handoff; reused for a bounded retry',
+      visitorIdentifier: false,
+      sourceLifetimeMinutes: 30,
+      eventRetentionDays: 30,
+      expiredEventDeletion: 'daily cleanup and ingestion cleanup after the 30-day reporting cutoff',
+      appointmentMatching: 'unmatched until a supported, demonstrated identifier connection exists'
     },
     schedulingMetric: {
       displayName: 'Website scheduling-link click',
@@ -33,6 +46,9 @@ function measurementReport(env = process.env) {
     },
     evidenceScope: 'website build configuration only',
     externalVerification: {
+      opsHandoffReceipt: 'not verified by this build report',
+      simplePracticeRequestVerification: 'existing protected Ops workflow; not established by website activity',
+      internalRequestAttribution: 'requires demonstrated evidence; handoff IDs do not identify a request',
       googleCollectorAcceptance: 'not verified by this report',
       ga4PropertyReceipt: 'not verified by this report',
       googleAdsAttribution: 'not verified by this report',

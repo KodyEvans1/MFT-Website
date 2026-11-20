@@ -16,7 +16,7 @@ BASE = 'https://www.mft.care'
 REQUEST = 'https://marriagefamilytherapy.clientsecure.me/request'
 SIGN_IN = 'https://marriagefamilytherapy.clientsecure.me/sign-in'
 ACK = 'mft.newClientAccountAcknowledgment.v1'
-CONSENT = 'mft.analytics.consent.v3'
+CONSENT = 'mft.analytics.consent.v4'
 PRIMARY = 'a[data-marketing-appointment="primary"]'
 FREE = '.mh-hero a[data-mft-ten-minute-consultation="true"]'
 CSP = re.search(r'Content-Security-Policy: ([^\n]+)', (ROOT / 'dist/_headers').read_text())[1]

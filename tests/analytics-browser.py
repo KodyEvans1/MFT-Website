@@ -129,11 +129,11 @@ try:
         for signal in ['globalPrivacyControl','doNotTrack']:
             google_requests.clear();hits.clear();current_case=signal;c=context(browser)
             value='true' if signal=='globalPrivacyControl' else "'1'"
-            c.add_init_script(f"Object.defineProperty(Navigator.prototype,'{signal}',{{get:()=>{value}}});localStorage.setItem('mft.analytics.consent.v2','granted');")
+            c.add_init_script(f"Object.defineProperty(Navigator.prototype,'{signal}',{{get:()=>{value}}});localStorage.setItem('mft.analytics.consent.v4','granted');")
             page=c.new_page();page.goto(BASE+'/',wait_until='domcontentloaded');page.wait_for_timeout(600)
             assert not google_requests and not hits;record(signal+' overrides stored consent');c.close()
         for path in ['/check-my-coverage/','/marriage-reset-assessment/','/start/','/marriagereset/']:
-            google_requests.clear();hits.clear();current_case=path;c=context(browser);c.add_init_script("localStorage.setItem('mft.analytics.consent.v2','granted')")
+            google_requests.clear();hits.clear();current_case=path;c=context(browser);c.add_init_script("localStorage.setItem('mft.analytics.consent.v4','granted')")
             page=c.new_page();page.goto(BASE+path,wait_until='domcontentloaded');page.wait_for_timeout(250)
             assert page.locator('script[data-mft-measurement-id]').count()==0
             assert not google_requests and not hits;record('Excluded '+path);c.close()

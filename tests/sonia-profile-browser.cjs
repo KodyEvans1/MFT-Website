@@ -5,6 +5,22 @@ const fs=require('node:fs'),path=require('node:path'),http=require('node:http'),
 const {chromium}=require('playwright');
 const dist=path.resolve(__dirname,'../dist'),out=path.resolve(__dirname,'../tmp/'+(process.env.SONIA_BASE_URL?'sonia-profile-live':'sonia-profile'));
 fs.mkdirSync(out,{recursive:true});
+async function completeSchedulingDialog(page,expected){
+ const gate=page.locator('dialog.mft-consultation-gate[open]');
+ if(!await gate.count()||!await gate.isVisible())return false;
+ assert.equal(await gate.count(),1,'Only one scheduling dialog may be open');
+ const go=gate.locator('[data-consultation-continue]');
+ assert.equal(await go.getAttribute('href'),null,'Confirmation must begin without an enabled handoff');
+ let visible=0;
+ for(const selector of ['[data-mft-account-ack]','[data-mft-consultation-ack]']){
+  const checkbox=gate.locator(selector);
+  if(await checkbox.count()&&await checkbox.isVisible()){visible++;await checkbox.check();}
+ }
+ assert.ok(visible,'The scheduling dialog must expose its required acknowledgment');
+ assert.equal(await go.getAttribute('href'),expected,'Confirmation must preserve the native scheduling destination');
+ assert.equal(await go.getAttribute('aria-disabled'),'false');
+ await go.click();return true;
+}
 const server=http.createServer((req,res)=>{
  const url=new URL(req.url,'http://local');
  const redirect=fs.readFileSync(path.join(dist,'_redirects'),'utf8').split('\n').map(l=>l.split(/\s+/)).find(r=>r[0]===url.pathname);
@@ -38,7 +54,8 @@ const server=http.createServer((req,res)=>{
    return {fit:getComputedStyle(img).objectFit,overflow:document.documentElement.scrollWidth>innerWidth+2,loaded:img.naturalWidth>0,treatment:document.querySelector('[data-clinician-hero]').dataset.heroTreatment};
   });assert.deepEqual(geometry,{fit:'contain',overflow:false,loaded:true,treatment:'green-blend'});
   await page.screenshot({path:path.join(out,'sonia-'+width+'.png'),fullPage:true});
-  await page.locator('[data-clinician-hero] a[data-mft-booking]').click();await page.waitForURL('https://clientsecure.me/**');
+  const heroLink=page.locator('[data-clinician-hero] a[data-mft-booking]'),heroDestination=await heroLink.getAttribute('href');
+  await heroLink.click();await completeSchedulingDialog(page,heroDestination);await page.waitForURL('https://clientsecure.me/**');
   assert.equal(new URL(page.url()).searchParams.get('clinicianId'),'2065412');assert.equal(context.pages().length,1);
   for(const legacy of ['/new-page-47','/new-page-47/']){
    const response=await context.request.get(base+legacy,{maxRedirects:0});assert.equal(response.status(),301);assert.equal(new URL(response.headers().location,base).pathname,'/sonia-hassan-bio/');
@@ -53,13 +70,14 @@ const server=http.createServer((req,res)=>{
   if(candidate){
    assert.equal(await header.getAttribute('data-mft-booking-intent'),'appointment');
    assert.equal(await header.getAttribute('data-spwidget-clinician-id'),'2065412');
-   await header.click();await page.waitForURL('https://clientsecure.me/**');
+   const destination=await header.getAttribute('href');
+   await header.click();await completeSchedulingDialog(page,destination);await page.waitForURL('https://clientsecure.me/**');
    assert.equal(new URL(page.url()).searchParams.get('clinicianId'),'2065412');
   }else{
    await header.click();await page.locator('dialog[open]').waitFor();
    const go=page.locator('[data-consultation-continue]');assert.equal(await go.getAttribute('href'),null);
-   await page.locator('dialog input[type=checkbox]').check();assert.equal(await go.getAttribute('href'),'https://marriagefamilytherapy.clientsecure.me/request');
-   await go.click();await page.waitForURL('https://marriagefamilytherapy.clientsecure.me/request');
+   assert.ok(await page.locator('dialog[open] [data-mft-consultation-ack]').isVisible());
+   await completeSchedulingDialog(page,'https://marriagefamilytherapy.clientsecure.me/request');await page.waitForURL('https://marriagefamilytherapy.clientsecure.me/request');
   }
   assert.equal(context.pages().length,1);
   cases.push({width,pass:true,geometry,legacyRedirects:2,soniaId:'2065412',scheduler:'intercepted native navigation; no provider submission'});await context.close();

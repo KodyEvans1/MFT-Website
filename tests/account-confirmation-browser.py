@@ -172,9 +172,20 @@ try:
         assert case.value(CONSENT) is None and case.value(ACK) is None and not case.events
         assert page.evaluate('document.documentElement.scrollWidth<=innerWidth+1')
         assert gate.evaluate('(el)=>el.scrollWidth<=el.clientWidth+1')
-        for _ in range(10):
+        for step in range(10):
             page.keyboard.press('Tab')
-            assert gate.evaluate('(el)=>el.contains(document.activeElement)'), 'Focus escaped the native modal'
+            focus = gate.evaluate('''el => {
+                const active = document.activeElement;
+                return {tag: active?.tagName || null, id: active?.id || null,
+                    role: active?.getAttribute('role') || null,
+                    insideDialog: el.contains(active), documentHasFocus: document.hasFocus(),
+                    pageRoot: active === document.body || active === document.documentElement};
+            }''')
+            report.setdefault('tabFocus', []).append({'step': step + 1, **focus})
+            # Native dialogs may tab to browser chrome (WHATWG/html#8339).
+            # This never permits focus on an interactive background page control.
+            assert focus['insideDialog'] or (focus['pageRoot'] and not focus['documentHasFocus']), {
+                'error': 'Focus escaped the native modal into the page', 'step': step + 1, 'focus': focus}
         account = gate.locator('[data-mft-account-ack]')
         account.focus(); page.keyboard.press('Space')
         assert account.is_checked() and go.get_attribute('href') == expected
@@ -186,7 +197,7 @@ try:
         link.click(); page.keyboard.press('Escape')
         expect(gate).not_to_be_visible(); expect(link).to_be_focused()
         assert case.value(ACK) is None and case.value(CONSENT) is None and not case.events
-        checked('320px keyboard flow, focus trap/restoration, Cancel/Escape, unchanged consent and no premature persistence or events')
+        checked('320px keyboard flow, native focus boundaries/restoration, Cancel/Escape, unchanged consent and no premature persistence or events')
         link.click(); go = acknowledge_scheduling_dialog(page)
         page.screenshot(path=str(OUT / 'account-320.png'))
         # An untrusted programmatic activation cannot save or measure. A second

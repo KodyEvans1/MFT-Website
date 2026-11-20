@@ -63,9 +63,9 @@ class Case:
         self.context = browser.new_context(viewport={'width': width, 'height': 844}, reduced_motion='reduce', java_script_enabled=javascript)
         self.context.on('page', self.observe)
         if consent is not None:
-            self.context.add_init_script('localStorage.setItem(' + json.dumps(CONSENT) + ',' + json.dumps(consent) + ')')
+            self.context.add_init_script('if (window.top===window && location.origin===' + json.dumps(BASE) + ') localStorage.setItem(' + json.dumps(CONSENT) + ',' + json.dumps(consent) + ')')
         if acknowledgment is not None:
-            self.context.add_init_script('localStorage.setItem(' + json.dumps(ACK) + ',' + json.dumps(acknowledgment) + ')')
+            self.context.add_init_script('if (window.top===window && location.origin===' + json.dumps(BASE) + ') localStorage.setItem(' + json.dumps(ACK) + ',' + json.dumps(acknowledgment) + ')')
         if storage:
             self.context.add_init_script('''(() => {
                 const key = %s, get = Storage.prototype.getItem, set = Storage.prototype.setItem;

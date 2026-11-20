@@ -106,12 +106,24 @@ try:
                     snapshot(page,name+'-opening');snapshot(page,name,True)
                     if route!='/':page.locator('#existing-clients').screenshot(path=str(OUT/f'existing-clients-{width}.png'))
                 record('Responsive choices and qualifiers',route=route,width=width)
+        marketed_routes={'/sonia-hassan-bio/':'appointment','/new-page/':'appointment','/marriage-and-couples-therapy-counseling/':'consultation'}
         for route in ['/team/','/sonia-hassan-bio/','/new-page/','/marriage-and-couples-therapy-counseling/','/marriagereset/','/marriage-reset-assessment/']:
             ready(page,route)
-            expect(page.locator('.mft-schedule-shortcuts [data-mft-existing-client]')).to_be_visible()
-            expect(page.locator('.mft-schedule-shortcuts [data-mft-couples-consultation]')).to_be_visible()
+            returning=page.locator(('.marketing-returning' if route in marketed_routes else '.mft-schedule-shortcuts')+' [data-mft-existing-client]')
+            expect(returning).to_be_visible()
+            assert returning.get_attribute('href')=='https://marriagefamilytherapy.clientsecure.me/sign-in'
+            if route in marketed_routes:
+                primary=page.locator('a[data-marketing-appointment="primary"]')
+                expect(primary).to_be_visible()
+                assert primary.get_attribute('data-mft-booking-intent')==marketed_routes[route]
+                if marketed_routes[route]=='consultation':
+                    assert primary.get_attribute('data-mft-couples-consultation')=='true'
+                else:
+                    expect(page.locator('.mft-footer-scheduling a[href="/marriage-and-couples-therapy-counseling/"]')).to_be_visible()
+            else:
+                expect(page.locator('.mft-schedule-shortcuts [data-mft-couples-consultation]')).to_be_visible()
             assert page.evaluate('document.documentElement.scrollWidth<=innerWidth+1')
-            record('Shared scheduling shortcuts',route=route)
+            record('Page-appropriate scheduling choices',route=route)
         nojs=browser.new_context(java_script_enabled=False,viewport={'width':390,'height':844});nojs.route('**/*',guard)
         n=nojs.new_page();ready(n,'/how-to-start-therapy/')
         details=n.locator('.mft-couples-readiness');assert not details.locator('a').is_visible()

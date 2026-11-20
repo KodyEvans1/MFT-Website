@@ -125,7 +125,7 @@ def main():
 
         context.route("**/*", guard)
         # No live analytics opt-in: both current and legacy choices are denied.
-        context.add_init_script("try { localStorage.setItem('mft.analytics.consent.v3','denied'); localStorage.setItem('mft.analytics.consent.v2','denied'); } catch {}")
+        context.add_init_script("try { localStorage.setItem('mft.analytics.consent.v4','denied'); localStorage.setItem('mft.analytics.consent.v2','denied'); } catch {}")
         if scenario == "gpc":
             context.add_init_script("Object.defineProperty(navigator, 'globalPrivacyControl', {value:true});")
         if scenario == "dnt":
@@ -232,9 +232,9 @@ def main():
                         visit(page, slug)
                         assert page.locator("h1").count() == 1 and page.locator("main").count() == 1
                         assert page.locator("h1").inner_text().strip() == expected_heading(slug)
-                        # Existing published canonicals omit the final slash. Preserve
-                        # that convention while the actual route remains slash-safe.
-                        assert page.locator('link[rel="canonical"]').get_attribute("href") == "https://www.mft.care/" + slug
+                        # Canonicals identify Netlify's final directory URL, not
+                        # the slashless request that redirects to it.
+                        assert page.locator('link[rel="canonical"]').get_attribute("href") == "https://www.mft.care/" + slug + "/"
                         assert page.evaluate("document.documentElement.scrollWidth <= innerWidth + 1"), f"Horizontal overflow at {width}px"
                         link_check(page, slug)
                         primary = page.locator(MARKER.format("primary"))

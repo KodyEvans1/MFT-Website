@@ -37,6 +37,23 @@ test('the reported scheduling metric has one source event and excludes diagnosti
   assert.doesNotMatch(JSON.stringify(metric), /"scheduling_click"/);
 });
 
+test('Ops handoff configuration is explicit and cannot claim request verification or attribution', () => {
+  const off=measurementReport(production).consentControlledOps;
+  assert.equal(off.buildEnabled,false);
+  assert.equal(off.endpoint,null);
+  const report=measurementReport({...production,OPS_HANDOFF_COLLECTION_ENABLED:'true'});
+  assert.equal(report.legacyBookingCollector.enabled,false);
+  assert.equal(report.consentControlledOps.buildEnabled,true);
+  assert.equal(report.consentControlledOps.event,'simplepractice_exit');
+  assert.equal(report.consentControlledOps.consentVersion,'mft.analytics.consent.v4');
+  assert.equal(report.consentControlledOps.visitorIdentifier,false);
+  assert.equal(report.consentControlledOps.sourceLifetimeMinutes,30);
+  assert.equal(report.consentControlledOps.eventRetentionDays,30);
+  assert.match(report.consentControlledOps.appointmentMatching,/unmatched/);
+  assert.match(report.externalVerification.opsHandoffReceipt,/not verified/);
+  assert.match(report.externalVerification.simplePracticeRequestVerification,/not established by website activity/);
+});
+
 test('build metadata does not turn environment data or configuration into account receipt evidence', () => {
   const report = measurementReport({...production, PRIVATE_ACCOUNT:'synthetic-private-account', PRIVATE_APPROVER:'synthetic-private-reviewer'});
   assert.equal(report.externalVerification.googleCollectorAcceptance, 'not verified by this report');

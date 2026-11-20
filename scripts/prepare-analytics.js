@@ -1,7 +1,7 @@
 'use strict';
 const fs = require('node:fs');
 const path = require('node:path');
-const { SITE, enabled, normalizeRoute, inject, assetVersion } = require('../src/analytics-build');
+const { SITE, enabled, handoffEnabled, normalizeRoute, inject, assetVersion } = require('../src/analytics-build');
 const { LEGACY_BOOKING_MEASUREMENT_ENABLED, measurementReport } = require('../src/measurement-report');
 
 const root = path.resolve(__dirname, '..');
@@ -46,6 +46,7 @@ if(enabled()){
     .replace("script-src 'self' https://widget-cdn.simplepractice.com;", "script-src 'self' https://widget-cdn.simplepractice.com https://www.googletagmanager.com;")
     .replace("connect-src 'self' https://clientsecure.me https://marriagefamilytherapy.clientsecure.me;", "connect-src 'self' https://clientsecure.me https://marriagefamilytherapy.clientsecure.me https://www.google-analytics.com https://region1.google-analytics.com;")
     .replace("img-src 'self' https://images.squarespace-cdn.com data:;", "img-src 'self' https://images.squarespace-cdn.com https://www.google-analytics.com https://region1.google-analytics.com data:;");
+  if(handoffEnabled())headers=headers.replace(/connect-src ([^;]+);/,"connect-src $1 https://ops.mft.care;");
   fs.writeFileSync(path.join(dist,'_headers'),headers);
   fs.appendFileSync(path.join(dist,'assets/styles.css'), '\n.mft-analytics-settings{font:inherit;font-size:.8rem;background:none;color:inherit;border:0;text-decoration:underline;text-underline-offset:.2em;cursor:pointer;padding:.5rem 0}\n');
   fs.appendFileSync(path.join(dist,'assets/styles.css'), '\n.mft-analytics-consent{position:fixed;z-index:9999;left:1rem;right:1rem;bottom:1rem;max-width:720px;margin:auto;padding:1rem 1.15rem;border:1px solid #b49554;border-radius:16px;background:#f7f3ea;color:#143d3a;box-shadow:0 16px 50px #0004;font:inherit}.mft-analytics-consent p{margin:0 0 .8rem}.mft-analytics-consent div{display:flex;gap:.65rem;justify-content:flex-end;flex-wrap:wrap}.mft-analytics-consent button{font:inherit;border-radius:999px;padding:.55rem 1rem;border:1px solid #143d3a;background:#fff;color:#143d3a;cursor:pointer}.mft-analytics-consent button[data-choice="grant"]{background:#143d3a;color:#fff}\n');

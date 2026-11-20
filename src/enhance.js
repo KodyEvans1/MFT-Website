@@ -2,7 +2,7 @@ const fs=require('fs');
 const path=require('path');
 const ROOT=path.resolve(__dirname,'..');
 const DIST=path.join(ROOT,'dist');
-const SITE='https://www.mft.care';
+const { SITE, pageUrl } = require('./site-urls');
 for(const asset of ['mft-logo.svg','mft-logo-white.svg']) fs.copyFileSync(path.join(ROOT,'src','assets',asset),path.join(DIST,'assets',asset));
 
 const bookingMap={
@@ -129,7 +129,7 @@ const jsPath=path.join(DIST,'assets/site.js');
 function makeAdPage(sourceRoute,adRoute,title,h1,summary,placement){
   const source=sourceRoute==='/'?path.join(DIST,'index.html'):path.join(DIST,sourceRoute,'index.html');
   let h=fs.readFileSync(source,'utf8');
-  const canonical=SITE+'/'+adRoute+'/';
+  const canonical=pageUrl(adRoute);
   h=h.replace(/<title>.*?<\/title>/,`<title>${title}</title>`);
   h=h.replace(/<meta name="description" content="[^"]*">/,`<meta name="description" content="${summary}">`);
   h=h.replace(/<meta name="robots" content="[^"]*">/,'<meta name="robots" content="noindex,nofollow">');
@@ -137,6 +137,17 @@ function makeAdPage(sourceRoute,adRoute,title,h1,summary,placement){
   h=h.replace(/<meta property="og:title" content="[^"]*">/,`<meta property="og:title" content="${title}">`);
   h=h.replace(/<meta property="og:description" content="[^"]*">/,`<meta property="og:description" content="${summary}">`);
   h=h.replace(/<meta property="og:url" content="[^"]*">/,`<meta property="og:url" content="${canonical}">`);
+  h=h.replace(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/,(_,raw)=>{
+    const schema=JSON.parse(raw);
+    for(const item of schema['@graph']||[]) {
+      if(item['@type']==='WebPage') Object.assign(item,{'@id':canonical+'#webpage',url:canonical,name:title,description:summary});
+      if(item['@type']==='BreadcrumbList') {
+        item['@id']=canonical+'#breadcrumb';
+        item.itemListElement=[{'@type':'ListItem',position:1,name:'Home',item:pageUrl()},{'@type':'ListItem',position:2,name:title,item:canonical}];
+      }
+    }
+    return '<script type="application/ld+json">'+JSON.stringify(schema).replace(/</g,'\\u003c')+'</script>';
+  });
   h=h.replace(/<h1>.*?<\/h1>/,`<h1>${h1}</h1>`);
   h=h.replace(/<p class="hero-summary">.*?<\/p>/,`<p class="hero-summary">${summary}</p>`);
   h=h.replace('<nav class="breadcrumbs" aria-label="Breadcrumb">','<div class="ad-note">Google Ads landing page · SimplePractice scheduling</div><nav class="breadcrumbs" aria-label="Breadcrumb">');

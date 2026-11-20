@@ -1,10 +1,10 @@
 const fs = require('fs');
 const path = require('path');
 const presentation = require('./ui/clinician-presentation');
+const { SITE, pagePath, pageUrl } = require('./site-urls');
 
 const ROOT = path.resolve(__dirname, '..');
 const DIST = path.join(ROOT, 'dist');
-const SITE = 'https://www.mft.care';
 const INDEXING = /^true$/i.test(process.env.SITE_INDEXING_ENABLED || '');
 const VERIFY = (process.env.GOOGLE_SITE_VERIFICATION || '').trim();
 const APPOINTMENT = 'https://marriagefamilytherapy.clientsecure.me/';
@@ -195,8 +195,8 @@ const allPages = [...core, ...services, assessment, assessmentThanks, ...clinici
 
 const collections = { services, clinicians, locations, concerns, approaches, resources };
 const esc = (v='') => String(v).replace(/[&<>\"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[c]));
-const urlFor = p => `${SITE}${p.slug ? `/${p.slug}` : '/'}`;
-const localFor = p => p.slug ? `/${p.slug}/` : '/';
+const urlFor = p => pageUrl(p.slug);
+const localFor = p => pagePath(p.slug);
 const write = (file, content) => { fs.mkdirSync(path.dirname(file), {recursive:true}); fs.writeFileSync(file, content); };
 const safeJson = obj => JSON.stringify(obj).replace(/</g, '\\u003c');
 

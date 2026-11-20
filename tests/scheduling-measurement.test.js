@@ -39,9 +39,24 @@ test('measurement never starts before consent; unapproved events do not queue',(
  x.c.MFTAnalyticsConsent.grant();x.ready();
  assert.equal(x.queryReads(),1);assert.equal(x.sent[0].message.source.campaignId,'24530528782');
 });
-test('old visit-only permission is not inherited for scheduling; old refusal is respected',()=>{
- assert.equal(parentFixture({local:{'mft.analytics.consent.v2':'granted'}}).c.MFTAnalyticsConsent.status(),'unset');
- assert.equal(parentFixture({local:{'mft.analytics.consent.v2':'denied'}}).c.MFTAnalyticsConsent.status(),'denied');
+test('previous Google-only and visit-only grants do not authorize expanded website measurement',()=>{
+ for(const key of ['mft.analytics.consent.v2','mft.analytics.consent.v3']){
+  const x=parentFixture({local:{[key]:'granted'},search:paidSuffix('24530528782')});
+  assert.equal(x.c.MFTAnalyticsConsent.status(),'unset');
+  assert.equal(x.c.MFTSchedulingMeasurement.track(['simplepractice_exit'],'body'),false);
+  assert.equal(x.elements.length,0);assert.equal(x.queryReads(),0);
+  x.c.MFTAnalyticsConsent.grant();
+  assert.equal(x.c.localStorage.getItem('mft.analytics.consent.v4'),'granted');
+  assert.equal(x.c.MFTAnalyticsConsent.status(),'granted');
+ }
+});
+test('legacy refusals are honored, the latest legacy choice wins, and explicit v4 choice is authoritative',()=>{
+ for(const key of ['mft.analytics.consent.v2','mft.analytics.consent.v3']){
+  assert.equal(parentFixture({local:{[key]:'denied'}}).c.MFTAnalyticsConsent.status(),'denied');
+ }
+ assert.equal(parentFixture({local:{'mft.analytics.consent.v3':'granted','mft.analytics.consent.v2':'denied'}}).c.MFTAnalyticsConsent.status(),'unset');
+ assert.equal(parentFixture({local:{'mft.analytics.consent.v4':'granted','mft.analytics.consent.v3':'denied','mft.analytics.consent.v2':'denied'}}).c.MFTAnalyticsConsent.status(),'granted');
+ assert.equal(parentFixture({local:{'mft.analytics.consent.v4':'denied','mft.analytics.consent.v3':'granted'}}).c.MFTAnalyticsConsent.status(),'denied');
 });
 test('paid source sends only allowlisted source, medium, known campaign ID',()=>{
  const x=parentFixture({search:'?utm_source=google&utm_medium=cpc&utm_campaign_id=24362234053&gclid=secret-click&utm_term=private-term&email=private@example.invalid&utm_adgroup_id=202031516078'});

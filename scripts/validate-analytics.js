@@ -25,10 +25,15 @@ function apply(dist) {
     if (!allowed.has(route) || !sitemap.has(route) || analytics.isSensitive(route) || /<(?:form|input|textarea)\b/i.test(html)) throw Error('Unapproved analytics page: '+route);
     const keys = [...html.matchAll(/data-mft-page-key="([^"]+)"/g)].map(m => m[1]);
     if (keys.length !== 1 || keys[0] !== analytics.pageKey(route)) throw Error('Wrong analytics page identity: '+route);
+    const endpoints = [...html.matchAll(/data-mft-handoff-endpoint="([^"]+)"/g)].map(m => m[1]);
+    const opsEnabled = report.measurement?.consentControlledOps?.buildEnabled === true;
+    if(opsEnabled ? endpoints.length!==1 || endpoints[0]!==analytics.HANDOFF_ENDPOINT : endpoints.length!==0)
+      throw Error('Wrong first-party handoff installation: '+route);
     actual.push(route);
   }
   if (JSON.stringify(actual.sort()) !== JSON.stringify([...allowed].sort())) throw Error('Final analytics inventory does not match approved injection');
   report.finalVerified = true; report.finalVerifiedScope = FINAL_VERIFIED_SCOPE; report.finalPages = actual; report.removedInheritedTags = stripped.length;
+  report.opsHandoffPages = report.measurement?.consentControlledOps?.buildEnabled === true ? [...actual] : [];
   fs.writeFileSync(reportFile, JSON.stringify(report,null,2)+'\n');
   console.log(JSON.stringify({verifiedAnalyticsPages: actual.length, removedInheritedTags: stripped.length}));
 }

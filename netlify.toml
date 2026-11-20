@@ -14,9 +14,12 @@
 [context.production.environment]
   GA4_BASIC_MEASUREMENT_ENABLED = "true"
   SITE_INDEXING_ENABLED = "true"
+  OPS_HANDOFF_COLLECTION_ENABLED = "true"
 [context.deploy-preview.environment]
   GA4_BASIC_MEASUREMENT_ENABLED = "false"
   SITE_INDEXING_ENABLED = "false"
+  OPS_HANDOFF_COLLECTION_ENABLED = "false"
 [context.branch-deploy.environment]
   GA4_BASIC_MEASUREMENT_ENABLED = "false"
   SITE_INDEXING_ENABLED = "false"
+  OPS_HANDOFF_COLLECTION_ENABLED = "false"

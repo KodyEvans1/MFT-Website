@@ -8,6 +8,8 @@ const { indexingEnabled } = require('./seo-safety');
 const MEASUREMENT_ID = 'G-BTK39BBNRE';
 const SITE = 'https://www.mft.care';
 const ENABLE_FLAG = 'GA4_BASIC_MEASUREMENT_ENABLED';
+const HANDOFF_ENABLE_FLAG = 'OPS_HANDOFF_COLLECTION_ENABLED';
+const HANDOFF_ENDPOINT = 'https://ops.mft.care/api/marketing/attribution';
 
 const SENSITIVE_PATHS = [
   /^\/marriage-reset-assessment(?:\/|$)/,
@@ -25,6 +27,9 @@ const SENSITIVE_PATHS = [
 
 function enabled(env = process.env) {
   return indexingEnabled(env) && /^true$/i.test(String(env[ENABLE_FLAG] || ''));
+}
+function handoffEnabled(env = process.env) {
+  return enabled(env) && /^true$/i.test(String(env[HANDOFF_ENABLE_FLAG] || ''));
 }
 function normalizeRoute(route) {
   let p = String(route || '/').split(/[?#]/)[0] || '/';
@@ -49,8 +54,9 @@ function inject(html, route, allowedRoutes, env = process.env) {
   if (/G-BTK39BBNRE|mft-analytics\.js/.test(html)) throw new Error('Existing Google Analytics integration detected; refusing duplicate installation');
   const tag = '<script src="/assets/mft-analytics.js?v=' + assetVersion('mft-analytics.js') +
     '" defer data-mft-measurement-id="' + MEASUREMENT_ID + '" data-mft-frame-version="' + frameVersion() +
-    '" data-mft-page-key="' + pageKey(p) + '"></script>';
+    '" data-mft-page-key="' + pageKey(p) + '"' +
+    (handoffEnabled(env) ? ' data-mft-handoff-endpoint="' + HANDOFF_ENDPOINT + '"' : '') + '></script>';
   if (!html.includes('</body>')) throw new Error('Missing closing body tag for analytics injection: ' + p);
   return { html: html.replace('</body>', tag + '</body>'), injected: true, reason: 'approved-production-page' };
 }
-module.exports = { MEASUREMENT_ID, SITE, ENABLE_FLAG, enabled, normalizeRoute, isSensitive, pageKey, inject, assetVersion, strip, frameVersion };
+module.exports = { MEASUREMENT_ID, SITE, ENABLE_FLAG, HANDOFF_ENABLE_FLAG, HANDOFF_ENDPOINT, enabled, handoffEnabled, normalizeRoute, isSensitive, pageKey, inject, assetVersion, strip, frameVersion };

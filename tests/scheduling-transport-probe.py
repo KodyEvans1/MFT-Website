@@ -4,6 +4,7 @@ from pathlib import Path
 from urllib.parse import urlsplit, parse_qs
 from playwright.sync_api import sync_playwright
 from scheduling_confirmation_fixture import acknowledge_scheduling_dialog
+from ops_handoff_fixture import is_handoff_request, validate_handoff, accept_handoff
 
 ROOT=Path(__file__).resolve().parents[1]
 spec=importlib.util.spec_from_file_location('mft_scheduling_browser_harness',ROOT/'tests/scheduling-browser-harness.py')
@@ -34,7 +35,10 @@ def describe(url,body=None):
 
 def guard(route):
     req=route.request;u=urlsplit(req.url)
-    if u.hostname=='www.mft.care':
+    if is_handoff_request(req):
+        validate_handoff(req)
+        accept_handoff(route)
+    elif u.hostname=='www.mft.care':
         f=ROOT/'dist'/u.path.lstrip('/')
         if u.path.endswith('/') or not f.suffix:f=f/'index.html'
         if not f.is_file():route.fulfill(status=404,body='Not found');return
@@ -83,7 +87,7 @@ try:
         interceptor=harness.install_browser_interceptor(browser,guard)
         result['collectorObserver']='Single browser-target CDP Fetch request-stage interceptor; complete bodies required'
         context=browser.new_context(viewport={'width':1440,'height':1000},reduced_motion='reduce')
-        context.add_init_script("if(location.origin==='https://www.mft.care')localStorage.setItem('mft.analytics.consent.v3','granted')")
+        context.add_init_script("if(location.origin==='https://www.mft.care')localStorage.setItem('mft.analytics.consent.v4','granted')")
         context.add_init_script(path=ROOT/'tests/fixtures/scheduling-network-probe.js')
         context.on('request',lambda req:observe(req,'request'))
         context.on('requestfailed',lambda req:observe(req,'requestfailed'))

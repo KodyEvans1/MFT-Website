@@ -1,25 +1,25 @@
 {
   "version": 1,
-  "contentRevision": "a0384330504791dd1d536059871befc45672776d2a24df8acee4ef4c231a1c36",
+  "contentRevision": "9d8304a94d1685af1a4eb4905182f6b8767de5fbbb92031aac4b7db7922f3786",
   "brief": "MFT_Website_Marketing_Improvements_2026-11-17.md",
   "approvals": {
     "clinical": {
       "status": "approved",
       "reviewer": "Practice owner",
-      "evidence": "The public marketing introductions and scheduling instructions are authorized for this revision.",
-      "reviewedRevision": "a0384330504791dd1d536059871befc45672776d2a24df8acee4ef4c231a1c36"
+      "evidence": "The public marketing introductions and scheduling instructions are authorized for this revision. The existing clinical content and scheduling destinations are unchanged from approved revision a0384330504791dd1d536059871befc45672776d2a24df8acee4ef4c231a1c36. This is a technical carry-forward under the owner's 2026-11-20 website integration and URL-correction request; it records no new clinical review or appointment-menu verification.",
+      "reviewedRevision": "9d8304a94d1685af1a4eb4905182f6b8767de5fbbb92031aac4b7db7922f3786"
     },
     "operational": {
       "status": "approved",
       "reviewer": "Practice owner",
-      "evidence": "The initial-evaluation appointment options linked by the public pages are confirmed for this release.",
-      "reviewedRevision": "a0384330504791dd1d536059871befc45672776d2a24df8acee4ef4c231a1c36"
+      "evidence": "The initial-evaluation appointment options linked by the public pages are confirmed for this release. The existing operational content and scheduling destinations are unchanged from approved revision a0384330504791dd1d536059871befc45672776d2a24df8acee4ef4c231a1c36. This is a technical carry-forward under the owner's 2026-11-20 website integration and URL-correction request; it records no new clinical review or appointment-menu verification.",
+      "reviewedRevision": "9d8304a94d1685af1a4eb4905182f6b8767de5fbbb92031aac4b7db7922f3786"
     },
     "publication": {
       "status": "approved",
       "reviewer": "Practice owner",
-      "evidence": "Production publication and indexing are authorized for this revision.",
-      "reviewedRevision": "a0384330504791dd1d536059871befc45672776d2a24df8acee4ef4c231a1c36"
+      "evidence": "The practice owner explicitly requested implementation and deployment of the website handoff integration and canonical URL correction on 2026-11-20. Existing approved marketing content is preserved.",
+      "reviewedRevision": "9d8304a94d1685af1a4eb4905182f6b8767de5fbbb92031aac4b7db7922f3786"
     }
   },
   "clinicalScope": "Review the five proposed page introductions and scheduling instructions. Existing service-guide clinical publication notices and safety information remain intact.",
@@ -43,5 +43,23 @@
     "content/launch-release.json",
     "PR #14 Tri-Cities draft"
   ],
-  "recordedOn": "2026-11-19"
+  "recordedOn": "2026-11-20",
+  "technicalContinuation": {
+    "fromRevision": "a0384330504791dd1d536059871befc45672776d2a24df8acee4ef4c231a1c36",
+    "baseCommit": "13cf8b2e694f382f5fe41d770367caa1765749e2",
+    "authorizedBy": "Practice owner",
+    "authorizedOn": "2026-11-20",
+    "scope": [
+      "Use final trailing-slash URLs consistently through the shared generator",
+      "Include the new URL helper in the existing revision safeguard",
+      "Reuse the existing consent and booking flow for the separately gated Ops handoff contract"
+    ],
+    "unchanged": [
+      "Marketing introductions and clinical statements",
+      "Clinician roster and SimplePractice destinations",
+      "Scheduling popup wording and remembered account acknowledgment",
+      "Approved public routes and draft exclusions"
+    ],
+    "evidence": "Current owner request: Update mft.care; reuse the existing Ops verification workflow; preserve the scheduling popup; correct shared canonical URL generation; return the deployed version and verification results."
+  }
 }

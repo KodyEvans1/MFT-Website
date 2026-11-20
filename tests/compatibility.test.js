@@ -7,18 +7,20 @@ const os = require('node:os');
 const { SITE, fileForUrl, writePublication, validatePublication } = require('../src/seo-safety');
 const { mergeGeography, parseRows, validatePlace } = require('../scripts/wa-geography-data');
 
-test('existing slashless core URLs retain their canonical spelling', t => {
+test('legacy slashless core URLs resolve to files but publish the final trailing-slash canonical', t => {
   const d = fs.mkdtempSync(path.join(os.tmpdir(), 'mft-compat-'));
   t.after(() => fs.rmSync(d, { recursive: true, force: true }));
   const file = path.join(d, 'about/index.html');
   fs.mkdirSync(path.dirname(file), { recursive: true });
-  fs.writeFileSync(file, `<link rel="canonical" href="${SITE}/about"><meta name="robots" content="index,follow">`);
+  fs.writeFileSync(file, `<link rel="canonical" href="${SITE}/about/"><meta name="robots" content="index,follow">`);
   assert.equal(fileForUrl(d, SITE + '/about'), file);
   assert.equal(fileForUrl(d, SITE + '/about/'), file);
   const env = { SITE_INDEXING_ENABLED: 'true', CONTEXT: 'production' };
   const manifest = writePublication(d, [SITE + '/about'], [], [], env);
-  assert.deepEqual(manifest.expectedSitemapUrls, [SITE + '/about']);
+  assert.deepEqual(manifest.expectedSitemapUrls, [SITE + '/about/']);
   assert.deepEqual(validatePublication(d, [], [], env), []);
+  fs.writeFileSync(file, `<link rel="canonical" href="${SITE}/about"><meta name="robots" content="index,follow">`);
+  assert.match(validatePublication(d, [], [], env).join('\n'), /canonical mismatch/);
 });
 test('supporting slashless routes does not permit external hosts, credentials or nested paths', () => {
   for (const url of ['https://evil.example/about', 'https://u:p@www.mft.care/about', SITE + '/about?x=1', SITE + '/about#x', SITE + '/a/b'])

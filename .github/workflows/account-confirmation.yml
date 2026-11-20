@@ -50,6 +50,7 @@ jobs:
           CONTEXT: production
           SITE_INDEXING_ENABLED: 'true'
           GA4_BASIC_MEASUREMENT_ENABLED: 'true'
+          OPS_HANDOFF_COLLECTION_ENABLED: 'true'
       - run: python -m pip install playwright==1.57.0
       - name: Verify the isolated confirmation flow and unchanged publication baseline
         run: |

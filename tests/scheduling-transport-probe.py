@@ -3,6 +3,7 @@ import importlib.util, json, mimetypes, re, time
 from pathlib import Path
 from urllib.parse import urlsplit, parse_qs
 from playwright.sync_api import sync_playwright
+from scheduling_confirmation_fixture import acknowledge_scheduling_dialog
 
 ROOT=Path(__file__).resolve().parents[1]
 spec=importlib.util.spec_from_file_location('mft_scheduling_browser_harness',ROOT/'tests/scheduling-browser-harness.py')
@@ -99,8 +100,8 @@ try:
         free=page.locator('.mh-hero a[data-mft-ten-minute-consultation="true"]')
         free.click();page.wait_for_timeout(3000)
         page.locator('.mft-consultation-gate button[value="cancel"]').last.click();page.wait_for_timeout(100)
-        free.click();page.locator('.mft-consultation-gate input[type="checkbox"]').check()
-        page.locator('[data-consultation-continue]').click();page.wait_for_url('https://marriagefamilytherapy.clientsecure.me/request');page.wait_for_timeout(1000)
+        free.click();go=acknowledge_scheduling_dialog(page)
+        assert go is not None;go.click();page.wait_for_url('https://marriagefamilytherapy.clientsecure.me/request');page.wait_for_timeout(1000)
         context.close();interceptor.assert_ok();result['interceptedRequests']=interceptor.request_count;browser.close()
 except Exception as error:
     result['error']=str(error)

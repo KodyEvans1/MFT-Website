@@ -8,6 +8,7 @@ import threading
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import urlsplit
 from playwright.sync_api import sync_playwright
+from scheduling_confirmation_fixture import acknowledge_scheduling_dialog
 
 ROOT = Path(__file__).resolve().parents[1]
 DIST = ROOT / 'dist'
@@ -106,8 +107,8 @@ try:
                 gate = page.locator('.mft-consultation-gate')
                 assert gate.is_visible()
                 assert gate.locator('[data-consultation-continue]').is_disabled()
-                gate.locator('input[type=checkbox]').check()
-                assert gate.locator('[data-consultation-continue]').is_enabled()
+                go = acknowledge_scheduling_dialog(page)
+                assert go is not None and go.is_enabled()
                 page.keyboard.press('Escape')
                 assert not gate.is_visible()
                 if width == 390:

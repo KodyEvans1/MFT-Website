@@ -87,8 +87,10 @@ test('Ops is never a client therapy booking destination',()=>{
 });
 test('10-minute consultation requires acknowledgment before SimplePractice',()=>{
   const js=require('node:fs').readFileSync(require('node:path').join(__dirname,'../src/assets/mft-booking.js'),'utf8');
-  assert.match(js,/data-mft-ten-minute-consultation/);
+  assert.match(js,/mftTenMinuteConsultation/);
+  assert.match(js,/<input[^>]*type="checkbox"[^>]*data-mft-consultation-ack/);
+  assert.match(js,/<input[^>]*type="checkbox"[^>]*data-mft-account-ack/);
   assert.match(js,/available to all clients/);
   assert.match(js,/not a therapy session/);
-  assert.match(js,/Continue to scheduling/);
+  assert.match(js,/<a role="link"[^>]*data-consultation-continue[^>]*aria-disabled="true"[^>]*>Continue to SimplePractice/);
 });

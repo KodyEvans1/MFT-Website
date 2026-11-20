@@ -11,6 +11,7 @@ from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import urlsplit, parse_qs
 from urllib.request import Request, urlopen
 from playwright.sync_api import sync_playwright, expect
+from scheduling_confirmation_fixture import acknowledge_scheduling_dialog
 
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/'tmp/booking-handoff';OUT.mkdir(parents=True,exist_ok=True)
@@ -116,7 +117,9 @@ try:
                 if gate.count() and gate.is_visible():
                     go=gate.locator('[data-consultation-continue]')
                     expect(go).to_be_disabled();assert go.get_attribute('href') is None
-                    gate.locator('input[type=checkbox]').check();expect(go).to_be_enabled()
+                go=acknowledge_scheduling_dialog(page)
+                if go is not None:
+                    expect(go).to_be_enabled()
                     assert go.get_attribute('href')==href
                     go.click()
                 # SimplePractice may use either approved practice hostname for

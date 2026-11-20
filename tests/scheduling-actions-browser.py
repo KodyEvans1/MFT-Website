@@ -5,6 +5,7 @@ from pathlib import Path
 from urllib.parse import urlsplit
 from urllib.request import Request, urlopen
 from playwright.sync_api import sync_playwright, expect
+from scheduling_confirmation_fixture import acknowledge_scheduling_dialog
 
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/'tmp/scheduling-actions';OUT.mkdir(parents=True,exist_ok=True)
@@ -138,6 +139,9 @@ try:
                         ready(page,route)
                         a=page.locator(prefix+' a[data-mft-'+kind+']').first
                         a.click()
+                        go=acknowledge_scheduling_dialog(page)
+                        if kind=='existing-client':assert go is None,'Returning-client sign-in must bypass confirmation'
+                        elif go is not None:go.click()
                         expected='/sign-in' if kind=='existing-client' else '/request'
                         page.wait_for_url(re.compile('^https://marriagefamilytherapy\\.clientsecure\\.me'+expected))
                         if kind=='existing-client':
@@ -149,8 +153,8 @@ try:
                 ready(page,'/')
                 page.locator('.mh-hero a[data-mft-ten-minute-consultation]').click()
                 expect(page.locator('.mft-consultation-gate')).to_be_visible()
-                page.locator('.mft-consultation-gate input').check()
-                page.locator('[data-consultation-continue]').click()
+                go=acknowledge_scheduling_dialog(page);assert go is not None
+                go.click()
                 page.wait_for_url(re.compile('^https://marriagefamilytherapy\\.clientsecure\\.me/request'))
                 page.get_by_text('Request an appointment',exact=True).wait_for(timeout=30000)
                 record('Free 10-minute introduction preserved',width=width)

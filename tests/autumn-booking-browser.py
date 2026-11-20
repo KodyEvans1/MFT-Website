@@ -3,6 +3,7 @@ import argparse, functools, hashlib, http.server, json, os, re, shutil, threadin
 from pathlib import Path
 from urllib.parse import urlencode, urlsplit, parse_qs
 from playwright.sync_api import sync_playwright
+from scheduling_confirmation_fixture import acknowledge_scheduling_dialog
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/'tmp/autumn-booking';OUT.mkdir(parents=True,exist_ok=True)
 parser=argparse.ArgumentParser();parser.add_argument('--scheduler',action='store_true');parser.add_argument('--production',action='store_true');args=parser.parse_args()
@@ -82,6 +83,10 @@ try:
                 page.goto(base+route,wait_until='domcontentloaded')
                 a=page.locator('a[data-mft-clinician="autumn"]').first;assert valid(a.get_attribute('href'))
                 a.focus();page.keyboard.press('Enter')
+                go=acknowledge_scheduling_dialog(page)
+                if go is not None:
+                    assert valid(go.get_attribute('href'))
+                    go.click()
                 page.wait_for_url(re.compile(r'^https://(?:spwidget-)?marriagefamilytherapy\.clientsecure\.me/'))
                 names=page.get_by_text('Autumn Alexander',exact=True)
                 names.first.wait_for(state='attached')

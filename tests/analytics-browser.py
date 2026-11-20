@@ -4,6 +4,7 @@ from urllib.request import Request, urlopen
 from pathlib import Path
 from urllib.parse import urlsplit, parse_qs, unquote
 from playwright.sync_api import sync_playwright
+from scheduling_confirmation_fixture import acknowledge_scheduling_dialog
 
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/'tmp/analytics-browser';OUT.mkdir(parents=True,exist_ok=True)
@@ -140,8 +141,9 @@ try:
         page=c.new_page();page.goto(BASE+'/',wait_until='domcontentloaded');page.screenshot(path=str(OUT/'consent-mobile.png'))
         assert page.evaluate('document.documentElement.scrollWidth<=innerWidth')
         page.locator('[data-choice="deny"]').click();page.locator('.mh-hero a[data-mft-ten-minute-consultation="true"]').click()
-        gate=page.locator('.mft-consultation-gate');assert gate.is_visible();gate.locator('input[type="checkbox"]').check()
-        assert gate.locator('[data-consultation-continue]').get_attribute('href')=='https://marriagefamilytherapy.clientsecure.me/request'
+        gate=page.locator('.mft-consultation-gate');assert gate.is_visible()
+        go=acknowledge_scheduling_dialog(page);assert go is not None
+        assert go.get_attribute('href')=='https://marriagefamilytherapy.clientsecure.me/request'
         assert not google_requests;record('Mobile layout and scheduling unchanged after decline');c.close()
         if LIVE:
             current_case='live-consented-homepage';google_requests.clear();hits.clear();send_live=True

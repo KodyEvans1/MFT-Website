@@ -194,11 +194,13 @@ try:
         expect(gate).not_to_be_visible(); expect(link).to_be_focused(); expect(banner).to_be_visible()
         assert banner.evaluate('(el)=>!el.hidden && !el.inert && !el.hasAttribute("aria-hidden")')
         no_handoff(case)
-        link.click(); page.keyboard.press('Escape')
+        # Keep this undecided-consent narrow-screen scenario keyboard-driven;
+        # the restored privacy banner must remain untouched throughout it.
+        link.focus(); page.keyboard.press('Enter'); page.keyboard.press('Escape')
         expect(gate).not_to_be_visible(); expect(link).to_be_focused()
         assert case.value(ACK) is None and case.value(CONSENT) is None and not case.events
         checked('320px keyboard flow, native focus boundaries/restoration, Cancel/Escape, unchanged consent and no premature persistence or events')
-        link.click(); go = acknowledge_scheduling_dialog(page)
+        link.focus(); page.keyboard.press('Enter'); go = acknowledge_scheduling_dialog(page)
         page.screenshot(path=str(OUT / 'account-320.png'))
         # An untrusted programmatic activation cannot save or measure. A second
         # listener prevents its native default action solely within this fixture.
@@ -208,7 +210,7 @@ try:
         assert case.names() == ['appointment_request_click', 'simplepractice_exit'] and case.destinations == [expected]
         case.visit('/new-page/')
         assert case.value(ACK) == 'acknowledged' and case.value(CONSENT) is None
-        page.locator(PRIMARY).click(); page.wait_for_url(expected)
+        link.focus(); page.keyboard.press('Enter'); page.wait_for_url(expected)
         assert case.names() == ['appointment_request_click', 'simplepractice_exit'] * 2 and len(case.destinations) == 2
         checked('Only a trusted enabled Continue persists; reload reuses the acknowledgment and each native handoff counts once')
         case.close()

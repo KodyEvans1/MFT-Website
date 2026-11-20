@@ -5,6 +5,7 @@ from pathlib import Path
 from urllib.parse import urlsplit
 from urllib.request import Request, urlopen
 from playwright.sync_api import sync_playwright, expect
+from scheduling_confirmation_fixture import acknowledge_scheduling_dialog
 
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/'tmp/scheduling-journey';OUT.mkdir(parents=True,exist_ok=True)
@@ -48,15 +49,19 @@ def ready(page,route='/how-to-start-therapy/'):
 
 def navigate_scheduler(page,button,label):
     assert button.get_attribute('href').startswith('https://marriagefamilytherapy.clientsecure.me/request')
+    is_consultation=button.get_attribute('data-mft-ten-minute-consultation')=='true'
     button.click()
     gate=page.locator('.mft-consultation-gate')
-    if gate.is_visible():
+    if gate.count() and gate.is_visible():
         assert gate.locator('[data-consultation-continue]').get_attribute('aria-disabled')=='true'
-        assert 'hidden number' in gate.inner_text()
-        assert 'does not replace the required 30-minute couples consultation' in gate.inner_text()
-        gate.locator('input[type="checkbox"]').check()
-        assert gate.locator('[data-consultation-continue]').get_attribute('href')=='https://marriagefamilytherapy.clientsecure.me/request'
-        gate.locator('[data-consultation-continue]').click()
+        if is_consultation:
+            expect(gate.locator('[data-mft-consultation-ack]')).to_be_visible()
+            assert 'hidden number' in gate.inner_text()
+            assert 'does not replace the required 30-minute couples consultation' in gate.inner_text()
+    go=acknowledge_scheduling_dialog(page)
+    if go is not None:
+        assert go.get_attribute('href')=='https://marriagefamilytherapy.clientsecure.me/request'
+        go.click()
     page.wait_for_url(re.compile('^https://marriagefamilytherapy\\.clientsecure\\.me/request'))
     page.get_by_text('Request an appointment',exact=True).wait_for(timeout=30000)
     assert len(page.context.pages)==1
@@ -110,7 +115,8 @@ try:
             free=page.locator('.start-options a[data-mft-booking]').first
             free.click();gate=page.locator('.mft-consultation-gate');expect(gate).to_be_visible()
             assert gate.locator('[data-consultation-continue]').get_attribute('href') is None
-            gate.locator('input').check();assert gate.locator('[data-consultation-continue]').get_attribute('href')=='https://marriagefamilytherapy.clientsecure.me/request'
+            go=acknowledge_scheduling_dialog(page);assert go is not None
+            assert go.get_attribute('href')=='https://marriagefamilytherapy.clientsecure.me/request'
             page.keyboard.press('Escape');assert not gate.is_visible()
             record('Guide, navigation, FAQ and acknowledgment',width=width)
         for route in ['/','/new-page/','/marriage-and-couples-therapy-counseling/','/team/']:

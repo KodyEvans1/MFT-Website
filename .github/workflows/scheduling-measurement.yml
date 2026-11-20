@@ -8,6 +8,7 @@ on:
       - 'src/booking-*.js'
       - 'src/marketing-improvements.js'
       - 'tests/scheduling-measurement*'
+      - 'tests/scheduling_confirmation_fixture.py'
       - 'tests/scheduling-transport-probe.py'
       - 'tests/scheduling-browser-harness.py'
       - 'tests/scheduling-browser-harness.test.py'
@@ -22,6 +23,7 @@ on:
       - 'src/assets/mft-booking.js'
       - 'src/booking-*.js'
       - 'tests/scheduling-measurement*'
+      - 'tests/scheduling_confirmation_fixture.py'
       - 'tests/scheduling-browser-harness.py'
       - 'tests/scheduling-browser-harness.test.py'
       - '.github/workflows/scheduling-measurement.yml'
@@ -47,7 +49,7 @@ jobs:
         run: |
           node --check tests/fixtures/scheduling-transport-probe.js
           node --check tests/fixtures/scheduling-network-probe.js
-          python -m py_compile tests/scheduling-measurement-browser.py tests/scheduling-transport-probe.py tests/scheduling-browser-harness.py
+          python -m py_compile tests/scheduling-measurement-browser.py tests/scheduling-transport-probe.py tests/scheduling-browser-harness.py tests/scheduling_confirmation_fixture.py
           python tests/scheduling-browser-harness.test.py
       - name: Build a production-origin candidate without deployment
         id: build

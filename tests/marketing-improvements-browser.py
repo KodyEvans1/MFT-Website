@@ -17,6 +17,7 @@ import time
 from urllib.parse import parse_qs, urlencode, urlsplit
 
 from playwright.sync_api import expect, sync_playwright
+from scheduling_confirmation_fixture import acknowledge_scheduling_dialog
 
 ROOT = Path(__file__).resolve().parents[1]
 COPY = json.loads((ROOT / "content/marketing-improvements.json").read_text())
@@ -184,6 +185,12 @@ def main():
             page.locator(".menu-button").click()
         before = len(report["interceptedHandoffs"])
         a.click(timeout=10000)
+        go = acknowledge_scheduling_dialog(page)
+        if expected == PORTAL:
+            assert go is None, "Returning-client sign-in must bypass confirmation"
+        elif go is not None:
+            assert same_destination(go.get_attribute("href"), expected), "Confirmation changed the scheduler destination"
+            go.click()
         page.get_by_role("heading", name="Scheduler navigation intercepted").wait_for(timeout=5000)
         assert same_destination(page.url, expected), (slug, selector, page.url)
         assert len(report["interceptedHandoffs"]) == before + 1, "Missing or duplicate scheduler navigation"
@@ -289,7 +296,8 @@ def main():
                     expect(dialog).not_to_be_visible()
                     assert len(report["interceptedHandoffs"]) == count
                     a.click()
-                    dialog.locator('input[type="checkbox"]').check()
+                    go = acknowledge_scheduling_dialog(page)
+                    assert go is not None
                     assert go.get_attribute("href") == REQUEST and go.get_attribute("aria-disabled") == "false"
                     go.click()
                     page.get_by_role("heading", name="Scheduler navigation intercepted").wait_for()

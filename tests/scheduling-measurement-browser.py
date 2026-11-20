@@ -3,6 +3,7 @@ import importlib.util, json, mimetypes, re, time
 from pathlib import Path
 from urllib.parse import urlsplit, parse_qs, unquote
 from playwright.sync_api import sync_playwright
+from scheduling_confirmation_fixture import acknowledge_scheduling_dialog
 ROOT=Path(__file__).resolve().parents[1]
 spec=importlib.util.spec_from_file_location('mft_scheduling_browser_harness',ROOT/'tests/scheduling-browser-harness.py')
 harness=importlib.util.module_from_spec(spec);spec.loader.exec_module(harness)
@@ -78,6 +79,18 @@ def check(name):
  assert not errors,errors
  report['checks'].append({'name':name,'pass':True})
 
+def native_handoff(page,link):
+ link.click()
+ go=acknowledge_scheduling_dialog(page)
+ if go is not None:go.click()
+
+def confirmed_link(page):
+ # Complete the human confirmation before measuring optional analytics latency.
+ page.locator(GENERAL_FOOTER).first.click()
+ go=acknowledge_scheduling_dialog(page)
+ assert go is not None,'A fresh context must acknowledge the account policy'
+ return go
+
 try:
  tag_source,provenance=harness.fetch_real_tag();report['googleLibrary']=provenance
  with sync_playwright() as p:
@@ -115,7 +128,7 @@ try:
    # native navigation stay active. This also exercises a throttled expiry timer.
    for frame in page.frames:
     if urlsplit(frame.url).hostname=='www.mft.care':frame.evaluate('(now) => { Date.now=()=>now; }',expires_at)
-   hits.clear();page.locator(GENERAL_FOOTER).first.click();page.wait_for_url('https://marriagefamilytherapy.clientsecure.me/request');wait_event(page,'simplepractice_exit');wait_event(page,'appointment_request_click')
+   hits.clear();native_handoff(page,page.locator(GENERAL_FOOTER).first);page.wait_for_url('https://marriagefamilytherapy.clientsecure.me/request');wait_event(page,'simplepractice_exit');wait_event(page,'appointment_request_click')
    assert count('appointment_request_click')==1 and count('simplepractice_exit')==1 and len(destinations)==1,diagnostic()
    for data in [h for h in hits if h.get('en',[''])[0] in INTENTS]:
     assert data.get('cs')==['direct'] and data.get('cm')==['none'],('expired source survived',data)
@@ -132,19 +145,20 @@ try:
   page.locator('.mft-consultation-gate button[value="cancel"]').last.click();page.wait_for_timeout(100)
   assert count('simplepractice_exit')==0
   check('Consultation open and cancel do not count as handoff or booking')
-  page.locator('.mh-hero a[data-mft-ten-minute-consultation="true"]').click();page.locator('.mft-consultation-gate input[type="checkbox"]').check()
-  page.locator('[data-consultation-continue]').click();page.wait_for_url('https://marriagefamilytherapy.clientsecure.me/request');page.wait_for_timeout(300)
+  page.locator('.mh-hero a[data-mft-ten-minute-consultation="true"]').click();go=acknowledge_scheduling_dialog(page)
+  assert go is not None;go.click();page.wait_for_url('https://marriagefamilytherapy.clientsecure.me/request');page.wait_for_timeout(300)
   assert count('simplepractice_exit')==1 and len(destinations)==1,diagnostic()
   assert count('appointment_request_click')==0
   check('Continue emits one handoff and preserves scheduling destination');c.close()
   c,page=start(browser,consent='granted');wait_event(page,'page_view')
-  page.locator(GENERAL_FOOTER).first.focus();page.keyboard.press('Enter');page.wait_for_url('https://marriagefamilytherapy.clientsecure.me/request');page.wait_for_timeout(200)
+  page.locator(GENERAL_FOOTER).first.focus();page.keyboard.press('Enter');go=acknowledge_scheduling_dialog(page)
+  assert go is not None;go.focus();page.keyboard.press('Enter');page.wait_for_url('https://marriagefamilytherapy.clientsecure.me/request');page.wait_for_timeout(200)
   assert count('appointment_request_click')==1 and count('simplepractice_exit')==1,diagnostic()
   check('Keyboard footer request: one subtype and one handoff, not two acquisitions');c.close()
   c,page=start(browser,'/kody-evans-bio/',consent='granted');wait_event(page,'page_view')
   paid=page.locator('.mft-schedule-shortcuts a[data-mft-couples-consultation="true"][data-spwidget-clinician-id="1701440"]')
   assert paid.count()==1 and '30-minute couples consultation' in paid.inner_text().lower()
-  expected=paid.get_attribute('href');paid.click();page.wait_for_url('https://clientsecure.me/widget-redirect?*');page.wait_for_timeout(500)
+  expected=paid.get_attribute('href');native_handoff(page,paid);page.wait_for_url('https://clientsecure.me/widget-redirect?*');page.wait_for_timeout(500)
   assert destinations==[expected],{'expected':expected,**diagnostic()}
   assert count('consultation_click')==1 and count('simplepractice_exit')==1,diagnostic()
   assert count('clinician_schedule_click')==0 and count('appointment_request_click')==0,diagnostic()
@@ -154,30 +168,30 @@ try:
   assert link.count()==1 and 'consultation' not in link.inner_text().lower()
   expected=link.get_attribute('href')
   report['clinicianBeforeClick']=link.evaluate('(a)=>({label:a.textContent,booking:a.dataset.mftBooking,consultation:a.dataset.mftTenMinuteConsultation||null,hasClinician:a.hasAttribute("data-spwidget-clinician-id"),status:window.MFTAnalyticsConsent.status(),measurement:typeof window.MFTSchedulingMeasurement.track})')
-  link.click();page.wait_for_url('https://clientsecure.me/widget-redirect?*');page.wait_for_timeout(500)
+  native_handoff(page,link);page.wait_for_url('https://clientsecure.me/widget-redirect?*');page.wait_for_timeout(500)
   assert destinations==[expected],{'expected':expected,**diagnostic()}
   assert count('clinician_schedule_click')==1,diagnostic()
   assert count('simplepractice_exit')==1,diagnostic()
   assert count('consultation_click')==0 and count('appointment_request_click')==0,diagnostic()
   check('Clinician destination preserved without clinician identity in Google payload');c.close()
-  c,page=start(browser,consent='denied',viewport={'width':390,'height':844});page.locator(GENERAL_FOOTER).first.click();page.wait_for_url('https://marriagefamilytherapy.clientsecure.me/request')
+  c,page=start(browser,consent='denied',viewport={'width':390,'height':844});native_handoff(page,page.locator(GENERAL_FOOTER).first);page.wait_for_url('https://marriagefamilytherapy.clientsecure.me/request')
   assert not hits and not loaders
   check('Mobile scheduling works with analytics declined');c.close()
   blocked=True;c,page=start(browser,consent='granted');page.wait_for_timeout(100)
-  begin=time.monotonic();page.locator(GENERAL_FOOTER).first.click();page.wait_for_url('https://marriagefamilytherapy.clientsecure.me/request')
+  go=confirmed_link(page);begin=time.monotonic();go.click();page.wait_for_url('https://marriagefamilytherapy.clientsecure.me/request')
   assert time.monotonic()-begin<1.5 and not hits
   check('Blocked Google tag does not delay or prevent native scheduling');c.close();blocked=False
   blocked_optional=True;c,page=start(browser,consent='granted');page.wait_for_timeout(100)
-  begin=time.monotonic();page.locator(GENERAL_FOOTER).first.click();page.wait_for_url('https://marriagefamilytherapy.clientsecure.me/request')
+  go=confirmed_link(page);begin=time.monotonic();go.click();page.wait_for_url('https://marriagefamilytherapy.clientsecure.me/request')
   assert time.monotonic()-begin<1.5 and not hits and not loaders
   check('Optional controller-script failure leaves native scheduling usable');c.close();blocked_optional=False
   c,page=start(browser,consent='granted');wait_event(page,'page_view')
   page.evaluate("() => { window.MFTSchedulingMeasurement.track=()=>{throw new Error('synthetic optional measurement failure')}; }")
-  begin=time.monotonic();page.locator(GENERAL_FOOTER).first.click();page.wait_for_url('https://marriagefamilytherapy.clientsecure.me/request')
+  go=confirmed_link(page);begin=time.monotonic();go.click();page.wait_for_url('https://marriagefamilytherapy.clientsecure.me/request')
   assert time.monotonic()-begin<1.5
   check('Analytics runtime exception cannot stop native scheduling');c.close()
   c,page=start(browser,consent='granted');wait_event(page,'page_view');blocked_collector=True
-  begin=time.monotonic();page.locator(GENERAL_FOOTER).first.click();page.wait_for_url('https://marriagefamilytherapy.clientsecure.me/request')
+  go=confirmed_link(page);begin=time.monotonic();go.click();page.wait_for_url('https://marriagefamilytherapy.clientsecure.me/request')
   assert time.monotonic()-begin<1.5
   # Navigation is already complete. Keep collection blocked until the actual
   # unload batch is observed, instead of changing the next scenario's counters.
@@ -199,7 +213,7 @@ try:
   page.locator('.mft-analytics-settings').click();page.locator('[data-choice="deny"]').click();page.wait_for_timeout(200)
   assert page.evaluate("sessionStorage.getItem('mft.analytics.source.v1')") is None
   assert not page.locator('iframe[title="Optional website traffic measurement"]').count()
-  before=len(hits);page.locator(GENERAL_FOOTER).first.click();page.wait_for_url('https://marriagefamilytherapy.clientsecure.me/request');page.wait_for_timeout(200)
+  before=len(hits);native_handoff(page,page.locator(GENERAL_FOOTER).first);page.wait_for_url('https://marriagefamilytherapy.clientsecure.me/request');page.wait_for_timeout(200)
   assert len(hits)==before
   check('Revocation clears source and disables events without disabling booking');c.close()
   for route in ['/check-my-coverage/','/marriage-reset-assessment/','/start/','/marriagereset/']:

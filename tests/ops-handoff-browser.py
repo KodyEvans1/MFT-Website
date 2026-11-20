@@ -157,13 +157,16 @@ try:
         saved = case.page.evaluate('key => JSON.parse(sessionStorage.getItem(key))', SOURCE)
         assert saved['campaignId'] == '24530528782' and saved['expiresAt'] == original_source['expiresAt']
         new_page_code = case.page.locator('script[data-mft-page-key]').get_attribute('data-mft-page-key')
-        link = case.page.locator('header a[data-mft-booking="true"]').first
+        assert case.page.evaluate("localStorage.getItem('mft.newClientAccountAcknowledgment.v1')") == 'acknowledged'
+        # Team's header is a free consultation and correctly keeps its transient
+        # notice. Use the existing ordinary request to test remembered bypass.
+        link = case.page.locator('footer a[data-mft-booking="true"]:not([data-mft-couples-consultation]):not([data-mft-ten-minute-consultation])').first
         link.click()
         case.page.wait_for_url(REQUEST)
         case.wait(2)
         assert len(case.records) == 2 and case.deliveries[1]['eventId'] != first['eventId']
         assert case.deliveries[1]['campaignId'] == '24530528782' and case.deliveries[1]['pageCode'] == new_page_code
-        assert case.deliveries[1]['placement'] == 'header'
+        assert case.deliveries[1]['placement'] == 'footer'
         checked('Remembered account acknowledgment still measures a new eligible activation and preserves paid source across internal navigation')
         case.close()
 

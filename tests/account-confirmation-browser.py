@@ -140,11 +140,14 @@ def finish(case, expected=REQUEST):
 try:
     analytics = json.loads((ROOT / 'dist/reports/analytics-integration.json').read_text())
     marketing = json.loads((ROOT / 'dist/reports/marketing-review.json').read_text())
+    approved_marketing = json.loads((ROOT / 'content/marketing-improvements-review.json').read_text())
     publication = json.loads((ROOT / 'dist/reports/publication.json').read_text())
     assert analytics['enabled'] is True and analytics['finalVerified'] is True
     assert len(analytics['injected']) == 60 and len(analytics['finalPages']) == 60
-    assert marketing['revision'] == marketing['recordedRevision'] == 'a0384330504791dd1d536059871befc45672776d2a24df8acee4ef4c231a1c36'
+    assert re.fullmatch(r'[a-f0-9]{64}', approved_marketing['contentRevision'])
+    assert marketing['revision'] == marketing['recordedRevision'] == approved_marketing['contentRevision']
     assert marketing['publicationApproved'] is True
+    assert marketing['candidateRendered'] is True
     assert publication['context'] == 'production' and publication['indexingEnabled'] is True
     assert len(publication['expectedSitemapUrls']) == 63
     assert len([item for item in publication['generatedRoutes'] if item['status'] == 'draft']) == 757

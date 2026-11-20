@@ -9,13 +9,16 @@ const routes=Object.keys(marketing.copy.routes);
 function anchors(html,marker='data-marketing-appointment') {
  return [...html.matchAll(/<a\b([^>]*)>([\s\S]*?)<\/a>/g)].filter(m=>m[1].includes(marker));
 }
-test('marketing candidate is restricted to five preserved routes and does not approve publication',()=>{
+test('marketing candidate is restricted to five routes and production requires the recorded owner review',()=>{
  assert.deepEqual(routes,['online-therapy-tri-cities-wa','gary-ashley','sonia-hassan-bio','new-page','marriage-and-couples-therapy-counseling']);
- assert.equal(marketing.approved(),false);
- for(const context of ['production'])assert.equal(marketing.enabled({CONTEXT:context,SITE_INDEXING_ENABLED:'false'}),false);
- assert.equal(marketing.enabled({SITE_INDEXING_ENABLED:'true'}),false);
- assert.equal(marketing.enabled({CONTEXT:'deploy-preview',SITE_INDEXING_ENABLED:'true'}),true);
- for(const slug of routes){const original=read(slug);assert.equal(marketing.apply(original,'/'+slug+'/',{CONTEXT:'production'}),original);}
+ const pending=structuredClone(marketing.review);
+ for(const key of ['clinical','operational','publication'])pending.approvals[key]={status:'pending',reviewer:null,evidence:null,reviewedRevision:null};
+ assert.equal(marketing.approved(pending),false);
+ for(const flag of ['false','true'])assert.equal(marketing.enabled({CONTEXT:'production',SITE_INDEXING_ENABLED:flag},pending),false);
+ assert.equal(marketing.enabled({SITE_INDEXING_ENABLED:'true'},pending),false);
+ assert.equal(marketing.enabled({CONTEXT:'deploy-preview',SITE_INDEXING_ENABLED:'true'},pending),true);
+ assert.equal(Boolean(marketing.approved()),true);
+ for(const flag of ['false','true'])assert.equal(marketing.enabled({CONTEXT:'production',SITE_INDEXING_ENABLED:flag}),true);
  for(const slug of ['teen-counseling','autumn-alexander','dr-nolan','childrentherapy','team',''])assert.doesNotMatch(read(slug),/data-marketing-candidate=|marketing-improvements\.css/);
 });
 test('publication approval requires current revision and specific review evidence in every existing review category',()=>{

@@ -15,6 +15,7 @@ const people = require('../content/clinician-registry.json').clinicians;
 const ROOT = path.resolve(__dirname, '..');
 const CSS = 'marketing-improvements.css';
 const revisionFiles = [
+  'src/build.js',
   'content/marketing-improvements.json', 'src/marketing-improvements.js',
   'src/assets/marketing-improvements.css', 'src/scheduling-actions.js',
   'content/clinician-registry.json', 'content/clinician-evidence.json',

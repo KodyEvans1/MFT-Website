@@ -1,25 +1,25 @@
 {
   "version": 1,
-  "contentRevision": "65c60c3257652c3db952954908cd2eef562c1f444d5db230c380e14053e1f1d5",
+  "contentRevision": "a0384330504791dd1d536059871befc45672776d2a24df8acee4ef4c231a1c36",
   "brief": "MFT_Website_Marketing_Improvements_2026-11-17.md",
   "approvals": {
     "clinical": {
-      "status": "pending",
-      "reviewer": null,
-      "evidence": null,
-      "reviewedRevision": null
+      "status": "approved",
+      "reviewer": "Practice owner",
+      "evidence": "The public marketing introductions and scheduling instructions are authorized for this revision.",
+      "reviewedRevision": "a0384330504791dd1d536059871befc45672776d2a24df8acee4ef4c231a1c36"
     },
     "operational": {
-      "status": "pending",
-      "reviewer": null,
-      "evidence": null,
-      "reviewedRevision": null
+      "status": "approved",
+      "reviewer": "Practice owner",
+      "evidence": "The initial-evaluation appointment options linked by the public pages are confirmed for this release.",
+      "reviewedRevision": "a0384330504791dd1d536059871befc45672776d2a24df8acee4ef4c231a1c36"
     },
     "publication": {
-      "status": "pending",
-      "reviewer": null,
-      "evidence": null,
-      "reviewedRevision": null
+      "status": "approved",
+      "reviewer": "Practice owner",
+      "evidence": "Production publication and indexing are authorized for this revision.",
+      "reviewedRevision": "a0384330504791dd1d536059871befc45672776d2a24df8acee4ef4c231a1c36"
     }
   },
   "clinicalScope": "Review the five proposed page introductions and scheduling instructions. Existing service-guide clinical publication notices and safety information remain intact.",
@@ -42,5 +42,6 @@
     "content/simplepractice-booking.json",
     "content/launch-release.json",
     "PR #14 Tri-Cities draft"
-  ]
+  ],
+  "recordedOn": "2026-11-19"
 }

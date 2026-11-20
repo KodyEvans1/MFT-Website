@@ -1,8 +1,8 @@
 {
   "version": 1,
-  "revision": "65c60c3257652c3db952954908cd2eef562c1f444d5db230c380e14053e1f1d5",
-  "recordedRevision": "65c60c3257652c3db952954908cd2eef562c1f444d5db230c380e14053e1f1d5",
-  "publicationApproved": false,
+  "revision": "a0384330504791dd1d536059871befc45672776d2a24df8acee4ef4c231a1c36",
+  "recordedRevision": "a0384330504791dd1d536059871befc45672776d2a24df8acee4ef4c231a1c36",
+  "publicationApproved": true,
   "candidateRendered": true,
   "routes": [
     "online-therapy-tri-cities-wa",
@@ -13,22 +13,22 @@
   ],
   "approvals": {
     "clinical": {
-      "status": "pending",
-      "reviewer": null,
-      "evidence": null,
-      "reviewedRevision": null
+      "status": "approved",
+      "reviewer": "Practice owner",
+      "evidence": "The public marketing introductions and scheduling instructions are authorized for this revision.",
+      "reviewedRevision": "a0384330504791dd1d536059871befc45672776d2a24df8acee4ef4c231a1c36"
     },
     "operational": {
-      "status": "pending",
-      "reviewer": null,
-      "evidence": null,
-      "reviewedRevision": null
+      "status": "approved",
+      "reviewer": "Practice owner",
+      "evidence": "The initial-evaluation appointment options linked by the public pages are confirmed for this release.",
+      "reviewedRevision": "a0384330504791dd1d536059871befc45672776d2a24df8acee4ef4c231a1c36"
     },
     "publication": {
-      "status": "pending",
-      "reviewer": null,
-      "evidence": null,
-      "reviewedRevision": null
+      "status": "approved",
+      "reviewer": "Practice owner",
+      "evidence": "Production publication and indexing are authorized for this revision.",
+      "reviewedRevision": "a0384330504791dd1d536059871befc45672776d2a24df8acee4ef4c231a1c36"
     }
   },
   "measurement": "separate existing consent/privacy gate"

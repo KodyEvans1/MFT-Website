@@ -4,13 +4,14 @@ const id='G-BTK39BBNRE',origins=['https://www.mft.care','https://mft.care'];
 if(window.parent===window||!origins.includes(location.origin))return;
 const names=new Set(['appointment_request_click','clinician_schedule_click','consultation_click','simplepractice_exit']);
 const placements=new Set(['header','footer','body','dialog']);
-const campaigns=new Set(['24274542446','24362234053','24435101888','24444626634','24449945489']);
-let initialized=false,pageLocation='',referrer='',source={};
+const campaigns=new Set(['24274542446','24362234053','24435101888','24444626634','24449945489','24530528782','24524392745']);
+const unattributed={campaign_source:'direct',campaign_medium:'none',campaign_name:'',campaign_id:''};
+let initialized=false,pageLocation='',referrer='',source=unattributed,sourceExpiresAt=0;
 const seen=new Set();
 function acknowledge(type,extra={}){window.parent.postMessage({type,...extra},location.origin);}
 function sanitizedSource(a){
- if(!a||typeof a!=='object')return {};
- const out={};
+ if(!a||typeof a!=='object')return unattributed;
+ const out={...unattributed};
  if(['google/cpc','google/organic','bing/organic','referral/referral','other/unknown','unknown/unknown'].includes(a.source+'/'+a.medium)){
   out.campaign_source=a.source;out.campaign_medium=a.medium;
  }
@@ -20,13 +21,18 @@ function sanitizedSource(a){
  }
  return out;
 }
+function currentSource(){
+ if(sourceExpiresAt>Date.now())return source;
+ source=unattributed;sourceExpiresAt=0;
+ return source;
+}
 function emit(name,extra,done){
  let finished=false;
  const complete=()=>{if(finished)return;finished=true;if(done)done();};
  // Do not toggle ga-disable between events: that opt-out flag can discard queued
  // events. Consent withdrawal is owned by the parent, which disables/removes
  // this empty helper. Automatic metadata remains the same sanitized values.
- window.gtag('event',name,{send_to:id,page_location:pageLocation,page_title:'M.F.T. Public Website',page_referrer:referrer,...source,...extra,event_callback:complete,event_timeout:2000});
+ window.gtag('event',name,{send_to:id,page_location:pageLocation,page_title:'M.F.T. Public Website',page_referrer:referrer,...currentSource(),...extra,event_callback:complete,event_timeout:2000});
  setTimeout(complete,2200);
 }
 function receiveIntent(data){
@@ -52,15 +58,19 @@ window.addEventListener('message',event=>{
   initialized=true;
   pageLocation='https://www.mft.care/p/'+data.pageKey+'/';
   referrer=['https://www.google.com/','https://www.bing.com/','https://google.com/','https://bing.com/'].includes(data.referrer)?data.referrer:'';
-  source=sanitizedSource(data.source);
+  const now=Date.now();
+  sourceExpiresAt=Number.isSafeInteger(data.sourceExpiresAt)&&data.sourceExpiresAt>now&&data.sourceExpiresAt<=now+1800000?data.sourceExpiresAt:0;
+  source=sourceExpiresAt?sanitizedSource(data.source):unattributed;
   window.dataLayer=window.dataLayer||[];
   window.gtag=function(){window.dataLayer.push(arguments);};
   const gtag=window.gtag;
   gtag('consent','default',{analytics_storage:'denied',ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied'});
-  gtag('set',{ads_data_redaction:true,allow_google_signals:false,allow_ad_personalization_signals:false,allow_enhanced_conversions:false,send_page_view:false,page_location:pageLocation,page_title:'M.F.T. Public Website',page_referrer:referrer,...source});
+  // Keep defaults neutral. Only fresh explicit events receive campaign fields,
+  // so expiry cannot fall back to an older config/global campaign value.
+  gtag('set',{ads_data_redaction:true,allow_google_signals:false,allow_ad_personalization_signals:false,allow_enhanced_conversions:false,send_page_view:false,page_location:pageLocation,page_title:'M.F.T. Public Website',page_referrer:referrer,...unattributed});
   gtag('consent','update',{analytics_storage:'granted',ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied'});
   gtag('js',new Date());
-  gtag('config',id,{send_page_view:false,page_location:pageLocation,page_title:'M.F.T. Public Website',page_referrer:referrer,...source,allow_google_signals:false,allow_ad_personalization_signals:false,allow_enhanced_conversions:false,user_data:{},cookie_domain:'none',cookie_prefix:'mftga',cookie_flags:'SameSite=Lax;Secure'});
+  gtag('config',id,{send_page_view:false,page_location:pageLocation,page_title:'M.F.T. Public Website',page_referrer:referrer,...unattributed,allow_google_signals:false,allow_ad_personalization_signals:false,allow_enhanced_conversions:false,user_data:{},cookie_domain:'none',cookie_prefix:'mftga',cookie_flags:'SameSite=Lax;Secure'});
   if(data.sendPageView!==false)emit('page_view',{},()=>acknowledge('mft:analytics:complete'));
   const script=document.createElement('script');script.async=true;script.referrerPolicy='no-referrer';script.src='https://www.googletagmanager.com/gtag/js?id='+id;document.head.appendChild(script);
   return;

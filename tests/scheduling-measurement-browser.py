@@ -43,7 +43,7 @@ def guard(route):
     assert data.get('ep.button_location',[''])[0] in {'header','footer','body','dialog'}
     assert data.get('ep.measurement_kind')==['scheduling_intent']
    raw=unquote(json.dumps(data)).lower()
-   for word in ['private-canary','example.invalid','secret-click','clinicianid','1701440','2065412','link_url','form_submit','form_start','appointment_booked','member_id','utm_term','gclid','gbraid','wbraid']:
+   for word in ['private-canary','example.invalid','secret-click','clinicianid','1701440','2065412','link_url','form_submit','form_start','appointment_booked','member_id','utm_term','gclid','gbraid','wbraid','utm_adgroup_id','utm_creative_id','utm_network','utm_device','202031516078','701234567890','sourceexpiresat','expiresat']:
     assert word not in raw,('unexpected payload field',word)
    assert data.get('npa')==['1']
    hits.append(data)
@@ -91,6 +91,36 @@ try:
   c,page=start(browser,legacy='denied');page.wait_for_timeout(250)
   assert not page.locator('#mft-analytics-consent').count() and not loaders
   check('Previous refusal remains respected');c.close()
+  for campaign_id,landing in [('24530528782','/emily-johnsrud-bio/'),('24524392745','/autumn-alexander/')]:
+   # Full configured suffix, with synthetic ad-group/creative values. Only the
+   # reviewed campaign ID and normalized source/medium may reach Google.
+   suffix='?utm_source=google&utm_medium=cpc&utm_campaign_id='+campaign_id+'&utm_adgroup_id=202031516078&utm_creative_id=701234567890&utm_network=g&utm_device=m'
+   c,page=start(browser,landing+suffix);page.wait_for_timeout(250)
+   assert not hits and not loaders
+   assert page.evaluate("sessionStorage.getItem('mft.analytics.source.v1')") is None
+   page.locator('#mft-analytics-consent [data-choice="grant"]').click();wait_event(page,'page_view')
+   assert count('page_view')==1
+   data=next(h for h in hits if h.get('en')==['page_view'])
+   assert data.get('cs')==['google'] and data.get('cm')==['cpc'] and data.get('ci')==[campaign_id],data
+   acquisition=page.evaluate("JSON.parse(sessionStorage.getItem('mft.analytics.source.v1'))")
+   expires_at=acquisition.pop('expiresAt')
+   assert acquisition=={'source':'google','medium':'cpc','campaignId':campaign_id},acquisition
+   check('Complete Ads suffix waits for consent and recognizes campaign '+campaign_id)
+   hits.clear();page.goto(BASE+'/team/',wait_until='domcontentloaded');wait_event(page,'page_view')
+   data=next(h for h in hits if h.get('en')==['page_view'])
+   assert data.get('cs')==['google'] and data.get('cm')==['cpc'] and data.get('ci')==[campaign_id],data
+   assert page.evaluate("JSON.parse(sessionStorage.getItem('mft.analytics.source.v1')).expiresAt")==expires_at
+   check('Internal navigation preserves campaign '+campaign_id+' without extending its deadline')
+   # Advance wall-clock checks only; the real Google library, browser timers and
+   # native navigation stay active. This also exercises a throttled expiry timer.
+   for frame in page.frames:
+    if urlsplit(frame.url).hostname=='www.mft.care':frame.evaluate('(now) => { Date.now=()=>now; }',expires_at)
+   hits.clear();page.locator(GENERAL_FOOTER).first.click();page.wait_for_url('https://marriagefamilytherapy.clientsecure.me/request');wait_event(page,'simplepractice_exit');wait_event(page,'appointment_request_click')
+   assert count('appointment_request_click')==1 and count('simplepractice_exit')==1 and len(destinations)==1,diagnostic()
+   for data in [h for h in hits if h.get('en',[''])[0] in INTENTS]:
+    assert data.get('cs')==['direct'] and data.get('cm')==['none'],('expired source survived',data)
+    assert data.get('ci') in [None,['']] and data.get('cn') in [None,['']],('expired campaign survived',data)
+   check('At the 30-minute boundary an open helper emits one native handoff without expired campaign '+campaign_id);c.close()
   c,page=start(browser,'/?utm_source=google&utm_medium=cpc&utm_campaign_id=24362234053&gclid=secret-click&utm_term=private-canary&email=private-canary%40example.invalid',consent='granted')
   wait_event(page,'page_view');assert count('page_view')==1
   data=next(h for h in hits if h.get('en')==['page_view'])

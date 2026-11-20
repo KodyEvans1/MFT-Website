@@ -1,5 +1,15 @@
 # Booking and website measurement release contract
 
+## Historical design; legacy collector remains disabled
+
+This document describes the earlier first-party Ops collector proposal, not the
+current consent-controlled GA4 scheduling path. Its `measurementEnabled` flag
+remains false. Its collector dependency and proposed `LANDING_VIEW` /
+`BOOKING_STARTED` events do not govern GA4. Use the current
+[Website scheduling measurement contract](WEBSITE-SCHEDULING-METRIC.md) for the
+single **Website scheduling-link click** metric backed by `simplepractice_exit`
+and for the meaning of the generated report fields.
+
 ## Scope
 
 Use the five clinician widget configurations supplied by the practice owner and the practice-wide widget elsewhere. Keep existing-client portal, staff Operations, insurance inquiry, and Marriage.Reset actions separate. Keep M.F.T. button styling. A request-widget click is BOOKING_STARTED, never an appointment completion.

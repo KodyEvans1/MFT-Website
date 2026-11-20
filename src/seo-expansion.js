@@ -34,7 +34,7 @@ if(concernErrors.length)throw Error(concernErrors.join('\n'));
 fs.writeFileSync(path.join(dist,'reports/plaud-page-edits.json'),JSON.stringify({version:1,recordingDate:'2026-10-02',updates,productionRelease:false},null,2)+'\n');
 const modalityErrors=require('./modality-check').validateModalitySite(dist);
 if(modalityErrors.length)throw Error(modalityErrors.join('\n'));
-fs.writeFileSync(path.join(dist,'reports/review-build.json'),JSON.stringify({commit:process.env.COMMIT_REF||process.env.GITHUB_SHA||null,context:process.env.CONTEXT||'local',modalityGuides:require('./reference-pages').modalityPages.length,measurementEnabled:booking.measurementEnabled},null,2)+'\n');
+fs.writeFileSync(path.join(dist,'reports/review-build.json'),JSON.stringify({commit:process.env.COMMIT_REF||process.env.GITHUB_SHA||null,context:process.env.CONTEXT||'local',modalityGuides:require('./reference-pages').modalityPages.length,measurementEnabled:booking.measurementEnabled,measurementEnabledScope:booking.measurementEnabledScope,measurement:booking.measurement},null,2)+'\n');
 console.log(JSON.stringify({plaudPageEdits:updates}));
 
 fs.copyFileSync(path.join(root,'src/assets/retreat-inquiry.js'),path.join(dist,'assets/retreat-inquiry.js'));

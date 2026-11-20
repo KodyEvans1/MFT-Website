@@ -1,5 +1,10 @@
 # Scheduling measurement candidate — 2026-11-18
 
+For the current display name, report fields, and legacy-collector distinction,
+see the [Website scheduling measurement contract](WEBSITE-SCHEDULING-METRIC.md).
+The candidate and verification history below describes the evidence available
+at the dates recorded; it is not a current GA4 or Ads receipt report.
+
 ## Scope and authorization
 
 This candidate selectively carries forward the narrow scheduling-intent design

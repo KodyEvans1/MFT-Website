@@ -1,6 +1,7 @@
 'use strict';
 const fs = require('node:fs'), path = require('node:path');
 const analytics = require('../src/analytics-build');
+const { FINAL_VERIFIED_SCOPE } = require('../src/measurement-report');
 function apply(dist) {
   const reportFile = path.join(dist, 'reports/analytics-integration.json');
   const report = JSON.parse(fs.readFileSync(reportFile, 'utf8'));
@@ -27,7 +28,7 @@ function apply(dist) {
     actual.push(route);
   }
   if (JSON.stringify(actual.sort()) !== JSON.stringify([...allowed].sort())) throw Error('Final analytics inventory does not match approved injection');
-  report.finalVerified = true; report.finalPages = actual; report.removedInheritedTags = stripped.length;
+  report.finalVerified = true; report.finalVerifiedScope = FINAL_VERIFIED_SCOPE; report.finalPages = actual; report.removedInheritedTags = stripped.length;
   fs.writeFileSync(reportFile, JSON.stringify(report,null,2)+'\n');
   console.log(JSON.stringify({verifiedAnalyticsPages: actual.length, removedInheritedTags: stripped.length}));
 }

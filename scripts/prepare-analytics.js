@@ -2,6 +2,7 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const { SITE, enabled, normalizeRoute, inject, assetVersion } = require('../src/analytics-build');
+const { LEGACY_BOOKING_MEASUREMENT_ENABLED, measurementReport } = require('../src/measurement-report');
 
 const root = path.resolve(__dirname, '..');
 const dist = path.join(root, 'dist');
@@ -16,7 +17,16 @@ const allowedRoutes = new Set(urls.map(raw => {
 }));
 const files=[];
 (function walk(d){for(const e of fs.readdirSync(d,{withFileTypes:true})){const f=path.join(d,e.name);if(e.isDirectory())walk(f);else if(e.name==='index.html'||f.endsWith(path.sep+'404.html'))files.push(f);}})(dist);
-const report={version:1,measurementId:'G-BTK39BBNRE',enabled:enabled(),approvalSource:'production sitemap only',allowedRoutes:[...allowedRoutes].sort(),injected:[],excluded:[]};
+const report={version:1,measurementId:'G-BTK39BBNRE',enabled:enabled(),measurement:measurementReport(),approvalSource:'production sitemap only',allowedRoutes:[...allowedRoutes].sort(),injected:[],excluded:[]};
+// Enrich reports after booking decoration without changing the reviewed clinical
+// rendering pipeline or its revision-specific approval fingerprint.
+const bookingReportFile = path.join(dist, 'reports/booking-integration.json');
+const bookingReport = JSON.parse(fs.readFileSync(bookingReportFile, 'utf8'));
+if (bookingReport.measurementEnabled !== LEGACY_BOOKING_MEASUREMENT_ENABLED)
+  throw new Error('Legacy booking collector state differs from the measurement contract');
+bookingReport.measurementEnabledScope = 'legacy booking collector only';
+bookingReport.measurement = report.measurement;
+fs.writeFileSync(bookingReportFile, JSON.stringify(bookingReport, null, 2) + '\n');
 fs.copyFileSync(path.join(root,'src/assets/mft-ga4-bootstrap.js'),path.join(dist,'assets/mft-ga4-bootstrap.js'));
 fs.copyFileSync(path.join(root,'src/assets/mft-ga4-frame.js'),path.join(dist,'assets/mft-ga4-frame.js'));
 fs.copyFileSync(path.join(root,'src/assets/mft-analytics.js'),path.join(dist,'assets/mft-analytics.js'));

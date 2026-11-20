@@ -7,11 +7,12 @@ if(measurementId!=='G-BTK39BBNRE'||!/^[a-f0-9]{16}$/.test(pageKey||'')||!['https
 window.__MFT_GA4_BASIC__=true;
 const consentKey='mft.analytics.consent.v3',legacyConsentKey='mft.analytics.consent.v2';
 const sourceKey='mft.analytics.source.v1',frameVersion=current.dataset.mftFrameVersion;
+const acquisitionLifetime=1800000;
 if(!/^[a-f0-9]{16}$/.test(frameVersion||''))return;
 const events=new Set(['appointment_request_click','clinician_schedule_click','consultation_click','simplepractice_exit']);
 const placements=new Set(['header','footer','body','dialog']);
 // Owner-supplied current campaigns plus the historical reviewed campaign.
-const campaigns=new Set(['24274542446','24362234053','24435101888','24444626634','24449945489']);
+const campaigns=new Set(['24274542446','24362234053','24435101888','24444626634','24449945489','24530528782','24524392745']);
 let choice='unset',frame=null,returnFocus=null,measured=false,ready=false,sequence=0;
 let queue=[],source=null;
 const callbacks=new Map();
@@ -36,6 +37,8 @@ function cleanSource(value){
 }
 function acquisition(){
  // Read once, only after consent; never retain/transmit raw queries or click IDs.
+ const now=Date.now();
+ let expiresAt=now+acquisitionLifetime;
  const q=new URLSearchParams(location.search),s=(q.get('utm_source')||'').toLowerCase(),m=(q.get('utm_medium')||'').toLowerCase();
  const click=['gclid','gbraid','wbraid'].some(k=>/^[A-Za-z0-9_~-]{1,255}$/.test(q.get(k)||''));
  let a={source:'direct',medium:'none'},explicit=Boolean(s||m||click);
@@ -46,11 +49,15 @@ function acquisition(){
  else if(document.referrer){try{if(!['mft.care','www.mft.care'].includes(new URL(document.referrer).hostname))a={source:'referral',medium:'referral'};}catch{a={source:'unknown',medium:'unknown'};}}
  try{
   const old=JSON.parse(sessionStorage.getItem(sourceKey)||'null');
-  if(!explicit&&a.source==='direct'&&old&&Number.isFinite(old.expiresAt)&&old.expiresAt>Date.now()&&old.expiresAt<=Date.now()+1800000)a=cleanSource(old);
+  if(!explicit&&a.source==='direct'&&old&&Number.isSafeInteger(old.expiresAt)&&old.expiresAt>now&&old.expiresAt<=now+acquisitionLifetime){
+   a=cleanSource(old);expiresAt=old.expiresAt;
+  }
  }catch{}
  a=cleanSource(a);
- try{sessionStorage.setItem(sourceKey,JSON.stringify({...a,expiresAt:Date.now()+1800000}));}catch{}
- return a;
+ // Internal navigation keeps the original deadline; it cannot renew acquisition.
+ const acquired={...a,expiresAt};
+ try{sessionStorage.setItem(sourceKey,JSON.stringify(acquired));}catch{}
+ return acquired;
 }
 function removeBanner(){document.getElementById('mft-analytics-consent')?.remove();returnFocus?.focus();returnFocus=null;}
 function clearCookies(){
@@ -75,6 +82,12 @@ function deliverIntent(message){
 function send(){
  if(frame||status()!=='granted')return;
  source=acquisition();
+ const acquired=source;
+ setTimeout(()=>{
+  if(source!==acquired||acquired.expiresAt>Date.now())return;
+  source={source:'direct',medium:'none',expiresAt:0};
+  try{const stored=JSON.parse(sessionStorage.getItem(sourceKey)||'null');if(stored?.expiresAt===acquired.expiresAt)sessionStorage.removeItem(sourceKey);}catch{}
+ },Math.max(0,acquired.expiresAt-Date.now()));
  frame=document.createElement('iframe');frame.width='1';frame.height='1';
  frame.style.cssText='position:fixed;left:-10px;top:-10px;width:1px;height:1px;border:0;opacity:0;pointer-events:none';
  frame.setAttribute('inert','');frame.title='Optional website traffic measurement';
@@ -89,7 +102,7 @@ window.addEventListener('message',event=>{
  if(data?.type==='mft:analytics:ack'&&typeof data.id==='string'){finish(data.id);return;}
  if(data?.type==='mft:analytics:ready'&&!ready){
   ready=true;
-  post({type:'mft:analytics:init',pageKey,referrer:safeReferrer(),source:cleanSource(source),sendPageView:!measured});
+  post({type:'mft:analytics:init',pageKey,referrer:safeReferrer(),source:cleanSource(source),sourceExpiresAt:source.expiresAt,sendPageView:!measured});
   for(const item of queue)post(item);
   queue=[];
  }

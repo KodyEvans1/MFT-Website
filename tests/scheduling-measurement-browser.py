@@ -43,7 +43,7 @@ def guard(route):
     assert data.get('ep.button_location',[''])[0] in {'header','footer','body','dialog'}
     assert data.get('ep.measurement_kind')==['scheduling_intent']
    raw=unquote(json.dumps(data)).lower()
-   for word in ['private-canary','example.invalid','secret-click','clinicianid','2065412','link_url','form_submit','form_start','appointment_booked','member_id','utm_term','gclid','gbraid','wbraid']:
+   for word in ['private-canary','example.invalid','secret-click','clinicianid','1701440','2065412','link_url','form_submit','form_start','appointment_booked','member_id','utm_term','gclid','gbraid','wbraid']:
     assert word not in raw,('unexpected payload field',word)
    assert data.get('npa')==['1']
    hits.append(data)
@@ -111,8 +111,8 @@ try:
   page.locator(GENERAL_FOOTER).first.focus();page.keyboard.press('Enter');page.wait_for_url('https://marriagefamilytherapy.clientsecure.me/request');page.wait_for_timeout(200)
   assert count('appointment_request_click')==1 and count('simplepractice_exit')==1,diagnostic()
   check('Keyboard footer request: one subtype and one handoff, not two acquisitions');c.close()
-  c,page=start(browser,'/sonia-hassan-bio/',consent='granted');wait_event(page,'page_view')
-  paid=page.locator('.mft-schedule-shortcuts a[data-mft-couples-consultation="true"][data-spwidget-clinician-id="2065412"]')
+  c,page=start(browser,'/kody-evans-bio/',consent='granted');wait_event(page,'page_view')
+  paid=page.locator('.mft-schedule-shortcuts a[data-mft-couples-consultation="true"][data-spwidget-clinician-id="1701440"]')
   assert paid.count()==1 and '30-minute couples consultation' in paid.inner_text().lower()
   expected=paid.get_attribute('href');paid.click();page.wait_for_url('https://clientsecure.me/widget-redirect?*');page.wait_for_timeout(500)
   assert destinations==[expected],{'expected':expected,**diagnostic()}

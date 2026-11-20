@@ -139,7 +139,7 @@ try:
         google_requests.clear();hits.clear();current_case='mobile';c=browser.new_context(viewport={'width':390,'height':844},reduced_motion='reduce');c.route('**/*',guard)
         page=c.new_page();page.goto(BASE+'/',wait_until='domcontentloaded');page.screenshot(path=str(OUT/'consent-mobile.png'))
         assert page.evaluate('document.documentElement.scrollWidth<=innerWidth')
-        page.locator('[data-choice="deny"]').click();page.locator('.mh-hero a[data-mft-booking]').click()
+        page.locator('[data-choice="deny"]').click();page.locator('.mh-hero a[data-mft-ten-minute-consultation="true"]').click()
         gate=page.locator('.mft-consultation-gate');assert gate.is_visible();gate.locator('input[type="checkbox"]').check()
         assert gate.locator('[data-consultation-continue]').get_attribute('href')=='https://marriagefamilytherapy.clientsecure.me/request'
         assert not google_requests;record('Mobile layout and scheduling unchanged after decline');c.close()

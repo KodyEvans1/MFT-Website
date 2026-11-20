@@ -14,6 +14,11 @@ test('Care pages keep native existing-client access and service-appropriate cons
   if(f===path.join(dist,'autumn-alexander','index.html')) {
    assert.doesNotMatch(h,/data-mft-couples-consultation="true"/,f);
    assert.match(h,/Request an appointment with Autumn/,f);
+  } else if(h.includes('data-marketing-candidate=')&&!f.includes('/marriage-and-couples-therapy-counseling/')) {
+   assert.doesNotMatch(h,/data-mft-couples-consultation="true"/,f);
+   assert.match(h,/href="\/marriage-and-couples-therapy-counseling\/"/,f);
+   const top=h.match(/<aside class="marketing-returning"[\s\S]*?<\/aside>/)?.[0];
+   assert.ok(top,f);assert.doesNotMatch(top,/couples/i,f);
   } else assert.match(h,/data-mft-couples-consultation="true"/,f);
   assert.match(h,/class="mft-footer-scheduling"/,f);
  }

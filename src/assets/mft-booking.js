@@ -2,11 +2,12 @@
 (function () {
   'use strict';
   const core = window.MFTBookingCore, config = window.MFT_BOOKING_CONFIG;
-  if (!core || !config) return; // Static links already work without this enhancement.
+  if (!core || !config || window.__MFT_BOOKING__) return; // Static links already work without this enhancement.
+  window.__MFT_BOOKING__ = true;
   const routeClinician = core.clinicianForPath(config, location.pathname);
   document.querySelectorAll('a[href]').forEach(a => {
     if (a.hasAttribute('data-mft-booking-fallback')) return;
-    if (!core.isAppointment(a.href, a.textContent)) return;
+    if (!core.isAppointment(a.href, a.textContent, a.dataset.mftBookingIntent)) return;
     const explicit = config.clinicians.find(c => c.key === a.getAttribute('data-mft-clinician'));
     const clinician = explicit || (a.closest('header, footer') ? null : routeClinician);
     a.removeAttribute('data-spwidget-clinician-id'); a.removeAttribute('data-spwidget-scope-global');
@@ -15,8 +16,26 @@
     a.setAttribute('rel', 'noopener noreferrer');
     Object.entries(core.attributes(config, clinician)).forEach(([k,v]) => a.setAttribute(k,v));
     const consultationContext=(a.closest('[data-ui="card"],.option-card')?.textContent||'')+' '+(a.textContent||'');
-    if (/free\s*(?:10[- ]minute\s*)?(?:phone\s*)?consultation|10[- ]minute|meet-and-greet|phone introduction/i.test(consultationContext)) a.dataset.mftTenMinuteConsultation='true';
+    if (a.dataset.mftBookingIntent!=='appointment'&&/free\s*(?:10[- ]minute\s*)?(?:phone\s*)?consultation|10[- ]minute|meet-and-greet|phone introduction/i.test(consultationContext)) a.dataset.mftTenMinuteConsultation='true';
   });
+  function placement(a){return a.closest('header')?'header':a.closest('footer')?'footer':a.closest('.mft-consultation-gate')?'dialog':'body';}
+  function measure(names,a){
+    // Measurement is optional and cannot cancel, replace, or delay navigation.
+    try{window.MFTSchedulingMeasurement?.track(names,placement(a));}catch{}
+  }
+  function handoff(e,a,names){
+    if(e.defaultPrevented||e.isTrusted!==true||e.button>1)return;
+    measure(names,a);
+  }
+  function normalBookingClick(e){
+    const a=e.target.closest&&e.target.closest('a[data-mft-booking="true"]');
+    if(!a||!core.isAppointment(a.href,a.textContent,a.dataset.mftBookingIntent))return;
+    const consultation=a.dataset.mftBookingIntent==='consultation'||(a.dataset.mftBookingIntent!=='appointment'&&(a.dataset.mftTenMinuteConsultation==='true'||a.dataset.mftCouplesConsultation==='true'||/\bconsultation\b/i.test(a.textContent)));
+    const event=consultation?'consultation_click':a.hasAttribute('data-spwidget-clinician-id')?'clinician_schedule_click':'appointment_request_click';
+    handoff(e,a,[event,'simplepractice_exit']);
+  }
+  document.addEventListener('click',normalBookingClick);
+  document.addEventListener('auxclick',e=>{if(e.button===1)normalBookingClick(e);});
   if (typeof HTMLDialogElement === 'undefined' || !HTMLDialogElement.prototype.showModal) return;
   const dialog=document.createElement('dialog');
   dialog.className='mft-consultation-gate';
@@ -36,7 +55,7 @@
   document.addEventListener('click',e=>{
     const a=e.target.closest&&e.target.closest('a[data-mft-ten-minute-consultation="true"]');
     if(!a||e.button!==0||e.ctrlKey||e.metaKey||e.shiftKey||e.altKey)return;
-    if(!core.isAppointment(a.href,a.textContent))return;
+    if(!core.isAppointment(a.href,a.textContent,a.dataset.mftBookingIntent))return;
     // Recompute from the approved configuration, never from query parameters.
     const id=a.getAttribute('data-spwidget-clinician-id');
     const clinician=config.clinicians.find(c=>c.id===id)||null;
@@ -44,9 +63,16 @@
     check.checked=false;syncLink();
     try { dialog.showModal(); } catch { destination=null; return; }
     e.preventDefault();e.stopImmediatePropagation();
+    if(e.isTrusted===true)measure(['consultation_click'],a);
   },true);
   go.addEventListener('click',e=>{
-    if(!destination||!check.checked)e.preventDefault();
+    if(!destination||!check.checked){e.preventDefault();return;}
     // Otherwise allow the real anchor's native navigation, not a synthetic click.
+    handoff(e,go,['simplepractice_exit']);
+  });
+  go.addEventListener('auxclick',e=>{
+    if(e.button!==1)return;
+    if(!destination||!check.checked){e.preventDefault();return;}
+    handoff(e,go,['simplepractice_exit']);
   });
 })();

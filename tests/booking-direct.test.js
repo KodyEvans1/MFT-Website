@@ -10,6 +10,23 @@ test('native appointment links have no embed autobinding or popup target',()=>{
   assert.match(h,/href="https:\/\/marriagefamilytherapy.clientsecure.me\/request"/);
   assert.equal(decorateHtml(h,'/').html,h);
 });
+test('reviewed evaluation-card intent preserves its native request despite ancillary insurance and assessment copy',()=>{
+  const label='Initial individual evaluation — a full appointment and assessment. Insurance benefits depend on your plan.';
+  assert.equal(core.isAppointment(config.generalUrl,label),false);
+  assert.equal(core.isAppointment(config.generalUrl,label,'appointment'),true);
+  const input='<html><head></head><body><main><a class="option-card" data-mft-booking-intent="appointment" href="'+config.generalUrl+'">'+label+'</a></main><footer></footer></body></html>';
+  const output=decorateHtml(input,'/').html;
+  assert.match(output,/data-mft-booking-intent="appointment"/);
+  assert.match(output,/href="https:\/\/marriagefamilytherapy.clientsecure.me\/request"/);
+  assert.match(output,/data-mft-booking="true"/);
+  assert.equal(decorateHtml(output,'/').html,output);
+});
+test('explicit appointment intent cannot relabel a portal, staff, insurance-verification, or foreign destination',()=>{
+  for(const label of ['Existing client portal','Staff operations','Verify insurance','Verify benefits','Check my coverage','Marriage.Reset assessment'])
+    assert.equal(core.isAppointment(config.generalUrl,label,'appointment'),false,label);
+  for(const href of ['https://ops.mft.care/go/book','https://example.invalid/request','https://marriagefamilytherapy.clientsecure.me/sign-in','https://clientsecure.me/sign-in','https://user:password@clientsecure.me/widget-redirect'])
+    assert.equal(core.isAppointment(href,'Request an individual evaluation','appointment'),false,href);
+});
 test('outdated embedded loader is removed even from previously decorated HTML',()=>{
   const h=decorateHtml('<head></head><main><a href="'+config.generalUrl+'">Schedule</a></main><script src="'+config.loaderUrl+'" defer></script><footer></footer>','/').html;
   assert.doesNotMatch(h,/integration-1\.0\.js/);

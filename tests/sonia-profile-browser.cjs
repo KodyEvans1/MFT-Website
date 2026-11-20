@@ -16,7 +16,7 @@ const server=http.createServer((req,res)=>{
 });
 (async()=>{
  await new Promise(r=>server.listen(0,'127.0.0.1',r));const base=process.env.SONIA_BASE_URL || 'http://127.0.0.1:'+server.address().port;
- const browser=await chromium.launch({args:['--no-sandbox']}),cases=[];
+ const browser=await chromium.launch({args:['--no-sandbox'],executablePath:process.env.CHROME_PATH||process.env.MFT_CHROMIUM||undefined}),cases=[];
  try{
  for(const width of [1440,390]){
   const context=await browser.newContext({viewport:{width,height:1000}});
@@ -45,12 +45,23 @@ const server=http.createServer((req,res)=>{
    await page.goto(base+legacy);assert.equal(new URL(page.url()).pathname,'/sonia-hassan-bio/');
   }
   const hero=await page.locator('[data-clinician-hero]').evaluate(e=>({treatment:e.dataset.heroTreatment,heading:e.querySelector('h1').textContent}));assert.equal(hero.heading,'Sonia Hassan');
-  // Header consultation uses the established acknowledgment gate and general URL.
+  // The reviewed candidate preserves Sonia in its header appointment action.
+  // Until publication approval, production retains the established general consultation.
   if(width<760)await page.locator('.menu-button').click();
-  await page.locator('header a[data-mft-booking]').click();await page.locator('dialog[open]').waitFor();
-  const go=page.locator('[data-consultation-continue]');assert.equal(await go.getAttribute('href'),null);
-  await page.locator('dialog input[type=checkbox]').check();assert.equal(await go.getAttribute('href'),'https://marriagefamilytherapy.clientsecure.me/request');
-  await go.click();await page.waitForURL('https://marriagefamilytherapy.clientsecure.me/request');assert.equal(context.pages().length,1);
+  const candidate=await page.locator('body[data-marketing-candidate]').count();
+  const header=page.locator('header a[data-mft-booking]');
+  if(candidate){
+   assert.equal(await header.getAttribute('data-mft-booking-intent'),'appointment');
+   assert.equal(await header.getAttribute('data-spwidget-clinician-id'),'2065412');
+   await header.click();await page.waitForURL('https://clientsecure.me/**');
+   assert.equal(new URL(page.url()).searchParams.get('clinicianId'),'2065412');
+  }else{
+   await header.click();await page.locator('dialog[open]').waitFor();
+   const go=page.locator('[data-consultation-continue]');assert.equal(await go.getAttribute('href'),null);
+   await page.locator('dialog input[type=checkbox]').check();assert.equal(await go.getAttribute('href'),'https://marriagefamilytherapy.clientsecure.me/request');
+   await go.click();await page.waitForURL('https://marriagefamilytherapy.clientsecure.me/request');
+  }
+  assert.equal(context.pages().length,1);
   cases.push({width,pass:true,geometry,legacyRedirects:2,soniaId:'2065412',scheduler:'intercepted native navigation; no provider submission'});await context.close();
  }
  fs.writeFileSync(path.join(out,'result.json'),JSON.stringify({pass:true,cases,scope:process.env.SONIA_BASE_URL ? 'Live public profile content and HTTP 301 verification; scheduler navigation intercepted.' : 'Local candidate with repository redirect rules emulated; external scheduler responses intercepted.'},null,2)+'\n');

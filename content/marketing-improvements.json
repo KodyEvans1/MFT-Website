@@ -1,0 +1,78 @@
+{
+  "version": 1,
+  "brief": "MFT_Website_Marketing_Improvements_2026-11-17.md",
+  "routes": {
+    "online-therapy-tri-cities-wa": {
+      "kind": "regional-individual",
+      "title": "Online Individual Therapy for Adults in the Tri-Cities",
+      "eyebrow": "Serving Kennewick, Pasco, Richland, and West Richland online",
+      "summary": "Meet with an M.F.T. clinician by secure video from a private location in Washington. Explore clinician fit, payment options, and appointment availability without traveling to our Woodinville office.",
+      "primary": "Request an Online Individual Appointment",
+      "secondary": "Explore an Optional Consultation",
+      "secondaryHref": "#optional-consultations",
+      "note": "A consultation is optional for individual care. You may request an initial clinical evaluation directly. Consultations are not therapy sessions or diagnostic evaluations. Appointment requests are subject to confirmation.",
+      "location": "We serve eligible Tri-Cities clients online. Our physical office is in Woodinville, Washington; we do not have a Tri-Cities branch office. Telehealth depends on clinician availability, clinical fit, and your physical location at the time of the appointment.",
+      "profileKeys": ["gary", "sonia"]
+    },
+    "gary-ashley": {
+      "kind": "clinician",
+      "clinician": "gary",
+      "primary": "Request an Online Appointment With Gary",
+      "summary": "Explore Gary's approach and request an online individual appointment. Telehealth availability and suitability are confirmed as part of the scheduling process."
+    },
+    "sonia-hassan-bio": {
+      "kind": "clinician",
+      "clinician": "sonia",
+      "primary": "Request an Online Appointment With Sonia",
+      "summary": "Explore Sonia's approach and request an online individual appointment. Telehealth availability and suitability are confirmed as part of the scheduling process."
+    },
+    "new-page": {
+      "kind": "individual",
+      "primary": "Request an Individual Evaluation",
+      "secondary": "Explore an Optional Consultation",
+      "secondaryHref": "#starting-options",
+      "summary": "Individual therapy in Woodinville or online for eligible Washington clients. Request an initial clinical evaluation directly, or choose an optional consultation first.",
+      "note": "Coverage and out-of-pocket costs depend on your plan, benefits, service, and clinician. Confirm those details before care. Consultations are not therapy sessions or diagnostic evaluations. Appointment requests are subject to confirmation."
+    },
+    "marriage-and-couples-therapy-counseling": {
+      "kind": "couples",
+      "primary": "Request a Couples Consultation",
+      "secondary": "See the Couples Care Steps",
+      "secondaryHref": "#the-process",
+      "summary": "Couples consultations and couples therapy sessions are private pay. Start with a couples consultation; your clinician will guide the next assessment and session steps.",
+      "note": "Begin with the required 30-minute couples consultation, then one separate evaluation for each partner, before the first 53-minute couples session. An optional 10-minute phone introduction does not replace these steps. Appointment requests are subject to confirmation."
+    }
+  },
+  "gettingStarted": [
+    {
+      "title": "Choose a clinician",
+      "text": "Read about the clinicians' approaches and confirm which services, age groups, appointment formats, and payment options they currently offer."
+    },
+    {
+      "title": "Choose how to begin",
+      "text": "Request an initial clinical evaluation, or choose an optional consultation to discuss fit and the care process. Any applicable consultation fee should be clear before requesting it."
+    },
+    {
+      "title": "Meet online when appropriate",
+      "text": "After your appointment is confirmed, follow the practice's instructions for your online visit. Have a private setting and confirm your physical location with your clinician."
+    }
+  ],
+  "questions": [
+    {
+      "question": "Do I need to travel to Woodinville?",
+      "answer": "Not for an appointment confirmed as telehealth. Our physical office is in Woodinville; this page describes online care for eligible Washington clients."
+    },
+    {
+      "question": "Do I need a consultation first?",
+      "answer": "For individual care, consultations are optional. You can request an initial clinical evaluation directly. A consultation is not a therapy session or diagnostic evaluation."
+    },
+    {
+      "question": "Can I use insurance?",
+      "answer": "Coverage and out-of-pocket costs depend on your plan, benefits, service, and clinician. Confirm those details before care. A listed insurance company does not guarantee coverage for every clinician or appointment."
+    },
+    {
+      "question": "Does clicking the button book an appointment?",
+      "answer": "No. It opens our appointment-request process in SimplePractice. Your requested appointment must be confirmed."
+    }
+  ]
+}

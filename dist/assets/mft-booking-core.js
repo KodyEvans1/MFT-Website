@@ -28,11 +28,17 @@
     out[clinician ? 'data-spwidget-clinician-id' : 'data-spwidget-scope-global'] = clinician ? clinician.id : '';
     return out;
   }
-  function isAppointment(href, label) {
-    if (/existing client|client portal|staff|insurance|benefits|assessment|marriage\.reset/i.test(label)) return false;
-    if (!/request|schedule|consultation|appointment|initial session/i.test(label)) return false;
+  function isAppointment(href, label, intent) {
+    // A reviewed appointment card may describe benefits or an assessment in its
+    // supporting text. Its explicit action is authoritative only for an approved
+    // scheduler URL; portal, staff, and insurance-verification actions stay separate.
+    if (/existing client|client portal|staff|marriage\.reset|verify (?:insurance|benefits)|check (?:insurance|benefits|(?:my |your )?coverage)/i.test(label)) return false;
+    const explicit = intent === 'appointment' || intent === 'consultation';
+    if (!explicit && /insurance|benefits|assessment/i.test(label)) return false;
+    if (!explicit && !/request|schedule|consultation|appointment|initial session/i.test(label)) return false;
     try {
       const u = new URL(href);
+      if (u.username || u.password) return false;
       return (u.origin === 'https://marriagefamilytherapy.clientsecure.me' && ['/','/request','/request/'].includes(u.pathname)) ||
         (u.origin === 'https://clientsecure.me' && u.pathname === '/widget-redirect');
     } catch { return false; }

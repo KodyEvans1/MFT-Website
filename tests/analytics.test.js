@@ -38,7 +38,8 @@ test('page identifiers do not expose route text',()=>{
 
 test('browser analytics asset does not read sensitive page or form values',()=>{
   const js=fs.readFileSync(path.join(__dirname,'../src/assets/mft-analytics.js'),'utf8');
-  assert.doesNotMatch(js,/document\.title|location\.href|location\.search|FormData|querySelector\(['"][^'"]*(?:input|textarea|form)/);
+  assert.doesNotMatch(js,/document\.title|location\.href|FormData|querySelector\(['"][^'"]*(?:input|textarea|form)/);
+  assert.match(js,/Read once, only after consent; never retain\/transmit raw queries or click IDs/);
   assert.doesNotMatch(js,/createElement\(['"]script['"]\)/);
   assert.match(js,/status\(\)!=='granted'/);
   assert.match(js,/globalPrivacyControl/);

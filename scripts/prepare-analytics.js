@@ -60,6 +60,7 @@ if(enabled()){
 .mft-analytics-consent button[data-choice="dismiss"]{padding:.45rem .7rem}
 .mft-analytics-consent button[data-choice="grant"]{background:#143d3a;color:#fff}
 .mft-analytics-consent :focus-visible{outline:2px solid #143d3a;outline-offset:3px}
+.menu-open #mft-analytics-consent{display:none}
 `);
 }
 fs.mkdirSync(path.join(dist,'reports'),{recursive:true});

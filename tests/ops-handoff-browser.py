@@ -137,14 +137,17 @@ try:
             expect(notice).to_be_visible()
             for name in ['Close analytics notice', 'Decline', 'Allow analytics']:
                 expect(notice.get_by_role('button', name=name, exact=True)).to_be_in_viewport(ratio=1)
+            if choice == 'dismiss':
+                case.page.screenshot(path=str(OUT / f'consent-{width}x{height}.png'))
             disclosure = notice.get_by_role('region', name='How optional analytics work')
             disclosure.focus()
             expect(disclosure).to_be_focused()
             if disclosure.evaluate('(el)=>el.scrollHeight>el.clientHeight'):
                 case.page.keyboard.press('End')
-                case.page.wait_for_function('document.querySelector("#mft-analytics-consent p").scrollTop>0')
-            if choice == 'dismiss':
-                case.page.screenshot(path=str(OUT / f'consent-{width}x{height}.png'))
+                deadline = time.monotonic() + 2
+                while disclosure.evaluate('(el)=>el.scrollTop') == 0 and time.monotonic() < deadline:
+                    case.page.wait_for_timeout(50)
+                assert disclosure.evaluate('(el)=>el.scrollTop') > 0, 'Disclosure must scroll with the keyboard'
             # At the mobile sizes that regressed, scheduling remains clickable
             # with the notice open. Shorter/zoomed layouts offer visible Close,
             # Decline and Allow controls before continuing to the page.
@@ -157,6 +160,19 @@ try:
                 gate.get_by_role('button', name='Cancel', exact=True).click()
                 expect(notice).to_be_visible()
             case.zero()
+            if choice == 'dismiss' and (width, height) == (390, 950):
+                menu = case.page.get_by_role('button', name='Menu', exact=True)
+                menu.click()
+                expect(notice).to_be_hidden()
+                case.page.locator('header a[data-mft-booking]').click()
+                expect(gate).to_be_visible()
+                case.zero()
+                gate.get_by_role('button', name='Cancel', exact=True).click()
+                case.zero()
+                menu.click()
+                expect(notice).to_be_visible()
+                assert case.page.evaluate('window.MFTAnalyticsConsent.status()') == 'unset'
+                checked('Mobile navigation temporarily suspends and restores the notice without consent changes or opening/cancelling handoffs')
             notice.locator('[data-choice="' + choice + '"]').click()
             expect(notice).to_have_count(0)
             expected_consent = {'dismiss': 'unset', 'deny': 'denied', 'grant': 'granted'}[choice]

@@ -71,11 +71,11 @@ def guard(route):
 
 
 class Case:
-    def __init__(self, browser, path='/new-page/', consent='granted', mode=None, signal=None):
+    def __init__(self, browser, path='/new-page/', consent='granted', mode=None, signal=None, viewport=None):
         global active
         self.mode = mode
         self.deliveries, self.records, self.destinations, self.errors = [], {}, [], []
-        self.context = browser.new_context(viewport={'width': 1440, 'height': 1000}, reduced_motion='reduce')
+        self.context = browser.new_context(viewport=viewport or {'width': 1440, 'height': 1000}, reduced_motion='reduce')
         if consent is not None:
             self.context.add_init_script('if(window.top===window && location.origin===' + json.dumps(BASE) + ')localStorage.setItem(' + json.dumps(CONSENT) + ',' + json.dumps(consent) + ')')
         if signal:
@@ -128,6 +128,60 @@ try:
     with sync_playwright() as playwright:
         browser = harness.launch_isolated_chromium(playwright)
         interceptor = harness.install_browser_interceptor(browser, guard)
+
+        # Use the real consent UI and pointer clicks, without seeded consent or
+        # forced clicks. The former tall notice blocked the mobile hero button.
+        for choice, width, height in [('dismiss', 390, 950), ('deny', 390, 950), ('grant', 390, 950), ('dismiss', 320, 568), ('dismiss', 844, 390), ('dismiss', 320, 320)]:
+            case = Case(browser, path='/', consent=None, viewport={'width': width, 'height': height})
+            notice = case.page.get_by_role('dialog', name='Analytics privacy choice')
+            expect(notice).to_be_visible()
+            for name in ['Close analytics notice', 'Decline', 'Allow analytics']:
+                expect(notice.get_by_role('button', name=name, exact=True)).to_be_in_viewport(ratio=1)
+            disclosure = notice.get_by_role('region', name='How optional analytics work')
+            disclosure.focus()
+            expect(disclosure).to_be_focused()
+            if disclosure.evaluate('(el)=>el.scrollHeight>el.clientHeight'):
+                case.page.keyboard.press('End')
+                case.page.wait_for_function('document.querySelector("#mft-analytics-consent p").scrollTop>0')
+            if choice == 'dismiss':
+                case.page.screenshot(path=str(OUT / f'consent-{width}x{height}.png'))
+            # At the mobile sizes that regressed, scheduling remains clickable
+            # with the notice open. Shorter/zoomed layouts offer visible Close,
+            # Decline and Allow controls before continuing to the page.
+            if height >= 568:
+                case.page.locator(FREE).click()
+                gate = case.page.locator('dialog.mft-consultation-gate[open]')
+                expect(gate).to_be_visible()
+                expect(notice).to_be_hidden()
+                case.zero()
+                gate.get_by_role('button', name='Cancel', exact=True).click()
+                expect(notice).to_be_visible()
+            case.zero()
+            notice.locator('[data-choice="' + choice + '"]').click()
+            expect(notice).to_have_count(0)
+            expected_consent = {'dismiss': 'unset', 'deny': 'denied', 'grant': 'granted'}[choice]
+            assert case.page.evaluate('window.MFTAnalyticsConsent.status()') == expected_consent
+            assert case.page.evaluate('key=>localStorage.getItem(key)', CONSENT) == (None if choice == 'dismiss' else expected_consent)
+            case.zero()
+            settings = case.page.get_by_role('button', name='Analytics choices', exact=True)
+            settings.click()
+            expect(notice).to_be_visible()
+            notice.get_by_role('button', name='Close analytics notice').press('Enter')
+            expect(settings).to_be_focused()
+            assert case.page.evaluate('window.MFTAnalyticsConsent.status()') == expected_consent
+            assert case.page.evaluate('key=>localStorage.getItem(key)', CONSENT) == (None if choice == 'dismiss' else expected_consent)
+            case.zero()
+            case.page.locator(FREE).click()
+            case.zero()
+            case.go()
+            if choice == 'grant':
+                case.wait()
+                assert len(case.records) == 1
+            else:
+                case.zero()
+            assert case.destinations == [REQUEST]
+            checked(f'Visible {choice} choice at {width}x{height}: accessible notice, pointer scheduling, zero on open/cancel, ' + ('one consented handoff' if choice == 'grant' else 'no collection'))
+            case.close()
 
         case = Case(browser, '/new-page/' + PAID)
         original_source = case.page.evaluate('key => JSON.parse(sessionStorage.getItem(key))', SOURCE)

@@ -2,6 +2,7 @@
 import functools
 import hashlib
 import json
+import mimetypes
 import os
 from pathlib import Path
 import re
@@ -20,6 +21,7 @@ PORTAL='marriagefamilytherapy.clientsecure.me'
 WIDGET='spwidget-marriagefamilytherapy.clientsecure.me'
 CSP=re.search(r'Content-Security-Policy: ([^\n]+)',(ROOT/'dist/_headers').read_text())[1]
 BASE=os.environ.get('MFT_BASE_URL','').rstrip('/')
+CANDIDATE_ORIGIN=os.environ.get('MFT_CANDIDATE_ORIGIN')=='true'
 report={'pass':False,'checks':[],'states':[],'blockedWrites':[],
         'scope':'Real full-page scheduling, no embedded SDK, no slot selection or submitted client data.'}
 requested_engine=os.environ.get('MFT_BROWSER','all')
@@ -33,17 +35,30 @@ class Handler(SimpleHTTPRequestHandler):
         self.send_header('Content-Security-Policy',CSP)
         self.send_header('Referrer-Policy','no-referrer')
         super().end_headers()
-if not BASE:
+if CANDIDATE_ORIGIN:
+    assert not BASE, 'Choose either intercepted candidate pages or the live site'
+    BASE='https://www.mft.care'
+    report['scope']+=' Built candidate pages served at the production origin so the consent controller runs; SimplePractice remains live and read-only.'
+elif not BASE:
     server=ThreadingHTTPServer(('127.0.0.1',0),functools.partial(Handler,directory=str(ROOT/'dist')))
     threading.Thread(target=server.serve_forever,daemon=True).start()
     BASE=f'http://127.0.0.1:{server.server_port}'
 report['baseUrl']=BASE
+report['candidateOrigin']=CANDIDATE_ORIGIN
 
 def guard(route):
     r=route.request;u=urlsplit(r.url);host=u.hostname or ''
     # The integration script is deliberately blocked even if an old page requests it.
     if r.url==CONFIG['loaderUrl'] or any(s in host for s in ['googletagmanager','google-analytics','bugsnag','sentry','segment','doubleclick','facebook']):
         route.abort();return
+    if CANDIDATE_ORIGIN and host=='www.mft.care' and r.method in ['GET','HEAD']:
+        file=ROOT/'dist'/u.path.lstrip('/')
+        if u.path.endswith('/') or not file.suffix:file=file/'index.html'
+        if not file.is_file():route.fulfill(status=404,body='Not found');return
+        route.fulfill(status=200,body=file.read_bytes(),headers={
+            'Content-Type':mimetypes.guess_type(str(file))[0] or 'application/octet-stream',
+            'Content-Security-Policy':CSP,'Referrer-Policy':'no-referrer'})
+        return
     read_post=r.method=='POST' and host in [PORTAL,WIDGET] and u.path=='/client-portal-api/clinician-search/next-slots'
     if r.method not in ['GET','HEAD'] and not read_post:
         report['blockedWrites'].append({'method':r.method,'host':host,'path':u.path})
@@ -67,14 +82,14 @@ def choose(page,label):
     else:text.click()
 
 try:
-    if not server:
+    if not server and not CANDIDATE_ORIGIN:
         deadline=time.monotonic()+180
         while True:
             try:
                 with urlopen(Request(BASE+'/',headers={'Cache-Control':'no-cache'}),timeout=20) as r:html=r.read().decode()
                 assert 'data-mft-booking-mode="direct"' in html
                 assert CONFIG['loaderUrl'] not in html and 'data-spwidget-autobind' not in html
-                for name,source in [('mft-booking-core.js','src/booking-core.js'),('mft-booking.js','src/assets/mft-booking.js')]:
+                for name,source in [('mft-booking-core.js','src/booking-core.js'),('mft-booking.js','src/assets/mft-booking.js'),('mft-analytics.js','src/assets/mft-analytics.js')]:
                     asset=re.search(r'src="([^\"]*'+re.escape(name)+r'\?v=[^\"]+)"',html)[1]
                     with urlopen(BASE+asset,timeout=20) as r:assert r.read()==(ROOT/source).read_bytes()
                 report['matchingPublishedAssets']=True
@@ -107,6 +122,14 @@ try:
                 response=page.goto(BASE+path,wait_until='domcontentloaded');assert response.status==200
                 assert page.locator('script[src*="integration-1.0"]').count()==0
                 assert page.locator('[data-spwidget-autobind]').count()==0
+                if page.locator('script[data-mft-measurement-id]').count():
+                    notice=page.get_by_role('dialog',name='Analytics privacy choice')
+                    expect(notice).to_be_visible()
+                    for name in ['Close analytics notice','Decline','Allow analytics']:
+                        expect(notice.get_by_role('button',name=name,exact=True)).to_be_in_viewport(ratio=1)
+                    assert page.evaluate('window.MFTAnalyticsConsent.status()')=='unset'
+                    # Deliberately leave the notice open. A normal pointer click
+                    # on scheduling must work without deciding about analytics.
                 button=page.locator(selector).first
                 if not button.is_visible() and 'header-mobile' in label:page.locator('.menu-button').click()
                 href=button.get_attribute('href');assert button.get_attribute('target') in [None,'','_self']

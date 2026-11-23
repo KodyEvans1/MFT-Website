@@ -4,6 +4,8 @@ on:
     paths:
       - 'content/**'
       - 'src/**'
+      - 'scripts/prepare-analytics.js'
+      - 'tests/booking-handoff-browser.py'
       - 'tests/sonia-profile*'
       - 'tests/fixtures/other-clinician-prose.json'
       - '.github/workflows/sonia-profile.yml'
@@ -12,6 +14,9 @@ on:
     paths:
       - 'content/sonia-profile.json'
       - 'content/simplepractice-booking.json'
+      - 'src/assets/mft-analytics.js'
+      - 'scripts/prepare-analytics.js'
+      - 'tests/booking-handoff-browser.py'
       - 'tests/sonia-profile*'
       - '.github/workflows/sonia-profile.yml'
 permissions:
@@ -36,12 +41,20 @@ jobs:
         with:
           python-version: '3.12'
       - run: python -m pip install playwright==1.57.0
+      - name: Build the production consent UI for handoff verification
+        run: npm run build
+        env:
+          CONTEXT: production
+          SITE_INDEXING_ENABLED: 'true'
+          GA4_BASIC_MEASUREMENT_ENABLED: 'true'
+          OPS_HANDOFF_COLLECTION_ENABLED: 'true'
       - name: Verify real SimplePractice navigation in installed Chrome without appointments
         run: |
           export CHROME_PATH="$(command -v google-chrome || command -v chromium)"
           python tests/booking-handoff-browser.py
         env:
           MFT_BROWSER: chromium
+          MFT_CANDIDATE_ORIGIN: ${{ github.event_name == 'pull_request' && 'true' || 'false' }}
           MFT_BASE_URL: ${{ github.ref == 'refs/heads/main' && 'https://www.mft.care' || '' }}
       - name: Verify published Sonia content and redirects
         if: github.ref == 'refs/heads/main'
@@ -75,7 +88,13 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - run: npm run build
+      - name: Build the production consent UI for handoff verification
+        run: npm run build
+        env:
+          CONTEXT: production
+          SITE_INDEXING_ENABLED: 'true'
+          GA4_BASIC_MEASUREMENT_ENABLED: 'true'
+          OPS_HANDOFF_COLLECTION_ENABLED: 'true'
       - run: python -m pip install playwright==1.57.0
       - name: Install the supported WebKit browser and dependencies
         run: python -m playwright install --with-deps webkit
@@ -83,6 +102,7 @@ jobs:
         run: python tests/booking-handoff-browser.py
         env:
           MFT_BROWSER: webkit
+          MFT_CANDIDATE_ORIGIN: ${{ github.event_name == 'pull_request' && 'true' || 'false' }}
           MFT_BASE_URL: ${{ github.ref == 'refs/heads/main' && 'https://www.mft.care' || '' }}
       - uses: actions/upload-artifact@v4
         if: always()

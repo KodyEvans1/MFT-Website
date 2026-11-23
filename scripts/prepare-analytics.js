@@ -49,7 +49,19 @@ if(enabled()){
   if(handoffEnabled())headers=headers.replace(/connect-src ([^;]+);/,"connect-src $1 https://ops.mft.care;");
   fs.writeFileSync(path.join(dist,'_headers'),headers);
   fs.appendFileSync(path.join(dist,'assets/styles.css'), '\n.mft-analytics-settings{font:inherit;font-size:.8rem;background:none;color:inherit;border:0;text-decoration:underline;text-underline-offset:.2em;cursor:pointer;padding:.5rem 0}\n');
-  fs.appendFileSync(path.join(dist,'assets/styles.css'), '\n.mft-analytics-consent{position:fixed;z-index:9999;left:1rem;right:1rem;bottom:1rem;max-width:720px;margin:auto;padding:1rem 1.15rem;border:1px solid #b49554;border-radius:16px;background:#f7f3ea;color:#143d3a;box-shadow:0 16px 50px #0004;font:inherit}.mft-analytics-consent p{margin:0 0 .8rem}.mft-analytics-consent div{display:flex;gap:.65rem;justify-content:flex-end;flex-wrap:wrap}.mft-analytics-consent button{font:inherit;border-radius:999px;padding:.55rem 1rem;border:1px solid #143d3a;background:#fff;color:#143d3a;cursor:pointer}.mft-analytics-consent button[data-choice="grant"]{background:#143d3a;color:#fff}\n');
+  fs.appendFileSync(path.join(dist,'assets/styles.css'), `
+.mft-analytics-consent{position:fixed;z-index:9999;left:1rem;right:1rem;bottom:1rem;max-width:720px;max-height:min(28rem,max(15rem,45vh),calc(100vh - 2rem));max-height:min(28rem,max(15rem,45svh),calc(100svh - 2rem));box-sizing:border-box;display:grid;grid-template-rows:auto minmax(0,1fr) auto;gap:.8rem;margin:auto;padding:1rem 1.15rem;border:1px solid #b49554;border-radius:16px;background:#f7f3ea;color:#143d3a;box-shadow:0 16px 50px #0004;font:inherit}
+.mft-analytics-consent p{min-height:0;overflow-y:auto;overscroll-behavior:contain;scrollbar-gutter:stable;margin:0;padding-right:.3rem}
+.mft-analytics-consent-heading,.mft-analytics-consent-actions{display:flex;align-items:center;gap:.65rem}
+.mft-analytics-consent-heading{justify-content:space-between}
+.mft-analytics-consent-heading strong{line-height:1.35}
+.mft-analytics-consent-actions{justify-content:flex-end;flex-wrap:wrap}
+.mft-analytics-consent button{flex-shrink:0;font:inherit;border-radius:999px;padding:.55rem 1rem;border:1px solid #143d3a;background:#fff;color:#143d3a;cursor:pointer}
+.mft-analytics-consent button[data-choice="dismiss"]{padding:.45rem .7rem}
+.mft-analytics-consent button[data-choice="grant"]{background:#143d3a;color:#fff}
+.mft-analytics-consent :focus-visible{outline:2px solid #143d3a;outline-offset:3px}
+.menu-open #mft-analytics-consent{display:none}
+`);
 }
 fs.mkdirSync(path.join(dist,'reports'),{recursive:true});
 fs.writeFileSync(path.join(dist,'reports','analytics-integration.json'),JSON.stringify(report,null,2)+'\n');

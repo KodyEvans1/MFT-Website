@@ -359,7 +359,7 @@ try:
             case.close()
 
         case = Case(browser)
-        case.page.evaluate("window.MFTSchedulingMeasurement.track=()=>{throw new Error('Synthetic optional measurement failure')}")
+        case.page.evaluate("() => { window.MFTSchedulingMeasurement.track=()=>{throw new Error('Synthetic optional measurement failure')}; }")
         case.open()
         case.go()
         case.zero()

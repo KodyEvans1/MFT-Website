@@ -2,15 +2,22 @@ name: Verify scheduling measurement
 on:
   pull_request:
     paths:
+      - 'content/google-measurement-policy.json'
+      - 'src/analytics-build.js'
+      - 'src/measurement-report.js'
       - 'src/assets/mft-analytics.js'
-      - 'src/assets/mft-ga4-frame*'
+      - 'src/assets/mft-ga4-*'
       - 'src/assets/mft-booking.js'
       - 'src/booking-*.js'
       - 'src/marketing-improvements.js'
       - 'scripts/prepare-analytics.js'
+      - 'scripts/validate-analytics.js'
+      - 'scripts/prepare-release-provenance.js'
       - 'tests/scheduling-measurement*'
       - 'tests/ops-handoff*'
       - 'tests/ops_handoff_fixture.py'
+      - 'tests/measurement_privacy_fixture.py'
+      - 'tests/fixtures/first-party-measurement.js'
       - 'tests/scheduling_confirmation_fixture.py'
       - 'tests/scheduling-transport-probe.py'
       - 'tests/scheduling-browser-harness.py'
@@ -21,23 +28,33 @@ on:
   push:
     branches: [main]
     paths:
+      - 'content/google-measurement-policy.json'
+      - 'src/analytics-build.js'
+      - 'src/measurement-report.js'
       - 'src/assets/mft-analytics.js'
-      - 'src/assets/mft-ga4-frame*'
+      - 'src/assets/mft-ga4-*'
       - 'src/assets/mft-booking.js'
       - 'src/booking-*.js'
       - 'scripts/prepare-analytics.js'
+      - 'scripts/validate-analytics.js'
+      - 'scripts/prepare-release-provenance.js'
       - 'tests/scheduling-measurement*'
       - 'tests/ops-handoff*'
       - 'tests/ops_handoff_fixture.py'
+      - 'tests/measurement_privacy_fixture.py'
+      - 'tests/fixtures/first-party-measurement.js'
       - 'tests/scheduling_confirmation_fixture.py'
+      - 'tests/scheduling-transport-probe.py'
       - 'tests/scheduling-browser-harness.py'
       - 'tests/scheduling-browser-harness.test.py'
+      - 'tests/fixtures/scheduling-transport-probe.js'
+      - 'tests/fixtures/scheduling-network-probe.js'
       - '.github/workflows/scheduling-measurement.yml'
 permissions:
   contents: read
 jobs:
   measurement:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 12
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
@@ -55,7 +72,7 @@ jobs:
         run: |
           node --check tests/fixtures/scheduling-transport-probe.js
           node --check tests/fixtures/scheduling-network-probe.js
-          python -m py_compile tests/scheduling-measurement-browser.py tests/scheduling-transport-probe.py tests/scheduling-browser-harness.py tests/scheduling_confirmation_fixture.py tests/ops-handoff-browser.py tests/ops_handoff_fixture.py
+          python -m py_compile tests/scheduling-measurement-browser.py tests/scheduling-transport-probe.py tests/scheduling-browser-harness.py tests/scheduling_confirmation_fixture.py tests/ops-handoff-browser.py tests/ops_handoff_fixture.py tests/measurement_privacy_fixture.py
           python tests/scheduling-browser-harness.test.py
       - name: Build a production-origin candidate without deployment
         id: build
@@ -63,19 +80,20 @@ jobs:
         env:
           CONTEXT: production
           SITE_INDEXING_ENABLED: 'true'
-          GA4_BASIC_MEASUREMENT_ENABLED: 'true'
+          GA4_BASIC_MEASUREMENT_ENABLED: 'false'
           OPS_HANDOFF_COLLECTION_ENABLED: 'true'
       - run: python -m pip install playwright==1.57.0
+      - run: python -m playwright install --with-deps chromium
       - name: Trace synthetic transport and navigation order
         run: |
           export CHROME_PATH="$(command -v google-chrome || command -v chromium)"
           python tests/scheduling-transport-probe.py
-      - name: Real Google script with intercepted collector and scheduler
+      - name: Consent migration and retired helpers cannot activate Google
         if: ${{ !cancelled() && steps.build.outcome == 'success' }}
         run: |
           export CHROME_PATH="$(command -v google-chrome || command -v chromium)"
           python tests/scheduling-measurement-browser.py
-      - name: First-party handoffs with intercepted Ops and blocked Google
+      - name: First-party handoffs with intercepted Ops and zero Google requests
         if: ${{ !cancelled() && steps.build.outcome == 'success' }}
         run: |
           export CHROME_PATH="$(command -v google-chrome || command -v chromium)"

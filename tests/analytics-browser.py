@@ -1,167 +1,231 @@
-"""GA4 release verification. Candidate hits are intercepted; live sends one consented homepage view only."""
-import hashlib, json, mimetypes, os, re, time
-from urllib.request import Request, urlopen
+"""Nonconverting privacy verification, including optional read-only live assets.
+
+Browser DNS is denied. Candidate files or allowlisted public GETs are supplied
+by the verifier. Google, Ops POSTs and scheduler requests are never sent.
+"""
+import hashlib
+import importlib.util
+import json
+import mimetypes
+import os
+import re
+import time
 from pathlib import Path
-from urllib.parse import urlsplit, parse_qs, unquote
-from playwright.sync_api import sync_playwright
+from urllib.parse import urlsplit
+from urllib.request import HTTPRedirectHandler, Request, build_opener
+from playwright.sync_api import sync_playwright, expect
+from measurement_privacy_fixture import (
+    CONSENT, CONTROLLER, ADVERTISING_CONSENT, is_google_url, request_summary,
+    assert_advertising_unavailable, assert_no_google_cookies, assert_no_google_dom,
+    assert_no_raw_identifier_storage,
+)
 from scheduling_confirmation_fixture import acknowledge_scheduling_dialog
 
-ROOT=Path(__file__).resolve().parents[1]
-OUT=ROOT/'tmp/analytics-browser';OUT.mkdir(parents=True,exist_ok=True)
-BASE='https://www.mft.care';MID='G-BTK39BBNRE';LIVE=os.getenv('MFT_ANALYTICS_LIVE')=='true'
-CSP=re.search(r'Content-Security-Policy: ([^\n]+)',(ROOT/'dist/_headers').read_text())[1]
-report={'pass':False,'live':LIVE,'checks':[],'hits':[],'deliveries':[],'console':[],'failures':[], 'scope':'Public website traffic only. Test hits intercepted; only one actual consented live-homepage visit may be sent. No appointments or client information.'}
-fixture=os.getenv('MFT_GTAG_FIXTURE')
-current_case=''; google_requests=[]; hits=[]; send_live=False
+ROOT = Path(__file__).resolve().parents[1]
+OUT = ROOT / 'tmp/analytics-browser'
+OUT.mkdir(parents=True, exist_ok=True)
+BASE = 'https://www.mft.care'
+LIVE = os.getenv('MFT_ANALYTICS_LIVE') == 'true'
+CSP = re.search(r'Content-Security-Policy: ([^\n]+)', (ROOT / 'dist/_headers').read_text())[1]
+spec = importlib.util.spec_from_file_location('mft_scheduling_harness', ROOT / 'tests/scheduling-browser-harness.py')
+harness = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(harness)
+report = {'pass': False, 'live': LIVE, 'checks': [], 'googleRequests': [], 'handoffRequests': [],
+          'scope': 'Nonconverting verification. All browser DNS denied. Only public website GETs may be fetched in live mode. No Google requests, Ops receipts, SimplePractice navigation or appointments are authorized.'}
+interceptor = None
+errors = []
+public_cache = {}
 
-def decode_hit(req):
-    q=parse_qs(urlsplit(req.url).query,keep_blank_values=True)
-    raw=req.post_data or ''
-    records=[]
-    for line in raw.splitlines() or ['']:
-        records.append({**q,**parse_qs(line,keep_blank_values=True)})
-    return records
 
-def check_hit(data):
-    assert data.get('tid')==[MID],('wrong property',data)
-    assert data.get('en',[''])[0] in ['page_view','user_engagement','session_start','first_visit'],('unapproved event',data.get('en'))
-    assert re.fullmatch(r'https://www\.mft\.care/p/[a-f0-9]{16}/',data.get('dl',[''])[0]),('raw location',data.get('dl'))
-    assert data.get('dt')==['M.F.T. Public Website']
-    assert data.get('dr',[''])[0] in ['', 'https://www.google.com/','https://www.bing.com/','https://google.com/','https://bing.com/']
-    joined=unquote(json.dumps(data)).lower()
-    for forbidden in ['test-private','example.invalid','clinicianid','check-my-coverage','user_id','search_term','link_url','form_destination','ep.user_data','up.','email','phone_number']:
-        assert forbidden not in joined,('sensitive parameter',forbidden)
-    assert data.get('npa')==['1'],('personalization not disabled',data.get('npa'))
+class PublicOnlyRedirect(HTTPRedirectHandler):
+    def redirect_request(self, request, response, code, message, headers, newurl):
+        target = urlsplit(newurl)
+        assert target.scheme == 'https' and target.netloc == 'www.mft.care', 'Refusing an external public-resource redirect'
+        return super().redirect_request(request, response, code, message, headers, newurl)
+
+
+public_reader = build_opener(PublicOnlyRedirect())
+
+
+def public_get(path):
+    if path not in public_cache:
+        with public_reader.open(Request(BASE + path, headers={'Cache-Control': 'no-cache'}), timeout=20) as response:
+            assert urlsplit(response.url).hostname == 'www.mft.care', 'Unexpected public resource redirect'
+            public_cache[path] = (response.status, response.read(), {
+                key: value for key, value in response.headers.items()
+                if key.lower() in {'content-type', 'content-security-policy', 'referrer-policy', 'cache-control'}
+            })
+    return public_cache[path]
+
 
 def guard(route):
-    req=route.request;u=urlsplit(req.url)
-    if u.hostname=='www.mft.care':
-        if LIVE: route.continue_();return
-        f=ROOT/'dist'/u.path.lstrip('/')
-        if u.path.endswith('/') or not f.suffix:f=f/'index.html'
-        if not f.is_file():route.fulfill(status=404,body='Not found');return
-        route.fulfill(status=200,body=f.read_bytes(),headers={'Content-Type':mimetypes.guess_type(str(f))[0] or 'application/octet-stream','Content-Security-Policy':CSP,'Referrer-Policy':'no-referrer'})
-    elif u.hostname=='www.googletagmanager.com' and u.path=='/gtag/js':
-        google_requests.append(req.url)
-        assert parse_qs(u.query).get('id')==[MID]
-        assert not req.headers.get('referer'),('Google loader referrer',req.headers.get('referer'))
-        if fixture:route.fulfill(status=200,content_type='text/javascript',body=Path(fixture).read_bytes())
-        else:route.continue_()
-    elif u.hostname in ['www.google-analytics.com','region1.google-analytics.com'] and u.path.endswith('/collect'):
-        for data in decode_hit(req):
-            check_hit(data);hits.append(data)
-            report['hits'].append({'case':current_case,'event':data.get('en'),'measurementId':data.get('tid'),'page':data.get('dl'),'personalization':data.get('npa')})
-        if send_live:
-            response=route.fetch();report['deliveries'].append({'status':response.status,'host':u.hostname,'path':u.path});route.fulfill(response=response)
-        else:route.fulfill(status=204,body='')
-    else:route.abort()
+    request = route.request
+    url = urlsplit(request.url)
+    if is_google_url(request.url):
+        report['googleRequests'].append(request_summary(request))
+        route.abort()
+        raise AssertionError('Google must not be requested in any consent state')
+    if url.hostname == 'ops.mft.care':
+        report['handoffRequests'].append(request_summary(request))
+        route.abort()
+        raise AssertionError('The nonconverting verifier must not attempt an Ops handoff')
+    if url.hostname == 'www.mft.care' and request.method in {'GET', 'HEAD'}:
+        if LIVE:
+            status, body, headers = public_get(url.path + ('?' + url.query if url.query else ''))
+            route.fulfill(status=status, body=body, headers=headers)
+            return
+        file = ROOT / 'dist' / url.path.lstrip('/')
+        if url.path.endswith('/') or not file.suffix:
+            file = file / 'index.html'
+        if not file.is_file():
+            route.fulfill(status=404, body='Not found')
+            return
+        route.fulfill(status=200, body=file.read_bytes(), headers={
+            'Content-Type': mimetypes.guess_type(str(file))[0] or 'application/octet-stream',
+            'Content-Security-Policy': CSP, 'Referrer-Policy': 'no-referrer',
+        })
+        return
+    route.abort()
+    if url.hostname in {'clientsecure.me', 'marriagefamilytherapy.clientsecure.me'}:
+        raise AssertionError('The nonconverting verifier must not navigate to SimplePractice')
 
-def wait_hit(page):
-    for _ in range(80):
-        page.wait_for_timeout(100)
-        if any(h.get('en')==['page_view'] for h in hits):return
-    report['frameState']=[f.evaluate("""() => ({url:location.href, scripts:[...document.scripts].map(s=>s.src), ready:document.readyState, dataLayer:window.dataLayer ? [...window.dataLayer].map(v=>Array.from(v)) : null})""") for f in page.frames]
-    report['googleLoaderRequests']=len(google_requests)
-    raise AssertionError('No GA4 page_view observed')
 
-def observe(page):
-    page.on('pageerror',lambda error:report['console'].append(str(error)))
-    page.on('console',lambda message:report['console'].append(message.text[:1200]) if message.type=='error' else None)
-    page.on('requestfailed',lambda request:report['failures'].append({'host':urlsplit(request.url).hostname,'path':urlsplit(request.url).path,'error':request.failure}))
+def record(name, page=None, context=None):
+    interceptor.assert_ok()
+    assert not errors, errors
+    assert not report['googleRequests'] and not report['handoffRequests']
+    if page:
+        assert_no_google_dom(page)
+        assert_no_raw_identifier_storage(page)
+        if page.locator(CONTROLLER).count():
+            assert_advertising_unavailable(page)
+    if context:
+        assert_no_google_cookies(context)
+    report['checks'].append({'name': name, 'pass': True})
 
-def context(browser,**kwargs):
-    c=browser.new_context(viewport={'width':1440,'height':1000},reduced_motion='reduce',**kwargs);c.route('**/*',guard);c.on('page',observe);return c
 
-def record(label):report['checks'].append({'name':label,'pass':True})
+def new_context(browser, width=1440, height=1000, seed=None, signal=None):
+    context = browser.new_context(viewport={'width': width, 'height': height}, reduced_motion='reduce')
+    if seed:
+        context.add_init_script('if(location.origin===' + json.dumps(BASE) + '){for(const [key,value] of ' +
+                                json.dumps(list(seed.items())) + ')localStorage.setItem(key,value)}')
+    if signal:
+        value = 'true' if signal == 'globalPrivacyControl' else '"1"'
+        context.add_init_script('Object.defineProperty(Navigator.prototype,' + json.dumps(signal) + ',{get:()=>'+value+'})')
+    context.on('page', lambda page: page.on('pageerror', lambda error: errors.append(str(error))))
+    return context
+
 
 try:
     if LIVE:
-        version=hashlib.sha256((ROOT/'src/assets/mft-analytics.js').read_bytes()).hexdigest()[:16]
-        deadline=time.monotonic()+180
+        version = hashlib.sha256((ROOT / 'src/assets/mft-analytics.js').read_bytes()).hexdigest()[:16]
+        deadline = time.monotonic() + 180
         while True:
             try:
-                with urlopen(Request(BASE+'/',headers={'Cache-Control':'no-cache'}),timeout=20) as response:
-                    html=response.read().decode();headers=dict(response.headers)
-                assert '/assets/mft-analytics.js?v='+version in html
-                with urlopen(BASE+'/assets/mft-analytics.js?v='+version,timeout=20) as response:
-                    assert response.read()==(ROOT/'src/assets/mft-analytics.js').read_bytes()
-                report['matchingPublishedAssets']=True
-                report['assetVersion']=version
+                public_cache.clear()
+                status, body, _ = public_get('/')
+                assert status == 200 and '/assets/mft-analytics.js?v=' + version in body.decode()
+                _, script, _ = public_get('/assets/mft-analytics.js?v=' + version)
+                assert script == (ROOT / 'src/assets/mft-analytics.js').read_bytes()
+                _, raw, _ = public_get('/reports/analytics-integration.json')
+                integration = json.loads(raw)
+                assert integration['enabled'] is False and integration['googlePages'] == []
+                report['matchingPublishedAssets'] = True
+                report['assetVersion'] = version
                 break
             except Exception:
-                if time.monotonic()>=deadline:raise
+                if time.monotonic() >= deadline:
+                    raise
                 time.sleep(6)
-    with sync_playwright() as p:
-        options={'headless':True}
-        if os.getenv('MFT_CHROMIUM'):options['executable_path']=os.environ['MFT_CHROMIUM']
-        browser=p.chromium.launch(**options)
-        c=context(browser);page=c.new_page();current_case='initial-consent'
-        page.goto(BASE+'/?q=test-private&email=test-private%40example.invalid#test-private',wait_until='domcontentloaded')
-        page.wait_for_timeout(1800)
-        assert not google_requests and not hits,'Google contacted before consent'
-        assert page.locator('#mft-analytics-consent').is_visible()
-        assert not any(x['name'].startswith('mftga') for x in c.cookies())
-        record('No Google requests or analytics cookies before consent')
-        page.locator('[data-choice="deny"]').click();page.wait_for_timeout(300)
-        assert not google_requests and not hits
-        page.reload(wait_until='domcontentloaded');page.wait_for_timeout(300)
-        assert page.locator('#mft-analytics-consent').count()==0 and not google_requests
-        record('Decline persists and sends nothing')
-        page.locator('.mft-analytics-settings').click();page.locator('[data-choice="grant"]').click();wait_hit(page)
-        assert len([h for h in hits if h.get('en')==['page_view']])==1
-        assert len(google_requests)==1
-        assert page.locator('#mft-analytics-consent').count()==0
-        record('One sanitized page_view with correct ID after consent')
-        page.evaluate('''() => {const form=document.createElement('form');form.id='test-private';form.innerHTML='<input name="email" value="test-private@example.invalid"><button>Test</button>';form.addEventListener('submit',e=>e.preventDefault());document.body.append(form);form.querySelector('input').dispatchEvent(new Event('change',{bubbles:true}));form.dispatchEvent(new Event('submit',{bubbles:true}));history.pushState({},'', '?q=test-private&email=test-private%40example.invalid');window.scrollTo(0,document.body.scrollHeight);const a=document.createElement('a');a.href='https://example.invalid/test-private';a.textContent='Test';a.addEventListener('click',e=>e.preventDefault());document.body.append(a);a.click();}''')
-        page.wait_for_timeout(1800)
-        assert not any(h.get('en',[''])[0] in ['form_start','form_submit','click','scroll','view_search_results'] for h in hits)
-        record('No form, click, search or scroll events from the parent document')
-        page.evaluate("document.querySelector('#test-private').remove()")
-        cookies=[x for x in c.cookies() if x['name'].startswith('mftga')]
-        assert cookies and all(x['domain']=='www.mft.care' for x in cookies),('cookies not host-only',cookies)
-        record('Analytics cookies stay on public hostname, not Ops')
-        page.locator('.mft-analytics-settings').click();before=len(hits);page.locator('[data-choice="deny"]').click();page.wait_for_timeout(500)
-        assert page.locator('iframe[title="Optional website traffic measurement"]').count()==0
-        assert not any(x['name'].startswith('mftga') for x in c.cookies())
-        assert len(hits)==before
-        record('Revocation removes the counter and analytics cookies')
-        c.close()
-        for signal in ['globalPrivacyControl','doNotTrack']:
-            google_requests.clear();hits.clear();current_case=signal;c=context(browser)
-            value='true' if signal=='globalPrivacyControl' else "'1'"
-            c.add_init_script(f"Object.defineProperty(Navigator.prototype,'{signal}',{{get:()=>{value}}});localStorage.setItem('mft.analytics.consent.v4','granted');")
-            page=c.new_page();page.goto(BASE+'/',wait_until='domcontentloaded');page.wait_for_timeout(600)
-            assert not google_requests and not hits;record(signal+' overrides stored consent');c.close()
-        for path in ['/check-my-coverage/','/marriage-reset-assessment/','/start/','/marriagereset/']:
-            google_requests.clear();hits.clear();current_case=path;c=context(browser);c.add_init_script("localStorage.setItem('mft.analytics.consent.v4','granted')")
-            page=c.new_page();page.goto(BASE+path,wait_until='domcontentloaded');page.wait_for_timeout(250)
-            assert page.locator('script[data-mft-measurement-id]').count()==0
-            assert not google_requests and not hits;record('Excluded '+path);c.close()
-        google_requests.clear();hits.clear();current_case='mobile';c=browser.new_context(viewport={'width':390,'height':844},reduced_motion='reduce');c.route('**/*',guard)
-        page=c.new_page();page.goto(BASE+'/',wait_until='domcontentloaded');page.screenshot(path=str(OUT/'consent-mobile.png'))
-        assert page.evaluate('document.documentElement.scrollWidth<=innerWidth')
-        page.locator('[data-choice="deny"]').click();page.locator('.mh-hero a[data-mft-ten-minute-consultation="true"]').click()
-        gate=page.locator('.mft-consultation-gate');assert gate.is_visible()
-        go=acknowledge_scheduling_dialog(page);assert go is not None
-        assert go.get_attribute('href')=='https://marriagefamilytherapy.clientsecure.me/request'
-        assert not google_requests;record('Mobile layout and scheduling unchanged after decline');c.close()
-        if LIVE:
-            current_case='live-consented-homepage';google_requests.clear();hits.clear();send_live=True
-            c=context(browser);page=c.new_page();page.goto(BASE+'/',wait_until='domcontentloaded')
-            page.locator('[data-choice="grant"]').click();wait_hit(page);page.wait_for_timeout(1200)
-            assert report['deliveries'] and all(200<=d['status']<300 for d in report['deliveries'])
-            page.locator('.mft-analytics-settings').click();page.locator('[data-choice="deny"]').click()
-            record('Google collector accepted the real consented homepage view');c.close()
+    with sync_playwright() as playwright:
+        browser = harness.launch_isolated_chromium(playwright)
+        interceptor = harness.install_browser_interceptor(browser, guard)
+        context = new_context(browser)
+        page = context.new_page()
+        path = '/' if LIVE else '/?gclid=secret-click&gbraid=secret-click&wbraid=secret-click&email=private-canary%40example.invalid'
+        page.goto(BASE + path, wait_until='domcontentloaded')
+        expect(page.locator('#mft-analytics-consent')).to_be_visible()
+        page.wait_for_timeout(350)
+        assert page.locator(CONTROLLER).get_attribute('data-mft-google-mode') == 'disabled'
+        record('Before consent: no Google resources, cookies, requests or handoff', page, context)
+        page.locator('[data-choice="deny"]').click()
+        page.reload(wait_until='domcontentloaded')
+        assert page.locator('#mft-analytics-consent').count() == 0
+        assert page.evaluate('window.MFTAnalyticsConsent.status()') == 'denied'
+        record('Refusal persists without Google or Ops collection', page, context)
+        page.get_by_role('button', name='Analytics choices', exact=True).click()
+        notice = page.get_by_role('dialog', name='Analytics privacy choice')
+        assert 'Google' in notice.inner_text() and 'disabled' in notice.inner_text().lower()
+        notice.get_by_role('button', name='Allow analytics', exact=True).click()
+        page.wait_for_timeout(500)
+        assert page.evaluate('window.MFTAnalyticsConsent.status()') == 'granted'
+        assert page.locator('iframe').count() == 0
+        record('First-party analytics permission does not load Google or create a pageview', page, context)
+        page.evaluate("""() => {
+          const form=document.createElement('form');form.id='privacy-synthetic-form';
+          form.innerHTML='<input name="email" value="private-canary@example.invalid"><button>Test</button>';
+          form.addEventListener('submit',event=>event.preventDefault());document.body.append(form);
+          form.querySelector('input').dispatchEvent(new Event('change',{bubbles:true}));
+          form.dispatchEvent(new Event('submit',{bubbles:true}));
+          history.pushState({},'', '?q=private-canary&email=private-canary%40example.invalid');
+          window.scrollTo(0,document.body.scrollHeight);
+          const link=document.createElement('a');link.href='https://example.invalid/private-canary';
+          link.addEventListener('click',event=>event.preventDefault());document.body.append(link);link.click();
+          form.remove();link.remove();history.replaceState({},'', '/');
+        }""")
+        page.wait_for_timeout(350)
+        record('Forms, history, search, scrolling and outbound diagnostics send no Google event', page, context)
+        page.get_by_role('button', name='Analytics choices', exact=True).click()
+        page.locator('[data-choice="deny"]').click()
+        page.wait_for_timeout(350)
+        record('Withdrawal leaves Google disabled and measurement cookies cleared', page, context)
+        context.close()
+
+        for signal in ['globalPrivacyControl', 'doNotTrack']:
+            context = new_context(browser, seed={CONSENT: 'granted', ADVERTISING_CONSENT: 'granted'}, signal=signal)
+            page = context.new_page(); page.goto(BASE + '/', wait_until='domcontentloaded')
+            assert page.evaluate('window.MFTAnalyticsConsent.status()') == 'denied'
+            record(signal + ' overrides stored permission; advertising remains unavailable', page, context)
+            context.close()
+
+        for path in ['/check-my-coverage/', '/marriage-reset-assessment/', '/start/', '/marriagereset/']:
+            context = new_context(browser, seed={CONSENT: 'granted'})
+            page = context.new_page(); page.goto(BASE + path, wait_until='domcontentloaded')
+            assert page.locator(CONTROLLER).count() == 0
+            record('Excluded route has no controller or Google resource: ' + path, page, context)
+            context.close()
+
+        for width, height in [(390, 844), (320, 568), (844, 390)]:
+            context = new_context(browser, width, height)
+            page = context.new_page(); page.goto(BASE + '/', wait_until='domcontentloaded')
+            notice = page.get_by_role('dialog', name='Analytics privacy choice')
+            for name in ['Close analytics notice', 'Decline', 'Allow analytics']:
+                expect(notice.get_by_role('button', name=name, exact=True)).to_be_in_viewport(ratio=1)
+            assert page.evaluate('document.documentElement.scrollWidth<=innerWidth')
+            page.screenshot(path=str(OUT / f'consent-{width}x{height}.png'))
+            notice.get_by_role('button', name='Decline', exact=True).click()
+            page.locator('.mh-hero a[data-mft-ten-minute-consultation="true"]').click()
+            gate = page.locator('dialog.mft-consultation-gate[open]')
+            expect(gate).to_be_visible()
+            go = acknowledge_scheduling_dialog(page)
+            assert go is not None and go.get_attribute('href') == 'https://marriagefamilytherapy.clientsecure.me/request'
+            gate.get_by_role('button', name='Cancel', exact=True).click()
+            expect(gate).to_have_count(0)
+            record(f'{width}x{height}: visible notice, popup and acknowledgment/cancel remain nonconverting', page, context)
+            context.close()
         browser.close()
-    report['pass']=True
+        interceptor.assert_ok()
+    report['pass'] = True
 except Exception as error:
-    report['error']=str(error)
+    report['error'] = str(error)
     try:
-        report['frameState']=[f.evaluate("""() => ({url:location.protocol+'//'+location.host+location.pathname, scripts:[...document.scripts].map(s=>s.src), ready:document.readyState, dataLayer:window.dataLayer ? [...window.dataLayer].map(v=>Array.from(v)) : null})""") for f in page.frames]
-        report['googleLoaderRequests']=len(google_requests)
-        page.screenshot(path=str(OUT/'failure.png'))
-    except Exception as e:report['captureError']=str(e)
+        page.screenshot(path=str(OUT / 'failure.png'))
+    except Exception:
+        pass
     raise
 finally:
-    (OUT/'result.json').write_text(json.dumps(report,indent=2))
-    print(json.dumps(report,indent=2))
+    if interceptor:
+        report['interceptorErrors'] = interceptor.errors
+        report['interceptedRequests'] = interceptor.request_count
+    (OUT / 'result.json').write_text(json.dumps(report, indent=2))
+    print(json.dumps(report, indent=2))

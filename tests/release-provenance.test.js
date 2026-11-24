@@ -6,9 +6,13 @@ const os = require('node:os');
 const path = require('node:path');
 const { execFileSync } = require('node:child_process');
 const { apply } = require('../scripts/prepare-release-provenance');
-const production = {CONTEXT:'production', SITE_INDEXING_ENABLED:'true', GA4_BASIC_MEASUREMENT_ENABLED:'true'};
+const { googlePolicy } = require('../src/analytics-build');
+const { measurementReport } = require('../src/measurement-report');
+const production = {CONTEXT:'production', SITE_INDEXING_ENABLED:'true', GA4_BASIC_MEASUREMENT_ENABLED:'true', OPS_HANDOFF_COLLECTION_ENABLED:'true'};
 const manifest = 'reports/release-provenance.json';
 const now = new Date('2026-01-01T00:00:00.000Z');
+const analyticsReport = (pages, env = production) => ({version:2, enabled:false, finalVerified:true,
+  finalPages:pages, controllerPages:pages, opsHandoffPages:pages, googlePages:[], measurement:measurementReport(env)});
 
 function fixture() {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'mft-release-provenance-'));
@@ -20,13 +24,14 @@ function fixture() {
   for (const relative of ['src/booking-core.js','src/assets/mft-booking.js','src/assets/mft-analytics.js','src/assets/mft-ga4-frame.js','src/assets/mft-ga4-frame.html'])
     write(relative, 'synthetic ' + relative);
   write('content/simplepractice-booking.json', {generalUrl:'https://scheduler.example.invalid/'});
+  write('content/google-measurement-policy.json', googlePolicy());
   write('dist/robots.txt', 'User-agent: *\nAllow: /\n');
   write('dist/_headers', '/*\n  Referrer-Policy: no-referrer\n');
   write('dist/sitemap.xml', '<urlset><url><loc>https://www.mft.care/</loc></url></urlset>');
   write('dist/index.html', '<html><body>Synthetic page</body></html>');
   write('dist/assets/mft-analytics.js', 'synthetic src/assets/mft-analytics.js');
   write('dist/reports/publication.json', {expectedSitemapUrls:['https://www.mft.care/'], generatedRoutes:[{slug:'synthetic-draft',status:'draft'}]});
-  write('dist/reports/analytics-integration.json', {finalVerified:true, finalPages:['/']});
+  write('dist/reports/analytics-integration.json', analyticsReport(['/']));
   return {root, write, remove:() => fs.rmSync(root, {recursive:true, force:true})};
 }
 
@@ -34,8 +39,8 @@ test('provenance records effective preview restrictions and provider declaration
   const f = fixture();
   try {
     f.write('dist/reports/publication.json', {expectedSitemapUrls:[], generatedRoutes:[{slug:'synthetic-draft',status:'draft'}]});
-    f.write('dist/reports/analytics-integration.json', {finalVerified:true, finalPages:[]});
     for (const flags of [{CONTEXT:'deploy-preview'}, {CONTEXT:'production',NETLIFY_PREVIEW_SERVER:'true'}]) {
+      f.write('dist/reports/analytics-integration.json', analyticsReport([], {...production, ...flags}));
       const report = apply({root:f.root, now, env:{...production, ...flags,
         COMMIT_REF:'a'.repeat(40), GITHUB_SHA:'b'.repeat(40), DEPLOY_ID:'0123456789abcdef01234567',
         AUTH_TOKEN:'synthetic-secret-token', PRIVATE_ACCOUNT:'synthetic-private-account'}});
@@ -47,8 +52,11 @@ test('provenance records effective preview restrictions and provider declaration
       assert.equal(report.netlify.deployId, '0123456789abcdef01234567');
       assert.equal(report.environment.indexingEnabled, false);
       assert.equal(report.environment.ga4Enabled, false);
+      assert.equal(report.environment.ga4RequestedByEnvironment, true);
+      assert.equal(report.environment.firstPartyControllerEnabled, false);
+      assert.equal(report.environment.opsHandoffEnabled, false);
       assert.equal(report.environment.previewServer, Boolean(flags.NETLIFY_PREVIEW_SERVER));
-      assert.deepEqual(report.baseline, {sitemapUrls:0,analyticsPages:0,generatedSeoRoutes:1,draftSeoRoutes:1});
+      assert.deepEqual(report.baseline, {sitemapUrls:0,analyticsPages:0,analyticsPagesScope:'Google runtime pages',firstPartyControllerPages:0,opsHandoffPages:0,generatedSeoRoutes:1,draftSeoRoutes:1});
       assert.doesNotMatch(JSON.stringify(report), /AUTH_TOKEN|PRIVATE_ACCOUNT|synthetic-secret|synthetic-private/);
     }
   } finally { f.remove(); }
@@ -63,7 +71,20 @@ test('manifest hashes final artifact content, changes with content, excludes its
     assert.equal(first.source.commitSource, null);
     assert.equal(first.netlify.deployId, null);
     assert.equal(first.environment.indexingEnabled, true);
-    assert.equal(first.environment.ga4Enabled, true);
+    assert.equal(first.environment.ga4Enabled, false);
+    assert.equal(first.environment.ga4RequestedByEnvironment, true);
+    assert.equal(first.environment.firstPartyControllerEnabled, true);
+    assert.equal(first.environment.opsHandoffEnabled, true);
+    assert.equal(first.baseline.analyticsPages, 0);
+    assert.equal(first.baseline.firstPartyControllerPages, 1);
+    assert.equal(first.baseline.opsHandoffPages, 1);
+    assert.equal(first.googleMeasurement.mode, 'disabled');
+    assert.equal(first.googleMeasurement.status, 'blocked-sensitive-context');
+    assert.equal(first.googleMeasurement.policyVersion, 1);
+    assert.equal(first.googleMeasurement.policyFile, 'content/google-measurement-policy.json');
+    assert.match(first.googleMeasurement.policySha256, /^[a-f0-9]{64}$/);
+    assert.equal(first.googleMeasurement.approvedRoutes, 0);
+    assert.equal(first.googleMeasurement.approvedEvents, 0);
     assert.equal(first.artifacts[manifest], undefined);
     assert.equal(first.artifactCount, Object.keys(first.artifacts).length);
     for (const relative of ['robots.txt','_headers','sitemap.xml','index.html','assets/mft-analytics.js','reports/publication.json','reports/analytics-integration.json']) {

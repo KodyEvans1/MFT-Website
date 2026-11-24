@@ -1,0 +1,7 @@
+{
+  "version": 1,
+  "status": "blocked-sensitive-context",
+  "approvedRoutes": [],
+  "approvedEvents": [],
+  "reason": "No eligible purpose has been demonstrated for sending therapy-scheduling activity with linkable identifiers to Google within the required data boundary. Public indexing approval does not authorize Google measurement."
+}

@@ -4,6 +4,7 @@ on:
     paths:
       - 'src/assets/mft-booking.js'
       - 'src/assets/mft-analytics.js'
+      - 'src/analytics-build.js'
       - 'src/assets/start-page.css'
       - 'src/assets/site-experience.js'
       - 'src/booking-*.js'
@@ -12,6 +13,7 @@ on:
       - 'content/simplepractice-booking.json'
       - 'tests/account-confirmation-browser.py'
       - 'tests/scheduling_confirmation_fixture.py'
+      - 'tests/measurement_privacy_fixture.py'
       - 'tests/scheduling-browser-harness.py'
       - '.github/workflows/account-confirmation.yml'
   push:
@@ -19,6 +21,7 @@ on:
     paths:
       - 'src/assets/mft-booking.js'
       - 'src/assets/mft-analytics.js'
+      - 'src/analytics-build.js'
       - 'src/assets/start-page.css'
       - 'src/assets/site-experience.js'
       - 'src/booking-*.js'
@@ -27,6 +30,7 @@ on:
       - 'content/simplepractice-booking.json'
       - 'tests/account-confirmation-browser.py'
       - 'tests/scheduling_confirmation_fixture.py'
+      - 'tests/measurement_privacy_fixture.py'
       - 'tests/scheduling-browser-harness.py'
       - '.github/workflows/account-confirmation.yml'
   workflow_dispatch:
@@ -51,9 +55,10 @@ jobs:
         env:
           CONTEXT: production
           SITE_INDEXING_ENABLED: 'true'
-          GA4_BASIC_MEASUREMENT_ENABLED: 'true'
+          GA4_BASIC_MEASUREMENT_ENABLED: 'false'
           OPS_HANDOFF_COLLECTION_ENABLED: 'true'
       - run: python -m pip install playwright==1.57.0
+      - run: python -m playwright install --with-deps chromium
       - name: Verify the isolated confirmation flow and unchanged publication baseline
         run: |
           export CHROME_PATH="$(command -v google-chrome || command -v chromium)"

@@ -10,6 +10,30 @@ const SITE = 'https://www.mft.care';
 const ENABLE_FLAG = 'GA4_BASIC_MEASUREMENT_ENABLED';
 const HANDOFF_ENABLE_FLAG = 'OPS_HANDOFF_COLLECTION_ENABLED';
 const HANDOFF_ENDPOINT = 'https://ops.mft.care/api/marketing/attribution';
+const GOOGLE_POLICY_FILE = 'content/google-measurement-policy.json';
+
+function validateGooglePolicy(policy) {
+  const keys = ['version', 'status', 'approvedRoutes', 'approvedEvents', 'reason'];
+  if (!policy || typeof policy !== 'object' || Array.isArray(policy) ||
+      Object.keys(policy).length !== keys.length || keys.some(key => !Object.hasOwn(policy, key)) ||
+      policy.version !== 1 || policy.status !== 'blocked-sensitive-context' ||
+      !Array.isArray(policy.approvedRoutes) || policy.approvedRoutes.length !== 0 ||
+      !Array.isArray(policy.approvedEvents) || policy.approvedEvents.length !== 0 ||
+      typeof policy.reason !== 'string' || !policy.reason.trim() || policy.reason.length > 500)
+    throw new Error('Unsupported Google measurement policy; this release permits no Google routes or events');
+  return Object.freeze({
+    ...policy,
+    approvedRoutes: Object.freeze([...policy.approvedRoutes]),
+    approvedEvents: Object.freeze([...policy.approvedEvents])
+  });
+}
+const GOOGLE_POLICY = validateGooglePolicy(JSON.parse(fs.readFileSync(path.join(__dirname, '..', GOOGLE_POLICY_FILE), 'utf8')));
+function googlePolicy() {
+  return {...GOOGLE_POLICY, approvedRoutes:[...GOOGLE_POLICY.approvedRoutes], approvedEvents:[...GOOGLE_POLICY.approvedEvents]};
+}
+function googleRequested(env = process.env) {
+  return /^true$/i.test(String(env[ENABLE_FLAG] || ''));
+}
 
 const SENSITIVE_PATHS = [
   /^\/marriage-reset-assessment(?:\/|$)/,
@@ -25,12 +49,13 @@ const SENSITIVE_PATHS = [
   /^\/appointment(?:\/|$)/
 ];
 
-function enabled(env = process.env) {
-  return indexingEnabled(env) && /^true$/i.test(String(env[ENABLE_FLAG] || ''));
-}
+// A deployment flag cannot authorize sensitive-context measurement. This release
+// has no Google sender and its explicit route/event approval lists are empty.
+function enabled() { return false; }
 function handoffEnabled(env = process.env) {
-  return enabled(env) && /^true$/i.test(String(env[HANDOFF_ENABLE_FLAG] || ''));
+  return indexingEnabled(env) && /^true$/i.test(String(env[HANDOFF_ENABLE_FLAG] || ''));
 }
+function controllerEnabled(env = process.env) { return handoffEnabled(env); }
 function normalizeRoute(route) {
   let p = String(route || '/').split(/[?#]/)[0] || '/';
   if (!p.startsWith('/')) p = '/' + p;
@@ -41,22 +66,28 @@ function isSensitive(route) {
   const p = normalizeRoute(route);
   return SENSITIVE_PATHS.some(re => re.test(p));
 }
+function isGoogleEligible(route, event) {
+  return GOOGLE_POLICY.approvedRoutes.includes(normalizeRoute(route)) &&
+    GOOGLE_POLICY.approvedEvents.includes(event);
+}
 function pageKey(route) {
   return crypto.createHash('sha256').update(normalizeRoute(route)).digest('hex').slice(0,16);
 }
 // Generated pages must not inherit the analytics identity of a source template.
 function strip(html) {
-  return html.replace(/<script\b[^>]*src="[^"]*\/mft-(?:analytics|ga4-bootstrap|ga4-frame)\.js(?:\?[^"]*)?"[^>]*>[\s\S]*?<\/script>/gi, '');
+  return html.replace(/<script\b[^>]*src="[^"]*\/mft-(?:analytics|ga4-bootstrap|ga4-frame|ga4-page)\.js(?:\?[^"]*)?"[^>]*>[\s\S]*?<\/script>/gi, '');
 }
 function inject(html, route, allowedRoutes, env = process.env) {
   const p = normalizeRoute(route);
-  if (!enabled(env) || !allowedRoutes.has(p) || isSensitive(p) || /<(?:form|input|textarea)\b/i.test(html)) return { html, injected: false, reason: 'disabled-or-not-approved' };
-  if (/G-BTK39BBNRE|mft-analytics\.js/.test(html)) throw new Error('Existing Google Analytics integration detected; refusing duplicate installation');
+  if (!controllerEnabled(env) || !allowedRoutes.has(p) || isSensitive(p) || /<(?:form|input|textarea)\b/i.test(html)) return { html, injected: false, reason: 'first-party-disabled-or-not-approved' };
+  if (/G-BTK39BBNRE|mft-(?:analytics|ga4-bootstrap|ga4-frame|ga4-page)\.js|googletagmanager\.com|google-analytics\.com/.test(html)) throw new Error('Existing measurement integration detected; refusing duplicate installation');
   const tag = '<script src="/assets/mft-analytics.js?v=' + assetVersion('mft-analytics.js') +
-    '" defer data-mft-measurement-id="' + MEASUREMENT_ID + '" data-mft-frame-version="' + frameVersion() +
+    '" defer data-mft-measurement-controller="first-party" data-mft-google-mode="disabled' +
     '" data-mft-page-key="' + pageKey(p) + '"' +
-    (handoffEnabled(env) ? ' data-mft-handoff-endpoint="' + HANDOFF_ENDPOINT + '"' : '') + '></script>';
-  if (!html.includes('</body>')) throw new Error('Missing closing body tag for analytics injection: ' + p);
-  return { html: html.replace('</body>', tag + '</body>'), injected: true, reason: 'approved-production-page' };
+    ' data-mft-handoff-endpoint="' + HANDOFF_ENDPOINT + '"></script>';
+  if (!html.includes('</body>')) throw new Error('Missing closing body tag for first-party controller injection: ' + p);
+  return { html: html.replace('</body>', tag + '</body>'), injected: true, reason: 'approved-public-first-party-page' };
 }
-module.exports = { MEASUREMENT_ID, SITE, ENABLE_FLAG, HANDOFF_ENABLE_FLAG, HANDOFF_ENDPOINT, enabled, handoffEnabled, normalizeRoute, isSensitive, pageKey, inject, assetVersion, strip, frameVersion };
+module.exports = { MEASUREMENT_ID, SITE, ENABLE_FLAG, HANDOFF_ENABLE_FLAG, HANDOFF_ENDPOINT, GOOGLE_POLICY_FILE,
+  enabled, handoffEnabled, controllerEnabled, googleRequested, googlePolicy, validateGooglePolicy, isGoogleEligible,
+  normalizeRoute, isSensitive, pageKey, inject, assetVersion, strip, frameVersion };

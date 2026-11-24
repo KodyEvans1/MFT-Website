@@ -1,23 +1,42 @@
 'use strict';
-const { enabled, handoffEnabled, HANDOFF_ENDPOINT } = require('./analytics-build');
+const { enabled, handoffEnabled, controllerEnabled, googleRequested, googlePolicy,
+  GOOGLE_POLICY_FILE, MEASUREMENT_ID, HANDOFF_ENDPOINT } = require('./analytics-build');
 
 // Compatibility with the retired first-party booking/Ops collection design.
-// This flag does not control the consent-required GA4 runtime.
+// This flag does not control either current first-party collection or Google.
 const LEGACY_BOOKING_MEASUREMENT_ENABLED = false;
-const FINAL_VERIFIED_SCOPE = 'generated HTML inventory, route eligibility, and page identities';
+const FINAL_VERIFIED_SCOPE = 'generated first-party controller inventory, route eligibility, page identities, disabled Google policy, and CSP';
 
 function measurementReport(env = process.env) {
   return {
-    version: 2,
+    version: 3,
     legacyBookingCollector: {
       enabled: LEGACY_BOOKING_MEASUREMENT_ENABLED,
       compatibilityFlag: 'MFT_BOOKING_CONFIG.measurementEnabled',
       controlsConsentControlledGa4: false
     },
+    firstPartyController: {
+      buildEnabled: controllerEnabled(env),
+      runtimeEntryPoint: 'MFTSchedulingMeasurement.track',
+      browserConsentVersion: 'mft.analytics.consent.v5',
+      runtimeConsentRequired: true,
+      inventoryReport: '/reports/analytics-integration.json'
+    },
     consentControlledGa4: {
       buildEnabled: enabled(env),
+      requestedByEnvironment: googleRequested(env),
+      configuredMeasurementId: MEASUREMENT_ID,
+      mode: 'disabled',
+      policyFile: GOOGLE_POLICY_FILE,
+      policy: googlePolicy(),
       runtimeConsentRequired: true,
-      runtimeEntryPoint: 'MFTSchedulingMeasurement.track',
+      runtimeEntryPoint: null,
+      advertisingMeasurement: {
+        available: false,
+        status: 'unavailable',
+        preferenceVersion: 'mft.advertising.consent.v1',
+        storedPreference: 'denied'
+      },
       inventoryReport: '/reports/analytics-integration.json'
     },
     consentControlledOps: {
@@ -25,6 +44,8 @@ function measurementReport(env = process.env) {
       endpoint: handoffEnabled(env) ? HANDOFF_ENDPOINT : null,
       event: 'simplepractice_exit',
       consentVersion: 'mft.analytics.consent.v4',
+      consentVersionScope: 'existing Ops receiver contract',
+      browserConsentVersion: 'mft.analytics.consent.v5',
       runtimeConsentRequired: true,
       actionId: 'one random UUID per handoff; reused for a bounded retry',
       visitorIdentifier: false,

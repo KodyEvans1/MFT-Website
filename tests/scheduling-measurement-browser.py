@@ -1,243 +1,209 @@
-"""Candidate rehearsal: real Google script, intercepted collector and scheduling. No booking submitted."""
-import importlib.util, json, mimetypes, re, time
+"""Current controller and retired helpers: no Google sender under any permission.
+
+All browser DNS is denied. Real website UI and source storage are exercised;
+Ops and scheduler destinations are intercepted. No vendor library is fetched.
+"""
+import importlib.util
+import json
+import mimetypes
+import re
 from pathlib import Path
-from urllib.parse import urlsplit, parse_qs, unquote
-from playwright.sync_api import sync_playwright
-from scheduling_confirmation_fixture import acknowledge_scheduling_dialog
+from urllib.parse import urlsplit
+from playwright.sync_api import sync_playwright, expect
+from measurement_privacy_fixture import (
+    CONSENT, ADVERTISING_CONSENT, CONTROLLER, is_google_url, request_summary,
+    assert_advertising_unavailable, assert_no_google_cookies, assert_no_google_dom,
+    assert_no_raw_identifier_storage,
+)
 from ops_handoff_fixture import is_handoff_request, validate_handoff, accept_handoff
-ROOT=Path(__file__).resolve().parents[1]
-spec=importlib.util.spec_from_file_location('mft_scheduling_browser_harness',ROOT/'tests/scheduling-browser-harness.py')
-harness=importlib.util.module_from_spec(spec);spec.loader.exec_module(harness)
-OUT=ROOT/'tmp/scheduling-measurement';OUT.mkdir(parents=True,exist_ok=True)
-BASE='https://www.mft.care';MID='G-BTK39BBNRE'
-CSP=re.search(r'Content-Security-Policy: ([^\n]+)',(ROOT/'dist/_headers').read_text())[1]
-EVENTS={'page_view','first_visit','session_start','user_engagement','appointment_request_click','clinician_schedule_click','consultation_click','simplepractice_exit'}
-INTENTS={'appointment_request_click','clinician_schedule_click','consultation_click','simplepractice_exit'}
-report={'passed':False,'checks':[],'scope':'Production-origin candidate with real Google script; collector and SimplePractice navigation intercepted; no appointments or client data. Outgoing payload observation is not GA4 receipt.'}
-hits=[];loaders=[];destinations=[];errors=[];blocked=False;blocked_collector=False;blocked_optional=False
-interceptors=[]
-GENERAL_FOOTER='footer a[data-mft-booking="true"]:not([data-mft-couples-consultation]):not([data-mft-ten-minute-consultation])'
+
+ROOT = Path(__file__).resolve().parents[1]
+OUT = ROOT / 'tmp/scheduling-measurement'
+OUT.mkdir(parents=True, exist_ok=True)
+BASE = 'https://www.mft.care'
+SOURCE = 'mft.analytics.source.v1'
+CSP = re.search(r'Content-Security-Policy: ([^\n]+)', (ROOT / 'dist/_headers').read_text())[1]
+# This isolated fixture deliberately permits scripts/connects, so the retired
+# helper's own inactivity is proven independently of production CSP denial.
+PROBE_CSP = "default-src 'self'; script-src 'self' https://www.googletagmanager.com; connect-src https:; frame-src 'self'; style-src 'self' 'unsafe-inline'"
+spec = importlib.util.spec_from_file_location('mft_scheduling_harness', ROOT / 'tests/scheduling-browser-harness.py')
+harness = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(harness)
+report = {'passed': False, 'checks': [], 'googleRequests': [],
+          'scope': 'Production-origin candidate; all browser DNS denied and every external request intercepted. No Google scripts fetched, no production Ops receipt and no SimplePractice request. Old-protocol probes exercise current retired assets, not arbitrary already-running pre-release tabs.'}
+deliveries, errors = [], []
+interceptor = None
+
 
 def guard(route):
- req=route.request;u=urlsplit(req.url)
- if is_handoff_request(req):
-  validate_handoff(req)
-  accept_handoff(route)
- elif u.hostname=='www.mft.care':
-  if blocked_optional and u.path=='/assets/mft-analytics.js':route.abort();return
-  f=ROOT/'dist'/u.path.lstrip('/')
-  if u.path.endswith('/') or not f.suffix:f=f/'index.html'
-  if not f.is_file():route.fulfill(status=404,body='Not found');return
-  route.fulfill(status=200,body=f.read_bytes(),headers={'Content-Type':mimetypes.guess_type(str(f))[0] or 'application/octet-stream','Content-Security-Policy':CSP,'Referrer-Policy':'no-referrer'})
- elif u.hostname=='www.googletagmanager.com' and u.path=='/gtag/js':
-  assert not req.headers.get('referer');loaders.append(req.url)
-  if blocked:route.abort()
-  else:route.fulfill(status=200,content_type='text/javascript',body=tag_source)
- elif u.hostname in ['www.google-analytics.com','region1.google-analytics.com'] and u.path.endswith('/collect'):
-  base=parse_qs(u.query,keep_blank_values=True)
-  for line in (req.post_data or '').splitlines() or ['']:
-   data={**base,**parse_qs(line,keep_blank_values=True)}
-   assert data.get('tid')==[MID]
-   assert data.get('en',[''])[0] in EVENTS,data.get('en')
-   assert re.fullmatch(r'https://www\.mft\.care/p/[a-f0-9]{16}/',data.get('dl',[''])[0]),data.get('dl')
-   assert data.get('dt')==['M.F.T. Public Website']
-   custom={key for key in data if key.startswith(('ep.','epn.','up.','upn.'))}
-   expected_custom={'ep.button_location','ep.measurement_kind'} if data.get('en',[''])[0] in INTENTS else set()
-   assert custom==expected_custom,('unapproved or missing explicit custom parameters',sorted(custom))
-   if expected_custom:
-    assert data.get('ep.button_location',[''])[0] in {'header','footer','body','dialog'}
-    assert data.get('ep.measurement_kind')==['scheduling_intent']
-   raw=unquote(json.dumps(data)).lower()
-   for word in ['private-canary','example.invalid','secret-click','clinicianid','1701440','2065412','link_url','form_submit','form_start','appointment_booked','member_id','utm_term','gclid','gbraid','wbraid','utm_adgroup_id','utm_creative_id','utm_network','utm_device','202031516078','701234567890','sourceexpiresat','expiresat']:
-    assert word not in raw,('unexpected payload field',word)
-   assert data.get('npa')==['1']
-   hits.append(data)
-  if blocked_collector:route.abort()
-  else:route.fulfill(status=204,body='')
- elif u.hostname in ['marriagefamilytherapy.clientsecure.me','clientsecure.me']:
-  if req.is_navigation_request():destinations.append(req.url)
-  route.fulfill(status=200,content_type='text/html',body='<!doctype html><html><head><link rel="icon" href="data:,"></head><body><h1>Intercepted scheduler. No real appointment request.</h1></body></html>')
- else:route.abort()
+    request = route.request
+    url = urlsplit(request.url)
+    if is_google_url(request.url):
+        report['googleRequests'].append(request_summary(request))
+        route.abort()
+        raise AssertionError('Google request attempted by disabled measurement path')
+    if is_handoff_request(request):
+        deliveries.append(validate_handoff(request))
+        accept_handoff(route)
+        return
+    if url.hostname == 'www.mft.care' and request.method in {'GET', 'HEAD'}:
+        if url.path == '/__mft-helper-probe__/':
+            route.fulfill(status=200, content_type='text/html', body='<!doctype html><title>Isolated retired-helper probe</title><link rel="icon" href="data:,"><main>Test-only parent</main>',
+                          headers={'Content-Security-Policy': PROBE_CSP, 'Referrer-Policy': 'no-referrer'})
+            return
+        file = ROOT / 'dist' / url.path.lstrip('/')
+        if url.path.endswith('/') or not file.suffix:
+            file = file / 'index.html'
+        if not file.is_file():
+            route.fulfill(status=404, body='Not found')
+            return
+        route.fulfill(status=200, body=file.read_bytes(), headers={
+            'Content-Type': mimetypes.guess_type(str(file))[0] or 'application/octet-stream',
+            'Content-Security-Policy': PROBE_CSP if url.path == '/assets/mft-ga4-frame.html' else CSP,
+            'Referrer-Policy': 'no-referrer',
+        })
+        return
+    route.abort()
+    if url.hostname in {'clientsecure.me', 'marriagefamilytherapy.clientsecure.me'}:
+        raise AssertionError('This privacy suite does not activate a scheduling handoff; Ops suite tests native Continue separately')
 
-def start(browser,path='/',consent=None,legacy=None,viewport=None,signal=None,legacy_key='mft.analytics.consent.v2'):
- hits.clear();loaders.clear();destinations.clear();errors.clear()
- interceptor.assert_ok()
- c=browser.new_context(viewport=viewport or {'width':1440,'height':1000},reduced_motion='reduce')
- if consent:c.add_init_script("if(window.top===window && location.origin==='https://www.mft.care')localStorage.setItem('mft.analytics.consent.v4',"+json.dumps(consent)+")")
- if legacy:c.add_init_script("if(window.top===window && location.origin==='https://www.mft.care')localStorage.setItem("+json.dumps(legacy_key)+","+json.dumps(legacy)+")")
- if signal:c.add_init_script("Object.defineProperty(Navigator.prototype,"+json.dumps(signal)+",{get:()=>"+('true' if signal=='globalPrivacyControl' else "'1'")+"})")
- page=c.new_page();page.on('pageerror',lambda e:errors.append(str(e)));page.goto(BASE+path,wait_until='domcontentloaded');return c,page
 
-def count(name):
- interceptor.assert_ok()
- return sum(h.get('en')==[name] for h in hits)
-def diagnostic():return {'events':[h.get('en',[''])[0] for h in hits],'destinations':destinations,'pageErrors':errors,'tagLoads':len(loaders)}
-def wait_event(page,name):
- deadline=time.monotonic()+12
- while time.monotonic()<deadline:
-  if count(name):return
-  page.wait_for_timeout(100)
- raise AssertionError('No event received: '+name+' '+json.dumps(diagnostic()))
-def check(name):
- interceptor.assert_ok()
- assert not errors,errors
- report['checks'].append({'name':name,'pass':True})
+def start(browser, seed=None, path='/', signal=None):
+    storage = {'cookies': [], 'origins': [{'origin': BASE, 'localStorage': [
+        {'name': key, 'value': value} for key, value in (seed or {}).items()
+    ]}]}
+    context = browser.new_context(viewport={'width': 1440, 'height': 1000}, reduced_motion='reduce', storage_state=storage)
+    context.on('page', lambda page: page.on('pageerror', lambda error: errors.append(str(error))))
+    if signal:
+        value = 'true' if signal == 'globalPrivacyControl' else '"1"'
+        context.add_init_script('Object.defineProperty(Navigator.prototype,' + json.dumps(signal) + ',{get:()=>'+value+'})')
+    page = context.new_page()
+    page.goto(BASE + path, wait_until='domcontentloaded')
+    return context, page
 
-def native_handoff(page,link):
- link.click()
- go=acknowledge_scheduling_dialog(page)
- if go is not None:go.click()
 
-def confirmed_link(page):
- # Complete the human confirmation before measuring optional analytics latency.
- page.locator(GENERAL_FOOTER).first.click()
- go=acknowledge_scheduling_dialog(page)
- assert go is not None,'A fresh context must acknowledge the account policy'
- return go
+def checked(name, page=None, context=None):
+    interceptor.assert_ok()
+    assert not errors, errors
+    assert not report['googleRequests']
+    if page:
+        assert_no_google_dom(page)
+        assert_no_raw_identifier_storage(page)
+        if page.locator(CONTROLLER).count():
+            assert_advertising_unavailable(page)
+    if context:
+        assert_no_google_cookies(context)
+    report['checks'].append({'name': name, 'pass': True})
+
 
 try:
- tag_source,provenance=harness.fetch_real_tag();report['googleLibrary']=provenance
- with sync_playwright() as p:
-  browser=harness.launch_isolated_chromium(p);report['collectorDNSPreflight']='ERR_NAME_NOT_RESOLVED before routing or event scripts'
-  interceptor=harness.install_browser_interceptor(browser,guard)
-  interceptors.append(interceptor)
-  report['collectorObserver']='Single browser-target CDP Fetch request-stage interceptor; complete bodies required'
-  for legacy_key,label in [('mft.analytics.consent.v2','visit-only'),('mft.analytics.consent.v3','Google-only')]:
-   c,page=start(browser,legacy='granted',legacy_key=legacy_key);page.wait_for_timeout(400)
-   assert page.locator('#mft-analytics-consent').is_visible() and not loaders and not hits
-   check('Prior '+label+' grant requires a fresh analytics choice');c.close()
-   c,page=start(browser,legacy='denied',legacy_key=legacy_key);page.wait_for_timeout(250)
-   assert not page.locator('#mft-analytics-consent').count() and not loaders
-   check('Previous '+label+' refusal remains respected');c.close()
-  for campaign_id,landing in [('24530528782','/emily-johnsrud-bio/'),('24524392745','/autumn-alexander/')]:
-   # Full configured suffix, with synthetic ad-group/creative values. Only the
-   # reviewed campaign ID and normalized source/medium may reach Google.
-   suffix='?utm_source=google&utm_medium=cpc&utm_campaign_id='+campaign_id+'&utm_adgroup_id=202031516078&utm_creative_id=701234567890&utm_network=g&utm_device=m'
-   c,page=start(browser,landing+suffix);page.wait_for_timeout(250)
-   assert not hits and not loaders
-   assert page.evaluate("sessionStorage.getItem('mft.analytics.source.v1')") is None
-   page.locator('#mft-analytics-consent [data-choice="grant"]').click();wait_event(page,'page_view')
-   assert count('page_view')==1
-   data=next(h for h in hits if h.get('en')==['page_view'])
-   assert data.get('cs')==['google'] and data.get('cm')==['cpc'] and data.get('ci')==[campaign_id],data
-   acquisition=page.evaluate("JSON.parse(sessionStorage.getItem('mft.analytics.source.v1'))")
-   expires_at=acquisition.pop('expiresAt')
-   assert acquisition=={'source':'google','medium':'cpc','campaignId':campaign_id},acquisition
-   check('Complete Ads suffix waits for consent and recognizes campaign '+campaign_id)
-   hits.clear();page.goto(BASE+'/team/',wait_until='domcontentloaded');wait_event(page,'page_view')
-   data=next(h for h in hits if h.get('en')==['page_view'])
-   assert data.get('cs')==['google'] and data.get('cm')==['cpc'] and data.get('ci')==[campaign_id],data
-   assert page.evaluate("JSON.parse(sessionStorage.getItem('mft.analytics.source.v1')).expiresAt")==expires_at
-   check('Internal navigation preserves campaign '+campaign_id+' without extending its deadline')
-   # Advance wall-clock checks only; the real Google library, browser timers and
-   # native navigation stay active. This also exercises a throttled expiry timer.
-   for frame in page.frames:
-    if urlsplit(frame.url).hostname=='www.mft.care':frame.evaluate('(now) => { Date.now=()=>now; }',expires_at)
-   hits.clear();native_handoff(page,page.locator(GENERAL_FOOTER).first);page.wait_for_url('https://marriagefamilytherapy.clientsecure.me/request');wait_event(page,'simplepractice_exit');wait_event(page,'appointment_request_click')
-   assert count('appointment_request_click')==1 and count('simplepractice_exit')==1 and len(destinations)==1,diagnostic()
-   for data in [h for h in hits if h.get('en',[''])[0] in INTENTS]:
-    assert data.get('cs')==['direct'] and data.get('cm')==['none'],('expired source survived',data)
-    assert data.get('ci') in [None,['']] and data.get('cn') in [None,['']],('expired campaign survived',data)
-   check('At the 30-minute boundary an open helper emits one native handoff without expired campaign '+campaign_id);c.close()
-  c,page=start(browser,'/?utm_source=google&utm_medium=cpc&utm_campaign_id=24362234053&gclid=secret-click&utm_term=private-canary&email=private-canary%40example.invalid',consent='granted')
-  wait_event(page,'page_view');assert count('page_view')==1
-  data=next(h for h in hits if h.get('en')==['page_view'])
-  assert data.get('cs')==['google'] and data.get('cm')==['cpc'],('missing source/medium',data)
-  assert data.get('ci')==['24362234053'],('missing campaign id',data)
-  check('Google payload has allowlisted paid source but no sensitive query or click identifiers')
-  page.locator('.mh-hero a[data-mft-ten-minute-consultation="true"]').click();wait_event(page,'consultation_click')
-  assert count('simplepractice_exit')==0 and not destinations
-  page.locator('.mft-consultation-gate button[value="cancel"]').last.click();page.wait_for_timeout(100)
-  assert count('simplepractice_exit')==0
-  check('Consultation open and cancel do not count as handoff or booking')
-  page.locator('.mh-hero a[data-mft-ten-minute-consultation="true"]').click();go=acknowledge_scheduling_dialog(page)
-  assert go is not None;go.click();page.wait_for_url('https://marriagefamilytherapy.clientsecure.me/request');page.wait_for_timeout(300)
-  assert count('simplepractice_exit')==1 and len(destinations)==1,diagnostic()
-  assert count('appointment_request_click')==0
-  check('Continue emits one handoff and preserves scheduling destination');c.close()
-  c,page=start(browser,consent='granted');wait_event(page,'page_view')
-  page.locator(GENERAL_FOOTER).first.focus();page.keyboard.press('Enter');go=acknowledge_scheduling_dialog(page)
-  assert go is not None;go.focus();page.keyboard.press('Enter');page.wait_for_url('https://marriagefamilytherapy.clientsecure.me/request');page.wait_for_timeout(200)
-  assert count('appointment_request_click')==1 and count('simplepractice_exit')==1,diagnostic()
-  check('Keyboard footer request: one subtype and one handoff, not two acquisitions');c.close()
-  c,page=start(browser,'/kody-evans-bio/',consent='granted');wait_event(page,'page_view')
-  paid=page.locator('.mft-schedule-shortcuts a[data-mft-couples-consultation="true"][data-spwidget-clinician-id="1701440"]')
-  assert paid.count()==1 and '30-minute couples consultation' in paid.inner_text().lower()
-  expected=paid.get_attribute('href');native_handoff(page,paid);page.wait_for_url('https://clientsecure.me/widget-redirect?*');page.wait_for_timeout(500)
-  assert destinations==[expected],{'expected':expected,**diagnostic()}
-  assert count('consultation_click')==1 and count('simplepractice_exit')==1,diagnostic()
-  assert count('clinician_schedule_click')==0 and count('appointment_request_click')==0,diagnostic()
-  check('Direct paid couples consultation: one consultation and one handoff, without clinician-action misclassification');c.close()
-  c,page=start(browser,'/sonia-hassan-bio/',consent='granted');wait_event(page,'page_view')
-  link=page.locator('.mft-clinician-hero a[data-spwidget-clinician-id="2065412"]')
-  assert link.count()==1 and 'consultation' not in link.inner_text().lower()
-  expected=link.get_attribute('href')
-  report['clinicianBeforeClick']=link.evaluate('(a)=>({label:a.textContent,booking:a.dataset.mftBooking,consultation:a.dataset.mftTenMinuteConsultation||null,hasClinician:a.hasAttribute("data-spwidget-clinician-id"),status:window.MFTAnalyticsConsent.status(),measurement:typeof window.MFTSchedulingMeasurement.track})')
-  native_handoff(page,link);page.wait_for_url('https://clientsecure.me/widget-redirect?*');page.wait_for_timeout(500)
-  assert destinations==[expected],{'expected':expected,**diagnostic()}
-  assert count('clinician_schedule_click')==1,diagnostic()
-  assert count('simplepractice_exit')==1,diagnostic()
-  assert count('consultation_click')==0 and count('appointment_request_click')==0,diagnostic()
-  check('Clinician destination preserved without clinician identity in Google payload');c.close()
-  c,page=start(browser,consent='denied',viewport={'width':390,'height':844});native_handoff(page,page.locator(GENERAL_FOOTER).first);page.wait_for_url('https://marriagefamilytherapy.clientsecure.me/request')
-  assert not hits and not loaders
-  check('Mobile scheduling works with analytics declined');c.close()
-  blocked=True;c,page=start(browser,consent='granted');page.wait_for_timeout(100)
-  go=confirmed_link(page);begin=time.monotonic();go.click();page.wait_for_url('https://marriagefamilytherapy.clientsecure.me/request')
-  assert time.monotonic()-begin<1.5 and not hits
-  check('Blocked Google tag does not delay or prevent native scheduling');c.close();blocked=False
-  blocked_optional=True;c,page=start(browser,consent='granted');page.wait_for_timeout(100)
-  go=confirmed_link(page);begin=time.monotonic();go.click();page.wait_for_url('https://marriagefamilytherapy.clientsecure.me/request')
-  assert time.monotonic()-begin<1.5 and not hits and not loaders
-  check('Optional controller-script failure leaves native scheduling usable');c.close();blocked_optional=False
-  c,page=start(browser,consent='granted');wait_event(page,'page_view')
-  page.evaluate("() => { window.MFTSchedulingMeasurement.track=()=>{throw new Error('synthetic optional measurement failure')}; }")
-  go=confirmed_link(page);begin=time.monotonic();go.click();page.wait_for_url('https://marriagefamilytherapy.clientsecure.me/request')
-  assert time.monotonic()-begin<1.5
-  check('Analytics runtime exception cannot stop native scheduling');c.close()
-  c,page=start(browser,consent='granted');wait_event(page,'page_view');blocked_collector=True
-  go=confirmed_link(page);begin=time.monotonic();go.click();page.wait_for_url('https://marriagefamilytherapy.clientsecure.me/request')
-  assert time.monotonic()-begin<1.5
-  # Navigation is already complete. Keep collection blocked until the actual
-  # unload batch is observed, instead of changing the next scenario's counters.
-  wait_event(page,'simplepractice_exit')
-  assert count('appointment_request_click')==1 and count('simplepractice_exit')==1,diagnostic()
-  check('Blocked collection cannot stop native scheduling');c.close();blocked_collector=False
-  for signal in ['globalPrivacyControl','doNotTrack']:
-   # Browser-owned keepalive requests can outlive a closed context. Give each
-   # refusal case a fresh process, preserving its exact zero-request assertion.
-   browser.close();interceptor.assert_ok()
-   browser=harness.launch_isolated_chromium(p)
-   interceptor=harness.install_browser_interceptor(browser,guard);interceptors.append(interceptor)
-   c,page=start(browser,consent='granted',signal=signal);page.wait_for_timeout(300)
-   assert not loaders and not hits;check(signal+' overrides stored grant');c.close()
-  c,page=start(browser,'/?utm_source=google&utm_medium=cpc&utm_campaign_id=24362234053',consent='granted');wait_event(page,'page_view')
-  hits.clear();page.goto(BASE+'/team/',wait_until='domcontentloaded');wait_event(page,'page_view')
-  data=next(h for h in hits if h.get('en')==['page_view']);assert data.get('cs')==['google'] and data.get('cm')==['cpc']
-  check('Consented acquisition survives internal page navigation')
-  page.locator('.mft-analytics-settings').click();page.locator('[data-choice="deny"]').click();page.wait_for_timeout(200)
-  assert page.evaluate("sessionStorage.getItem('mft.analytics.source.v1')") is None
-  assert not page.locator('iframe[title="Optional website traffic measurement"]').count()
-  before=len(hits);native_handoff(page,page.locator(GENERAL_FOOTER).first);page.wait_for_url('https://marriagefamilytherapy.clientsecure.me/request');page.wait_for_timeout(200)
-  assert len(hits)==before
-  check('Revocation clears source and disables events without disabling booking');c.close()
-  for route in ['/check-my-coverage/','/marriage-reset-assessment/','/start/','/marriagereset/']:
-   c,page=start(browser,route,consent='granted');page.wait_for_timeout(200)
-   assert not page.locator('script[data-mft-measurement-id]').count() and not hits and not loaders
-   check('Sensitive route unmeasured: '+route);c.close()
-  browser.close()
-  for observer in interceptors:observer.assert_ok()
- report['passed']=True
-except Exception as e:
- report['error']=str(e);report['failureDiagnostics']=diagnostic()
- try:page.screenshot(path=str(OUT/'failure.png'))
- except Exception:pass
- raise
+    integration = json.loads((ROOT / 'dist/reports/analytics-integration.json').read_text())
+    assert integration['enabled'] is False and integration['googlePages'] == []
+    assert integration['finalVerified'] is True and integration['controllerPages']
+    with sync_playwright() as playwright:
+        browser = harness.launch_isolated_chromium(playwright)
+        interceptor = harness.install_browser_interceptor(browser, guard)
+
+        cases = [('unset', {}, 'unset'), ('current grant', {CONSENT: 'granted'}, 'granted'),
+                 ('current refusal', {CONSENT: 'denied'}, 'denied'),
+                 ('v4 Ops grant', {'mft.analytics.consent.v4': 'granted'}, 'granted')]
+        for version in ['v2', 'v3']:
+            cases.append((version + ' Google-only grant', {'mft.analytics.consent.' + version: 'granted'}, 'unset'))
+        for version in ['v2', 'v3', 'v4']:
+            cases.append((version + ' refusal', {'mft.analytics.consent.' + version: 'denied'}, 'denied'))
+        for label, seed, expected in cases:
+            seed = {**seed, ADVERTISING_CONSENT: 'granted'}
+            context, page = start(browser, seed)
+            assert page.evaluate('window.MFTAnalyticsConsent.status()') == expected
+            assert page.locator('#mft-analytics-consent').count() == (1 if expected == 'unset' else 0)
+            if label == 'v4 Ops grant':
+                assert page.evaluate('key=>localStorage.getItem(key)', CONSENT) == 'granted'
+            page.wait_for_timeout(200)
+            checked(label + ': exact permission migration, advertising unavailable, zero Google requests', page, context)
+            context.close()
+
+        context, page = start(browser)
+        page.locator('[data-choice="grant"]').click()
+        assert page.evaluate('key=>localStorage.getItem(key)', CONSENT) == 'granted'
+        assert page.evaluate("['v2','v3','v4'].map(v=>localStorage.getItem('mft.analytics.consent.'+v))") == [None, None, None]
+        page.get_by_role('button', name='Analytics choices', exact=True).click()
+        page.locator('[data-choice="deny"]').click()
+        assert page.evaluate("['v2','v3','v4','v5'].map(v=>localStorage.getItem('mft.analytics.consent.'+v))") == ['denied'] * 4
+        checked('New permission never flows backward; withdrawal propagates refusal to older tabs', page, context)
+        context.close()
+
+        for campaign, path in [('24530528782', '/emily-johnsrud-bio/'), ('24524392745', '/autumn-alexander/')]:
+            suffix = '?utm_source=google&utm_medium=cpc&utm_campaign_id=' + campaign + '&utm_adgroup_id=202031516078&utm_creative_id=701234567890&gclid=secret-click&gbraid=secret-click&wbraid=secret-click&utm_term=private-canary'
+            context, page = start(browser, path=path + suffix)
+            assert page.evaluate('key=>sessionStorage.getItem(key)', SOURCE) is None
+            page.locator('[data-choice="grant"]').click()
+            saved = page.evaluate('key=>JSON.parse(sessionStorage.getItem(key))', SOURCE)
+            assert set(saved) == {'source', 'medium', 'campaignId', 'expiresAt'}
+            assert saved['source'] == 'google' and saved['medium'] == 'cpc' and saved['campaignId'] == campaign
+            page.goto(BASE + '/team/', wait_until='domcontentloaded')
+            assert page.evaluate('key=>JSON.parse(sessionStorage.getItem(key))', SOURCE) == saved
+            before = len(deliveries)
+            page.evaluate("window.MFTSchedulingMeasurement.track(['consultation_click','clinician_schedule_click','appointment_request_click'],'body')")
+            page.wait_for_timeout(250)
+            assert len(deliveries) == before, 'Diagnostic events must not produce an Ops handoff'
+            checked('Consented first-party source survives internal navigation with no raw IDs or Google diagnostics: ' + campaign, page, context)
+            context.close()
+
+        for signal in ['globalPrivacyControl', 'doNotTrack']:
+            context, page = start(browser, {CONSENT: 'granted', ADVERTISING_CONSENT: 'granted'}, signal=signal)
+            assert page.evaluate('window.MFTAnalyticsConsent.status()') == 'denied'
+            checked(signal + ' prevents collection after a stored grant', page, context)
+            context.close()
+
+        # Same-origin stale-parent messages must not revive the retired helper.
+        # The current assets are tested with relaxed fixture CSP, while DNS
+        # denial and the browser interceptor still prevent external delivery.
+        context, page = start(browser, {CONSENT: 'granted', ADVERTISING_CONSENT: 'granted'}, '/__mft-helper-probe__/')
+        page.evaluate('window.__bootstrapCalls=[];window.gtag=(...args)=>window.__bootstrapCalls.push(args[0]);window.dataLayer=[]')
+        page.add_script_tag(url=BASE + '/assets/mft-ga4-bootstrap.js?v=old-cached-parent')
+        assert page.evaluate('window.__bootstrapCalls') == []
+        page.evaluate("""async () => {
+          const iframe=document.createElement('iframe');iframe.id='retired-helper';
+          iframe.src='/assets/mft-ga4-frame.html?v=old-cached-parent';
+          await new Promise((resolve,reject)=>{iframe.onload=resolve;iframe.onerror=reject;document.body.append(iframe)});
+          window.__helperLoaded=true;
+          const init={type:'mft:analytics:init',pageKey:'0123456789abcdef',sendPageView:true,
+            referrer:'https://www.google.com/',source:{source:'google',medium:'cpc',campaignId:'24530528782'},
+            sourceExpiresAt:Date.now()+1800000};
+          const intent={type:'mft:analytics:intent',id:'m1',placement:'dialog',
+            names:['consultation_click','clinician_schedule_click','appointment_request_click','simplepractice_exit']};
+          iframe.contentWindow.postMessage(init,location.origin);
+          iframe.contentWindow.postMessage(intent,location.origin);
+          iframe.contentWindow.postMessage(intent,location.origin);
+          window.__syncResult=typeof iframe.contentWindow.MFTAnalyticsReceiveIntent==='function'
+            ? iframe.contentWindow.MFTAnalyticsReceiveIntent(intent) : false;
+        }""")
+        page.wait_for_timeout(400)
+        assert page.evaluate('window.__helperLoaded===true && window.__syncResult!==true')
+        assert len(page.frames) == 2
+        for frame in page.frames:
+            assert frame.evaluate("!Array.from(window.dataLayer||[]).some(entry=>['config','event'].includes(entry[0]))")
+            assert_no_google_dom(frame)
+        assert not deliveries, 'Neither diagnostics nor retired-helper messages may create a handoff'
+        checked('Retired bootstrap and embedded helper reject old init/intent protocol without Google execution', context=context)
+        page.goto(BASE + '/assets/mft-ga4-frame.html?gclid=secret-click#old-parent', wait_until='domcontentloaded')
+        page.add_script_tag(url=BASE + '/assets/mft-ga4-bootstrap.js?v=old-cached-parent')
+        page.wait_for_timeout(250)
+        checked('Direct retired-helper navigation stays inert', page, context)
+        context.close()
+        browser.close()
+        interceptor.assert_ok()
+    report['passed'] = True
+except Exception as error:
+    report['error'] = str(error)
+    try:
+        page.screenshot(path=str(OUT / 'failure.png'))
+    except Exception:
+        pass
+    raise
 finally:
- if interceptors:
-  report['interceptorErrors']=[error for observer in interceptors for error in observer.errors]
-  report['cancelledResources']=[resource for observer in interceptors for resource in observer.cancelled_resources]
-  report['interceptedRequests']=sum(observer.request_count for observer in interceptors)
-  report['browserProcesses']=len(interceptors)
- (OUT/'result.json').write_text(json.dumps(report,indent=2))
- print(json.dumps(report,indent=2))
+    if interceptor:
+        report['interceptorErrors'] = interceptor.errors
+        report['interceptedRequests'] = interceptor.request_count
+    (OUT / 'result.json').write_text(json.dumps(report, indent=2))
+    print(json.dumps(report, indent=2))

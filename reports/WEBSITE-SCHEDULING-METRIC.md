@@ -1,194 +1,133 @@
 # Website scheduling measurement contract
 
+## Current collection boundary — November 24, 2026
+
+The website records qualifying scheduling handoffs only in the existing protected Ops receiver, after first-party consent. Google Analytics and advertising measurement are disabled. No Google tag runs on a care page or inside the former helper frame.
+
+`content/google-measurement-policy.json` is the explicit, versioned Google eligibility record. Its status is `blocked-sensitive-context`, with no approved routes or events. Sitemap membership establishes publication eligibility, not permission to send information to Google. A true `GA4_BASIC_MEASUREMENT_ENABLED` flag cannot override this exclusion.
+
+This is the release's engineering boundary under the owner's instructions. The unresolved issue is the intentional therapy-scheduling interaction combined with linkable advertising/browser identifiers. Removing names, coding a URL, or changing consent flags does not establish that this interaction is suitable for Google. See [the boundary assessment](GOOGLE-MEASUREMENT-BOUNDARY-20261124.md). No legal conclusion that every public healthcare-page visit is PHI is implied.
+
 ## The reported metric
 
-Use **Website scheduling-link click** as the display name for
-`simplepractice_exit`. It means a visitor activated an eligible native
-new-client link to SimplePractice. Count that handoff once; do not add the
-other scheduling events to its total. Delivery is best effort and never delays
-the native navigation.
+Use **Website scheduling-link click** or **Scheduling handoff** for `simplepractice_exit`. It means a visitor intentionally activated an eligible new-client link to SimplePractice. Count that handoff once. Delivery is best effort and never delays native navigation.
 
-| Event | Reporting role | Meaning |
-| --- | --- | --- |
-| `simplepractice_exit` | Website scheduling-link click | Eligible native handoff to SimplePractice, including the optional introduction dialog's enabled Continue link |
-| `appointment_request_click` | Diagnostic only | General appointment or evaluation action |
-| `clinician_schedule_click` | Diagnostic only | Clinician-specific action, without clinician identity in the measurement payload |
-| `consultation_click` | Diagnostic only | Consultation action, which can be just an optional-dialog opening |
+| Action | Qualifying Ops handoffs, with applicable first-party consent |
+| --- | ---: |
+| Open a scheduling dialog | 0 |
+| Read or check an acknowledgment | 0 |
+| Cancel, close, click outside, or press Escape | 0 |
+| Activate the enabled Continue to SimplePractice link | 1 |
+| Repeated activation in the same dialog | 1 total |
+| Existing-client sign-in | 0 |
+| Returning visitor activates an eligible new-client link after remembered acknowledgment | 1 |
 
-Opening, closing, or canceling the introduction dialog and checking its
-acknowledgment do not count as a handoff. Its enabled Continue navigation does.
-Existing-client sign-in is excluded. There is no additional `scheduling_click`
-event or alias.
+Analytics refusal, privacy signals, blocked storage, missing measurement APIs, or delivery failure do not disable scheduling. No measurement is replayed when consent is granted later.
 
-A scheduling-link click does not establish that SimplePractice received a
-request, confirmed an appointment, or recorded attendance. Authoritative
-practice records may later establish those outcomes in Ops; they cannot
-reconstruct an unobserved website click.
+The events `appointment_request_click`, `clinician_schedule_click`, and `consultation_click` remain diagnostic classifications. They are not added to the handoff total or sent to Google. There is no additional primary conversion event or alias.
 
-## Separate current delivery paths from the disabled legacy collector
+A handoff does not establish a submitted request, an accepted or confirmed appointment, attendance, an acquired client, or revenue.
 
-`MFT_BOOKING_CONFIG.measurementEnabled` remains `false`. It belongs to the
-older first-party booking/Ops collector design. That collector has no configured
-website endpoint and remains disabled. The flag does not control the current
-consent-required GA4 path.
+## Independent first-party delivery
 
-The current path has these consumers:
+1. `src/assets/mft-booking.js` retains the existing native destinations, dialog behavior, functional account acknowledgment and per-dialog deduplication.
+2. It calls `MFTSchedulingMeasurement.track` without waiting for delivery.
+3. `src/assets/mft-analytics.js` checks first-party consent, GPC/DNT and the fixed event/placement contract.
+4. Only `simplepractice_exit` goes to `https://ops.mft.care/api/marketing/attribution`.
 
-1. `src/assets/mft-booking.js` classifies eligible native actions and calls
-   `MFTSchedulingMeasurement.track`. Booking does not wait for a callback.
-2. `src/assets/mft-analytics.js` defines that entry point. It requires consent,
-   applies the event/placement allowlists, and sends a minimized intent to the
-   same-origin helper.
-3. `src/assets/mft-ga4-frame.js` revalidates and deduplicates those intents,
-   then uses the isolated Google library. The helper acknowledgment means
-   processing, not GA4 receipt.
-4. When `OPS_HANDOFF_COLLECTION_ENABLED=true` in an eligible production build,
-   that same consent controller sends only the qualifying `simplepractice_exit`
-   action to the existing `https://ops.mft.care/api/marketing/attribution`
-   receiver. It has a separate random action UUID and never depends on the
-   Google helper loading or acknowledging a message. The legacy collector flag
-   stays false. Diagnostics are not sent as Ops handoffs.
+`OPS_HANDOFF_COLLECTION_ENABLED` is independent of Google. It still requires an eligible production/publication build and excludes previews, drafts, sensitive paths and pages containing forms. No new receiver, patient-data collection mechanism or persistent retry queue is introduced.
 
-`src/booking-core.js` still exports the legacy `shouldMeasure` and acquisition
-helpers for compatibility. Current booking and GA4 runtime code do not call
-them. The new handoff path reuses the existing receiving endpoint with a strict,
-versioned contract; it does not enable the legacy payload or its collection flag.
+`MFT_BOOKING_CONFIG.measurementEnabled` remains false for the retired legacy collector. Compatibility helpers in `src/booking-core.js` do not activate that collector.
 
-GA4 installation is separately gated by the production context, indexing
-approval, and `GA4_BASIC_MEASUREMENT_ENABLED=true`. Even with a true build flag,
-only eligible approved pages receive the controller, and each visitor still
-needs the required consent. Preview, draft, sensitive-route, GPC/DNT, refusal,
-and revocation protections remain in effect.
+The former `mft-ga4-bootstrap.js`, `mft-ga4-frame.js` and helper HTML are inert compatibility assets. Former parent messages and direct asset loads do not initialize Google. The production CSP no longer permits Google collection or a same-origin analytics frame. There is no replacement main-page Google sender while the eligible scope is empty.
+
+## Consent and withdrawal
+
+| State | Purpose |
+| --- | --- |
+| `mft.analytics.consent.v5` | Browser permission for the narrower first-party Ops handoff measurement |
+| `mft.analytics.consent.v4` in the POST envelope | Unchanged Ops receiver/data-scope contract; this is not the v5 browser-notice revision |
+| `mft.advertising.consent.v1` | Separate advertising preference, forced to denied while advertising measurement is unavailable |
+
+A valid v4 grant already covered the same first-party recipient and data scope, so it may migrate to v5. Earlier Google-only grants do not become first-party permission. Existing refusals remain effective.
+
+New v5 grants are never written to v4/v3/v2: doing so could reactivate Google in an older, already-open document. Withdrawals propagate to those earlier keys. The advertising preference has no grant API while its purpose is unavailable; an injected or stale advertising grant cannot authorize collection.
+
+The notice explains first-party measurement and the unavailable Google purpose. Closing it, acknowledging account information, activating Continue, and using existing-client sign-in do not grant analytics or advertising permission. The remembered account acknowledgment remains separate functional state.
+
+Withdrawal aborts pending requests, invalidates queued retries, clears the source record, and removes recognized website-controlled legacy Google cookies. GPC/DNT overrides a stored grant, including when observed immediately before a pending retry. Cross-tab withdrawals are honored.
+
+This does not claim deletion of data already received by a third party, remote replacement of JavaScript in an old open document, or removal of values from browser history or hosting logs.
 
 ## First-party handoff envelope
-
-The existing Ops endpoint receives this contract only after explicit
-`mft.analytics.consent.v4=granted`, with GPC/DNT overriding consent. The v4 notice
-names both M.F.T. internal handoff measurement and Google Analytics. Earlier
-Google-only grants require a fresh choice; the latest earlier refusal remains
-effective. Withdrawal propagates to earlier consent keys for already-open tabs.
-The remembered account acknowledgment is functional state and is unchanged.
 
 | Field | Contract |
 | --- | --- |
 | `schemaVersion` | `1` |
 | `eventType` | `simplepractice_exit` only |
-| `eventId` | Secure random UUIDv4, generated once for the actual handoff |
-| `occurredAt` | UTC action timestamp in ISO 8601 format |
-| `consentVersion` | `mft.analytics.consent.v4` |
+| `eventId` | Cryptographic random UUIDv4, generated once for the handoff |
+| `occurredAt` | UTC action timestamp, ISO 8601 |
+| `consentVersion` | `mft.analytics.consent.v4`, the unchanged receiving contract |
 | `source`, `medium` | Existing enumerated pairs only |
-| `campaignId` | Optional string containing one of the seven approved numeric campaign IDs; only for `google/cpc` |
+| `campaignId` | Optional approved numeric campaign ID string, only for `google/cpc` |
 | `pageCode` | Existing opaque 16-hex page code |
 | `placement` | `header`, `footer`, `body`, or `dialog` |
 
-The currently approved campaign IDs are `24274542446`, `24362234053`,
-`24435101888`, `24444626634`, `24449945489`, `24530528782`, and `24524392745`.
-This version does not admit ad-group or creative IDs. The historical unused
-parser's broader fields are not evidence of an active approved collection path.
+Approved campaign IDs remain `24274542446`, `24362234053`, `24435101888`, `24444626634`, `24449945489`, `24530528782`, and `24524392745`. Ad-group and creative IDs are not admitted by this contract.
 
-No visitor/session ID, patient identity, contact detail, clinician ID, clinical
-information, form value, SimplePractice record ID, raw URL/referrer, keyword,
-or raw Google click ID is part of the envelope. The handoff UUID is never sent
-to Google or added to a SimplePractice destination.
+No visitor/session identifier, patient identity, contact detail, clinician ID, clinical information, form value, SimplePractice record ID, raw URL/referrer, search term, or raw Google click identifier is included. Neither the handoff UUID nor advertising identifiers are appended to SimplePractice destinations.
 
-The controller sends a credential-free, no-referrer, keepalive POST. It retries
-at most once after a transient network/server failure, using the identical
-serialized envelope and UUID. A retry requires the same still-valid consent
-generation and a visible document; withdrawal aborts pending delivery and
-invalidates scheduled retries. There is no persistent retry queue. Delivery is
-best effort; native scheduling never waits, even if either measurement path
-is absent, blocked, or fails.
+The POST omits credentials and referrers and uses keepalive. A transient failure may trigger one retry with the exact serialized envelope, UUID and UTC timestamp. Retry requires valid consent and a visible document. The existing receiver's unique event ID deduplicates repeated delivery; a receiver response establishes only event receipt.
 
-The receiving table's existing unique event ID makes repeated delivery one row.
-A successful collector response establishes receipt only; it does not establish
-appointment-request verification or attribution.
+## Identifiers, storage and expiry
 
-Source acquisition remains limited to 30 minutes in session storage. Internal
-navigation preserves a known source and its original deadline, without renewal.
-Expiry or withdrawal clears it; a later handoff does not reuse an expired
-campaign. The recorded handoff retains the permitted source at the time of its
-action. New handoff rows use a 30-day reporting retention period, with physical
-deletion during ingestion and authenticated daily cleanup. Legacy records and
-protected SimplePractice retention are not changed by this policy.
+| Item | Storage and lifetime | Withdrawal behavior |
+| --- | --- | --- |
+| First-party analytics choice | Browser local storage; preference only | Set denied; broadcast withdrawal to earlier supported keys |
+| Advertising preference | Separate browser key; denied/unavailable | Remains denied; no raw advertising storage is created |
+| Permitted source/medium and approved numeric campaign ID | `mft.analytics.source.v1` in session storage; 30 minutes from acquisition | Removed; late retries cannot reuse it |
+| Internal handoff UUID | In-memory envelope for initial delivery and one bounded retry; existing Ops event store | Pending delivery aborted; existing Ops retention continues |
+| Ops handoff record | Existing 30-day reporting period, with ingestion and authenticated daily cleanup | No new retention rule is introduced |
+| Raw `gclid`, `gbraid`, `wbraid` values | No persistence or Google transmission by this measurement implementation | No new raw-identifier store exists |
+| Recognized legacy Google cookies | No new cookies; root-path host-only and public-domain cookies are cleared | Cleared again on withdrawal |
+
+The source classifier may recognize the presence/valid shape of a click marker to produce the internal label `google/cpc`. That label does not prove Ads attribution. Arbitrary query values and click identifiers are not retained. Internal navigation preserves the original source deadline; it cannot renew the acquisition period. An old document timer cannot delete a newer navigation's source.
+
+The 90-day Ads conversion window does not authorize 90-day browser retention. Genuine advertising-identifier continuity and transmission have not been enabled in this release because the Google eligibility boundary remains unresolved.
 
 ## Protected request verification and attribution
 
 | Reporting state | Required evidence |
 | --- | --- |
-| Website scheduling handoff | One qualifying `simplepractice_exit` recorded by the applicable receiver |
-| Verified appointment request | An actual SimplePractice request verified by the protected existing Ops import/workflow |
+| Website scheduling handoff | One qualifying recorded `simplepractice_exit` |
+| Verified appointment request | Actual SimplePractice request verified by the existing protected Ops workflow |
 | Attributed verified request | Verified request plus a demonstrated source connection |
-| Accepted or confirmed appointment | An authoritative SimplePractice record explicitly supporting that state |
+| Accepted or confirmed appointment | Authoritative SimplePractice record explicitly establishing that state |
 
-A verified request with no demonstrated source remains verified, with source
-`Unknown` or `Unmatched`. It must not disappear from request counts merely
-because it has no advertising connection. A scheduled or billed appointment
-snapshot does not by itself establish an earlier online request, its submission
-time, or its acceptance time.
+A request remains verified when its source is Unknown or Unmatched. A scheduled or billed appointment snapshot does not establish an earlier request, submission timestamp, or acceptance timestamp.
 
-The new website UUID identifies a single delivery action; it is not a
-SimplePractice request identity. No match may be inferred from a name,
-clinician, appointment date, or temporal proximity. The existing protected
-identity-link mechanism may be used only when its own verification evidence
-exists. This website change supplies no such link and creates no automatic
-request attribution.
+The website UUID identifies a delivery action, not a SimplePractice request. Names, clinician selection, appointment dates and temporal proximity are not matching evidence. A supported identifier connection must be demonstrated before use. No custom portal parameter, scraping match, invented callback or Google conversion export substitutes for that connection.
 
-The missing connection is a supported, demonstrated way to carry the opaque
-website action/source reference through SimplePractice and return it alongside
-an authoritative stable request identifier in the protected Ops workflow.
-Until that connection is demonstrated, website handoffs and verified requests
-remain separate records. Do not invent a custom portal parameter, scraping
-match, callback, or Google conversion export to close this gap.
+This website release does not alter Ops imports, protected identity links, request verification, or clinical records.
 
-## Reading generated reports
+## Generated reports and release evidence
 
-The existing top-level booleans remain compatible. The shared `measurement`
-metadata in the booking, analytics, and review-build reports makes their scopes
-explicit:
-
-| Report field | Interpretation |
+| Field | Meaning |
 | --- | --- |
-| Booking/review `measurementEnabled` | Legacy booking collector only; remains false |
-| `measurement.legacyBookingCollector.enabled` | Explicit legacy collector state |
-| `measurement.consentControlledGa4.buildEnabled` | Whether the current build enables the consent-required GA4 integration; not visitor consent or delivery |
-| `measurement.consentControlledOps.buildEnabled` | Whether the current build installs the separately gated first-party handoff destination; not receiver readiness or event receipt |
-| Analytics `opsHandoffPages` | Generated eligible-page inventory for the internal handoff path; not a count of events |
-| Analytics `enabled` | Existing GA4 build gate; unchanged |
-| Analytics `injected` / `finalPages` | Generated page inventory, not recorded visits |
-| Analytics `finalVerified` / `finalVerifiedScope` | Generated HTML inventory, route eligibility, and page identities were checked; not collector or account receipt |
-| `measurement.schedulingMetric` | Display name, source event, counting boundary, and diagnostic exclusions |
-| `measurement.externalVerification` | External collector/account outcomes are not established by these build reports |
+| `measurement.legacyBookingCollector.enabled` | Retired collector remains false |
+| `measurement.firstPartyController.buildEnabled` | First-party controller installation gate |
+| `measurement.consentControlledOps.buildEnabled` | Independent Ops destination gate; not receipt evidence |
+| `measurement.consentControlledGa4.buildEnabled` | Effective Google state; false |
+| `measurement.consentControlledGa4.requestedByEnvironment` | Requested flag, which cannot override the blocked policy |
+| Analytics `enabled` | Google runtime only; false |
+| Analytics `injected` / `finalPages` / `opsHandoffPages` | First-party page inventory, not Google traffic or events |
+| Analytics `googlePages` | Google runtime inventory; empty |
+| Analytics `allowedRoutes` / `allowedEvents` | Explicit Google eligibility; empty |
+| Analytics `controllerAllowedRoutes` | Publication-eligible controller candidates, with sensitive/form exclusions |
+| Release provenance | Exact source/deploy IDs, policy/asset hashes and separate Google/controller inventories |
 
-Production can correctly report the legacy flag as false and the two current
-build gates as true. None proves that a visitor consented or that a hit arrived.
+Local tests, intercepted synthetic requests, production assets, internal receiver receipt, GA4 read-back and Ads-attributed conversions are different evidence. A callback, direct/organic label, synthetic click ID or configured action does not prove Ads credit.
 
-## Keep the evidence levels separate
+Existing destination identities remain GA4 `G-BTK39BBNRE`, property `558962239`, stream `16124767332`, Ads account `420-172-2474`, and conversion `7911303814`. They are configured identities, not evidence that the disabled website path delivers events. No second primary conversion is created. The $10 maximum CPC ceiling, campaign budgets, targeting, and existing primary/secondary settings are preserved.
 
-| Evidence | What it can establish |
-| --- | --- |
-| Generated HTML and report validation | Correct installation, route eligibility, and artifact inventory |
-| Synthetic browser/runtime test | The tested action and consent behavior |
-| Intercepted outbound request | An outgoing minimized request was generated in that test |
-| Real collector response | That request reached the collector and received a response |
-| GA4 property read-back | The event was received and surfaced in the property |
-| Google Ads configuration and attributed receipt | A website action is configured and attributed conversions are being reported |
-| Authoritative appointment record | Requested, confirmed, or attended care as supported by that record |
-
-An allowlisted numeric campaign label is aggregate source information. It does
-not prove Google Ads click attribution. Raw click identifiers remain excluded;
-advertising consent and enhanced conversions stay disabled. Until a permitted
-integration is verified, report Google Ads Clicks separately from GA4 scheduling
-counts. Do not label the diagnostics or a combined event total as conversions,
-and do not infer a configured Ads action from website code.
-
-GA4 measurement ID `G-BTK39BBNRE`, property `558962239`, and Google Ads account
-`420-172-2474` remain the existing destinations. The website does not configure
-key events, conversion actions, campaign goals, bids or budgets. Keep the single
-primary website handoff conversion at Count: One, calls secondary/excluded from
-optimization, and the existing $10 maximum CPC and budgets. Internal source
-information is not proof of Google Ads-attributed conversion receipt.
-
-This document defines website reporting semantics and the receiver contract.
-Release evidence must separately establish production configuration, collector
-receipt, database idempotency, protected request verification, source matching,
-and any Google account receipt. It records no new appointment outcome.
+For this release, report **Google scheduling attribution disabled pending an event-and-route-specific data-boundary resolution**. Do not call it merely pending eligible traffic. That latter status applies only after an eligible implementation has actually been enabled and technically verified.

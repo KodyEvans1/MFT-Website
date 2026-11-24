@@ -1,6 +1,6 @@
 """Actual website controller; intercepted Ops receipt and native scheduling.
 
-Every browser DNS lookup is denied. Google is deliberately blocked. An in-memory
+Every browser DNS lookup is denied. Any Google request fails. An in-memory
 receiver models idempotent receipt; production database proof is separate.
 """
 import importlib.util
@@ -13,6 +13,11 @@ from urllib.parse import urlsplit, parse_qs
 from playwright.sync_api import sync_playwright, expect
 from scheduling_confirmation_fixture import acknowledge_scheduling_dialog
 from ops_handoff_fixture import ENDPOINT, is_handoff_request, validate_handoff, accept_handoff
+from measurement_privacy_fixture import (
+    CONSENT, CONTROLLER, is_google_url, request_summary,
+    assert_advertising_unavailable, assert_no_google_cookies, assert_no_google_dom,
+    assert_no_raw_identifier_storage,
+)
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / 'tmp/ops-handoff'
@@ -20,7 +25,6 @@ OUT.mkdir(parents=True, exist_ok=True)
 BASE = 'https://www.mft.care'
 REQUEST = 'https://marriagefamilytherapy.clientsecure.me/request'
 SIGN_IN = 'https://marriagefamilytherapy.clientsecure.me/sign-in'
-CONSENT = 'mft.analytics.consent.v4'
 SOURCE = 'mft.analytics.source.v1'
 PRIMARY = 'a[data-marketing-appointment="primary"]'
 FREE = '.mh-hero a[data-mft-ten-minute-consultation="true"]'
@@ -29,7 +33,7 @@ CSP = re.search(r'Content-Security-Policy: ([^\n]+)', (ROOT / 'dist/_headers').r
 spec = importlib.util.spec_from_file_location('mft_scheduling_harness', ROOT / 'tests/scheduling-browser-harness.py')
 harness = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(harness)
-report = {'passed': False, 'checks': [], 'scope': 'Built production-origin candidate; real website controller and trusted UI actions; all Ops, Google and SimplePractice traffic intercepted with DNS denied. Synthetic Ops receipt is not production receipt or SimplePractice verification.'}
+report = {'passed': False, 'checks': [], 'googleRequests': [], 'scope': 'Built production-origin candidate; real website controller and trusted UI actions; all Ops and SimplePractice traffic intercepted with DNS denied, any Google request fails. Synthetic Ops receipt is not production receipt or SimplePractice verification.'}
 active = None
 interceptor = None
 
@@ -37,7 +41,11 @@ interceptor = None
 def guard(route):
     req = route.request
     url = urlsplit(req.url)
-    if is_handoff_request(req):
+    if is_google_url(req.url):
+        report['googleRequests'].append(request_summary(req))
+        route.abort()
+        raise AssertionError('Neither Google loader nor collector may be requested')
+    elif is_handoff_request(req):
         payload = validate_handoff(req)
         active.deliveries.append(payload)
         if active.mode == 'unavailable':
@@ -66,8 +74,6 @@ def guard(route):
         route.fulfill(status=200, content_type='text/html', body='<!doctype html><title>Intercepted scheduler</title><link rel="icon" href="data:,"><h1>Intercepted scheduler</h1>')
     else:
         route.abort()
-        if url.hostname in ['www.google-analytics.com', 'region1.google-analytics.com']:
-            raise AssertionError('Blocked Google library must not produce a Google collector request')
 
 
 class Case:
@@ -75,9 +81,10 @@ class Case:
         global active
         self.mode = mode
         self.deliveries, self.records, self.destinations, self.errors = [], {}, [], []
-        self.context = browser.new_context(viewport=viewport or {'width': 1440, 'height': 1000}, reduced_motion='reduce')
-        if consent is not None:
-            self.context.add_init_script('if(window.top===window && location.origin===' + json.dumps(BASE) + ')localStorage.setItem(' + json.dumps(CONSENT) + ',' + json.dumps(consent) + ')')
+        storage = {'cookies': [], 'origins': [{'origin': BASE, 'localStorage': [
+            {'name': CONSENT, 'value': consent}
+        ] if consent is not None else []}]}
+        self.context = browser.new_context(viewport=viewport or {'width': 1440, 'height': 1000}, reduced_motion='reduce', storage_state=storage)
         if signal:
             value = 'true' if signal == 'globalPrivacyControl' else '"1"'
             self.context.add_init_script('Object.defineProperty(Navigator.prototype,' + json.dumps(signal) + ',{get:()=>'+value+'})')
@@ -85,7 +92,13 @@ class Case:
         active = self
         self.page = self.context.new_page()
         self.page.goto(BASE + path, wait_until='domcontentloaded')
-        assert self.page.locator('script[data-mft-measurement-id]').get_attribute('data-mft-handoff-endpoint') == ENDPOINT
+        assert self.page.locator(CONTROLLER).get_attribute('data-mft-handoff-endpoint') == ENDPOINT
+        assert self.page.locator(CONTROLLER).get_attribute('data-mft-google-mode') == 'disabled'
+        assert_no_google_dom(self.page)
+        if mode != 'missing-controller':
+            assert_advertising_unavailable(self.page)
+            assert_no_raw_identifier_storage(self.page)
+        assert_no_google_cookies(self.context)
 
     def open(self, selector=PRIMARY):
         link = self.page.locator(selector).first
@@ -115,12 +128,14 @@ class Case:
     def close(self):
         interceptor.assert_ok()
         assert not self.errors, self.errors
+        assert not report['googleRequests']
         self.context.close()
 
 
 def checked(name):
     interceptor.assert_ok()
     assert not active.errors, active.errors
+    assert not report['googleRequests']
     report['checks'].append({'name': name, 'pass': True})
 
 
@@ -220,7 +235,7 @@ try:
         assert len(case.records) == 1 and case.destinations == [REQUEST]
         assert first['source'] == 'google' and first['medium'] == 'cpc' and first['campaignId'] == '24530528782'
         assert first['placement'] == 'dialog'
-        checked('Enabled native Continue produces one minimized paid-source handoff even while Google is blocked')
+        checked('Enabled native Continue produces one minimized paid-source handoff with Google disabled')
         case.page.goto(BASE + '/new-page/', wait_until='domcontentloaded')
         case.page.locator('header a[href="/team/"]').click()
         case.page.wait_for_url(BASE + '/team/')
@@ -285,6 +300,35 @@ try:
         checked('A lost first-party response retries the identical ID, UTC timestamp and source; synthetic idempotent receipt stores one record')
         case.close()
 
+        case = Case(browser, '/new-page/' + PAID, mode='lost-response')
+        case.page.evaluate('''() => {
+          const original=window.setTimeout;
+          window.__heldRetry=null;
+          window.setTimeout=(fn,delay,...args)=>{
+            if(delay===250){window.__heldRetry=()=>fn(...args);return -1;}
+            return original(fn,delay,...args);
+          };
+        }''')
+        case.open()
+        go = acknowledge_scheduling_dialog(case.page)
+        with case.context.expect_page() as popup:
+            go.click(modifiers=['Control'])
+        popup.value.wait_for_url(REQUEST)
+        case.wait()
+        case.page.wait_for_function('typeof window.__heldRetry==="function"')
+        other = case.context.new_page()
+        other.goto(BASE + '/team/', wait_until='domcontentloaded')
+        other.get_by_role('button', name='Analytics choices', exact=True).click()
+        other.locator('[data-choice="deny"]').click()
+        case.page.wait_for_function('window.MFTAnalyticsConsent.status()==="denied"')
+        assert case.page.evaluate('key=>sessionStorage.getItem(key)', SOURCE) is None
+        case.page.evaluate('window.__heldRetry()')
+        case.page.wait_for_timeout(350)
+        assert len(case.deliveries) == 1 and len(case.records) == 1
+        assert case.deliveries[0]['consentVersion'] == 'mft.analytics.consent.v4'
+        checked('Cross-tab withdrawal clears source and cancels a pending retry without retracting the already received handoff')
+        case.close()
+
         case = Case(browser)
         case.page.locator('a[data-mft-existing-client="true"]').first.click()
         case.page.wait_for_url(SIGN_IN)
@@ -313,6 +357,27 @@ try:
                 case.zero()
             checked('Native scheduling is independent of ' + mode)
             case.close()
+
+        case = Case(browser)
+        case.page.evaluate("window.MFTSchedulingMeasurement.track=()=>{throw new Error('Synthetic optional measurement failure')}")
+        case.open()
+        case.go()
+        case.zero()
+        assert case.destinations == [REQUEST]
+        checked('A measurement runtime exception cannot delay or stop native scheduling')
+        case.close()
+
+        case = Case(browser, '/kody-evans-bio/')
+        selector = '.mft-schedule-shortcuts a[data-mft-couples-consultation="true"][data-spwidget-clinician-id="1701440"]'
+        expected = case.page.locator(selector).get_attribute('href')
+        assert '30-minute couples consultation' in case.page.locator(selector).inner_text().lower()
+        case.open(selector)
+        case.zero()
+        case.go(expected)
+        case.wait()
+        assert len(case.records) == 1 and case.destinations == [expected]
+        checked('Paid couples consultation keeps its exact native destination and one first-party handoff')
+        case.close()
 
         for slug, clinician in [('emily-johnsrud-bio', '2027366'), ('gary-ashley', '2154633'), ('sonia-hassan-bio', '2065412'), ('autumn-alexander', '2183370')]:
             case = Case(browser, '/' + slug + '/')

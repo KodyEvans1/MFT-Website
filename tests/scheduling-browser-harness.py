@@ -1,13 +1,8 @@
-"""Real vendor-library rehearsal with a DNS backstop against detached-frame egress."""
+"""Isolated browser verification with a DNS backstop against detached-frame egress."""
 import base64
-import hashlib
 import os
 import shutil
-from urllib.request import Request, urlopen
 from urllib.parse import urlsplit
-
-TAG_URL = 'https://www.googletagmanager.com/gtag/js?id=G-BTK39BBNRE'
-
 
 class BrowserRequest:
     """The exact request-stage CDP payload, independent of a live renderer Frame."""
@@ -106,16 +101,6 @@ class BrowserInterceptor:
 
 def install_browser_interceptor(browser, guard):
     return BrowserInterceptor(browser, guard)
-
-
-def fetch_real_tag():
-    # This static script fetch has no browser cookies, page URL, or event data.
-    with urlopen(Request(TAG_URL, headers={'User-Agent': 'MFT-Candidate-Verification/1.0'}), timeout=30) as response:
-        source = response.read()
-        assert response.status == 200 and source, 'Google tag source was unavailable'
-        assert response.url.startswith('https://www.googletagmanager.com/gtag/js?'), 'Unexpected tag source redirect'
-    return source, {'source': TAG_URL, 'sha256': hashlib.sha256(source).hexdigest(), 'bytes': len(source),
-                    'mode': 'Fresh vendor bytes served to the browser; every browser DNS lookup denied'}
 
 
 def launch_isolated_chromium(playwright):

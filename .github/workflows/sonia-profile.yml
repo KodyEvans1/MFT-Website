@@ -46,16 +46,14 @@ jobs:
         env:
           CONTEXT: production
           SITE_INDEXING_ENABLED: 'true'
-          GA4_BASIC_MEASUREMENT_ENABLED: 'true'
+          GA4_BASIC_MEASUREMENT_ENABLED: 'false'
           OPS_HANDOFF_COLLECTION_ENABLED: 'true'
-      - name: Verify real SimplePractice navigation in installed Chrome without appointments
+      - name: Verify candidate scheduling destinations in installed Chrome with the scheduler intercepted
         run: |
           export CHROME_PATH="$(command -v google-chrome || command -v chromium)"
           python tests/booking-handoff-browser.py
         env:
           MFT_BROWSER: chromium
-          MFT_CANDIDATE_ORIGIN: ${{ github.event_name == 'pull_request' && 'true' || 'false' }}
-          MFT_BASE_URL: ${{ github.ref == 'refs/heads/main' && 'https://www.mft.care' || '' }}
       - name: Verify published Sonia content and redirects
         if: github.ref == 'refs/heads/main'
         run: |
@@ -93,17 +91,15 @@ jobs:
         env:
           CONTEXT: production
           SITE_INDEXING_ENABLED: 'true'
-          GA4_BASIC_MEASUREMENT_ENABLED: 'true'
+          GA4_BASIC_MEASUREMENT_ENABLED: 'false'
           OPS_HANDOFF_COLLECTION_ENABLED: 'true'
       - run: python -m pip install playwright==1.57.0
       - name: Install the supported WebKit browser and dependencies
         run: python -m playwright install --with-deps webkit
-      - name: Verify desktop and mobile handoff in WebKit without appointments
+      - name: Verify candidate desktop and mobile handoff in WebKit with the scheduler intercepted
         run: python tests/booking-handoff-browser.py
         env:
           MFT_BROWSER: webkit
-          MFT_CANDIDATE_ORIGIN: ${{ github.event_name == 'pull_request' && 'true' || 'false' }}
-          MFT_BASE_URL: ${{ github.ref == 'refs/heads/main' && 'https://www.mft.care' || '' }}
       - uses: actions/upload-artifact@v4
         if: always()
         with:

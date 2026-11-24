@@ -12,7 +12,9 @@
 # release on 2026-11-19. Rebuild in production; promoted preview assets retain
 # their preview restrictions. Draft routes remain excluded by publication policy.
 [context.production.environment]
-  GA4_BASIC_MEASUREMENT_ENABLED = "true"
+  # No Google-approved page/event scope exists for the care-seeking handoff.
+  # The explicit policy also fails closed if this flag is mistakenly enabled.
+  GA4_BASIC_MEASUREMENT_ENABLED = "false"
   SITE_INDEXING_ENABLED = "true"
   OPS_HANDOFF_COLLECTION_ENABLED = "true"
 [context.deploy-preview.environment]

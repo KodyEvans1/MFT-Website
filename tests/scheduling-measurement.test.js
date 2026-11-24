@@ -1,202 +1,187 @@
+/* Runtime/source/consent regressions; all delivery is a synthetic VM stub. */
 'use strict';
 const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm'),path=require('node:path');
+const {fixture,copy,CONSENT,RECEIVING_CONSENT,ADVERTISING,SOURCE}=require('./fixtures/first-party-measurement');
 const root=path.join(__dirname,'../src/assets');
-const parentCode=fs.readFileSync(path.join(root,'mft-analytics.js'),'utf8');
-const frameCode=fs.readFileSync(path.join(root,'mft-ga4-frame.js'),'utf8');
-const copy=x=>JSON.parse(JSON.stringify(x));
-const sourceKey='mft.analytics.source.v1',lifetime=1800000;
+const lifetime=1800000;
 const campaignIds=['24274542446','24362234053','24435101888','24444626634','24449945489','24530528782','24524392745'];
 const paidSuffix=campaignId=>'?utm_source=google&utm_medium=cpc&utm_campaign_id='+campaignId+'&utm_adgroup_id=202031516078&utm_creative_id=701234567890&utm_network=g&utm_device=m';
-const neutralCampaign={campaign_source:'direct',campaign_medium:'none',campaign_name:'',campaign_id:''};
-const fixtureDate=clock=>clock?class extends Date{static now(){return clock.now;}}:Date;
-function store(seed={}){const m=new Map(Object.entries(seed));return {getItem:k=>m.get(k)||null,setItem:(k,v)=>m.set(k,String(v)),removeItem:k=>m.delete(k),all:()=>Object.fromEntries(m)};}
-function parentFixture({search='',referrer='',local={},session={},gpc=false,dnt='0',origin='https://www.mft.care',clock}={}){
- const listeners={},elements=[],timers=[],sent=[];
- let queryReads=0;
- const location={origin,get search(){queryReads++;return search;}};
- const document={currentScript:{dataset:{mftMeasurementId:'G-BTK39BBNRE',mftPageKey:'0123456789abcdef',mftFrameVersion:'abcdef0123456789'}},readyState:'loading',referrer,cookie:'',
- getElementById:()=>null,addEventListener:(n,f)=>listeners['document:'+n]=f,querySelector:()=>null,
- createElement:tag=>{const e={tag,style:{},setAttribute(){},remove(){e.removed=true;},contentWindow:{postMessage:(m,o)=>sent.push({message:copy(m),origin:o})}};elements.push(e);return e;},body:{appendChild(){}}};
- const c={document,localStorage:store(local),sessionStorage:store(session),location,navigator:{globalPrivacyControl:gpc,doNotTrack:dnt},URL,URLSearchParams,Date:fixtureDate(clock),setTimeout:f=>timers.push(f),addEventListener:(n,f)=>listeners[n]=f};c.window=c;
- vm.runInNewContext(parentCode,c);
- const ready=()=>{const f=elements.find(e=>e.tag==='iframe'&&!e.removed);listeners.message({origin,source:f.contentWindow,data:{type:'mft:analytics:ready'}});return f;};
- return {c,sent,elements,timers,listeners,ready,queryReads:()=>queryReads};
+const source=x=>JSON.parse(x.c.sessionStorage.getItem(SOURCE));
+function noGoogle(x){
+ assert.equal(x.googleCalls.length,0);assert.equal(x.posts.length,0);assert.equal(x.c.dataLayer,undefined);
+ assert.equal(x.elements.filter(e=>['iframe','script'].includes(e.tag)).length,0);
+ assert.equal(x.c['ga-disable-G-BTK39BBNRE'],true);
+ assert.equal(x.c.MFTAnalyticsConsent.advertisingStatus(),'unavailable');
+ assert.equal(x.c.MFTAdvertisingConsent.status(),'unavailable');
+ assert.equal(x.c.localStorage.getItem(ADVERTISING),'denied');
 }
-function frameFixture({clock}={}){
- const outgoing=[],scripts=[],listeners={},timers=[];const parent={postMessage:(m,o)=>outgoing.push({message:copy(m),origin:o})};
- const c={parent,location:{origin:'https://www.mft.care'},navigator:{globalPrivacyControl:false,doNotTrack:'0'},document:{createElement:()=>({}),head:{appendChild:s=>scripts.push(s)}},setTimeout:f=>timers.push(f),Date:fixtureDate(clock),addEventListener:(n,f)=>listeners[n]=f};c.window=c;
- vm.runInNewContext(frameCode,c);
- const send=(data,extra={})=>listeners.message({origin:c.location.origin,source:parent,data,...extra});
- const init=(extra={})=>send({type:'mft:analytics:init',pageKey:'0123456789abcdef',referrer:'',sendPageView:true,source:{source:'direct',medium:'none'},sourceExpiresAt:c.Date.now()+lifetime,...extra});
- const commands=()=>Array.from(c.dataLayer||[],a=>Array.from(a));
- const events=()=>commands().filter(a=>a[0]==='event');
- return {c,outgoing,scripts,timers,send,init,commands,events};
-}
-test('measurement never starts before consent; unapproved events do not queue',()=>{
- const x=parentFixture({search:paidSuffix('24530528782')+'&gclid=test-click&email=private@example.invalid'});
- let released=0;x.c.MFTSchedulingMeasurement.track(['simplepractice_exit'],'header',()=>released++);
- assert.equal(released,1);assert.equal(x.elements.length,0);assert.deepEqual(x.c.sessionStorage.all(),{});assert.equal(x.queryReads(),0);
- x.c.MFTAnalyticsConsent.grant();x.ready();
- assert.equal(x.queryReads(),1);assert.equal(x.sent[0].message.source.campaignId,'24530528782');
+test('no source read, identifier generation or delivery before consent, including account acknowledgment and dismissal',()=>{
+ const ACK='mft.newClientAccountAcknowledgment.v1';
+ const x=fixture({choice:null,local:{[ACK]:'acknowledged'},search:paidSuffix(campaignIds[0])+'&gclid=secret-click'});
+ x.setup();let released=0;x.c.MFTSchedulingMeasurement.track(['simplepractice_exit'],'header',()=>released++);
+ const banner=x.elements.find(e=>e.id==='mft-analytics-consent');assert.ok(banner);
+ banner.handlers.click({target:{dataset:{choice:'dismiss'}}});
+ assert.equal(x.c.MFTAnalyticsConsent.status(),'unset');assert.equal(x.c.localStorage.getItem(CONSENT),null);
+ assert.equal(x.c.localStorage.getItem(ACK),'acknowledged');assert.equal(x.queries(),0);assert.equal(x.ids(),0);
+ assert.equal(x.attempts.length,0);assert.equal(released,1);assert.deepEqual(x.c.sessionStorage.all(),{});noGoogle(x);
 });
-test('previous Google-only and visit-only grants do not authorize expanded website measurement',()=>{
- for(const key of ['mft.analytics.consent.v2','mft.analytics.consent.v3']){
-  const x=parentFixture({local:{[key]:'granted'},search:paidSuffix('24530528782')});
-  assert.equal(x.c.MFTAnalyticsConsent.status(),'unset');
-  assert.equal(x.c.MFTSchedulingMeasurement.track(['simplepractice_exit'],'body'),false);
-  assert.equal(x.elements.length,0);assert.equal(x.queryReads(),0);
-  x.c.MFTAnalyticsConsent.grant();
-  assert.equal(x.c.localStorage.getItem('mft.analytics.consent.v4'),'granted');
-  assert.equal(x.c.MFTAnalyticsConsent.status(),'granted');
+test('a fresh first-party grant never authorizes Google or writes a grant to an older Google-capable tab key',()=>{
+ const x=fixture({choice:null,search:paidSuffix(campaignIds[0])});
+ x.c.MFTAnalyticsConsent.grant();x.c.MFTSchedulingMeasurement.track(['simplepractice_exit'],'body');
+ assert.equal(x.c.localStorage.getItem(CONSENT),'granted');assert.equal(x.attempts.length,1);
+ for(const key of ['mft.analytics.consent.v4','mft.analytics.consent.v3','mft.analytics.consent.v2']){
+  assert.equal(x.c.localStorage.writes.some(w=>w.key===key&&w.value==='granted'),false);
+  assert.equal(x.c.localStorage.getItem(key),null);
+ }
+ assert.equal(x.attempts[0].body.consentVersion,RECEIVING_CONSENT,'receiver contract stays independently versioned');noGoogle(x);
+});
+test('v4 first-party permission migrates to the narrower v5 scope but never advertising',()=>{
+ for(const permission of ['granted','denied']){
+  const x=fixture({choice:null,local:{[RECEIVING_CONSENT]:permission,[ADVERTISING]:'granted'}});
+  x.setup();assert.equal(x.c.MFTAnalyticsConsent.status(),permission);assert.equal(x.c.localStorage.getItem(CONSENT),permission);
+  x.c.MFTSchedulingMeasurement.track(['simplepractice_exit'],'body');
+  assert.equal(x.attempts.length,permission==='granted'?1:0);noGoogle(x);
  }
 });
-test('legacy refusals are honored, the latest legacy choice wins, and explicit v4 choice is authoritative',()=>{
+test('older Google-only grants do not become first-party permission; the latest valid refusal remains authoritative',()=>{
  for(const key of ['mft.analytics.consent.v2','mft.analytics.consent.v3']){
-  assert.equal(parentFixture({local:{[key]:'denied'}}).c.MFTAnalyticsConsent.status(),'denied');
+  const x=fixture({choice:null,local:{[key]:'granted'}});x.setup();
+  assert.equal(x.c.MFTAnalyticsConsent.status(),'unset');assert.equal(x.queries(),0);assert.equal(x.attempts.length,0);noGoogle(x);
+  const refused=fixture({choice:null,local:{[key]:'denied'}});refused.setup();
+  assert.equal(refused.c.MFTAnalyticsConsent.status(),'denied');assert.equal(refused.queries(),0);noGoogle(refused);
  }
- assert.equal(parentFixture({local:{'mft.analytics.consent.v3':'granted','mft.analytics.consent.v2':'denied'}}).c.MFTAnalyticsConsent.status(),'unset');
- assert.equal(parentFixture({local:{'mft.analytics.consent.v4':'granted','mft.analytics.consent.v3':'denied','mft.analytics.consent.v2':'denied'}}).c.MFTAnalyticsConsent.status(),'granted');
- assert.equal(parentFixture({local:{'mft.analytics.consent.v4':'denied','mft.analytics.consent.v3':'granted'}}).c.MFTAnalyticsConsent.status(),'denied');
+ const cases=[
+  [{'mft.analytics.consent.v3':'granted','mft.analytics.consent.v2':'denied'},'unset'],
+  [{[RECEIVING_CONSENT]:'denied','mft.analytics.consent.v3':'granted'},'denied'],
+  [{[RECEIVING_CONSENT]:'granted','mft.analytics.consent.v3':'denied'},'granted'],
+  [{[CONSENT]:'denied',[RECEIVING_CONSENT]:'granted'},'denied'],
+  [{[CONSENT]:'granted',[RECEIVING_CONSENT]:'denied'},'granted']
+ ];
+ for(const [local,expected]of cases){const x=fixture({choice:null,local});x.setup();assert.equal(x.c.MFTAnalyticsConsent.status(),expected);noGoogle(x);}
 });
-test('paid source sends only allowlisted source, medium, known campaign ID',()=>{
- const x=parentFixture({search:'?utm_source=google&utm_medium=cpc&utm_campaign_id=24362234053&gclid=secret-click&utm_term=private-term&email=private@example.invalid&utm_adgroup_id=202031516078'});
- x.c.MFTAnalyticsConsent.grant();x.ready();
- assert.deepEqual(x.sent[0].message.source,{source:'google',medium:'cpc',campaignId:'24362234053'});
- assert.doesNotMatch(JSON.stringify(x.sent)+JSON.stringify(x.c.sessionStorage.all()),/secret-click|private-term|example.invalid|202031516078/);
+test('a stale advertising grant is discarded without reviving it, changing analytics permission, or loading Google',()=>{
+ const x=fixture({local:{[ADVERTISING]:'granted'}});x.setup();noGoogle(x);
+ x.c.localStorage.setItem(ADVERTISING,'granted');x.listeners.storage({key:ADVERTISING,newValue:'granted'});
+ assert.equal(x.c.MFTAnalyticsConsent.status(),'granted');noGoogle(x);
+ assert.equal(x.c.MFTAdvertisingConsent.grant,undefined);
+ x.c.MFTAdvertisingConsent.deny();x.c.MFTSchedulingMeasurement.track(['simplepractice_exit'],'body');
+ assert.equal(x.attempts.length,1);noGoogle(x);
 });
-test('click marker classification does not transmit click identifier or accept an unknown campaign',()=>{
- const x=parentFixture({search:'?gclid=some-token&utm_campaign_id=123456789'});x.c.MFTAnalyticsConsent.grant();x.ready();
- assert.deepEqual(x.sent[0].message.source,{source:'google',medium:'cpc'});
- assert.doesNotMatch(JSON.stringify(x.sent),/some-token|"campaignId":"123456789"/);
+test('old and hypothetical future Google mode attributes cannot enable an unapproved sender',()=>{
+ for(const mftGoogleMode of ['iframe','main-page','enabled','disabled','unexpected']){
+  const x=fixture({dataset:{mftGoogleMode,mftMeasurementId:'G-BTK39BBNRE',mftFrameVersion:'abcdef0123456789'},blockGoogle:true});
+  x.setup();x.c.MFTSchedulingMeasurement.track(['simplepractice_exit'],'dialog');
+  assert.equal(x.attempts.length,1);assert.equal(x.listeners.message,undefined);noGoogle(x);
+ }
 });
-test('arbitrary source text is normalized, not passed through',()=>{
- const x=parentFixture({search:'?utm_source=private@example.invalid&utm_medium=patient'});x.c.MFTAnalyticsConsent.grant();x.ready();
- assert.deepEqual(x.sent[0].message.source,{source:'other',medium:'unknown'});
+test('all seven campaign labels stay internal and all other raw advertising or personal fields are discarded',()=>{
+ for(const campaignId of campaignIds){
+  const x=fixture({search:paidSuffix(campaignId)+'&gclid=secret-click&utm_term=private-term&email=private@example.invalid'});
+  x.setup();x.c.MFTSchedulingMeasurement.track(['simplepractice_exit'],'body');
+  assert.deepEqual(source(x),{source:'google',medium:'cpc',campaignId,expiresAt:x.clock.now+lifetime});
+  const payload=x.attempts[0].body;assert.equal(payload.campaignId,campaignId);
+  const raw=JSON.stringify(payload)+JSON.stringify(x.c.sessionStorage.all());
+  assert.doesNotMatch(raw,/secret-click|private-term|example.invalid|202031516078|701234567890|utm_adgroup_id|utm_creative_id|utm_network|utm_device|gclid|gbraid|wbraid/);noGoogle(x);
+ }
 });
-test('internal navigation preserves the original acquisition deadline through the exact expiry boundary',()=>{
- const clock={now:1800000000000},first=parentFixture({search:paidSuffix('24530528782'),clock});
- first.c.MFTAnalyticsConsent.grant();first.ready();
- const expiresAt=clock.now+lifetime;
- assert.equal(first.sent[0].message.sourceExpiresAt,expiresAt);
- let session=first.c.sessionStorage.all();
+test('click markers supply only an internal paid label; they are never retained as Ads attribution',()=>{
+ for(const marker of ['gclid','gbraid','wbraid']){
+  const x=fixture({search:'?'+marker+'=secret-click&utm_campaign_id=123456789'});x.setup();x.c.MFTSchedulingMeasurement.track(['simplepractice_exit'],'body');
+  assert.deepEqual(source(x),{source:'google',medium:'cpc',expiresAt:x.clock.now+lifetime});
+  assert.doesNotMatch(JSON.stringify(x.attempts[0].body)+JSON.stringify(x.c.sessionStorage.all()),/secret-click|gclid|gbraid|wbraid/);noGoogle(x);
+ }
+});
+test('unreviewed campaign IDs and arbitrary source text cannot enter internal attribution fields',()=>{
+ for(const campaignId of ['245305287820','24524392745-private','99999999999','{campaignid}']){
+  const x=fixture({search:paidSuffix(campaignId)});x.setup();assert.equal(source(x).campaignId,undefined);assert.equal(source(x).source,'google');noGoogle(x);
+ }
+ const x=fixture({search:'?utm_source=private@example.invalid&utm_medium=patient'});x.setup();
+ assert.deepEqual(source(x),{source:'other',medium:'unknown',expiresAt:x.clock.now+lifetime});
+});
+test('internal navigation keeps the original 30-minute deadline through exact expiry',()=>{
+ const clock={now:1800000000000},first=fixture({search:paidSuffix(campaignIds[0]),clock});first.setup();
+ const expiry=clock.now+lifetime;let session=first.c.sessionStorage.all();
  for(const elapsed of [600000,1200000,lifetime-1]){
-  clock.now=expiresAt-lifetime+elapsed;
-  const x=parentFixture({session,referrer:'https://www.mft.care/team/',clock});x.c.MFTAnalyticsConsent.grant();x.ready();
-  assert.deepEqual(x.sent[0].message.source,{source:'google',medium:'cpc',campaignId:'24530528782'});
-  assert.equal(x.sent[0].message.sourceExpiresAt,expiresAt);
-  session=x.c.sessionStorage.all();assert.equal(JSON.parse(session[sourceKey]).expiresAt,expiresAt);
+  clock.now=expiry-lifetime+elapsed;const x=fixture({session,referrer:'https://www.mft.care/team/',clock});x.setup();
+  assert.equal(source(x).campaignId,campaignIds[0]);assert.equal(source(x).expiresAt,expiry);session=x.c.sessionStorage.all();
  }
- clock.now=expiresAt;
- const expired=parentFixture({session,referrer:'https://www.mft.care/team/',clock});expired.c.MFTAnalyticsConsent.grant();expired.ready();
- assert.deepEqual(expired.sent[0].message.source,{source:'direct',medium:'none'});
- assert.doesNotMatch(JSON.stringify(expired.c.sessionStorage.all()),/24530528782/);
- first.timers.forEach(f=>f());assert.deepEqual(first.c.sessionStorage.all(),{});
+ clock.now=expiry;first.c.MFTSchedulingMeasurement.track(['simplepractice_exit'],'footer');
+ assert.equal(first.attempts[0].body.source,'direct');assert.equal(first.attempts[0].body.campaignId,undefined);
+ assert.deepEqual(first.c.sessionStorage.all(),{});
+ const expired=fixture({session,clock});expired.setup();assert.equal(source(expired).source,'direct');assert.equal(source(expired).campaignId,undefined);
 });
-test('a fresh explicit paid arrival starts a new bounded acquisition window',()=>{
- const clock={now:1800000000000};
- const old={source:'google',medium:'cpc',campaignId:'24530528782',expiresAt:clock.now+60000};
- const x=parentFixture({search:paidSuffix('24524392745'),session:{[sourceKey]:JSON.stringify(old)},clock});x.c.MFTAnalyticsConsent.grant();x.ready();
- assert.equal(x.sent[0].message.source.campaignId,'24524392745');
- assert.equal(x.sent[0].message.sourceExpiresAt,clock.now+lifetime);
+test('source expiration clears storage even without a handoff and an explicit new arrival gets a bounded new window',()=>{
+ const x=fixture({search:paidSuffix(campaignIds[0])});x.setup();x.clock.now+=lifetime;x.runTimers();
+ assert.deepEqual(x.c.sessionStorage.all(),{});noGoogle(x);
+ const old={source:'google',medium:'cpc',campaignId:campaignIds[0],expiresAt:x.clock.now+60000};
+ const next=fixture({clock:x.clock,search:paidSuffix(campaignIds[1]),session:{[SOURCE]:JSON.stringify(old)}});next.setup();
+ assert.equal(source(next).campaignId,campaignIds[1]);assert.equal(source(next).expiresAt,x.clock.now+lifetime);
 });
-test('invalid, expired or overlong stored acquisition lifetimes cannot restore attribution',()=>{
+test('an older document expiration timer cannot remove a newer navigation source',()=>{
+ const x=fixture({search:paidSuffix(campaignIds[0])});x.setup();
+ const newer={source:'google',medium:'cpc',campaignId:campaignIds[1],expiresAt:x.clock.now+lifetime+60000};
+ x.c.sessionStorage.setItem(SOURCE,JSON.stringify(newer));x.clock.now+=lifetime;x.runTimers();
+ assert.deepEqual(source(x),newer);
+});
+test('invalid, expired and overlong source deadlines cannot restore a campaign',()=>{
  const clock={now:1800000000000};
  for(const expiresAt of [undefined,null,String(clock.now+1000),clock.now-1,clock.now,clock.now+0.5,clock.now+lifetime+1]){
-  const old={source:'google',medium:'cpc',campaignId:'24524392745',expiresAt};
-  const x=parentFixture({session:{[sourceKey]:JSON.stringify(old)},clock});x.c.MFTAnalyticsConsent.grant();x.ready();
-  assert.deepEqual(x.sent[0].message.source,{source:'direct',medium:'none'});
+  const x=fixture({clock,session:{[SOURCE]:JSON.stringify({source:'google',medium:'cpc',campaignId:campaignIds[0],expiresAt})}});x.setup();
+  assert.equal(source(x).source,'direct');assert.equal(source(x).campaignId,undefined);
  }
 });
-test('consent refusal erases source state, disables the helper and releases diagnostic callbacks',()=>{
- const x=parentFixture();x.c.MFTAnalyticsConsent.grant();x.ready();let n=0;
- x.c.MFTSchedulingMeasurement.track(['simplepractice_exit'],'header',()=>n++);x.c.MFTAnalyticsConsent.deny();
- assert.equal(n,1);assert.deepEqual(x.c.sessionStorage.all(),{});assert.equal(x.elements[0].removed,true);
- assert.equal(x.elements[0].contentWindow['ga-disable-G-BTK39BBNRE'],true);
- x.timers.forEach(f=>f());assert.equal(n,1);
+test('source expires synchronously even when a background timer has not fired',()=>{
+ const x=fixture({search:paidSuffix(campaignIds[0])});x.setup();x.clock.now+=lifetime;
+ x.c.MFTSchedulingMeasurement.track(['simplepractice_exit'],'body');
+ assert.equal(x.attempts[0].body.source,'direct');assert.equal(x.attempts[0].body.medium,'none');assert.equal(x.attempts[0].body.campaignId,undefined);
+ assert.deepEqual(x.c.sessionStorage.all(),{});noGoogle(x);
 });
-test('GPC, DNT and nonproduction origins cannot start measurement',()=>{
- for(const options of [{gpc:true},{dnt:'1'}]){const x=parentFixture(options);x.c.MFTAnalyticsConsent.grant();assert.equal(x.elements.length,0);assert.equal(x.c.MFTAnalyticsConsent.status(),'denied');}
- assert.equal(parentFixture({origin:'https://preview.example.invalid'}).c.MFTSchedulingMeasurement,undefined);
+test('withdrawal erases controlled source and Google cookies without changing functional account state',()=>{
+ const ACK='mft.newClientAccountAcknowledgment.v1';
+ const x=fixture({local:{[ACK]:'acknowledged'},cookies:{mftga_ga:'legacy',mftga_ga_BTK39BBNRE:'legacy',_ga:'legacy',_gcl_aw:'legacy',functional:'keep'},search:paidSuffix(campaignIds[0])});
+ x.setup();x.c.MFTAnalyticsConsent.deny();
+ assert.equal(x.c.document.cookie,'functional=keep');assert.deepEqual(x.c.sessionStorage.all(),{});
+ assert.equal(x.c.localStorage.getItem(ACK),'acknowledged');
+ assert.ok(x.cookieWrites.some(v=>v.includes('Domain=mft.care')));assert.ok(x.cookieWrites.some(v=>!v.includes('Domain=')));
+ for(const key of [CONSENT,RECEIVING_CONSENT,'mft.analytics.consent.v3','mft.analytics.consent.v2'])assert.equal(x.c.localStorage.getItem(key),'denied');noGoogle(x);
 });
-test('parent intent allowlist deduplicates names and never accepts placement free text',()=>{
- const x=parentFixture();x.c.MFTAnalyticsConsent.grant();x.ready();
- x.c.MFTSchedulingMeasurement.track(['simplepractice_exit','simplepractice_exit','appointment_booked'],'body');
- assert.deepEqual(x.sent[1].message.names,['simplepractice_exit']);
- x.c.MFTSchedulingMeasurement.track(['simplepractice_exit'],'private@example.invalid');assert.equal(x.sent.length,2);
-});
-test('blocked frame or collector completes optional diagnostics within its bound',()=>{
- const x=parentFixture();x.c.MFTAnalyticsConsent.grant();let n=0;
- x.c.MFTSchedulingMeasurement.track(['simplepractice_exit'],'body',()=>n++);
- x.timers.forEach(f=>f());x.timers.forEach(f=>f());assert.equal(n,1);
-});
-test('the full Ads suffix recognizes all seven reviewed campaign IDs at both boundaries and drops other ad fields',()=>{
- for(const campaignId of campaignIds){
-  const parent=parentFixture({search:paidSuffix(campaignId)+'&gclid=secret-click&utm_term=private-term&email=private@example.invalid'});parent.c.MFTAnalyticsConsent.grant();parent.ready();
-  const message=parent.sent[0].message;
-  assert.deepEqual(message.source,{source:'google',medium:'cpc',campaignId});
-  assert.deepEqual(Object.keys(JSON.parse(parent.c.sessionStorage.getItem(sourceKey))).sort(),['source','medium','campaignId','expiresAt'].sort());
-  const frame=frameFixture();frame.init(message);
-  frame.send({type:'mft:analytics:intent',id:'m1',names:['simplepractice_exit'],placement:'body'});
-  for(const event of frame.events()){
-   assert.equal(event[2].campaign_source,'google');assert.equal(event[2].campaign_medium,'cpc');assert.equal(event[2].campaign_id,campaignId);
-  }
-  const raw=JSON.stringify(parent.sent)+JSON.stringify(parent.c.sessionStorage.all())+JSON.stringify(frame.commands());
-  assert.doesNotMatch(raw,/secret-click|private-term|example.invalid|202031516078|701234567890|utm_adgroup_id|utm_creative_id|utm_network|utm_device|gclid|gbraid|wbraid/);
-  assert.doesNotMatch(JSON.stringify(frame.commands()),/sourceExpiresAt|expiresAt/);
+test('GPC and DNT override old and current grants and clear source without query reads',()=>{
+ for(const signal of [{gpc:true},{dnt:'1'}]){
+  const x=fixture({...signal,local:{[ADVERTISING]:'granted'},search:paidSuffix(campaignIds[0]),session:{[SOURCE]:'old-state'}});x.setup();x.c.MFTAnalyticsConsent.grant();
+  assert.equal(x.c.MFTAnalyticsConsent.status(),'denied');assert.equal(x.queries(),0);assert.equal(x.ids(),0);assert.equal(x.attempts.length,0);
+  assert.deepEqual(x.c.sessionStorage.all(),{});noGoogle(x);
  }
+ assert.equal(fixture({origin:'https://preview.example.invalid'}).c.MFTSchedulingMeasurement,undefined);
 });
-test('unreviewed and malformed campaign IDs are rejected independently while paid source classification remains',()=>{
- for(const campaignId of ['245305287820','24524392745-private','99999999999','{campaignid}']){
-  const parent=parentFixture({search:paidSuffix(campaignId)});parent.c.MFTAnalyticsConsent.grant();parent.ready();
-  assert.deepEqual(parent.sent[0].message.source,{source:'google',medium:'cpc'});
-  const frame=frameFixture();frame.init({source:{source:'google',medium:'cpc',campaignId}});
-  const event=frame.events()[0][2];assert.equal(event.campaign_source,'google');assert.equal(event.campaign_medium,'cpc');assert.equal(event.campaign_id,'');
-  assert.ok(!JSON.stringify(frame.commands()).includes(campaignId));
- }
- const frame=frameFixture();frame.init({source:{source:'google',medium:'cpc',campaignId:24530528782}});
- assert.equal(frame.events()[0][2].campaign_id,'','the helper requires the reviewed string value');
+test('a newly enabled browser privacy signal cancels optional delivery and clears prior acquisition',()=>{
+ const x=fixture({responses:['pending'],search:paidSuffix(campaignIds[0])});x.setup();x.c.MFTSchedulingMeasurement.track(['simplepractice_exit'],'body');
+ x.c.navigator.globalPrivacyControl=true;x.c.MFTSchedulingMeasurement.track(['simplepractice_exit'],'body');
+ assert.equal(x.attempts.length,1);assert.equal(x.attempts[0].options.signal.aborted,true);assert.deepEqual(x.c.sessionStorage.all(),{});noGoogle(x);
 });
-test('an already-open helper stops campaign attribution exactly at expiry without suppressing handoffs',()=>{
- const clock={now:1800000000000},expiresAt=clock.now+lifetime,frame=frameFixture({clock});
- frame.init({source:{source:'google',medium:'cpc',campaignId:'24524392745'},sourceExpiresAt:expiresAt});
- clock.now=expiresAt-1;
- frame.send({type:'mft:analytics:intent',id:'m1',names:['simplepractice_exit'],placement:'body'});
- assert.equal(frame.events().at(-1)[2].campaign_id,'24524392745');
- for(const now of [expiresAt,expiresAt+1]){
-  clock.now=now;
-  frame.send({type:'mft:analytics:intent',id:now===expiresAt?'m2':'m3',names:['appointment_request_click','simplepractice_exit'],placement:'footer'});
-  for(const event of frame.events().slice(-2))for(const [key,value] of Object.entries(neutralCampaign))assert.equal(event[2][key],value);
- }
- assert.equal(frame.events().filter(e=>e[1]==='simplepractice_exit').length,3);
- const defaults=frame.commands().filter(a=>a[0]==='set'||a[0]==='config');
- for(const command of defaults)for(const [key,value] of Object.entries(neutralCampaign))assert.equal(command.at(-1)[key],value,'defaults cannot revive an expired campaign');
- assert.equal(frame.scripts.length,1);assert.equal(frame.commands().filter(a=>a[0]==='config').length,1);
- assert.doesNotMatch(JSON.stringify(frame.commands()),/sourceExpiresAt|expiresAt/);
+test('blocked browser storage and missing fetch never block the controller or local completion callback',()=>{
+ const x=fixture({choice:null,blockedStorage:true});x.setup();x.c.MFTAnalyticsConsent.grant();delete x.c.fetch;
+ let completed=0;assert.equal(x.c.MFTSchedulingMeasurement.track(['simplepractice_exit'],'body',()=>completed++),true);
+ assert.equal(completed,1);assert.equal(x.attempts.length,0);assert.equal(x.elements.filter(e=>['iframe','script'].includes(e.tag)).length,0);
 });
-test('the helper independently rejects missing, invalid, expired and overlong attribution deadlines',()=>{
- const clock={now:1800000000000};
- for(const sourceExpiresAt of [undefined,null,String(clock.now+1000),clock.now-1,clock.now,clock.now+0.5,clock.now+lifetime+1]){
-  const frame=frameFixture({clock});frame.init({source:{source:'google',medium:'cpc',campaignId:'24530528782'},sourceExpiresAt});
-  for(const [key,value] of Object.entries(neutralCampaign))assert.equal(frame.events()[0][2][key],value);
- }
+test('cookie access failure does not interrupt a privacy choice or permitted handoff',()=>{
+ const x=fixture();
+ Object.defineProperty(x.c.document,'cookie',{get(){throw Error('Cookie access blocked');},set(){throw Error('Cookie access blocked');}});
+ x.c.MFTAnalyticsConsent.deny();assert.equal(x.c.MFTAnalyticsConsent.status(),'denied');
+ x.c.MFTAnalyticsConsent.grant();x.c.MFTSchedulingMeasurement.track(['simplepractice_exit'],'body');
+ assert.equal(x.attempts.length,1);noGoogle(x);
 });
-test('ready frame receives an intent synchronously once without unreviewed fields',()=>{
- const x=parentFixture();x.c.MFTAnalyticsConsent.grant();const frame=x.ready();const received=[];
- frame.contentWindow.MFTAnalyticsReceiveIntent=data=>{received.push(copy(data));return true;};
- x.c.MFTSchedulingMeasurement.track(['appointment_request_click','simplepractice_exit'],'body');
- assert.deepEqual(received,[{type:'mft:analytics:intent',id:'m1',names:['appointment_request_click','simplepractice_exit'],placement:'body'}]);
- assert.equal(x.sent.length,1,'no second asynchronous dispatch for an accepted synchronous intent');
+test('diagnostics stay local, unsupported outcome names are rejected, and repeated event names yield one handoff',()=>{
+ const x=fixture();
+ for(const name of ['consultation_click','clinician_schedule_click','appointment_request_click'])assert.equal(x.c.MFTSchedulingMeasurement.track([name],'body'),true);
+ assert.equal(x.attempts.length,0);assert.equal(x.ids(),0);
+ for(const names of [['appointment_booked'],['generate_lead','purchase'],['accepted_appointment'],[]])assert.equal(x.c.MFTSchedulingMeasurement.track(names,'body'),false);
+ assert.equal(x.c.MFTSchedulingMeasurement.track(['simplepractice_exit'],'private@example.invalid'),false);
+ x.c.MFTSchedulingMeasurement.track(['simplepractice_exit','simplepractice_exit','appointment_request_click'],'dialog');assert.equal(x.attempts.length,1);noGoogle(x);
 });
-test('synchronous receiver has the same minimized payload, deduplication, and privacy guards',()=>{
- const x=frameFixture();x.init();
- const intent={type:'mft:analytics:intent',id:'m1',names:['simplepractice_exit'],placement:'body',clinicianId:'private-name',link_url:'https://private.example.invalid'};
- assert.equal(x.c.MFTAnalyticsReceiveIntent(intent),true);
- assert.equal(x.c.MFTAnalyticsReceiveIntent(intent),false);
- assert.equal(x.events().length,2);
- assert.doesNotMatch(JSON.stringify(x.commands()),/private-name|private.example.invalid|link_url/);
- x.c.navigator.globalPrivacyControl=true;
- assert.equal(x.c.MFTAnalyticsReceiveIntent({...intent,id:'m2'}),false);
- assert.equal(x.events().length,2);
+test('duplicate controller execution cannot register another sender',()=>{
+ const x=fixture();const original=x.c.MFTSchedulingMeasurement;const storageListener=x.listeners.storage;x.reload();
+ assert.equal(x.c.MFTSchedulingMeasurement,original);assert.equal(x.listeners.storage,storageListener);
+ x.c.MFTSchedulingMeasurement.track(['simplepractice_exit'],'body');assert.equal(x.attempts.length,1);noGoogle(x);
 });
 function bookingFixture({track=()=>{},intent='appointment',label='Request an evaluation — assessment and insurance details',clinician=null}={}){
  const handlers={},attrs=new Map([['data-mft-booking-intent',intent]]),anchor={textContent:label,href:'https://marriagefamilytherapy.clientsecure.me/',dataset:{mftBookingIntent:intent},
@@ -235,48 +220,4 @@ test('direct paid consultation and explicit evaluation actions retain their dist
  const evaluations=[],evaluation=bookingFixture({intent:'appointment',label:'Initial individual evaluation. A consultation is optional.',track:names=>evaluations.push(copy(names))});
  assert.equal(evaluation.click().defaultPrevented,false);
  assert.deepEqual(evaluations,[['appointment_request_click','simplepractice_exit']]);
-});
-test('frame init is exactly once and rejects wrong origin/source',()=>{
- const x=frameFixture();x.send({type:'mft:analytics:init',pageKey:'0123456789abcdef'},{origin:'https://evil.invalid'});assert.equal(x.scripts.length,0);
- x.send({type:'mft:analytics:init',pageKey:'0123456789abcdef'},{source:{}});assert.equal(x.scripts.length,0);
- x.init();x.init();assert.equal(x.scripts.length,1);assert.equal(x.events().length,1);
-});
-test('frame payload scrubs URLs, arbitrary fields and unapproved campaign IDs',()=>{
- const x=frameFixture();x.init({referrer:'https://private.example.invalid/name',source:{source:'google',medium:'cpc',campaignId:'12345',email:'private@example.invalid'},pageLocation:'https://evil.invalid/'});
- const e=x.events()[0][2];assert.equal(e.page_location,'https://www.mft.care/p/0123456789abcdef/');
- assert.equal(e.campaign_source,'google');assert.equal(e.campaign_medium,'cpc');assert.equal(e.campaign_name,'mft-search');assert.equal(e.campaign_id,'');
- assert.doesNotMatch(JSON.stringify(x.commands()),/evil.invalid|example.invalid|"campaign_id":"12345"/);
-});
-test('approved campaign attribution and denied advertising features survive frame initialization',()=>{
- const x=frameFixture();x.init({source:{source:'google',medium:'cpc',campaignId:'24362234053'}});
- assert.equal(x.events()[0][2].campaign_id,'24362234053');
- const consent=x.commands().filter(a=>a[0]==='consent');
- assert.equal(consent[0][2].analytics_storage,'denied');assert.equal(consent[1][2].analytics_storage,'granted');
- for(const a of consent)for(const key of ['ad_storage','ad_user_data','ad_personalization'])assert.equal(a[2][key],'denied');
- const config=x.commands().find(a=>a[0]==='config')[2];assert.equal(config.allow_google_signals,false);assert.equal(config.allow_enhanced_conversions,false);assert.equal(config.allow_ad_personalization_signals,false);
- for(const command of x.commands().filter(a=>a[0]==='set'||a[0]==='config'))for(const [key,value] of Object.entries(neutralCampaign))assert.equal(command.at(-1)[key],value);
-});
-test('intent after page-view completion retains active consent and duplicate batch cannot double count',()=>{
- const x=frameFixture();x.init();x.events()[0][2].event_callback();assert.notEqual(x.c['ga-disable-G-BTK39BBNRE'],true);
- const batch={type:'mft:analytics:intent',id:'m1',names:['appointment_request_click','simplepractice_exit'],placement:'header',clinicianId:'private-name',gclid:'private-token'};
- x.send(batch);x.send(batch);assert.equal(x.events().length,3);
- for(const e of x.events().slice(1))e[2].event_callback();x.timers.forEach(f=>f());
- assert.notEqual(x.c['ga-disable-G-BTK39BBNRE'],true);assert.equal(x.outgoing.filter(e=>e.message.type==='mft:analytics:ack').length,1);
- assert.doesNotMatch(JSON.stringify(x.commands()),/private-name|private-token/);
-});
-test('frame rejects completed booking names, free-text placement and extra duplicate calls',()=>{
- const x=frameFixture();x.init();
- x.send({type:'mft:analytics:intent',id:'m1',names:['appointment_booked','generate_lead','purchase'],placement:'body'});
- x.send({type:'mft:analytics:intent',id:'m2',names:['simplepractice_exit'],placement:'Kody-private'});
- assert.equal(x.events().length,1);
-});
-test('all supported intent names are observation-only and contain no clinical identity field',()=>{
- const x=frameFixture();x.init();x.send({type:'mft:analytics:intent',id:'m1',names:['appointment_request_click','clinician_schedule_click','consultation_click','simplepractice_exit'],placement:'dialog'});
- assert.equal(x.events().length,5);
- const common=['send_to','page_location','page_title','page_referrer','event_callback','event_timeout',...Object.keys(neutralCampaign)];
- assert.deepEqual(Object.keys(x.events()[0][2]).sort(),common.slice().sort());
- for(const e of x.events().slice(1)){
-  assert.equal(e[2].measurement_kind,'scheduling_intent');assert.equal(e[2].button_location,'dialog');
-  assert.deepEqual(Object.keys(e[2]).sort(),[...common,'measurement_kind','button_location'].sort());
- }
 });

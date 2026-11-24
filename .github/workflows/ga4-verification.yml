@@ -1,15 +1,46 @@
-name: Verify consent-based GA4 connection
+name: Verify website measurement privacy
 on:
-  push:
-    branches: ['fix/ga4-connection-20261015', main]
+  pull_request:
     paths:
+      - 'content/google-measurement-policy.json'
       - 'src/analytics-build.js'
+      - 'src/measurement-report.js'
       - 'src/assets/mft-analytics.js'
-      - 'src/assets/mft-ga4-frame.js'
+      - 'src/assets/mft-ga4-*'
       - 'scripts/prepare-analytics.js'
+      - 'scripts/validate-analytics.js'
+      - 'scripts/prepare-release-provenance.js'
       - 'tests/analytics*'
+      - 'tests/measurement_privacy_fixture.py'
+      - 'tests/scheduling-browser-harness.py'
+      - 'tests/scheduling_confirmation_fixture.py'
+      - 'tests/fixtures/first-party-measurement.js'
       - 'netlify.toml'
       - '.github/workflows/ga4-verification.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'content/google-measurement-policy.json'
+      - 'src/analytics-build.js'
+      - 'src/measurement-report.js'
+      - 'src/assets/mft-analytics.js'
+      - 'src/assets/mft-ga4-*'
+      - 'scripts/prepare-analytics.js'
+      - 'scripts/validate-analytics.js'
+      - 'scripts/prepare-release-provenance.js'
+      - 'tests/analytics*'
+      - 'tests/measurement_privacy_fixture.py'
+      - 'tests/scheduling-browser-harness.py'
+      - 'tests/scheduling_confirmation_fixture.py'
+      - 'tests/fixtures/first-party-measurement.js'
+      - 'netlify.toml'
+      - '.github/workflows/ga4-verification.yml'
+  workflow_dispatch:
+    inputs:
+      live:
+        description: Verify matching published assets with read-only, nonconverting browser actions
+        type: boolean
+        default: false
 permissions:
   contents: read
 jobs:
@@ -17,6 +48,10 @@ jobs:
     # Playwright 1.57 browser dependencies support Ubuntu 24.04, not 26.04.
     runs-on: ubuntu-24.04
     timeout-minutes: 12
+    strategy:
+      fail-fast: false
+      matrix:
+        legacy-ga4-flag: ['false', 'true']
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -27,22 +62,23 @@ jobs:
           python-version: '3.12'
       - run: npm run check
       - run: npm run verify:publication
-      - name: Rehearse enabled production build
+      - name: Rehearse production with Google disabled independently of the legacy flag
         run: npm run build
         env:
           CONTEXT: production
           SITE_INDEXING_ENABLED: 'true'
-          GA4_BASIC_MEASUREMENT_ENABLED: 'true'
+          GA4_BASIC_MEASUREMENT_ENABLED: ${{ matrix.legacy-ga4-flag }}
+          OPS_HANDOFF_COLLECTION_ENABLED: 'true'
       - run: python -m pip install playwright==1.57.0
       - run: python -m playwright install --with-deps chromium
-      - name: Inspect GA4 network payloads and consent
+      - name: Prove no Google requests and preserve nonconverting consent and popup behavior
         run: python tests/analytics-browser.py
         env:
-          MFT_ANALYTICS_LIVE: ${{ github.ref == 'refs/heads/main' && 'true' || 'false' }}
+          MFT_ANALYTICS_LIVE: ${{ github.event_name == 'workflow_dispatch' && inputs.live && 'true' || 'false' }}
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: ga4-connection-verification
+          name: measurement-privacy-legacy-flag-${{ matrix.legacy-ga4-flag }}
           path: |
             tmp/analytics-browser/
             dist/reports/analytics-integration.json

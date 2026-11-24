@@ -8,6 +8,7 @@ from pathlib import Path
 from urllib.parse import parse_qs, urlsplit
 from playwright.sync_api import sync_playwright, expect
 from scheduling_confirmation_fixture import acknowledge_scheduling_dialog
+from measurement_privacy_fixture import CONSENT, is_google_url
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / 'tmp/account-confirmation'
@@ -16,7 +17,6 @@ BASE = 'https://www.mft.care'
 REQUEST = 'https://marriagefamilytherapy.clientsecure.me/request'
 SIGN_IN = 'https://marriagefamilytherapy.clientsecure.me/sign-in'
 ACK = 'mft.newClientAccountAcknowledgment.v1'
-CONSENT = 'mft.analytics.consent.v4'
 PRIMARY = 'a[data-marketing-appointment="primary"]'
 FREE = '.mh-hero a[data-mft-ten-minute-consultation="true"]'
 CSP = re.search(r'Content-Security-Policy: ([^\n]+)', (ROOT / 'dist/_headers').read_text())[1]
@@ -48,11 +48,11 @@ def guard(route):
         active.destinations.append(request.url)
         route.fulfill(status=200, content_type='text/html', body='<!doctype html><title>Intercepted scheduler</title><link rel="icon" href="data:,"><h1>Scheduling navigation intercepted</h1>')
     else:
-        if active and url.hostname == 'www.googletagmanager.com':
+        if active and is_google_url(request.url):
             active.google_loads.append(request.url)
         route.abort()
-        if url.hostname in ['www.google-analytics.com', 'region1.google-analytics.com']:
-            raise AssertionError('Focused UI tests must not produce a Google collector request')
+        if is_google_url(request.url):
+            raise AssertionError('Focused UI tests must not load Google or request its collectors')
 
 
 class Case:
@@ -142,7 +142,9 @@ try:
     marketing = json.loads((ROOT / 'dist/reports/marketing-review.json').read_text())
     approved_marketing = json.loads((ROOT / 'content/marketing-improvements-review.json').read_text())
     publication = json.loads((ROOT / 'dist/reports/publication.json').read_text())
-    assert analytics['enabled'] is True and analytics['finalVerified'] is True
+    assert analytics['enabled'] is False and analytics['finalVerified'] is True
+    assert analytics['googlePages'] == []
+    assert len(analytics['controllerPages']) == 60 and len(analytics['opsHandoffPages']) == 60
     assert len(analytics['injected']) == 60 and len(analytics['finalPages']) == 60
     assert re.fullmatch(r'[a-f0-9]{64}', approved_marketing['contentRevision'])
     assert marketing['revision'] == marketing['recordedRevision'] == approved_marketing['contentRevision']
@@ -151,7 +153,7 @@ try:
     assert publication['context'] == 'production' and publication['indexingEnabled'] is True
     assert len(publication['expectedSitemapUrls']) == 63
     assert len([item for item in publication['generatedRoutes'] if item['status'] == 'draft']) == 757
-    report['buildBaseline'] = {'analyticsPages': 60, 'sitemapUrls': 63, 'draftRoutes': 757, 'marketingApprovalCurrent': True}
+    report['buildBaseline'] = {'firstPartyControllerPages': 60, 'googlePages': 0, 'sitemapUrls': 63, 'draftRoutes': 757, 'marketingApprovalCurrent': True}
     with sync_playwright() as playwright:
         browser = harness.launch_isolated_chromium(playwright)
         interceptor = harness.install_browser_interceptor(browser, guard)

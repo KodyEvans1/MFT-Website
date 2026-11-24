@@ -1,7 +1,8 @@
 'use strict';
 const fs = require('node:fs');
 const path = require('node:path');
-const { SITE, enabled, handoffEnabled, normalizeRoute, inject, assetVersion } = require('../src/analytics-build');
+const { SITE, MEASUREMENT_ID, GOOGLE_POLICY_FILE, enabled, handoffEnabled, controllerEnabled,
+  googlePolicy, normalizeRoute, inject, assetVersion } = require('../src/analytics-build');
 const { LEGACY_BOOKING_MEASUREMENT_ENABLED, measurementReport } = require('../src/measurement-report');
 
 const root = path.resolve(__dirname, '..');
@@ -17,7 +18,23 @@ const allowedRoutes = new Set(urls.map(raw => {
 }));
 const files=[];
 (function walk(d){for(const e of fs.readdirSync(d,{withFileTypes:true})){const f=path.join(d,e.name);if(e.isDirectory())walk(f);else if(e.name==='index.html'||f.endsWith(path.sep+'404.html'))files.push(f);}})(dist);
-const report={version:1,measurementId:'G-BTK39BBNRE',enabled:enabled(),measurement:measurementReport(),approvalSource:'production sitemap only',allowedRoutes:[...allowedRoutes].sort(),injected:[],excluded:[]};
+const policy = googlePolicy();
+const report={
+  version:2,
+  measurementId:MEASUREMENT_ID,
+  measurementIdScope:'configured Google destination only; Google runtime is disabled',
+  enabled:enabled(),
+  enabledScope:'Google measurement runtime only',
+  measurement:measurementReport(),
+  approvalSource:GOOGLE_POLICY_FILE,
+  allowedRoutes:policy.approvedRoutes,
+  allowedEvents:policy.approvedEvents,
+  controllerEnabled:controllerEnabled(),
+  controllerApprovalSource:'production publication sitemap eligibility with sensitive-route and form exclusions; not Google approval',
+  controllerAllowedRoutes:[...allowedRoutes].sort(),
+  injectedScope:'first-party controller only',
+  injected:[],excluded:[],googlePages:[]
+};
 // Enrich reports after booking decoration without changing the reviewed clinical
 // rendering pipeline or its revision-specific approval fingerprint.
 const bookingReportFile = path.join(dist, 'reports/booking-integration.json');
@@ -39,13 +56,8 @@ for(const file of files){
   if(result.injected){fs.writeFileSync(file,result.html);report.injected.push(normalizeRoute(route));}
   else report.excluded.push({route:normalizeRoute(route),reason:result.reason});
 }
-if(enabled()){
+if(controllerEnabled()){
   let headers=fs.readFileSync(path.join(dist,'_headers'),'utf8');
-  headers=headers
-    .replace('frame-src https://clientsecure.me', "frame-src 'self' https://clientsecure.me")
-    .replace("script-src 'self' https://widget-cdn.simplepractice.com;", "script-src 'self' https://widget-cdn.simplepractice.com https://www.googletagmanager.com;")
-    .replace("connect-src 'self' https://clientsecure.me https://marriagefamilytherapy.clientsecure.me;", "connect-src 'self' https://clientsecure.me https://marriagefamilytherapy.clientsecure.me https://www.google-analytics.com https://region1.google-analytics.com;")
-    .replace("img-src 'self' https://images.squarespace-cdn.com data:;", "img-src 'self' https://images.squarespace-cdn.com https://www.google-analytics.com https://region1.google-analytics.com data:;");
   if(handoffEnabled())headers=headers.replace(/connect-src ([^;]+);/,"connect-src $1 https://ops.mft.care;");
   fs.writeFileSync(path.join(dist,'_headers'),headers);
   fs.appendFileSync(path.join(dist,'assets/styles.css'), '\n.mft-analytics-settings{font:inherit;font-size:.8rem;background:none;color:inherit;border:0;text-decoration:underline;text-underline-offset:.2em;cursor:pointer;padding:.5rem 0}\n');
@@ -64,5 +76,7 @@ if(enabled()){
 `);
 }
 fs.mkdirSync(path.join(dist,'reports'),{recursive:true});
+report.controllerPages=[...report.injected];
+report.opsHandoffPages=handoffEnabled()?[...report.injected]:[];
 fs.writeFileSync(path.join(dist,'reports','analytics-integration.json'),JSON.stringify(report,null,2)+'\n');
-console.log(JSON.stringify({ga4BasicMeasurementEnabled:report.enabled,approvedRoutes:report.allowedRoutes.length,injectedPages:report.injected.length}));
+console.log(JSON.stringify({ga4BasicMeasurementEnabled:report.enabled,googlePolicyStatus:policy.status,googleApprovedRoutes:report.allowedRoutes.length,firstPartyControllerEnabled:report.controllerEnabled,firstPartyControllerPages:report.injected.length}));

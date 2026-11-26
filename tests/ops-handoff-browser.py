@@ -139,6 +139,18 @@ def checked(name):
     report['checks'].append({'name': name, 'pass': True})
 
 
+def settle_before_native_navigation(page, link):
+    # Scrolling a native link into view can start lazy portrait requests. Let
+    # the isolated interceptor finish those aborts before destroying the source
+    # document, rather than racing its request decisions against navigation.
+    # This only settles page resources; it neither alters the trusted activation
+    # sequence nor permits any interceptor error or external request.
+    link.scroll_into_view_if_needed()
+    page.wait_for_load_state('load', timeout=5000)
+    page.wait_for_load_state('networkidle', timeout=5000)
+    interceptor.assert_ok()
+
+
 try:
     with sync_playwright() as playwright:
         browser = harness.launch_isolated_chromium(playwright)
@@ -246,6 +258,7 @@ try:
         # Team's header is a free consultation and correctly keeps its transient
         # notice. Use the existing ordinary request to test remembered bypass.
         link = case.page.locator('footer a[data-mft-booking="true"]:not([data-mft-couples-consultation]):not([data-mft-ten-minute-consultation])').first
+        settle_before_native_navigation(case.page, link)
         link.click()
         case.page.wait_for_url(REQUEST)
         case.wait(2)
@@ -253,6 +266,32 @@ try:
         assert case.deliveries[1]['campaignId'] == '24530528782' and case.deliveries[1]['pageCode'] == new_page_code
         assert case.deliveries[1]['placement'] == 'footer'
         checked('Remembered account acknowledgment still measures a new eligible activation and preserves paid source across internal navigation')
+        case.close()
+
+        case = Case(browser)
+        # Establish the functional acknowledgment through the real dialog, then
+        # start a fresh document visit with its remembered native-link behavior.
+        case.open()
+        case.go()
+        case.wait()
+        case.page.goto(BASE + '/new-page/', wait_until='domcontentloaded')
+        link = case.page.locator(PRIMARY).first
+        assert case.page.evaluate("localStorage.getItem('mft.newClientAccountAcknowledgment.v1')") == 'acknowledged'
+        settle_before_native_navigation(case.page, link)
+        for activation in [{'modifiers': ['Control']}, {'button': 'middle'}]:
+            with case.context.expect_page() as popup:
+                link.click(**activation)
+            popup.value.wait_for_url(REQUEST)
+            expect(case.page.locator('dialog.mft-consultation-gate[open]')).to_have_count(0)
+            case.wait(2)
+        # The third activation must still navigate; deduplication only affects
+        # measurement and must never disable or intercept the native anchor.
+        link.click()
+        case.page.wait_for_url(REQUEST)
+        case.page.wait_for_timeout(200)
+        case.wait(2)
+        assert len(case.records) == 2 and case.destinations == [REQUEST] * 4
+        checked('Repeated trusted Control-click, middle-click and ordinary activation of one remembered native link record one new handoff while all three navigations work')
         case.close()
 
         case = Case(browser, path='/')

@@ -145,6 +145,60 @@ test('withdrawal erases controlled source and Google cookies without changing fu
  assert.ok(x.cookieWrites.some(v=>v.includes('Domain=mft.care')));assert.ok(x.cookieWrites.some(v=>!v.includes('Domain=')));
  for(const key of [CONSENT,RECEIVING_CONSENT,'mft.analytics.consent.v3','mft.analytics.consent.v2'])assert.equal(x.c.localStorage.getItem(key),'denied');noGoogle(x);
 });
+test('pages without the Google runtime remove its backup but preserve a valid consented source and functional acknowledgment',()=>{
+ const AD='mft.advertising.consent.v2',GOOGLE_SOURCE='mft.google.source.v1',ACK='mft.newClientAccountAcknowledgment.v1';
+ for(const choice of [null,'granted','denied']){
+  const clock={now:1800000000000},review='b'.repeat(64),expiresAt=clock.now+lifetime;
+  const permission={choice:'granted',review,expiresAt},context={review,expiresAt,clickIds:{gclid:'synthetic-consented-click'}};
+  const x=fixture({choice,clock,local:{[AD]:JSON.stringify(permission),[ACK]:'acknowledged',_gcl_ls:'synthetic-vendor-backup',functional:'keep'},session:{[GOOGLE_SOURCE]:JSON.stringify(context)}});
+  x.setup();
+  assert.equal(x.c.localStorage.getItem('_gcl_ls'),null);
+  assert.equal(x.c.localStorage.getItem(ACK),'acknowledged');
+  assert.equal(x.c.localStorage.getItem('functional'),'keep');
+  assert.deepEqual(JSON.parse(x.c.localStorage.getItem(AD)),permission);
+  assert.deepEqual(JSON.parse(x.c.sessionStorage.getItem(GOOGLE_SOURCE)),context);
+  assert.equal(x.attempts.length,0);noGoogle(x);
+ }
+});
+test('explicit Google refusal removes the vendor backup and source without changing first-party or functional choices',()=>{
+ const AD='mft.advertising.consent.v2',GOOGLE_SOURCE='mft.google.source.v1',ACK='mft.newClientAccountAcknowledgment.v1';
+ const clock={now:1800000000000},review='b'.repeat(64),expiresAt=clock.now+lifetime;
+ const x=fixture({clock,local:{[AD]:JSON.stringify({choice:'granted',review,expiresAt}),[ACK]:'acknowledged'},session:{[GOOGLE_SOURCE]:JSON.stringify({review,expiresAt,clickIds:{gclid:'synthetic-consented-click'}})}});
+ x.setup();x.c.localStorage.setItem('_gcl_ls','synthetic-other-tab-backup');
+ x.c.MFTAdvertisingConsent.deny();
+ assert.equal(x.c.localStorage.getItem('_gcl_ls'),null);
+ assert.equal(x.c.sessionStorage.getItem(GOOGLE_SOURCE),null);
+ assert.deepEqual(JSON.parse(x.c.localStorage.getItem(AD)),{choice:'denied'});
+ assert.equal(x.c.MFTAnalyticsConsent.status(),'granted');
+ assert.equal(x.c.localStorage.getItem(ACK),'acknowledged');noGoogle(x);
+});
+test('an expired Google consent window cannot retain its vendor backup or source on a page without the runtime',()=>{
+ const AD='mft.advertising.consent.v2',GOOGLE_SOURCE='mft.google.source.v1',ACK='mft.newClientAccountAcknowledgment.v1';
+ const clock={now:1800000000000},review='b'.repeat(64);
+ const state=expiresAt=>({local:{[AD]:JSON.stringify({choice:'granted',review,expiresAt}),[ACK]:'acknowledged',_gcl_ls:'synthetic-vendor-backup'},session:{[GOOGLE_SOURCE]:JSON.stringify({review,expiresAt,clickIds:{gclid:'synthetic-consented-click'}})}});
+ const expired=fixture({choice:null,clock,...state(clock.now)});expired.setup();
+ assert.equal(expired.c.localStorage.getItem('_gcl_ls'),null);
+ assert.equal(expired.c.sessionStorage.getItem(GOOGLE_SOURCE),null);
+ assert.equal(expired.c.localStorage.getItem(ACK),'acknowledged');noGoogle(expired);
+ const current=fixture({choice:null,clock,...state(clock.now+1000)});current.setup();
+ current.c.localStorage.setItem('_gcl_ls','synthetic-current-window-backup');
+ clock.now+=1000;current.runTimers(1000);
+ assert.equal(current.c.localStorage.getItem('_gcl_ls'),null);
+ assert.equal(current.c.sessionStorage.getItem(GOOGLE_SOURCE),null);
+ assert.equal(current.c.localStorage.getItem(ACK),'acknowledged');noGoogle(current);
+});
+test('an old ineligible-page expiry timer preserves a newer consented Google source window',()=>{
+ const AD='mft.advertising.consent.v2',GOOGLE_SOURCE='mft.google.source.v1';
+ const clock={now:1800000000000},review='b'.repeat(64),expiresAt=clock.now+1000;
+ const x=fixture({choice:null,clock,local:{[AD]:JSON.stringify({choice:'granted',review,expiresAt})},session:{[GOOGLE_SOURCE]:JSON.stringify({review,expiresAt,clickIds:{gclid:'old-consented-click'}})}});x.setup();
+ const newer={review,expiresAt:clock.now+60000,clickIds:{gclid:'newer-consented-click'}};
+ x.c.localStorage.setItem(AD,JSON.stringify({choice:'granted',review,expiresAt:newer.expiresAt}));
+ x.c.sessionStorage.setItem(GOOGLE_SOURCE,JSON.stringify(newer));
+ x.c.localStorage.setItem('_gcl_ls','newer-consented-backup');
+ clock.now+=1000;x.runTimers(1000);
+ assert.deepEqual(JSON.parse(x.c.sessionStorage.getItem(GOOGLE_SOURCE)),newer);
+ assert.equal(x.c.localStorage.getItem('_gcl_ls'),'newer-consented-backup');noGoogle(x);
+});
 test('GPC and DNT override old and current grants and clear source without query reads',()=>{
  for(const signal of [{gpc:true},{dnt:'1'}]){
   const x=fixture({...signal,local:{[ADVERTISING]:'granted'},search:paidSuffix(campaignIds[0]),session:{[SOURCE]:'old-state'}});x.setup();x.c.MFTAnalyticsConsent.grant();
@@ -183,15 +237,18 @@ test('duplicate controller execution cannot register another sender',()=>{
  assert.equal(x.c.MFTSchedulingMeasurement,original);assert.equal(x.listeners.storage,storageListener);
  x.c.MFTSchedulingMeasurement.track(['simplepractice_exit'],'body');assert.equal(x.attempts.length,1);noGoogle(x);
 });
-function bookingFixture({track=()=>{},intent='appointment',label='Request an evaluation — assessment and insurance details',clinician=null}={}){
+function bookingFixture({track=()=>{},intent='appointment',label='Request an evaluation — assessment and insurance details',clinician=null,existing=false}={}){
  const handlers={},attrs=new Map([['data-mft-booking-intent',intent]]),anchor={textContent:label,href:'https://marriagefamilytherapy.clientsecure.me/',dataset:{mftBookingIntent:intent},
   getAttribute:name=>attrs.get(name)||null,hasAttribute:name=>attrs.has(name),removeAttribute:name=>attrs.delete(name),
   setAttribute:(name,value)=>attrs.set(name,value),closest:selector=>selector.startsWith('a[')?anchor:null};
  if(clinician)attrs.set('data-mft-clinician',clinician);
- const c={document:{querySelectorAll:()=>[anchor],addEventListener:(name,fn)=>(handlers[name]||=[]).push(fn)},location:{pathname:'/'},MFTBookingCore:require('../src/booking-core'),MFT_BOOKING_CONFIG:require('../content/simplepractice-booking.json'),MFTSchedulingMeasurement:{track},HTMLDialogElement:undefined};c.window=c;
+ if(existing){anchor.dataset.mftExistingClient='true';anchor.href='https://marriagefamilytherapy.clientsecure.me/sign-in';}
+ const addEventListener=(name,fn)=>(handlers[name]||=[]).push(fn);
+ const c={document:{querySelectorAll:()=>[anchor],addEventListener},addEventListener,location:{pathname:'/'},MFTBookingCore:require('../src/booking-core'),MFT_BOOKING_CONFIG:require('../content/simplepractice-booking.json'),MFTSchedulingMeasurement:{track},HTMLDialogElement:undefined};c.window=c;
  const code=fs.readFileSync(path.join(root,'mft-booking.js'),'utf8');vm.runInNewContext(code,c);
  const click=(extra={})=>{const event={type:'click',isTrusted:true,button:0,defaultPrevented:false,target:anchor,preventDefault(){this.defaultPrevented=true;},...extra};for(const fn of handlers[event.type]||[])fn(event);return event;};
- return {c,anchor,handlers,click,reload:()=>vm.runInNewContext(code,c)};
+ const pageshow=persisted=>{for(const fn of handlers.pageshow||[])fn({persisted});};
+ return {c,anchor,handlers,click,pageshow,reload:()=>vm.runInNewContext(code,c)};
 }
 test('native booking never waits for measurement, even when it throws or never completes',()=>{
  for(const track of [()=>{throw new Error('blocked optional measurement');},()=>new Promise(()=>{})]){
@@ -205,6 +262,46 @@ test('duplicate booking-script execution cannot install another listener or doub
  assert.equal(x.handlers.click.length,1);
  assert.equal(x.click().defaultPrevented,false);
  assert.deepEqual(calls,[{names:['appointment_request_click','simplepractice_exit'],place:'body'}]);
+});
+test('repeated trusted native clicks and middle-clicks are one handoff without cancelling any navigation',()=>{
+ const calls=[],x=bookingFixture({track:names=>calls.push(copy(names)),clinician:'emily'});
+ const destination=x.anchor.href;
+ for(const event of [{},{},{type:'auxclick',button:1},{type:'auxclick',button:1}]){
+  assert.equal(x.click(event).defaultPrevented,false);
+  assert.equal(x.anchor.href,destination);
+ }
+ assert.equal(new URL(destination).searchParams.get('clinicianId'),'2027366');
+ assert.deepEqual(calls,[['clinician_schedule_click','simplepractice_exit']]);
+});
+test('only a restored document visit rearms a completed native link',()=>{
+ const calls=[],x=bookingFixture({track:names=>calls.push(copy(names))});
+ x.click();x.pageshow(false);x.click();assert.equal(calls.length,1);
+ x.pageshow(true);assert.equal(x.click().defaultPrevented,false);x.click();
+ assert.equal(calls.length,2);
+});
+test('native deduplication preserves the generic-only Google bridge without passing booking details',()=>{
+ for(const [clinician,expected] of [[null,true],['emily',false]]){
+  const bridge=[],x=bookingFixture({clinician,track:(_names,_placement,_done,options)=>bridge.push(copy(options))});
+  x.click();x.click({type:'auxclick',button:1});
+  assert.deepEqual(bridge,[{googleGenericHandoff:expected}]);
+ }
+});
+test('declined or failed optional measurement cannot cancel or repeatedly count a native handoff',()=>{
+ for(const failure of [false,true]){
+  let calls=0;
+  const x=bookingFixture({track:()=>{calls++;if(failure)throw Error('Unavailable optional measurement');return false;}});
+  assert.equal(x.click().defaultPrevented,false);
+  assert.equal(x.click({type:'auxclick',button:1}).defaultPrevented,false);
+  assert.equal(calls,1);
+  assert.equal(x.anchor.href,'https://marriagefamilytherapy.clientsecure.me/request');
+ }
+});
+test('repeated existing-client sign-ins stay native and never consume acquisition handoffs',()=>{
+ const calls=[],x=bookingFixture({existing:true,track:names=>calls.push(copy(names))});
+ assert.equal(x.click().defaultPrevented,false);
+ assert.equal(x.click({type:'auxclick',button:1}).defaultPrevented,false);
+ assert.equal(x.anchor.href,'https://marriagefamilytherapy.clientsecure.me/sign-in');
+ assert.deepEqual(calls,[]);
 });
 test('prevented and untrusted clicks send nothing; real middle-click keeps native behavior',()=>{
  const calls=[],x=bookingFixture({track:names=>calls.push(copy(names))});

@@ -2,15 +2,22 @@ name: Verify website measurement privacy
 on:
   pull_request:
     paths:
-      - 'content/google-measurement-policy.json'
+      - 'content/google-measurement-*.json'
       - 'src/analytics-build.js'
+      - 'src/google-measurement-csp.js'
       - 'src/measurement-report.js'
       - 'src/assets/mft-analytics.js'
+      - 'src/assets/mft-google-measurement.js'
+      - 'src/assets/mft-booking.js'
       - 'src/assets/mft-ga4-*'
       - 'scripts/prepare-analytics.js'
       - 'scripts/validate-analytics.js'
       - 'scripts/prepare-release-provenance.js'
       - 'tests/analytics*'
+      - 'tests/google-measurement*'
+      - 'tests/google-notice-visual.py'
+      - 'tests/measurement-report.test.js'
+      - 'tests/release-provenance.test.js'
       - 'tests/measurement_privacy_fixture.py'
       - 'tests/scheduling-browser-harness.py'
       - 'tests/scheduling_confirmation_fixture.py'
@@ -20,15 +27,22 @@ on:
   push:
     branches: [main]
     paths:
-      - 'content/google-measurement-policy.json'
+      - 'content/google-measurement-*.json'
       - 'src/analytics-build.js'
+      - 'src/google-measurement-csp.js'
       - 'src/measurement-report.js'
       - 'src/assets/mft-analytics.js'
+      - 'src/assets/mft-google-measurement.js'
+      - 'src/assets/mft-booking.js'
       - 'src/assets/mft-ga4-*'
       - 'scripts/prepare-analytics.js'
       - 'scripts/validate-analytics.js'
       - 'scripts/prepare-release-provenance.js'
       - 'tests/analytics*'
+      - 'tests/google-measurement*'
+      - 'tests/google-notice-visual.py'
+      - 'tests/measurement-report.test.js'
+      - 'tests/release-provenance.test.js'
       - 'tests/measurement_privacy_fixture.py'
       - 'tests/scheduling-browser-harness.py'
       - 'tests/scheduling_confirmation_fixture.py'
@@ -75,11 +89,19 @@ jobs:
         run: python tests/analytics-browser.py
         env:
           MFT_ANALYTICS_LIVE: ${{ github.event_name == 'workflow_dispatch' && inputs.live && 'true' || 'false' }}
+      - name: Verify the conditional notice and scheduling modal remain accessible
+        if: matrix.legacy-ga4-flag == 'false'
+        run: python tests/google-notice-visual.py
+      - name: Inspect the conditional real Google library without external event delivery
+        if: matrix.legacy-ga4-flag == 'false'
+        run: python tests/google-measurement-network.py
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: measurement-privacy-legacy-flag-${{ matrix.legacy-ga4-flag }}
           path: |
             tmp/analytics-browser/
+            tmp/google-measurement-network/
+            tmp/google-notice-visual/
             dist/reports/analytics-integration.json
           retention-days: 7

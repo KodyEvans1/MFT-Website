@@ -1,0 +1,66 @@
+name: Verify native scheduling tab return
+
+on:
+  pull_request:
+    paths:
+      - 'src/assets/mft-booking.js'
+      - 'src/assets/mft-analytics.js'
+      - 'src/assets/mft-google-measurement.js'
+      - 'src/google-measurement-csp.js'
+      - 'src/booking-core.js'
+      - 'content/simplepractice-booking.json'
+      - 'tests/booking-return*'
+      - 'tests/ops_handoff_fixture.py'
+      - 'tests/measurement_privacy_fixture.py'
+      - 'tests/scheduling-browser-harness.py'
+      - '.github/workflows/booking-return.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'src/assets/mft-booking.js'
+      - 'src/assets/mft-analytics.js'
+      - 'src/assets/mft-google-measurement.js'
+      - 'src/google-measurement-csp.js'
+      - 'src/booking-core.js'
+      - 'content/simplepractice-booking.json'
+      - 'tests/booking-return*'
+      - 'tests/ops_handoff_fixture.py'
+      - 'tests/measurement_privacy_fixture.py'
+      - 'tests/scheduling-browser-harness.py'
+      - '.github/workflows/booking-return.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  native-tab-return:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify return lifecycle and existing measurement boundaries
+        run: node --test tests/booking-return.test.js tests/google-measurement-runtime.test.js
+      - run: python -m pip install playwright==1.62.0
+      - run: python -m playwright install --with-deps chromium
+      - name: Install a display for real foreground tab transitions
+        run: sudo apt-get install -y xvfb xauth
+      - name: Verify actual tab returns with all browser traffic intercepted
+        run: xvfb-run -a python tests/booking-return-browser.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: native-scheduling-tab-return
+          path: |
+            tmp/booking-return/result.json
+            tmp/booking-return/gtag-metadata.json
+          if-no-files-found: warn
+          retention-days: 7

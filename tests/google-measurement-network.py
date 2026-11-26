@@ -35,7 +35,7 @@ SYNTHETIC_CLICK = 'SYNTHETIC_GCLID_20261126_TEST_ONLY'
 PRIVATE_CANARY = 'SYNTHETIC_PRIVATE_VALUE_NEVER_EXPORT'
 FLOW = json.loads((ROOT / 'content/google-measurement-flow.json').read_text())
 PUBLIC_TITLES = FLOW['reviewedDocumentTitles']
-GA4_HOSTS = ('analytics.google.com', 'www.google-analytics.com', 'region1.google-analytics.com')
+GA4_HOSTS = ('analytics.google.com', 'www.google-analytics.com', 'region1.google-analytics.com', 'www.google.com')
 AUTOMATIC_EVENTS = set(FLOW['standardRuntimeEvents'])
 OPS = 'https://ops.mft.care/api/marketing/attribution'
 # A permissive isolated fixture exposes unexpected vendor destinations to the
@@ -161,29 +161,51 @@ def fixture_html(path):
     return '<!doctype html><html><head><meta charset="utf-8"><meta name="referrer" content="no-referrer"><title>'+title+'</title><style>body{min-height:200vh}a{display:block;margin:2rem}dialog{max-width:40rem}</style>'+stale+google+controller+booking+'</head><body><h1>'+PRIVATE_CANARY+'</h1><a id="internal" href="/about/">About</a><a id="scheduler" href="https://marriagefamilytherapy.clientsecure.me/request">Request an appointment</a><a id="clinician" data-mft-clinician="'+clinician+'" href="https://marriagefamilytherapy.clientsecure.me/request">Schedule appointment</a><a id="existing" data-mft-existing-client="true" href="https://marriagefamilytherapy.clientsecure.me/">Existing client sign-in</a><footer></footer></body></html>'
 
 
+INERT_CASE_PATH = '/__measurement_probe_teardown__/'
+
+
 def guard(route):
     request = route.request
     url = urlsplit(request.url)
     if is_google(url.hostname or ''):
         item = parse_request(request)
+        item['probePhase'] = fixture_options.get('_probe_phase', 'exercise')
         requests.append(item)
-        if url.hostname == 'www.googletagmanager.com' and url.path == '/gtag/js' and parse_qs(url.query).get('id') == [ID]:
-            if fixture_options.get('vendor_blocked'):
-                route.abort()
-            elif fixture_options.get('vendor_timeout'):
-                route.fulfill(status=408, body='Request Timeout', content_type='text/plain')
+        try:
+            if url.hostname == 'www.googletagmanager.com' and url.path == '/gtag/js' and parse_qs(url.query).get('id') == [ID]:
+                if fixture_options.get('vendor_blocked'):
+                    route.abort()
+                elif fixture_options.get('vendor_timeout'):
+                    route.fulfill(status=408, body='Request Timeout', content_type='text/plain')
+                else:
+                    route.fulfill(status=200, body=VENDOR.read_bytes(), content_type='application/javascript')
             else:
-                route.fulfill(status=200, body=VENDOR.read_bytes(), content_type='application/javascript')
-        else:
-            if request.resource_type == 'script':
-                report['blockers'].append({'case': case, 'reason': 'Additional vendor script was requested but is not available as an inspected local fixture', 'host': url.hostname, 'path': url.path})
-            route.fulfill(status=204)
+                if request.resource_type == 'script':
+                    report['blockers'].append({'case': case, 'reason': 'Additional vendor script was requested but is not available as an inspected local fixture', 'host': url.hostname, 'path': url.path})
+                route.fulfill(status=204)
+        except Exception as error:
+            failure = {'case':case, 'phase':item['probePhase'], 'method':request.method,
+                       'host':url.hostname, 'path':url.path, 'resourceType':request.resource_type,
+                       'bodyCaptured':request.post_data is not None,
+                       'capturedBodyBytes':len((request.post_data or '').encode('utf-8')),
+                       'message':str(error)}
+            report['cases'].append({'case':case, 'requestLifecycleFailure':failure})
+            print('Google request lifecycle failure: '+json.dumps(failure),flush=True)
+            raise  # The unchanged browser interceptor must still fail the run.
         return
     if request.url == OPS:
         ops_requests.append({'case': case, 'body': request.post_data or ''})
         route.fulfill(status=202, body='{"accepted":true}', content_type='application/json', headers={'Access-Control-Allow-Origin':BASE})
         return
     if url.hostname == 'www.mft.care' and request.method in ('GET', 'HEAD'):
+        if url.path == INERT_CASE_PATH:
+            # A real navigation, with no vendor, controller, booking code or
+            # force_module behavior inherited from the current case fixture.
+            route.fulfill(status=200,
+                          body='<!doctype html><html><head><title>Completed isolated case</title></head><body data-measurement-probe-inert="true"></body></html>',
+                          content_type='text/html',
+                          headers={'Content-Security-Policy':"default-src 'none';", 'Referrer-Policy':'no-referrer'})
+            return
         if url.path.startswith('/assets/'):
             if url.path == '/assets/mft-booking-core.js':
                 route.fulfill(status=200, body=(ROOT/'src/booking-core.js').read_bytes(), content_type='application/javascript')
@@ -288,7 +310,7 @@ def assess_requests(start=0):
         or item['host'] in GA4_HOSTS and item['path']=='/g/collect' and item['method'] in ('GET','POST')
         or item['host']=='www.google.com' and item['path']=='/measurement/conversion' and item['method'] in ('GET','POST')
         or item['host']=='stats.g.doubleclick.net' and item['path']=='/g/collect' and item['method'] in ('GET','POST')
-        or item['host']=='www.googletagmanager.com' and item['path']=='/a' and item['method'] in ('GET','POST')
+        or item['host']=='www.googletagmanager.com' and item['path'] in ('/a','/td') and item['method'] in ('GET','POST')
     )]
     check('All vendor destinations are in the explicit proposed flow',not unexpected_destinations,unexpected_destinations)
     check('No private title, DOM, provider, form, or query canary is sent', not any(PRIVATE_CANARY in decoded(item['url']+'\n'+item['body']+'\n'+str(item['headers'])) for item in items))
@@ -315,24 +337,70 @@ def assess_requests(start=0):
                 check('Linked measurement carries non-personalization and no referrer',row.get('npa')=='1' and not any(row.get(key) for key in ('ref','referrer','dr','page_referrer')))
         if item['host']=='stats.g.doubleclick.net':
             check('Supplemental identifier ping remains non-personalized and has no additional event',all(row.get('npa')=='1' and not row.get('en') for row in item['rows']))
+        if item['host']=='www.googletagmanager.com' and item['path'] in ('/a','/td'):
+            fields = {
+                '/a': {'cv','e','eid','epr','es','gtm','h','id','pid','rv','t','tag_exp','tc','ti','tr','u','ut','v','z'},
+                '/td': {'bt','ct','dl','exp','fin','frm','gtm','hlo','id','lst','pid','rtg','seq','slo','t','tdp','v','z'},
+            }
+            check('Vendor diagnostic fields stay within the recorded unapproved envelope',all(set(row)<=fields[item['path']] and not row.get('en') for row in item['rows']))
+            for row in item['rows']:
+                if 'dl' in row:
+                    location=row['dl']
+                    url=urlsplit(location if location.startswith('https://') else 'https://'+location)
+                    check('Diagnostic location stays on a reviewed public route with native identifiers only',url.scheme=='https' and url.netloc=='www.mft.care' and url.path in PUBLIC_TITLES and not url.fragment and set(parse_qs(url.query))<={'gclid','gbraid','wbraid'})
 
 
 def open_case(browser, name, path='/', *, seed=None, signal=None, existing=None, options=None):
     global case, fixture_options
-    case, fixture_options = name, options or {}
+    case, fixture_options = name, dict(options or {})
+    fixture_options['_probe_phase'] = 'opening'
     print('Google network case: ' + name, flush=True)
     context = new_context(browser, seed, signal, existing)
     page = context.new_page()
     page.goto(BASE+path, wait_until='domcontentloaded')
     page.wait_for_timeout(200)
+    fixture_options['_probe_phase'] = 'exercise'
     return context, page
 
 
 def close_case(context, pump):
-    context.close()
-    pump.wait_for_timeout(300)
-    # Include pagehide/unload traffic after the emitting document is gone.
-    assess_requests()
+    # Closing a whole browser context can destroy its renderer while the final
+    # engagement XHR is paused at the browser Fetch hook. Exercise genuine
+    # pagehide/unload first and keep the context alive while those requests are
+    # captured and fulfilled. Do not suppress the vendor before that navigation.
+    fixture_options['_probe_phase'] = 'native-unload'
+    before_unload = len(current_requests())
+    pages = [page for page in context.pages if not page.is_closed()]
+    try:
+        for page in pages:
+            page.goto(BASE+INERT_CASE_PATH, wait_until='load', timeout=10000)
+            assert page.locator('body[data-measurement-probe-inert="true"]').count()==1, 'Teardown must reach the explicit inert fixture'
+        fixture_options['_probe_phase'] = 'draining-live-context'
+        last_count = interceptor.request_count
+        quiet_since = time.monotonic()
+        deadline = quiet_since+5
+        while time.monotonic()<deadline:
+            pump.wait_for_timeout(50)
+            if interceptor.request_count!=last_count:
+                last_count=interceptor.request_count
+                quiet_since=time.monotonic()
+            elif time.monotonic()-quiet_since>=0.5:
+                break
+        else:
+            raise AssertionError('Case requests did not drain while the browser context remained alive')
+        interceptor.assert_ok()
+        report['cases'].append({'case':case, 'teardown':{
+            'inertPages':len(pages), 'vendorRequestsDuringNativeUnload':len(current_requests())-before_unload,
+            'quietMillisecondsBeforeContextClose':500}})
+        before_close = len(current_requests())
+        fixture_options['_probe_phase'] = 'closing-inert-context'
+        context.close()
+        pump.wait_for_timeout(300)
+        check('Disposing inert pages produces no additional vendor request',len(current_requests())==before_close)
+        interceptor.assert_ok()
+    finally:
+        # Include every captured unload and disposal request, even on failure.
+        assess_requests()
 
 
 def ready(page):

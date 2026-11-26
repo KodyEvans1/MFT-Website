@@ -23,9 +23,11 @@
     "https://analytics.google.com/g/collect": "GA4 events, consent, client/session identifiers, canonical location with permitted click identifiers, fixed GA4 title, empty GA4 referrer and browser metadata",
     "https://www.google-analytics.com/g/collect": "Documented GA4 collector, subject to the same reviewed envelope",
     "https://region1.google-analytics.com/g/collect": "Regional GA4 collector, subject to the same reviewed envelope",
+    "https://www.google.com/g/collect": "Native GA4 collection fallback observed in hosted verification with the same canonical URL, fixed GA4 title, empty referrer and pseudonymous/protocol/browser fields",
     "https://www.google.com/measurement/conversion": "Native Ads-linked GA4 measurement; includes event and advertising identifiers, canonical URL, actual reviewed document title in tiba, consent and browser metadata",
     "https://stats.g.doubleclick.net/g/collect": "Native identifier/consent ping observed without an event name; still a disclosure to Google",
-    "https://www.googletagmanager.com/a": "Sampled Google tag diagnostics observed in an isolated probe; protocol and tag metadata, not a separate application conversion"
+    "https://www.googletagmanager.com/a": "Sampled Google tag diagnostics observed in an isolated probe; protocol and tag metadata, not a separate application conversion",
+    "https://www.googletagmanager.com/td": "Sampled Google tag diagnostics observed in hosted verification, including the public site/route in dl and protocol/tag fields; GET image and POST transports, no application event name; opaque diagnostic field semantics remain a review limitation"
   },
   "advertisingConsentVersion": "mft.advertising.consent.v2",
   "permittedAdvertisingContextKeys": ["gclid", "gbraid", "wbraid"],

@@ -1,7 +1,8 @@
 {
-  "version": 1,
+  "version": 2,
   "status": "blocked-sensitive-context",
   "approvedRoutes": [],
   "approvedEvents": [],
-  "reason": "No eligible purpose has been demonstrated for sending therapy-scheduling activity with linkable identifiers to Google within the required data boundary. Public indexing approval does not authorize Google measurement."
+  "reason": "The simplepractice_exit handoff combined with advertising/browser identifiers and M.F.T. site identity has not been established as permitted under Google Analytics' sensitive-user-information rule. The exact proposed flow and recipient retention require review; public indexing or deployment approval does not resolve that classification.",
+  "review": null
 }

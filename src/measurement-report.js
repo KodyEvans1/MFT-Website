@@ -1,15 +1,17 @@
 'use strict';
 const { enabled, handoffEnabled, controllerEnabled, googleRequested, googlePolicy,
-  GOOGLE_POLICY_FILE, MEASUREMENT_ID, HANDOFF_ENDPOINT } = require('./analytics-build');
+  GOOGLE_POLICY_FILE, GOOGLE_FLOW_FILE, GOOGLE_RUNTIME_ASSET, GOOGLE_RUNTIME_MODE,
+  flowHash, runtimeHash, MEASUREMENT_ID, HANDOFF_ENDPOINT } = require('./analytics-build');
 
 // Compatibility with the retired first-party booking/Ops collection design.
 // This flag does not control either current first-party collection or Google.
 const LEGACY_BOOKING_MEASUREMENT_ENABLED = false;
-const FINAL_VERIFIED_SCOPE = 'generated first-party controller inventory, route eligibility, page identities, disabled Google policy, and CSP';
+const FINAL_VERIFIED_SCOPE = 'generated first-party and Google runtime inventories, explicit route and event policy, page identities, and CSP; not collector receipt';
 
-function measurementReport(env = process.env) {
+function measurementReport(env = process.env, policy = googlePolicy()) {
+  const google = enabled(env, policy);
   return {
-    version: 3,
+    version: 4,
     legacyBookingCollector: {
       enabled: LEGACY_BOOKING_MEASUREMENT_ENABLED,
       compatibilityFlag: 'MFT_BOOKING_CONFIG.measurementEnabled',
@@ -23,15 +25,24 @@ function measurementReport(env = process.env) {
       inventoryReport: '/reports/analytics-integration.json'
     },
     consentControlledGa4: {
-      buildEnabled: enabled(env),
+      buildEnabled: google,
       requestedByEnvironment: googleRequested(env),
       configuredMeasurementId: MEASUREMENT_ID,
-      mode: 'disabled',
+      mode: google ? GOOGLE_RUNTIME_MODE : 'disabled',
       policyFile: GOOGLE_POLICY_FILE,
-      policy: googlePolicy(),
+      policy,
       runtimeConsentRequired: true,
-      runtimeEntryPoint: null,
-      advertisingMeasurement: {
+      runtimeEntryPoint: google ? 'MFTGoogleMeasurement.handoff' : null,
+      runtimeAsset: google ? '/assets/' + GOOGLE_RUNTIME_ASSET : null,
+      candidateRuntime: {asset:'/assets/' + GOOGLE_RUNTIME_ASSET, sha256:runtimeHash(),
+        activation:'Requires exact documented review, matching source hashes, network evidence, and the production flag'},
+      dataFlow: {file:GOOGLE_FLOW_FILE, sha256:flowHash()},
+      advertisingMeasurement: google ? {
+        available: true,
+        status: 'fresh-choice-required',
+        preferenceVersion: 'mft.advertising.consent.v2',
+        storedPreference: 'not-pregranted'
+      } : {
         available: false,
         status: 'unavailable',
         preferenceVersion: 'mft.advertising.consent.v1',

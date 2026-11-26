@@ -1,12 +1,12 @@
 # Website scheduling measurement contract
 
-## Current collection boundary — November 24, 2026
+## Current collection boundary — November 25, 2026
 
 The website records qualifying scheduling handoffs only in the existing protected Ops receiver, after first-party consent. Google Analytics and advertising measurement are disabled. No Google tag runs on a care page or inside the former helper frame.
 
 `content/google-measurement-policy.json` is the explicit, versioned Google eligibility record. Its status is `blocked-sensitive-context`, with no approved routes or events. Sitemap membership establishes publication eligibility, not permission to send information to Google. A true `GA4_BASIC_MEASUREMENT_ENABLED` flag cannot override this exclusion.
 
-This is the release's engineering boundary under the owner's instructions. The unresolved issue is the intentional therapy-scheduling interaction combined with linkable advertising/browser identifiers. Removing names, coding a URL, or changing consent flags does not establish that this interaction is suitable for Google. See [the boundary assessment](GOOGLE-MEASUREMENT-BOUNDARY-20261124.md). No legal conclusion that every public healthcare-page visit is PHI is implied.
+This is the release's engineering boundary under the owner's instructions. The unresolved issue is the intentional therapy-scheduling interaction combined with linkable advertising/browser identifiers. Removing names, coding a URL, or changing consent flags does not establish that this interaction is suitable for Google. The [November 25 exact-flow review](GOOGLE-MEASUREMENT-REVIEW-20261125.md) narrows the earlier assessment: Google’s personalization and enhanced-conversion restrictions do not categorically prohibit every ordinary conversion measurement feature. The separate GA4 sensitive-user-information restriction remains unresolved for this precise event and recipient-visible context. Preserve the [November 24 assessment](GOOGLE-MEASUREMENT-BOUNDARY-20261124.md) as historical evidence. No legal conclusion that every public healthcare-page visit is PHI is implied.
 
 ## The reported metric
 
@@ -39,7 +39,19 @@ A handoff does not establish a submitted request, an accepted or confirmed appoi
 
 `MFT_BOOKING_CONFIG.measurementEnabled` remains false for the retired legacy collector. Compatibility helpers in `src/booking-core.js` do not activate that collector.
 
-The former `mft-ga4-bootstrap.js`, `mft-ga4-frame.js` and helper HTML are inert compatibility assets. Former parent messages and direct asset loads do not initialize Google. The production CSP no longer permits Google collection or a same-origin analytics frame. There is no replacement main-page Google sender while the eligible scope is empty.
+The former `mft-ga4-bootstrap.js`, `mft-ga4-frame.js` and helper HTML are inert compatibility assets. Former parent messages and direct asset loads do not initialize Google. The production CSP no longer permits Google collection or a same-origin analytics frame. A conditional replacement `mft-google-measurement.js` is present as an inert local asset. No page installs it while the eligible scope is empty. Its presence is not an active Google collection path.
+
+## Conditional replacement — not activated
+
+The candidate flow is recorded in `content/google-measurement-flow.json`. It covers only a generic scheduling handoff on `/` and `/about/`, with a fresh `mft.advertising.consent.v2` advertising-measurement choice. Earlier analytics grants and the former automatically denied advertising key cannot authorize it. No current production route or event is approved.
+
+The build requires a documented exact-flow decision, matching SHA-256 fingerprints of the proposed flow and runtime, recorded network evidence, an eligible production context, and the explicit Google flag. Changing a flag, renaming the event, or changing the policy status alone cannot activate it. Build reports separately identify the candidate bytes and the actual installed Google inventory.
+
+The booking bridge supplies only a local generic-handoff eligibility boolean to the first-party controller. Google receives neither the selected clinician/destination nor the Ops UUID or placement. Clinician-specific consultations remain excluded even when their diagnostic label is only `consultation_click` or the dialog’s Continue emits only `simplepractice_exit`. Existing native scheduling and Ops delivery are independent of that conditional Google decision.
+
+If a later reviewed build activates this candidate, the new Google purpose uses its own consent-before-loader boundary. Refusal, withdrawal and GPC/DNT stop that path; the existing first-party purpose remains independently controlled. A fixed 30-minute advertising context must not become a rolling window. Actual vendor requests, cookie behavior, automatic metadata and native context continuity must be demonstrated, not inferred from configuration. The exact review document records their verified results and any remaining blockers.
+
+The production sections below describe the currently blocked Google build. They do not claim the conditional candidate is approved, Google has received an event, or Ads has credited a conversion.
 
 ## Consent and withdrawal
 

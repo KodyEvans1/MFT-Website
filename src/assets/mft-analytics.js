@@ -1,5 +1,10 @@
-/* Consent-gated first-party handoffs. Google measurement is unavailable. */
+/* Consent-gated first-party handoffs; a separate reviewed Google purpose, when
+ * installed, has its own permission and sender. Neither path gates scheduling. */
 (()=>{'use strict';
+function googleRuntime(){
+ const candidate=window.MFTGoogleMeasurement;
+ try{return candidate&&candidate.available()===true?candidate:null;}catch{return null;}
+}
 const current=document.currentScript;
 if(!current||window.__MFT_FIRST_PARTY_ANALYTICS__)return;
 const pageKey=current.dataset.mftPageKey;
@@ -7,20 +12,21 @@ if(!/^[a-f0-9]{16}$/.test(pageKey||'')||!['https://www.mft.care','https://mft.ca
 window.__MFT_FIRST_PARTY_ANALYTICS__=true;
 // Prevent an older controller loaded later in this document from starting.
 window.__MFT_GA4_BASIC__=true;
-window['ga-disable-G-BTK39BBNRE']=true;
+if(!googleRuntime())window['ga-disable-G-BTK39BBNRE']=true;
 const consentKey='mft.analytics.consent.v5';
 // This is the unchanged Ops receiving/data-scope contract, not the browser
 // notice revision. The v5 choice narrows the existing permission to M.F.T.
 const receivingConsentVersion='mft.analytics.consent.v4';
 const previousConsentKeys=['mft.analytics.consent.v4','mft.analytics.consent.v3','mft.analytics.consent.v2'];
 const advertisingConsentKey='mft.advertising.consent.v1';
+const conditionalAdvertisingConsentKey='mft.advertising.consent.v2',googleSourceKey='mft.google.source.v1';
 const sourceKey='mft.analytics.source.v1';
 const handoffEndpoint=current.dataset.mftHandoffEndpoint==='https://ops.mft.care/api/marketing/attribution'?current.dataset.mftHandoffEndpoint:null;
 const acquisitionLifetime=1800000;
 const events=new Set(['appointment_request_click','clinician_schedule_click','consultation_click','simplepractice_exit']);
 const placements=new Set(['header','footer','body','dialog']);
 const campaigns=new Set(['24274542446','24362234053','24435101888','24444626634','24449945489','24530528782','24524392745']);
-let choice='unset',returnFocus=null,source=null,consentGeneration=0;
+let choice='unset',returnFocus=null,source=null,consentGeneration=0,googleContextExpiry=0;
 const handoffRequests=new Set();
 function privacySignal(){return navigator.globalPrivacyControl===true||navigator.doNotTrack==='1';}
 function status(){return privacySignal()?'denied':choice;}
@@ -40,7 +46,7 @@ try{
   }
  }
 }catch{}
-function advertisingStatus(){return 'unavailable';}
+function advertisingStatus(){try{return window.MFTGoogleMeasurement?.status()||'unavailable';}catch{return 'unavailable';}}
 function clearCookies(){
  const host=new URL(location.origin).hostname;
  let cookies='';try{cookies=document.cookie;}catch{}
@@ -52,9 +58,39 @@ function clearCookies(){
   for(const domain of ['',host,'mft.care']){try{document.cookie=name+'=; Max-Age=0; Path=/; SameSite=Lax; Secure'+(domain?'; Domain='+domain:'');}catch{}}
  }
 }
+function retainGoogleContext(){
+ // An excluded page never reads ad parameters or loads Google. It may retain
+ // only a previously consented, bounded source for a later eligible page.
+ let permission=null,context=null;
+ try{permission=JSON.parse(localStorage.getItem(conditionalAdvertisingConsentKey)||'null');context=JSON.parse(sessionStorage.getItem(googleSourceKey)||'null');}catch{}
+ const now=Date.now(),valid=!privacySignal()&&permission?.choice==='granted'&&
+  /^[a-f0-9]{64}$/.test(permission.review||'')&&Number.isSafeInteger(permission.expiresAt)&&
+  permission.expiresAt>now&&permission.expiresAt<=now+acquisitionLifetime&&
+  Object.keys(permission).sort().join(',')==='choice,expiresAt,review'&&
+  context?.review===permission.review&&context.expiresAt===permission.expiresAt&&
+  Object.keys(context).sort().join(',')==='clickIds,expiresAt,review'&&context.clickIds&&
+  typeof context.clickIds==='object'&&!Array.isArray(context.clickIds)&&
+  Object.entries(context.clickIds).every(([key,value])=>['gclid','gbraid','wbraid'].includes(key)&&typeof value==='string'&&/^[A-Za-z0-9_~-]{1,255}$/.test(value));
+ if(!valid){
+  try{sessionStorage.removeItem(googleSourceKey);}catch{}
+  if(privacySignal()){try{localStorage.setItem(conditionalAdvertisingConsentKey,JSON.stringify({choice:'denied'}));}catch{}}
+  return;
+ }
+ if(googleContextExpiry!==context.expiresAt){
+  googleContextExpiry=context.expiresAt;
+  // Re-read current state: an older BFCache document must not erase a newer
+  // independently granted context. This never renews the original deadline.
+  setTimeout(()=>retainGoogleContext(),Math.max(0,context.expiresAt-now));
+ }
+}
 function disableAdvertising(){
+ const google=googleRuntime();
+ if(google){google.enforceBoundary();return;}
  window['ga-disable-G-BTK39BBNRE']=true;
  try{localStorage.setItem(advertisingConsentKey,'denied');}catch{}
+ retainGoogleContext();
+ // Excluded routes keep no native Google cookies. Only validated consented
+ // session source can survive; GA browser/session continuity is not promised.
  clearCookies();
  // Compatibility cleanup only. No frame, Google loader, dataLayer or gtag is
  // created, and old helper messages have no active receiver in this controller.
@@ -62,6 +98,12 @@ function disableAdvertising(){
   try{frame.contentWindow['ga-disable-G-BTK39BBNRE']=true;}catch{}
   frame.remove();
  }
+}
+function denyAdvertising(){
+ const google=googleRuntime();
+ if(google){google.deny();return;}
+ try{localStorage.setItem(conditionalAdvertisingConsentKey,JSON.stringify({choice:'denied'}));}catch{}
+ disableAdvertising();
 }
 function safeReferrer(){
  try{const u=new URL(document.referrer);return ['https://www.google.com','https://www.bing.com','https://google.com','https://bing.com'].includes(u.origin)?u.origin+'/':'';}catch{return '';}
@@ -156,15 +198,21 @@ function recordHandoff(placement){
   attempt(true);
  }catch{}
 }
-function track(names,placement,done){
+function track(names,placement,done,eligibility){
  const allowed=[...new Set(Array.isArray(names)?names:[])].filter(name=>events.has(name));
  const permitted=status()==='granted'&&allowed.length>0&&placements.has(placement);
  if(permitted&&allowed.includes('simplepractice_exit'))recordHandoff(placement);
+ let googleHandled=false;
+ if(eligibility?.googleGenericHandoff===true&&placements.has(placement)&&allowed.includes('simplepractice_exit')&&!allowed.includes('clinician_schedule_click')){
+  // The independent sender accepts no payload: never expose an Ops action ID,
+  // page code, placement, clinician, destination or diagnostic event to Google.
+  try{googleHandled=googleRuntime()?.handoff()===true;}catch{}
+ }
  if(privacySignal())stop();
  // Diagnostic callbacks indicate local handling only, never receiver receipt.
  // Native scheduling does not wait for any callback or measurement request.
  if(typeof done==='function')done();
- return Boolean(permitted);
+ return Boolean(permitted||googleHandled);
 }
 function grant(){if(privacySignal()){deny();return;}save('granted');disableAdvertising();removeBanner();start();}
 function deny(){
@@ -175,23 +223,37 @@ function deny(){
  stop();removeBanner();
 }
 function banner(force=false){
- if((status()!=='unset'&&!force)||document.getElementById('mft-analytics-consent'))return;
+ const google=googleRuntime(),needsGoogleChoice=google?.status()==='unset';
+ if((status()!=='unset'&&!needsGoogleChoice&&!force)||document.getElementById('mft-analytics-consent'))return;
  const el=document.createElement('aside');el.id='mft-analytics-consent';el.className='mft-analytics-consent';
  el.setAttribute('role','dialog');el.setAttribute('aria-label','Analytics privacy choice');
- el.innerHTML='<div class="mft-analytics-consent-heading"><strong>Optional website analytics</strong><button type="button" data-choice="dismiss" aria-label="Close analytics notice">Close</button></div><p tabindex="0" role="region" aria-label="How optional analytics work">Allow M.F.T. to record coded scheduling-link clicks with limited traffic-source information. M.F.T. keeps these click records for 30 days, with removal during daily cleanup. A random event ID prevents duplicate counting and is not sent to Google or SimplePractice. Opening scheduling is not an appointment request or booking. This measurement does not include names, contact details, page text, clinician selections, form entries, appointment details, or client records. <span data-mft-advertising-status="unavailable">Google Analytics and advertising measurement are disabled because scheduling activity can reveal an interest in care.</span> You can change your first-party analytics choice using Analytics choices in the footer.</p><div class="mft-analytics-consent-actions"><button type="button" data-choice="deny">Decline</button><button type="button" data-choice="grant">Allow analytics</button></div>';
+ const advertising=google?'<span data-mft-advertising-status="'+google.status()+'">Google advertising measurement is a separate choice. If allowed, Google may connect a scheduling-link click on an approved public page with your ad-click and browser identifiers. This does not confirm an appointment. Website-controlled source context expires after 30 minutes; Google has its own retention settings. Personalized advertising remains off. <span class="mft-analytics-consent-actions"><button type="button" data-choice="grant-ad" aria-label="Allow Google advertising measurement">Allow Google</button><button type="button" data-choice="deny-ad" aria-label="Decline Google advertising measurement">Decline Google</button></span></span>':window.MFTGoogleMeasurement?'<span data-mft-advertising-status="'+advertisingStatus()+'">Google measurement is off for the rest of this page. You can manage this choice on another page where the option is available. This page will not restart Google.</span>':'<span data-mft-advertising-status="unavailable">Google Analytics and advertising measurement are disabled because scheduling activity can reveal an interest in care.</span>';
+ el.innerHTML='<div class="mft-analytics-consent-heading"><strong>Optional website analytics</strong><button type="button" data-choice="dismiss" aria-label="Close analytics notice">Close</button></div><p tabindex="0" role="region" aria-label="How optional analytics work">Allow M.F.T. to record coded scheduling-link clicks with limited traffic-source information. M.F.T. keeps these click records for 30 days, with removal during daily cleanup. A random event ID prevents duplicate counting and is not sent to Google or SimplePractice. Opening scheduling is not an appointment request or booking. This measurement does not include names, contact details, page text, clinician selections, form entries, appointment details, or client records. '+advertising+' You can change these choices using Analytics choices in the footer. Allow analytics changes only the M.F.T. choice.</p><div class="mft-analytics-consent-actions"><button type="button" data-choice="deny">Decline</button><button type="button" data-choice="grant">Allow analytics</button></div>';
  if(privacySignal()){el.querySelector('p').textContent='Your browser privacy signal is on. Optional analytics are disabled. Google Analytics and advertising measurement remain unavailable.';el.querySelector('[data-choice="grant"]').remove();}
- el.addEventListener('click',e=>{if(e.target?.dataset?.choice==='grant')grant();if(e.target?.dataset?.choice==='deny')deny();if(e.target?.dataset?.choice==='dismiss')removeBanner();});
+ el.addEventListener('click',e=>{
+  const action=e.target?.dataset?.choice;
+  if(action==='grant')grant();
+  if(action==='deny'){deny();denyAdvertising();}
+  if(action==='grant-ad'){google?.grant();removeBanner();}
+  if(action==='deny-ad'){google?.deny();removeBanner();}
+  if(action==='dismiss')removeBanner();
+ });
  document.body.appendChild(el);if(force)el.querySelector('button').focus();
 }
 function setup(){
  const footer=document.querySelector('footer');if(footer){const button=document.createElement('button');button.type='button';button.className='mft-analytics-settings';button.textContent='Analytics choices';button.addEventListener('click',()=>{returnFocus=button;banner(true);});footer.appendChild(button);}
- if(privacySignal())deny();else if(status()==='granted')start();else{stop();if(status()==='unset')banner();}
+ if(privacySignal())deny();else{
+  if(status()==='granted')start();else stop();
+  if(status()==='unset'||googleRuntime()?.status()==='unset')banner();
+ }
 }
 window.MFTAnalyticsConsent={grant,deny,status,advertisingStatus,show:()=>banner(true)};
-window.MFTAdvertisingConsent={version:advertisingConsentKey,status:advertisingStatus,deny:disableAdvertising};
+const google=googleRuntime();
+window.MFTAdvertisingConsent=google?{version:google.preferenceVersion,status:advertisingStatus,grant:()=>google.grant(),deny:()=>google.deny()}:{version:advertisingConsentKey,status:advertisingStatus,deny:denyAdvertising};
 window.MFTSchedulingMeasurement={track};
 window.addEventListener('storage',e=>{
  if(e.key===advertisingConsentKey){disableAdvertising();return;}
+ if(e.key===conditionalAdvertisingConsentKey){if(!googleRuntime())disableAdvertising();return;}
  if(previousConsentKeys.includes(e.key)&&e.newValue==='denied'){deny();return;}
  if(e.key!==consentKey&&e.key!==null)return;
  if(e.key===consentKey&&e.newValue==='granted'&&!privacySignal()){choice='granted';disableAdvertising();removeBanner();start();}

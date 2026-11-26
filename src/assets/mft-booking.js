@@ -19,13 +19,19 @@
     if (a.dataset.mftBookingIntent!=='appointment'&&/free\s*(?:10[- ]minute\s*)?(?:phone\s*)?consultation|10[- ]minute|meet-and-greet|phone introduction/i.test(consultationContext)) a.dataset.mftTenMinuteConsultation='true';
   });
   function placement(a){return a.closest('header')?'header':a.closest('footer')?'footer':a.closest('.mft-consultation-gate')?'dialog':'body';}
-  function measure(names,a){
-    // Measurement is optional and cannot cancel, replace, or delay navigation.
-    try{window.MFTSchedulingMeasurement?.track(names,placement(a));}catch{}
+  function genericHandoff(a,url=a.href){
+    // This local boolean is the only booking detail offered to the conditional
+    // Google bridge. A clinician consultation can share the generic event name.
+    return url==='https://marriagefamilytherapy.clientsecure.me/request'&&
+      !a.hasAttribute('data-mft-clinician')&&!a.hasAttribute('data-spwidget-clinician-id');
   }
-  function handoff(e,a,names){
+  function measure(names,a,googleGenericHandoff=false){
+    // Measurement is optional and cannot cancel, replace, or delay navigation.
+    try{window.MFTSchedulingMeasurement?.track(names,placement(a),undefined,{googleGenericHandoff});}catch{}
+  }
+  function handoff(e,a,names,googleGenericHandoff=genericHandoff(a)){
     if(e.defaultPrevented||e.isTrusted!==true||e.button>1)return;
-    measure(names,a);
+    measure(names,a,googleGenericHandoff);
   }
   function bookingLink(e){
     const a=e.target.closest&&e.target.closest('a[data-mft-booking="true"]');
@@ -148,7 +154,7 @@
     const id=a.getAttribute('data-spwidget-clinician-id');
     const clinician=config.clinicians.find(c=>c.id===id)||null;
     destination=core.destination(config,clinician);
-    pending={initiator:a,account:needsAccount,consultation:needsConsultation,event:diagnostic(a),completed:false};
+    pending={initiator:a,account:needsAccount,consultation:needsConsultation,event:diagnostic(a),googleGenericHandoff:genericHandoff(a,destination),completed:false};
     accountSection.hidden=!needsAccount;account.required=needsAccount;account.checked=false;
     consultationSection.hidden=!needsConsultation;consultation.required=needsConsultation;consultation.checked=false;
     title.textContent=needsAccount?'Before you request an appointment':'Complimentary 10-minute phone consultation';
@@ -166,7 +172,7 @@
     if(e.defaultPrevented||e.isTrusted!==true||e.button>1||pending.completed)return;
     pending.completed=true;
     if(pending.account)remember();
-    handoff(e,go,pending.consultation?['simplepractice_exit']:[pending.event,'simplepractice_exit']);
+    handoff(e,go,pending.consultation?['simplepractice_exit']:[pending.event,'simplepractice_exit'],pending.googleGenericHandoff&&go.href===destination);
     // Keep href intact through the native default action, including new-tab clicks.
     // Close on the next task; pageshow also cleans up a BFCache-restored dialog.
     setTimeout(()=>{if(dialog.open&&pending?.completed)dialog.close();},0);

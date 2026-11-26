@@ -1,8 +1,9 @@
 'use strict';
 const fs = require('node:fs');
 const path = require('node:path');
-const { SITE, MEASUREMENT_ID, GOOGLE_POLICY_FILE, enabled, handoffEnabled, controllerEnabled,
+const { SITE, MEASUREMENT_ID, GOOGLE_POLICY_FILE, GOOGLE_RUNTIME_ASSET, enabled, handoffEnabled, controllerEnabled,
   googlePolicy, normalizeRoute, inject, assetVersion } = require('../src/analytics-build');
+const { permitGoogle } = require('../src/google-measurement-csp');
 const { LEGACY_BOOKING_MEASUREMENT_ENABLED, measurementReport } = require('../src/measurement-report');
 
 const root = path.resolve(__dirname, '..');
@@ -22,7 +23,7 @@ const policy = googlePolicy();
 const report={
   version:2,
   measurementId:MEASUREMENT_ID,
-  measurementIdScope:'configured Google destination only; Google runtime is disabled',
+  measurementIdScope:enabled()?'reviewed Google destination; runtime requires a fresh advertising choice':'configured Google destination only; Google runtime is disabled',
   enabled:enabled(),
   enabledScope:'Google measurement runtime only',
   measurement:measurementReport(),
@@ -47,6 +48,7 @@ fs.writeFileSync(bookingReportFile, JSON.stringify(bookingReport, null, 2) + '\n
 fs.copyFileSync(path.join(root,'src/assets/mft-ga4-bootstrap.js'),path.join(dist,'assets/mft-ga4-bootstrap.js'));
 fs.copyFileSync(path.join(root,'src/assets/mft-ga4-frame.js'),path.join(dist,'assets/mft-ga4-frame.js'));
 fs.copyFileSync(path.join(root,'src/assets/mft-analytics.js'),path.join(dist,'assets/mft-analytics.js'));
+fs.copyFileSync(path.join(root,'src/assets',GOOGLE_RUNTIME_ASSET),path.join(dist,'assets',GOOGLE_RUNTIME_ASSET));
 fs.writeFileSync(path.join(dist,'assets/mft-ga4-frame.html'),fs.readFileSync(path.join(root,'src/assets/mft-ga4-frame.html'),'utf8').replace('__MFT_FRAME_SCRIPT_VERSION__',assetVersion('mft-ga4-frame.js')));
 for(const file of files){
   const rel=path.relative(dist,file).split(path.sep).join('/');
@@ -55,10 +57,12 @@ for(const file of files){
   const result=inject(before,route,allowedRoutes);
   if(result.injected){fs.writeFileSync(file,result.html);report.injected.push(normalizeRoute(route));}
   else report.excluded.push({route:normalizeRoute(route),reason:result.reason});
+  if(result.googleInjected)report.googlePages.push(normalizeRoute(route));
 }
 if(controllerEnabled()){
   let headers=fs.readFileSync(path.join(dist,'_headers'),'utf8');
   if(handoffEnabled())headers=headers.replace(/connect-src ([^;]+);/,"connect-src $1 https://ops.mft.care;");
+  if(enabled())headers=permitGoogle(headers).headers;
   fs.writeFileSync(path.join(dist,'_headers'),headers);
   fs.appendFileSync(path.join(dist,'assets/styles.css'), '\n.mft-analytics-settings{font:inherit;font-size:.8rem;background:none;color:inherit;border:0;text-decoration:underline;text-underline-offset:.2em;cursor:pointer;padding:.5rem 0}\n');
   fs.appendFileSync(path.join(dist,'assets/styles.css'), `

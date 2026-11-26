@@ -1,0 +1,47 @@
+{
+  "version": 1,
+  "purpose": "Measure a consented public scheduling handoff for non-personalized Google Ads attribution",
+  "candidateRoutes": ["/", "/about/"],
+  "event": "simplepractice_exit",
+  "meaning": "An intentional new-client navigation to SimplePractice; not an appointment request, appointment, attendance, client acquisition or revenue",
+  "recipients": {
+    "googleAnalyticsProperty": "558962239",
+    "googleAnalyticsMeasurementId": "G-BTK39BBNRE",
+    "googleAdsAccount": "420-172-2474",
+    "existingImportedConversionAction": "7911303814"
+  },
+  "runtime": "One main-page Google tag, loaded only after a fresh advertising-measurement choice on an explicitly reviewed route",
+  "advertisingConsentVersion": "mft.advertising.consent.v2",
+  "permittedAdvertisingContextKeys": ["gclid", "gbraid", "wbraid"],
+  "localContextLifetimeMinutes": 30,
+  "localExpiryRenewsOnNavigation": false,
+  "googleVisibleContext": [
+    "The generic scheduling-handoff event and M.F.T. site/account identity",
+    "The exact reviewed public route with only permitted advertising context",
+    "A fixed public-site title and empty page_referrer",
+    "Google's pseudonymous client, session and advertising identifiers",
+    "Google protocol and consent fields, request time, IP transport and browser metadata"
+  ],
+  "excludedData": [
+    "Patient records or identities", "Names or contact information", "Clinician selections",
+    "Page text or actual page titles", "Unreviewed routes", "Raw or arbitrary query parameters",
+    "Intake and account-confirmation responses", "SimplePractice destinations or record identifiers",
+    "Appointment requests, outcomes or identifiers", "Payments, refunds, value or currency",
+    "Ops handoff receipt identifiers", "Diagnostic click events", "Custom user IDs",
+    "Enhanced conversions", "Google Signals", "Remarketing", "Advertising personalization"
+  ],
+  "retentionBoundary": {
+    "websiteContext": "Fixed 30-minute consented context; refusal, withdrawal and GPC/DNT stop collection and clear local measurement context",
+    "vendorCookies": "Must be demonstrated with the actual Google runtime; GA cookie overrides do not establish the lifetime of Ads/Floodlight conversion-linker cookies",
+    "ga4EventDataInspected": "2 months",
+    "ga4UserDataInspected": "14 months with reset on new user activity enabled",
+    "googleAdsClickThroughWindowInspected": "90 days; this is an attribution window, not a deletion guarantee",
+    "googleAggregateReports": "Not governed by the GA4 event/user retention setting"
+  },
+  "activationRequirements": [
+    "A documented determination that this entire event, identifier and context combination is permitted by Google's sensitive-information rule and applicable practice obligations",
+    "Recorded review of the exact routes, payload, recipients and their retention",
+    "Intercepted actual-runtime evidence for automatic collection, cookies, consent and fixed local expiry",
+    "Reviewed policy with matching flow and runtime hashes, plus the production build flag"
+  ]
+}

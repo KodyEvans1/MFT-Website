@@ -5,7 +5,7 @@ const { createHash } = require('node:crypto');
 const { spawnSync } = require('node:child_process');
 const { indexingEnabled } = require('../src/seo-safety');
 const { enabled: ga4Enabled, googleRequested, controllerEnabled, handoffEnabled,
-  GOOGLE_POLICY_FILE, validateGooglePolicy } = require('../src/analytics-build');
+  GOOGLE_POLICY_FILE, GOOGLE_FLOW_FILE, GOOGLE_RUNTIME_ASSET, GOOGLE_RUNTIME_MODE, validateGooglePolicy } = require('../src/analytics-build');
 
 const MANIFEST = 'reports/release-provenance.json';
 const commitValue = value => /^(?:[a-f0-9]{40}|[a-f0-9]{64})$/i.test(value || '') ? value.toLowerCase() : null;
@@ -33,10 +33,15 @@ function apply({root = path.resolve(__dirname, '..'), env = process.env, now = n
   const analytics = json('reports/analytics-integration.json');
   const policyBytes = read(GOOGLE_POLICY_FILE);
   const policy = validateGooglePolicy(JSON.parse(policyBytes.toString('utf8')));
+  if (policy.review && (policy.review.flowSha256 !== sha256(read(GOOGLE_FLOW_FILE)) ||
+      policy.review.runtimeSha256 !== sha256(read('src/assets/'+GOOGLE_RUNTIME_ASSET))))
+    throw Error('Release source bytes differ from the reviewed Google flow or runtime');
   if (!Array.isArray(publication.expectedSitemapUrls) || !Array.isArray(publication.generatedRoutes) ||
       !Array.isArray(analytics.finalPages) || !Array.isArray(analytics.controllerPages) ||
       !Array.isArray(analytics.opsHandoffPages) || !Array.isArray(analytics.googlePages) ||
-      analytics.googlePages.length !== 0 || analytics.enabled !== false ||
+      analytics.enabled !== ga4Enabled(env, policy) ||
+      (!analytics.enabled && analytics.googlePages.length !== 0) ||
+      (analytics.enabled && JSON.stringify([...analytics.googlePages].sort()) !== JSON.stringify([...policy.approvedRoutes].sort())) ||
       analytics.finalVerified !== true ||
       JSON.stringify(analytics.measurement?.consentControlledGa4?.policy) !== JSON.stringify(policy))
     throw Error('Release provenance requires completed publication and analytics reports');
@@ -64,6 +69,7 @@ function apply({root = path.resolve(__dirname, '..'), env = process.env, now = n
   // The artifact map independently hashes the final published bytes.
   const versions = {
     analyticsController:sha256(read('src/assets/mft-analytics.js')).slice(0,16),
+    conditionalGoogleRuntime:sha256(read('src/assets/'+GOOGLE_RUNTIME_ASSET)).slice(0,16),
     ga4Helper:sha256(read('src/assets/mft-ga4-frame.js'), read('src/assets/mft-ga4-frame.html')).slice(0,16),
     ga4HelperScript:sha256(read('src/assets/mft-ga4-frame.js')).slice(0,16),
     booking:sha256(read('src/booking-core.js'), read('src/assets/mft-booking.js'),
@@ -85,16 +91,20 @@ function apply({root = path.resolve(__dirname, '..'), env = process.env, now = n
       context:['production','deploy-preview','branch-deploy','local'].includes(context) ? context : context ? 'other' : null,
       productionContext:context === 'production',
       indexingEnabled:indexingEnabled(env),
-      ga4Enabled:ga4Enabled(env),
+      ga4Enabled:ga4Enabled(env, policy),
       ga4RequestedByEnvironment:googleRequested(env),
       firstPartyControllerEnabled:controllerEnabled(env),
       opsHandoffEnabled:handoffEnabled(env),
       previewServer:Boolean(env.NETLIFY_PREVIEW_SERVER)
     },
     googleMeasurement:{
-      mode:'disabled',
+      mode:analytics.enabled ? GOOGLE_RUNTIME_MODE : 'disabled',
       policyFile:GOOGLE_POLICY_FILE,
       policySha256:sha256(policyBytes),
+      proposedFlowFile:GOOGLE_FLOW_FILE,
+      proposedFlowSha256:sha256(read(GOOGLE_FLOW_FILE)),
+      conditionalRuntimeSha256:sha256(read('src/assets/'+GOOGLE_RUNTIME_ASSET)),
+      reviewedNetworkEvidenceSha256:policy.review?.networkEvidenceSha256 || null,
       policyVersion:policy.version,
       status:policy.status,
       approvedRoutes:policy.approvedRoutes.length,

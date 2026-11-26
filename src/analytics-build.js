@@ -11,25 +11,53 @@ const ENABLE_FLAG = 'GA4_BASIC_MEASUREMENT_ENABLED';
 const HANDOFF_ENABLE_FLAG = 'OPS_HANDOFF_COLLECTION_ENABLED';
 const HANDOFF_ENDPOINT = 'https://ops.mft.care/api/marketing/attribution';
 const GOOGLE_POLICY_FILE = 'content/google-measurement-policy.json';
+const GOOGLE_FLOW_FILE = 'content/google-measurement-flow.json';
+const GOOGLE_RUNTIME_ASSET = 'mft-google-measurement.js';
+const GOOGLE_RUNTIME_MODE = 'approved-main-page';
+const GOOGLE_EVENT = 'simplepractice_exit';
+const CANDIDATE_GOOGLE_ROUTES = Object.freeze(['/', '/about/']);
+const fullHash = bytes => crypto.createHash('sha256').update(bytes).digest('hex');
+function flowHash() { return fullHash(fs.readFileSync(path.join(__dirname, '..', GOOGLE_FLOW_FILE))); }
+function runtimeHash() { return fullHash(fs.readFileSync(path.join(__dirname, 'assets', GOOGLE_RUNTIME_ASSET))); }
 
 function validateGooglePolicy(policy) {
-  const keys = ['version', 'status', 'approvedRoutes', 'approvedEvents', 'reason'];
+  const keys = ['version', 'status', 'approvedRoutes', 'approvedEvents', 'reason', 'review'];
   if (!policy || typeof policy !== 'object' || Array.isArray(policy) ||
       Object.keys(policy).length !== keys.length || keys.some(key => !Object.hasOwn(policy, key)) ||
-      policy.version !== 1 || policy.status !== 'blocked-sensitive-context' ||
-      !Array.isArray(policy.approvedRoutes) || policy.approvedRoutes.length !== 0 ||
-      !Array.isArray(policy.approvedEvents) || policy.approvedEvents.length !== 0 ||
+      policy.version !== 2 || !['blocked-sensitive-context', 'approved-reviewed-scope'].includes(policy.status) ||
+      !Array.isArray(policy.approvedRoutes) || !Array.isArray(policy.approvedEvents) ||
       typeof policy.reason !== 'string' || !policy.reason.trim() || policy.reason.length > 500)
-    throw new Error('Unsupported Google measurement policy; this release permits no Google routes or events');
+    throw new Error('Unsupported Google measurement policy');
+  if (policy.status === 'blocked-sensitive-context') {
+    if (policy.approvedRoutes.length || policy.approvedEvents.length || policy.review !== null)
+      throw new Error('Unsupported Google measurement policy: a blocked policy cannot approve collection');
+  } else {
+    const review = policy.review;
+    const reviewKeys = ['decision', 'decisionReference', 'flowSha256', 'runtimeSha256', 'networkEvidenceSha256'];
+    if (!policy.approvedRoutes.length || new Set(policy.approvedRoutes).size !== policy.approvedRoutes.length ||
+        policy.approvedRoutes.some(route => !CANDIDATE_GOOGLE_ROUTES.includes(route)) ||
+        policy.approvedEvents.length !== 1 || policy.approvedEvents[0] !== GOOGLE_EVENT ||
+        !review || typeof review !== 'object' || Array.isArray(review) ||
+        Object.keys(review).length !== reviewKeys.length || reviewKeys.some(key => !Object.hasOwn(review, key)) ||
+        review.decision !== 'permitted' || typeof review.decisionReference !== 'string' ||
+        !/^[A-Za-z0-9][A-Za-z0-9._:/ -]{7,199}$/.test(review.decisionReference) ||
+        !/^[a-f0-9]{64}$/.test(review.networkEvidenceSha256 || '') ||
+        review.flowSha256 !== flowHash() || review.runtimeSha256 !== runtimeHash())
+      throw new Error('Unsupported Google measurement policy: matching flow, runtime and documented review evidence are required');
+  }
   return Object.freeze({
     ...policy,
     approvedRoutes: Object.freeze([...policy.approvedRoutes]),
-    approvedEvents: Object.freeze([...policy.approvedEvents])
+    approvedEvents: Object.freeze([...policy.approvedEvents]),
+    review: policy.review ? Object.freeze({...policy.review}) : null
   });
 }
 const GOOGLE_POLICY = validateGooglePolicy(JSON.parse(fs.readFileSync(path.join(__dirname, '..', GOOGLE_POLICY_FILE), 'utf8')));
 function googlePolicy() {
-  return {...GOOGLE_POLICY, approvedRoutes:[...GOOGLE_POLICY.approvedRoutes], approvedEvents:[...GOOGLE_POLICY.approvedEvents]};
+  return {...GOOGLE_POLICY, approvedRoutes:[...GOOGLE_POLICY.approvedRoutes], approvedEvents:[...GOOGLE_POLICY.approvedEvents], review:GOOGLE_POLICY.review?{...GOOGLE_POLICY.review}:null};
+}
+function googleReviewDigest(policy = GOOGLE_POLICY) {
+  return policy.review ? fullHash(JSON.stringify(policy.review)) : null;
 }
 function googleRequested(env = process.env) {
   return /^true$/i.test(String(env[ENABLE_FLAG] || ''));
@@ -49,9 +77,12 @@ const SENSITIVE_PATHS = [
   /^\/appointment(?:\/|$)/
 ];
 
-// A deployment flag cannot authorize sensitive-context measurement. This release
-// has no Google sender and its explicit route/event approval lists are empty.
-function enabled() { return false; }
+// Build flags cannot supply a missing data-use decision. The checked-in policy
+// remains blocked. Synthetic approved policies are used only in isolated tests.
+function enabled(env = process.env, policy = GOOGLE_POLICY) {
+  return indexingEnabled(env) && handoffEnabled(env) && googleRequested(env) &&
+    validateGooglePolicy(policy).status === 'approved-reviewed-scope';
+}
 function handoffEnabled(env = process.env) {
   return indexingEnabled(env) && /^true$/i.test(String(env[HANDOFF_ENABLE_FLAG] || ''));
 }
@@ -66,28 +97,35 @@ function isSensitive(route) {
   const p = normalizeRoute(route);
   return SENSITIVE_PATHS.some(re => re.test(p));
 }
-function isGoogleEligible(route, event) {
-  return GOOGLE_POLICY.approvedRoutes.includes(normalizeRoute(route)) &&
-    GOOGLE_POLICY.approvedEvents.includes(event);
+function isGoogleEligible(route, event, policy = GOOGLE_POLICY) {
+  return validateGooglePolicy(policy).status === 'approved-reviewed-scope' && policy.approvedRoutes.includes(normalizeRoute(route)) &&
+    policy.approvedEvents.includes(event);
 }
 function pageKey(route) {
   return crypto.createHash('sha256').update(normalizeRoute(route)).digest('hex').slice(0,16);
 }
 // Generated pages must not inherit the analytics identity of a source template.
 function strip(html) {
-  return html.replace(/<script\b[^>]*src="[^"]*\/mft-(?:analytics|ga4-bootstrap|ga4-frame|ga4-page)\.js(?:\?[^"]*)?"[^>]*>[\s\S]*?<\/script>/gi, '');
+  return html.replace(/<script\b[^>]*src="[^"]*\/mft-(?:analytics|google-measurement|ga4-bootstrap|ga4-frame|ga4-page)\.js(?:\?[^"]*)?"[^>]*>[\s\S]*?<\/script>/gi, '');
 }
-function inject(html, route, allowedRoutes, env = process.env) {
+function inject(html, route, allowedRoutes, env = process.env, policy = GOOGLE_POLICY) {
   const p = normalizeRoute(route);
   if (!controllerEnabled(env) || !allowedRoutes.has(p) || isSensitive(p) || /<(?:form|input|textarea)\b/i.test(html)) return { html, injected: false, reason: 'first-party-disabled-or-not-approved' };
-  if (/G-BTK39BBNRE|mft-(?:analytics|ga4-bootstrap|ga4-frame|ga4-page)\.js|googletagmanager\.com|google-analytics\.com/.test(html)) throw new Error('Existing measurement integration detected; refusing duplicate installation');
+  if (/G-BTK39BBNRE|mft-(?:analytics|google-measurement|ga4-bootstrap|ga4-frame|ga4-page)\.js|googletagmanager\.com|google-analytics\.com/.test(html)) throw new Error('Existing measurement integration detected; refusing duplicate installation');
+  const google = enabled(env, policy) && isGoogleEligible(p, GOOGLE_EVENT, policy);
+  const googleTag = google ? '<script src="/assets/' + GOOGLE_RUNTIME_ASSET + '?v=' + assetVersion(GOOGLE_RUNTIME_ASSET) +
+    '" defer data-mft-google-mode="' + GOOGLE_RUNTIME_MODE + '" data-mft-google-measurement-id="' + MEASUREMENT_ID +
+    '" data-mft-google-route="' + p + '" data-mft-google-event="' + GOOGLE_EVENT +
+    '" data-mft-google-approved-review="' + googleReviewDigest(policy) + '"></script>' : '';
   const tag = '<script src="/assets/mft-analytics.js?v=' + assetVersion('mft-analytics.js') +
-    '" defer data-mft-measurement-controller="first-party" data-mft-google-mode="disabled' +
+    '" defer data-mft-measurement-controller="first-party" data-mft-google-mode="' + (google ? GOOGLE_RUNTIME_MODE : 'disabled') +
     '" data-mft-page-key="' + pageKey(p) + '"' +
     ' data-mft-handoff-endpoint="' + HANDOFF_ENDPOINT + '"></script>';
   if (!html.includes('</body>')) throw new Error('Missing closing body tag for first-party controller injection: ' + p);
-  return { html: html.replace('</body>', tag + '</body>'), injected: true, reason: 'approved-public-first-party-page' };
+  return { html: html.replace('</body>', googleTag + tag + '</body>'), injected: true, googleInjected:google, reason: google ? 'reviewed-google-and-first-party-page' : 'approved-public-first-party-page' };
 }
 module.exports = { MEASUREMENT_ID, SITE, ENABLE_FLAG, HANDOFF_ENABLE_FLAG, HANDOFF_ENDPOINT, GOOGLE_POLICY_FILE,
+  GOOGLE_FLOW_FILE, GOOGLE_RUNTIME_ASSET, GOOGLE_RUNTIME_MODE, GOOGLE_EVENT, CANDIDATE_GOOGLE_ROUTES,
+  flowHash, runtimeHash, googleReviewDigest,
   enabled, handoffEnabled, controllerEnabled, googleRequested, googlePolicy, validateGooglePolicy, isGoogleEligible,
   normalizeRoute, isSensitive, pageKey, inject, assetVersion, strip, frameVersion };

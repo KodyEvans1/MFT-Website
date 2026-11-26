@@ -221,6 +221,24 @@ body:not(.page-home):not(.page-ad) .hero .button.ghost{color:var(--ink);border-c
 .mft-scheduling-warning{padding:1.2rem 1.4rem;border-left:4px solid #ad8c49;background:#f3eee4;line-height:1.75}.mft-returning-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}.mft-returning-grid article{padding:1.6rem;background:#fff;border:1px solid #bccfc2;border-radius:14px;min-width:0}.mft-returning-grid h3{margin-top:0;font-size:1.6rem}.mft-returning-grid p{line-height:1.75}.mft-couples-readiness{border:1px solid #ad8c49;border-radius:8px;padding:1rem;margin:1.25rem 0}.mft-couples-readiness summary{font-weight:700;line-height:1.55;cursor:pointer;min-height:44px}.mft-returning-section,#returning-couples{scroll-margin-top:7rem}
 @media(max-width:760px){.mft-schedule-shortcuts-actions{display:grid;grid-template-columns:1fr;width:100%}.mft-schedule-shortcuts .mft-schedule-button{width:100%;font-size:.8rem}.mft-schedule-shortcuts p{font-size:.72rem}.mft-returning-grid{grid-template-columns:1fr}.mft-home-scheduling{max-width:none}.mft-footer-scheduling .mft-schedule-button{width:100%}.mft-returning-grid article{padding:1.2rem}}
 @media print{.mft-schedule-shortcuts,.mft-footer-scheduling{display:none}}
+
+/* One scheduling dialog, including the account notice on first acknowledgment. */
+.mft-consultation-gate{max-height:calc(100vh - 2rem);max-height:calc(100dvh - 2rem);overflow-y:auto;overscroll-behavior:contain;scroll-behavior:auto}
+.mft-consultation-gate [hidden]{display:none!important}
+.mft-consultation-gate h2{font-size:clamp(1.55rem,4vw,2rem);line-height:1.2;margin:.6rem 2rem 1.2rem 0;outline:none}
+.mft-consultation-gate h3{font-size:1.1rem;line-height:1.4;margin:0 0 .6rem}
+.mft-consultation-gate p{line-height:1.6;margin:.8rem 0}
+.mft-consultation-gate .mft-dialog-close{min-width:44px;min-height:44px;line-height:1;margin:-.4rem -.4rem 0 .4rem;color:inherit}
+.mft-booking-help{padding:1rem 1.1rem;margin:1.25rem 0;background:#fff;border-left:3px solid var(--gold,#b59d65);border-radius:4px 10px 10px 4px;font-size:.9rem}
+.mft-booking-help p:last-child{margin-bottom:0}.mft-booking-help a{text-underline-offset:.2em}
+.mft-consultation-gate .mft-consultation-check{line-height:1.6;font-size:.95rem}
+.mft-consultation-gate .mft-booking-note{font-size:.84rem;color:#415d55}
+.mft-consultation-gate [data-mft-account-section]:not([hidden])+[data-mft-consultation-section]:not([hidden]){border-top:1px solid #bccfc2;padding-top:1.25rem;margin-top:1.25rem}
+.mft-consultation-gate .actions{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:1.1rem}
+.mft-consultation-gate .actions .button{min-height:48px;max-width:100%;white-space:normal;text-align:center}
+.mft-consultation-gate :is(a,button,input):focus-visible{outline:3px solid #987124;outline-offset:4px}
+.mft-scheduling-dialog-open #mft-analytics-consent{display:none!important}
+@media(max-width:480px){.mft-consultation-gate .actions{flex-direction:column}.mft-consultation-gate .actions .button{width:100%}.mft-consultation-gate .mft-booking-help{padding:.85rem}.mft-consultation-gate .mft-consultation-check{gap:.6rem}}
 /* Shared M.F.T. interaction and reading rules from the Plaud audit. */
 .breadcrumbs{display:none!important}
 html{scroll-behavior:auto}

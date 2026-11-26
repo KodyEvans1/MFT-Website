@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "revision": "a0384330504791dd1d536059871befc45672776d2a24df8acee4ef4c231a1c36",
-  "recordedRevision": "a0384330504791dd1d536059871befc45672776d2a24df8acee4ef4c231a1c36",
+  "revision": "8733eaff9527c74ce66e08499dda8ef0539e83d7cce02e640d6cf302386b8de8",
+  "recordedRevision": "8733eaff9527c74ce66e08499dda8ef0539e83d7cce02e640d6cf302386b8de8",
   "publicationApproved": true,
   "candidateRendered": true,
   "routes": [
@@ -15,20 +15,20 @@
     "clinical": {
       "status": "approved",
       "reviewer": "Practice owner",
-      "evidence": "The public marketing introductions and scheduling instructions are authorized for this revision.",
-      "reviewedRevision": "a0384330504791dd1d536059871befc45672776d2a24df8acee4ef4c231a1c36"
+      "evidence": "The practice owner explicitly authorized the focused November 25 acquisition UX changes. Existing clinical biographies, treatment descriptions and care sequencing are carried forward from the previously approved revision. Ages use clinician-specific approved profiles. In-person and telehealth wording for Emily and Autumn is supported by the live public SimplePractice clinician and service-location menus inspected November 25. This records no new independent credential, clinical-outcome, or availability review.",
+      "reviewedRevision": "8733eaff9527c74ce66e08499dda8ef0539e83d7cce02e640d6cf302386b8de8"
     },
     "operational": {
       "status": "approved",
       "reviewer": "Practice owner",
-      "evidence": "The initial-evaluation appointment options linked by the public pages are confirmed for this release.",
-      "reviewedRevision": "a0384330504791dd1d536059871befc45672776d2a24df8acee4ef4c231a1c36"
+      "evidence": "The owner supplied and authorized the November 25 starting-fee baseline recorded in content/appointment-starting-costs.json: complimentary 10-minute introduction; 26-minute consultation in a 30-minute calendar block at $75; distinct one-hour couples consultation at $150; initial individual evaluation at $150 private pay or applicable insurance; separate $150 reduced-cost couples/family program. Current clinician destinations are reused. Public service menus confirm labels, booking blocks and format choices but do not display clinician-specific fees; no appointment-type IDs, fee-menu mapping or openings are invented. Benefits begin with support email, followed by the existing secure workflow.",
+      "reviewedRevision": "8733eaff9527c74ce66e08499dda8ef0539e83d7cce02e640d6cf302386b8de8"
     },
     "publication": {
       "status": "approved",
       "reviewer": "Practice owner",
-      "evidence": "Production publication and indexing are authorized for this revision.",
-      "reviewedRevision": "a0384330504791dd1d536059871befc45672776d2a24df8acee4ef4c231a1c36"
+      "evidence": "Current owner request: implement, verify, merge and deploy the focused website acquisition improvements without another general approval. Preserve the newly saved individual/couples Ads destinations, individual-journey anchor, clinician destinations, scheduling and measurement boundaries. This authorization applies to the exact source revision recorded here.",
+      "reviewedRevision": "8733eaff9527c74ce66e08499dda8ef0539e83d7cce02e640d6cf302386b8de8"
     }
   },
   "measurement": "separate existing consent/privacy gate"

@@ -1,9 +1,109 @@
 {
-  "version": 1,
+  "version": 2,
   "measurementId": "G-BTK39BBNRE",
+  "measurementIdScope": "configured Google destination only; Google runtime is disabled",
   "enabled": false,
-  "approvalSource": "production sitemap only",
-  "allowedRoutes": [
+  "enabledScope": "Google measurement runtime only",
+  "measurement": {
+    "version": 4,
+    "legacyBookingCollector": {
+      "enabled": false,
+      "compatibilityFlag": "MFT_BOOKING_CONFIG.measurementEnabled",
+      "controlsConsentControlledGa4": false
+    },
+    "firstPartyController": {
+      "buildEnabled": false,
+      "runtimeEntryPoint": "MFTSchedulingMeasurement.track",
+      "browserConsentVersion": "mft.analytics.consent.v5",
+      "runtimeConsentRequired": true,
+      "inventoryReport": "/reports/analytics-integration.json"
+    },
+    "consentControlledGa4": {
+      "buildEnabled": false,
+      "requestedByEnvironment": false,
+      "configuredMeasurementId": "G-BTK39BBNRE",
+      "mode": "disabled",
+      "policyFile": "content/google-measurement-policy.json",
+      "policy": {
+        "version": 2,
+        "status": "blocked-sensitive-context",
+        "approvedRoutes": [],
+        "approvedEvents": [],
+        "reason": "The simplepractice_exit handoff combined with advertising/browser identifiers and M.F.T. site identity has not been established as permitted under Google Analytics' sensitive-user-information rule. The exact proposed flow and recipient retention require review; public indexing or deployment approval does not resolve that classification.",
+        "review": null
+      },
+      "runtimeConsentRequired": true,
+      "runtimeEntryPoint": null,
+      "runtimeAsset": null,
+      "candidateRuntime": {
+        "asset": "/assets/mft-google-measurement.js",
+        "sha256": "790bacb66118088109c8ee7284f2bd155a19f6129c930d3b93a488a173d24ecc",
+        "activation": "Requires exact documented review, matching source hashes, network evidence, and the production flag"
+      },
+      "dataFlow": {
+        "file": "content/google-measurement-flow.json",
+        "sha256": "4ccb098a48b0fa44b3b191ef004c45d2a470e63fd75bdf93aace2bb5cc0ae8e5"
+      },
+      "advertisingMeasurement": {
+        "available": false,
+        "status": "unavailable",
+        "preferenceVersion": "mft.advertising.consent.v1",
+        "storedPreference": "denied"
+      },
+      "inventoryReport": "/reports/analytics-integration.json"
+    },
+    "consentControlledOps": {
+      "buildEnabled": false,
+      "endpoint": null,
+      "event": "simplepractice_exit",
+      "consentVersion": "mft.analytics.consent.v4",
+      "consentVersionScope": "existing Ops receiver contract",
+      "browserConsentVersion": "mft.analytics.consent.v5",
+      "runtimeConsentRequired": true,
+      "actionId": "one random UUID per handoff; reused for a bounded retry",
+      "visitorIdentifier": false,
+      "sourceLifetimeMinutes": 30,
+      "eventRetentionDays": 30,
+      "expiredEventDeletion": "daily cleanup and ingestion cleanup after the 30-day reporting cutoff",
+      "appointmentMatching": "unmatched until a supported, demonstrated identifier connection exists"
+    },
+    "schedulingMetric": {
+      "displayName": "Website scheduling-link click",
+      "sourceEvent": "simplepractice_exit",
+      "countingUnit": "one eligible native new-client handoff to SimplePractice",
+      "delivery": "best effort; native navigation never waits for measurement",
+      "diagnosticEvents": [
+        "appointment_request_click",
+        "clinician_schedule_click",
+        "consultation_click"
+      ],
+      "diagnosticEventsCountTowardMetric": false,
+      "excludedActions": [
+        "dialog open",
+        "dialog close or cancel",
+        "dialog acknowledgment",
+        "existing-client sign-in"
+      ],
+      "dialogHandoff": "enabled Continue navigation only",
+      "establishesAppointment": false
+    },
+    "evidenceScope": "website build configuration only",
+    "externalVerification": {
+      "opsHandoffReceipt": "not verified by this build report",
+      "simplePracticeRequestVerification": "existing protected Ops workflow; not established by website activity",
+      "internalRequestAttribution": "requires demonstrated evidence; handoff IDs do not identify a request",
+      "googleCollectorAcceptance": "not verified by this report",
+      "ga4PropertyReceipt": "not verified by this report",
+      "googleAdsAttribution": "not verified by this report",
+      "confirmedAppointments": "not measured"
+    }
+  },
+  "approvalSource": "content/google-measurement-policy.json",
+  "allowedRoutes": [],
+  "allowedEvents": [],
+  "controllerEnabled": false,
+  "controllerApprovalSource": "production publication sitemap eligibility with sensitive-route and form exclusions; not Google approval",
+  "controllerAllowedRoutes": [
     "/",
     "/about/",
     "/adhd-neurodivergence-therapy/",
@@ -68,294 +168,300 @@
     "/trauma-therapy/",
     "/what-we-help-with/"
   ],
+  "injectedScope": "first-party controller only",
   "injected": [],
   "excluded": [
     {
       "route": "/404.html/",
-      "reason": "disabled-or-not-approved"
+      "reason": "first-party-disabled-or-not-approved"
     },
     {
       "route": "/about/",
-      "reason": "disabled-or-not-approved"
+      "reason": "first-party-disabled-or-not-approved"
     },
     {
       "route": "/adhd-neurodivergence-therapy/",
-      "reason": "disabled-or-not-approved"
+      "reason": "first-party-disabled-or-not-approved"
     },
     {
       "route": "/anxiety-stress-therapy/",
-      "reason": "disabled-or-not-approved"
+      "reason": "first-party-disabled-or-not-approved"
     },
     {
       "route": "/attachment-based-therapy/",
-      "reason": "disabled-or-not-approved"
+      "reason": "first-party-disabled-or-not-approved"
     },
     {
       "route": "/autumn-alexander/",
-      "reason": "disabled-or-not-approved"
+      "reason": "first-party-disabled-or-not-approved"
     },
     {
       "route": "/check-my-coverage/",
-      "reason": "disabled-or-not-approved"
+      "reason": "first-party-disabled-or-not-approved"
     },
     {
       "route": "/childrentherapy/",
-      "reason": "disabled-or-not-approved"
+      "reason": "first-party-disabled-or-not-approved"
     },
     {
       "route": "/cognitive-behavioral-therapy-cbt/",
-      "reason": "disabled-or-not-approved"
+      "reason": "first-party-disabled-or-not-approved"
     },
     {
       "route": "/depression-therapy/",
-      "reason": "disabled-or-not-approved"
+      "reason": "first-party-disabled-or-not-approved"
     },
     {
       "route": "/dialectical-behavior-therapy-dbt/",
-      "reason": "disabled-or-not-approved"
+      "reason": "first-party-disabled-or-not-approved"
     },
     {
       "route": "/dr-nolan/",
-      "reason": "disabled-or-not-approved"
+      "reason": "first-party-disabled-or-not-approved"
     },
     {
       "route": "/emily-johnsrud-bio/",
-      "reason": "disabled-or-not-approved"
+      "reason": "first-party-disabled-or-not-approved"
     },
     {
       "route": "/emotionally-focused-therapy-eft/",
-      "reason": "disabled-or-not-approved"
+      "reason": "first-party-disabled-or-not-approved"
     },
     {
       "route": "/family-systems-therapy/",
-      "reason": "disabled-or-not-approved"
+      "reason": "first-party-disabled-or-not-approved"
     },
     {
       "route": "/family-therapy-group-counseling/",
-      "reason": "disabled-or-not-approved"
+      "reason": "first-party-disabled-or-not-approved"
     },
     {
       "route": "/gary-ashley/",
-      "reason": "disabled-or-not-approved"
+      "reason": "first-party-disabled-or-not-approved"
     },
     {
       "route": "/google/couples-therapy/",
-      "reason": "disabled-or-not-approved"
+      "reason": "first-party-disabled-or-not-approved"
     },
     {
       "route": "/google/individual-therapy/",
-      "reason": "disabled-or-not-approved"
+      "reason": "first-party-disabled-or-not-approved"
     },
     {
       "route": "/google/online-therapy-washington/",
-      "reason": "disabled-or-not-approved"
+      "reason": "first-party-disabled-or-not-approved"
     },
     {
       "route": "/google/therapy-woodinville/",
-      "reason": "disabled-or-not-approved"
+      "reason": "first-party-disabled-or-not-approved"
     },
     {
       "route": "/gottman-method-couples-therapy/",
-      "reason": "disabled-or-not-approved"
+      "reason": "first-party-disabled-or-not-approved"
     },
     {
       "route": "/grief-counseling/",
-      "reason": "disabled-or-not-approved"
+      "reason": "first-party-disabled-or-not-approved"
     },
     {
       "route": "/how-to-choose-a-therapist/",
-      "reason": "disabled-or-not-approved"
+      "reason": "first-party-disabled-or-not-approved"
     },
     {
       "route": "/how-to-start-therapy/",
-      "reason": "disabled-or-not-approved"
+      "reason": "first-party-disabled-or-not-approved"
     },
     {
       "route": "/",
-      "reason": "disabled-or-not-approved"
+      "reason": "first-party-disabled-or-not-approved"
     },
     {
       "route": "/internal-family-systems-ifs/",
-      "reason": "disabled-or-not-approved"
+      "reason": "first-party-disabled-or-not-approved"
     },
     {
       "route": "/kody-evans-bio/",
-      "reason": "disabled-or-not-approved"
+      "reason": "first-party-disabled-or-not-approved"
     },
     {
       "route": "/life-transitions-therapy/",
-      "reason": "disabled-or-not-approved"
+      "reason": "first-party-disabled-or-not-approved"
     },
     {
       "route": "/marriage-and-couples-therapy-counseling/",
-      "reason": "disabled-or-not-approved"
+      "reason": "first-party-disabled-or-not-approved"
     },
     {
       "route": "/marriage-reset-assessment/",
-      "reason": "disabled-or-not-approved"
+      "reason": "first-party-disabled-or-not-approved"
     },
     {
       "route": "/marriage-reset-assessment/thanks/",
-      "reason": "disabled-or-not-approved"
+      "reason": "first-party-disabled-or-not-approved"
     },
     {
       "route": "/marriagereset/",
-      "reason": "disabled-or-not-approved"
+      "reason": "first-party-disabled-or-not-approved"
     },
     {
       "route": "/mindfulness-based-therapy/",
-      "reason": "disabled-or-not-approved"
+      "reason": "first-party-disabled-or-not-approved"
     },
     {
       "route": "/motivational-interviewing/",
-      "reason": "disabled-or-not-approved"
+      "reason": "first-party-disabled-or-not-approved"
     },
     {
       "route": "/narrative-therapy/",
-      "reason": "disabled-or-not-approved"
+      "reason": "first-party-disabled-or-not-approved"
     },
     {
       "route": "/new-page/",
-      "reason": "disabled-or-not-approved"
+      "reason": "first-party-disabled-or-not-approved"
     },
     {
       "route": "/new-page-1/",
-      "reason": "disabled-or-not-approved"
+      "reason": "first-party-disabled-or-not-approved"
     },
     {
       "route": "/new-page-2/",
-      "reason": "disabled-or-not-approved"
+      "reason": "first-party-disabled-or-not-approved"
     },
     {
       "route": "/new-page-4/",
-      "reason": "disabled-or-not-approved"
+      "reason": "first-party-disabled-or-not-approved"
     },
     {
       "route": "/online-therapy-bothell-wa/",
-      "reason": "disabled-or-not-approved"
+      "reason": "first-party-disabled-or-not-approved"
     },
     {
       "route": "/online-therapy-bremerton-wa/",
-      "reason": "disabled-or-not-approved"
+      "reason": "first-party-disabled-or-not-approved"
     },
     {
       "route": "/online-therapy-fircrest-wa/",
-      "reason": "disabled-or-not-approved"
+      "reason": "first-party-disabled-or-not-approved"
     },
     {
       "route": "/online-therapy-king-county-wa/",
-      "reason": "disabled-or-not-approved"
+      "reason": "first-party-disabled-or-not-approved"
     },
     {
       "route": "/online-therapy-kirkland-wa/",
-      "reason": "disabled-or-not-approved"
+      "reason": "first-party-disabled-or-not-approved"
     },
     {
       "route": "/online-therapy-locations/",
-      "reason": "disabled-or-not-approved"
+      "reason": "first-party-disabled-or-not-approved"
     },
     {
       "route": "/online-therapy-redmond-wa/",
-      "reason": "disabled-or-not-approved"
+      "reason": "first-party-disabled-or-not-approved"
     },
     {
       "route": "/online-therapy-snohomish-county-wa/",
-      "reason": "disabled-or-not-approved"
+      "reason": "first-party-disabled-or-not-approved"
     },
     {
       "route": "/online-therapy-spokane-wa/",
-      "reason": "disabled-or-not-approved"
+      "reason": "first-party-disabled-or-not-approved"
     },
     {
       "route": "/online-therapy-tri-cities-wa/",
-      "reason": "disabled-or-not-approved"
+      "reason": "first-party-disabled-or-not-approved"
     },
     {
       "route": "/online-therapy-vancouver-wa/",
-      "reason": "disabled-or-not-approved"
+      "reason": "first-party-disabled-or-not-approved"
     },
     {
       "route": "/online-therapy-washington/",
-      "reason": "disabled-or-not-approved"
+      "reason": "first-party-disabled-or-not-approved"
     },
     {
       "route": "/online-therapy-wenatchee-wa/",
-      "reason": "disabled-or-not-approved"
+      "reason": "first-party-disabled-or-not-approved"
     },
     {
       "route": "/online-therapy-yakima-wa/",
-      "reason": "disabled-or-not-approved"
+      "reason": "first-party-disabled-or-not-approved"
     },
     {
       "route": "/online-vs-in-person-therapy/",
-      "reason": "disabled-or-not-approved"
+      "reason": "first-party-disabled-or-not-approved"
     },
     {
       "route": "/parenting-family-stress-therapy/",
-      "reason": "disabled-or-not-approved"
+      "reason": "first-party-disabled-or-not-approved"
     },
     {
       "route": "/relationship-issues-therapy/",
-      "reason": "disabled-or-not-approved"
+      "reason": "first-party-disabled-or-not-approved"
     },
     {
       "route": "/resources/",
-      "reason": "disabled-or-not-approved"
+      "reason": "first-party-disabled-or-not-approved"
     },
     {
       "route": "/self-esteem-identity-therapy/",
-      "reason": "disabled-or-not-approved"
+      "reason": "first-party-disabled-or-not-approved"
     },
     {
       "route": "/services/",
-      "reason": "disabled-or-not-approved"
+      "reason": "first-party-disabled-or-not-approved"
     },
     {
       "route": "/solution-focused-brief-therapy/",
-      "reason": "disabled-or-not-approved"
+      "reason": "first-party-disabled-or-not-approved"
     },
     {
       "route": "/sonia-hassan-bio/",
-      "reason": "disabled-or-not-approved"
+      "reason": "first-party-disabled-or-not-approved"
     },
     {
       "route": "/substance-use-recovery-therapy/",
-      "reason": "disabled-or-not-approved"
+      "reason": "first-party-disabled-or-not-approved"
     },
     {
       "route": "/team/",
-      "reason": "disabled-or-not-approved"
+      "reason": "first-party-disabled-or-not-approved"
     },
     {
       "route": "/teen-counseling/",
-      "reason": "disabled-or-not-approved"
+      "reason": "first-party-disabled-or-not-approved"
     },
     {
       "route": "/therapy-approaches/",
-      "reason": "disabled-or-not-approved"
+      "reason": "first-party-disabled-or-not-approved"
     },
     {
       "route": "/therapy-contact-woodinville/",
-      "reason": "disabled-or-not-approved"
+      "reason": "first-party-disabled-or-not-approved"
     },
     {
       "route": "/therapy-insurance-benefits/",
-      "reason": "disabled-or-not-approved"
+      "reason": "first-party-disabled-or-not-approved"
     },
     {
       "route": "/trauma-informed-therapy/",
-      "reason": "disabled-or-not-approved"
+      "reason": "first-party-disabled-or-not-approved"
     },
     {
       "route": "/trauma-therapy/",
-      "reason": "disabled-or-not-approved"
+      "reason": "first-party-disabled-or-not-approved"
     },
     {
       "route": "/what-we-help-with/",
-      "reason": "disabled-or-not-approved"
+      "reason": "first-party-disabled-or-not-approved"
     }
   ],
+  "googlePages": [],
+  "controllerPages": [],
+  "opsHandoffPages": [],
   "finalVerified": true,
+  "finalVerifiedScope": "generated first-party and Google runtime inventories, explicit route and event policy, page identities, and CSP; not collector receipt",
   "finalPages": [],
-  "removedInheritedTags": 0
+  "removedInheritedTags": 1,
+  "finalPagesScope": "first-party controller inventory; Google inventory is reported separately"
 }

@@ -19,8 +19,12 @@ Use **Website scheduling-link click** or **Scheduling handoff** for `simplepract
 | Cancel, close, click outside, or press Escape | 0 |
 | Activate the enabled Continue to SimplePractice link | 1 |
 | Repeated activation in the same dialog | 1 total |
+| Repeated native-link activation while the source document stays visible, including background new tabs | 1 total |
 | Existing-client sign-in | 0 |
 | Returning visitor activates an eligible new-client link after remembered acknowledgment | 1 |
+| A new trusted native-link activation after the source document was hidden and becomes visible again | 1 additional |
+
+Native-link duplicate protection resets after an observed hidden-to-visible document return or a BFCache restoration. A visibility change itself never counts, and focus alone, elapsed time, and synthetic visibility events do not reset the state. The website observes a document return; it does not identify which other tab was visited or infer an appointment. A new trusted scheduling activation is still required. Completion protection for the same dialog is unchanged.
 
 Analytics refusal, privacy signals, blocked storage, missing measurement APIs, or delivery failure do not disable scheduling. No measurement is replayed when consent is granted later.
 

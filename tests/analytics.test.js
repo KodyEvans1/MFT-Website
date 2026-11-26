@@ -7,7 +7,8 @@ const { createHash } = require('node:crypto');
 const a = require('../src/analytics-build');
 const production = {CONTEXT:'production', SITE_INDEXING_ENABLED:'true', GA4_BASIC_MEASUREMENT_ENABLED:'false', OPS_HANDOFF_COLLECTION_ENABLED:'true'};
 const requestedProduction = {...production, GA4_BASIC_MEASUREMENT_ENABLED:'true'};
-const publicHtml = '<html><head></head><body><a href="https://marriagefamilytherapy.clientsecure.me/">Book</a></body></html>';
+const publicHtml = '<html><head><title>Marriage.Family.Therapy | Woodinville &amp; Online in Washington</title></head><body><a href="https://marriagefamilytherapy.clientsecure.me/">Book</a></body></html>';
+const htmlForRoute = route => route === '/about/' ? publicHtml.replace(/<title>[\s\S]*?<\/title>/, '<title>About Marriage.Family.Therapy | Woodinville, WA</title>') : publicHtml;
 const sha256 = bytes => createHash('sha256').update(bytes).digest('hex');
 const sourceBytes = relative => fs.readFileSync(path.join(__dirname, '..', relative));
 
@@ -121,7 +122,8 @@ test('reviewed scope installs one deferred Google runtime before the first-party
   const allowed = new Set(['/', '/about/', '/services/', '/gary-ashley-bio/', '/tri-cities/']);
   for (const route of ['/', '/about/']) {
     assert.equal(a.isGoogleEligible(route, 'simplepractice_exit', policy), true);
-    const result = a.inject(publicHtml, route, allowed, requestedProduction, policy);
+    const input = htmlForRoute(route);
+    const result = a.inject(input, route, allowed, requestedProduction, policy);
     assert.equal(result.injected, true);
     assert.equal(result.googleInjected, true);
     assert.equal((result.html.match(/mft-google-measurement\.js/g) || []).length, 1);
@@ -133,7 +135,7 @@ test('reviewed scope installs one deferred Google runtime before the first-party
     assert.match(result.html, /data-mft-google-event="simplepractice_exit"/);
     assert.match(result.html, /data-mft-google-mode="approved-main-page"/);
     assert.doesNotMatch(result.html, /googletagmanager\.com|google-analytics\.com|mft-ga4-/);
-    assert.equal(a.strip(result.html), publicHtml);
+    assert.equal(a.strip(result.html), input);
     assert.throws(() => a.inject(result.html, route, allowed, requestedProduction, policy), /refusing duplicate/);
   }
   for (const route of ['/services/', '/gary-ashley-bio/', '/tri-cities/']) {
@@ -156,7 +158,39 @@ test('a narrower synthetic review cannot inherit the other candidate route', () 
   assert.equal(a.isGoogleEligible('/', 'simplepractice_exit', policy), false);
   const allowed = new Set(['/', '/about/']);
   assert.equal(a.inject(publicHtml, '/', allowed, requestedProduction, policy).googleInjected, false);
-  assert.equal(a.inject(publicHtml, '/about/', allowed, requestedProduction, policy).googleInjected, true);
+  assert.equal(a.inject(htmlForRoute('/about/'), '/about/', allowed, requestedProduction, policy).googleInjected, true);
+});
+
+test('reviewed flow includes the exact public document titles and cannot broaden the title scope', () => {
+  const expected = {
+    '/': 'Marriage.Family.Therapy | Woodinville & Online in Washington',
+    '/about/': 'About Marriage.Family.Therapy | Woodinville, WA'
+  };
+  assert.deepEqual(a.reviewedDocumentTitles(), expected);
+  for (const invalid of [null, [], {'/':expected['/']}, {...expected, '/private/':'Private'},
+    {...expected, '/':'Private appointment'}, {...expected, '/about/':expected['/']}])
+    assert.throws(() => a.validateReviewedDocumentTitles(invalid), /exact reviewed document titles/);
+});
+
+test('reviewed Google injection rejects missing, changed, duplicate, misplaced and quoted document titles', () => {
+  const policy = syntheticReviewedPolicy();
+  const allowed = new Set(['/', '/about/']);
+  for (const route of allowed) {
+    const input = htmlForRoute(route);
+    const title = input.match(/<title>[\s\S]*?<\/title>/)[0];
+    assert.equal(a.assertReviewedDocumentTitle(input, route), a.REVIEWED_DOCUMENT_TITLES[route]);
+    for (const changed of [
+      input.replace(title, ''),
+      input.replace(title, '<title>Private clinician or intake title</title>'),
+      input.replace(title, title+title),
+      input.replace(title, '').replace('<body>', '<body>'+title),
+      input.replace(title, '<!--'+title+'-->'),
+      input.replace(title, '<script type="application/ld+json">'+JSON.stringify({title})+'</script>'),
+      input.replace(title, '<template>'+title+'</template>')
+    ]) assert.throws(() => a.inject(changed, route, allowed, requestedProduction, policy), /document title differs/);
+  }
+  // First-party-only pages do not acquire this Google-specific title constraint.
+  assert.equal(a.inject('<html><head><title>Unreviewed title</title></head><body></body></html>', '/', allowed, production).googleInjected, false);
 });
 
 test('eligible public pages receive only one first-party controller with Google off under either flag value', () => {

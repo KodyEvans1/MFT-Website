@@ -2,7 +2,14 @@
   "version": 1,
   "purpose": "Measure a consented public scheduling handoff for non-personalized Google Ads attribution",
   "candidateRoutes": ["/", "/about/"],
+  "reviewedDocumentTitles": {
+    "/": "Marriage.Family.Therapy | Woodinville & Online in Washington",
+    "/about/": "About Marriage.Family.Therapy | Woodinville, WA"
+  },
   "event": "simplepractice_exit",
+  "eventScope": "The application emits only simplepractice_exit as an acquisition event. Standard GA4 automatic events and first-visit/session markers are separately included in this unapproved flow for review.",
+  "standardRuntimeEvents": ["first_visit", "session_start", "user_engagement"],
+  "disabledAutomaticCollection": ["configuration page_view", "enhanced measurement including history pageviews, outbound clicks, forms, search, scroll, downloads and video"],
   "meaning": "An intentional new-client navigation to SimplePractice; not an appointment request, appointment, attendance, client acquisition or revenue",
   "recipients": {
     "googleAnalyticsProperty": "558962239",
@@ -11,6 +18,15 @@
     "existingImportedConversionAction": "7911303814"
   },
   "runtime": "One main-page Google tag, loaded only after a fresh advertising-measurement choice on an explicitly reviewed route",
+  "observedRuntimeDestinations": {
+    "https://www.googletagmanager.com/gtag/js": "The existing property's public Google tag; the browser discloses ordinary request metadata when loading it",
+    "https://analytics.google.com/g/collect": "GA4 events, consent, client/session identifiers, canonical location with permitted click identifiers, fixed GA4 title, empty GA4 referrer and browser metadata",
+    "https://www.google-analytics.com/g/collect": "Documented GA4 collector, subject to the same reviewed envelope",
+    "https://region1.google-analytics.com/g/collect": "Regional GA4 collector, subject to the same reviewed envelope",
+    "https://www.google.com/measurement/conversion": "Native Ads-linked GA4 measurement; includes event and advertising identifiers, canonical URL, actual reviewed document title in tiba, consent and browser metadata",
+    "https://stats.g.doubleclick.net/g/collect": "Native identifier/consent ping observed without an event name; still a disclosure to Google",
+    "https://www.googletagmanager.com/a": "Sampled Google tag diagnostics observed in an isolated probe; protocol and tag metadata, not a separate application conversion"
+  },
   "advertisingConsentVersion": "mft.advertising.consent.v2",
   "permittedAdvertisingContextKeys": ["gclid", "gbraid", "wbraid"],
   "localContextLifetimeMinutes": 30,
@@ -18,30 +34,38 @@
   "googleVisibleContext": [
     "The generic scheduling-handoff event and M.F.T. site/account identity",
     "The exact reviewed public route with only permitted advertising context",
-    "A fixed public-site title and empty page_referrer",
+    "A fixed GA4 page_title and empty page_referrer; the linked Google measurement request also reads one of the two exact reviewed actual document titles",
     "Google's pseudonymous client, session and advertising identifiers",
-    "Google protocol and consent fields, request time, IP transport and browser metadata"
+    "Standard first_visit/session_start metadata and user_engagement, separate from the handoff acquisition event",
+    "Google protocol and consent fields, request time, IP transport and browser metadata",
+    "Pre-existing Google/DoubleClick cookies may be accessible when advertising storage is granted, subject to browser restrictions"
   ],
   "excludedData": [
     "Patient records or identities", "Names or contact information", "Clinician selections",
-    "Page text or actual page titles", "Unreviewed routes", "Raw or arbitrary query parameters",
+    "Page text or any title other than the two exact reviewed public document titles", "Unreviewed routes", "Raw or arbitrary query parameters",
     "Intake and account-confirmation responses", "SimplePractice destinations or record identifiers",
     "Appointment requests, outcomes or identifiers", "Payments, refunds, value or currency",
     "Ops handoff receipt identifiers", "Diagnostic click events", "Custom user IDs",
     "Enhanced conversions", "Google Signals", "Remarketing", "Advertising personalization"
   ],
   "retentionBoundary": {
-    "websiteContext": "Fixed 30-minute consented context; refusal, withdrawal and GPC/DNT stop collection and clear local measurement context",
-    "vendorCookies": "Must be demonstrated with the actual Google runtime; GA cookie overrides do not establish the lifetime of Ads/Floodlight conversion-linker cookies",
-    "ga4EventDataInspected": "2 months",
-    "ga4UserDataInspected": "14 months with reset on new user activity enabled",
-    "googleAdsClickThroughWindowInspected": "90 days; this is an attribution window, not a deletion guarantee",
-    "googleAggregateReports": "Not governed by the GA4 event/user retention setting"
+    "websiteContext": "Fixed 30-minute usable consented context, without renewal on navigation; refusal, withdrawal and GPC/DNT stop collection. Cleanup runs on active page enforcement and the next controlled page load; a closed or suspended browser cannot run JavaScript deletion at a guaranteed wall-clock time",
+    "firstPartyVendorCookies": "The intercepted runtime created host-only mftga_* cookies expiring within the original 30-minute permission window; this is version-specific evidence, not a guarantee about every Google cookie",
+    "vendorLocalStorage": "The tag also uses _gcl_ls on this origin; it must be cleared with expired or withdrawn measurement state and before a new unrelated permission window, with no use of stale context",
+    "thirdPartyVendorCookies": "Existing Google/DoubleClick cookies are outside website control and may be accessible under advertising consent; their storage lifetime is not limited by the website's 30-minute setting",
+    "ga4EventDataLastReported": "2 months; previous draft's account readback, not freshly verified by this release",
+    "ga4UserDataLastReported": "14 months with reset on new user activity enabled; previous draft's account readback, not freshly verified by this release",
+    "ga4RequiredBeforeActivation": "Verify user/event retention at 2 months and reset on new activity OFF; this is proposed, not an account change made by this release",
+    "googleAdsClickThroughWindowLastReported": "90 days; this is an attribution window, not a deletion guarantee",
+    "googleAggregateReports": "Not governed by the GA4 event/user retention setting",
+    "googleAdsRetention": "Separate Google Ads terms apply, including published log anonymization periods and exceptions; the website cannot impose its 30-minute browser limit on recipient storage"
   },
   "activationRequirements": [
     "A documented determination that this entire event, identifier and context combination is permitted by Google's sensitive-information rule and applicable practice obligations",
     "Recorded review of the exact routes, payload, recipients and their retention",
+    "Reverify the exact GA4-Ads link, primary/secondary and campaign goals, disabled advertising features, enhanced measurement and required retention settings in the intended accounts",
     "Intercepted actual-runtime evidence for automatic collection, cookies, consent and fixed local expiry",
+    "The exact document titles must match at build and runtime; any title, route, form or payload change requires reassessment of automatic vendor collection",
     "Reviewed policy with matching flow and runtime hashes, plus the production build flag"
   ]
 }

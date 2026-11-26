@@ -70,6 +70,7 @@ function apply(dist, policy = analytics.googlePolicy()) {
       throw Error('Direct or retired Google measurement is not permitted on this page: '+route);
     const googleTags = [...html.matchAll(/<script\b[^>]*src="[^"]*\/mft-google-measurement\.js(?:\?[^"]*)?"[^>]*>/g)];
     if (googleEligible) {
+      analytics.assertReviewedDocumentTitle(html, route);
       const expected = '<script src="/assets/'+analytics.GOOGLE_RUNTIME_ASSET+'?v='+analytics.assetVersion(analytics.GOOGLE_RUNTIME_ASSET)+
         '" defer data-mft-google-mode="'+analytics.GOOGLE_RUNTIME_MODE+'" data-mft-google-measurement-id="'+analytics.MEASUREMENT_ID+
         '" data-mft-google-route="'+route+'" data-mft-google-event="'+analytics.GOOGLE_EVENT+

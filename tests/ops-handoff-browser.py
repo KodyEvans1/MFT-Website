@@ -255,6 +255,31 @@ try:
         checked('Remembered account acknowledgment still measures a new eligible activation and preserves paid source across internal navigation')
         case.close()
 
+        case = Case(browser)
+        # Establish the functional acknowledgment through the real dialog, then
+        # start a fresh document visit with its remembered native-link behavior.
+        case.open()
+        case.go()
+        case.wait()
+        case.page.goto(BASE + '/new-page/', wait_until='domcontentloaded')
+        link = case.page.locator(PRIMARY).first
+        assert case.page.evaluate("localStorage.getItem('mft.newClientAccountAcknowledgment.v1')") == 'acknowledged'
+        for activation in [{'modifiers': ['Control']}, {'button': 'middle'}]:
+            with case.context.expect_page() as popup:
+                link.click(**activation)
+            popup.value.wait_for_url(REQUEST)
+            expect(case.page.locator('dialog.mft-consultation-gate[open]')).to_have_count(0)
+            case.wait(2)
+        # The third activation must still navigate; deduplication only affects
+        # measurement and must never disable or intercept the native anchor.
+        link.click()
+        case.page.wait_for_url(REQUEST)
+        case.page.wait_for_timeout(200)
+        case.wait(2)
+        assert len(case.records) == 2 and case.destinations == [REQUEST] * 4
+        checked('Repeated trusted Control-click, middle-click and ordinary activation of one remembered native link record one new handoff while all three navigations work')
+        case.close()
+
         case = Case(browser, path='/')
         gate = case.open(FREE)
         assert gate.locator('[data-mft-account-ack]').is_visible() and gate.locator('[data-mft-consultation-ack]').is_visible()

@@ -48,6 +48,9 @@ try{
 }catch{}
 function advertisingStatus(){try{return window.MFTGoogleMeasurement?.status()||'unavailable';}catch{return 'unavailable';}}
 function clearCookies(){
+ // The standard tag also stores a backup in this named localStorage key.
+ // Delete only Google measurement state; keep functional scheduling choices.
+ try{localStorage.removeItem('_gcl_ls');}catch{}
  const host=new URL(location.origin).hostname;
  let cookies='';try{cookies=document.cookie;}catch{}
  for(const part of cookies.split(';')){
@@ -63,16 +66,18 @@ function retainGoogleContext(){
  // only a previously consented, bounded source for a later eligible page.
  let permission=null,context=null;
  try{permission=JSON.parse(localStorage.getItem(conditionalAdvertisingConsentKey)||'null');context=JSON.parse(sessionStorage.getItem(googleSourceKey)||'null');}catch{}
- const now=Date.now(),valid=!privacySignal()&&permission?.choice==='granted'&&
+ const now=Date.now(),currentGrant=!privacySignal()&&permission?.choice==='granted'&&
   /^[a-f0-9]{64}$/.test(permission.review||'')&&Number.isSafeInteger(permission.expiresAt)&&
   permission.expiresAt>now&&permission.expiresAt<=now+acquisitionLifetime&&
-  Object.keys(permission).sort().join(',')==='choice,expiresAt,review'&&
+  Object.keys(permission).sort().join(',')==='choice,expiresAt,review';
+ const valid=currentGrant&&
   context?.review===permission.review&&context.expiresAt===permission.expiresAt&&
   Object.keys(context).sort().join(',')==='clickIds,expiresAt,review'&&context.clickIds&&
   typeof context.clickIds==='object'&&!Array.isArray(context.clickIds)&&
   Object.entries(context.clickIds).every(([key,value])=>['gclid','gbraid','wbraid'].includes(key)&&typeof value==='string'&&/^[A-Za-z0-9_~-]{1,255}$/.test(value));
  if(!valid){
   try{sessionStorage.removeItem(googleSourceKey);}catch{}
+  if(!currentGrant)clearCookies();
   if(privacySignal()){try{localStorage.setItem(conditionalAdvertisingConsentKey,JSON.stringify({choice:'denied'}));}catch{}}
   return;
  }
@@ -227,7 +232,7 @@ function banner(force=false){
  if((status()!=='unset'&&!needsGoogleChoice&&!force)||document.getElementById('mft-analytics-consent'))return;
  const el=document.createElement('aside');el.id='mft-analytics-consent';el.className='mft-analytics-consent';
  el.setAttribute('role','dialog');el.setAttribute('aria-label','Analytics privacy choice');
- const advertising=google?'<span data-mft-advertising-status="'+google.status()+'">Google advertising measurement is a separate choice. If allowed, Google may connect a scheduling-link click on an approved public page with your ad-click and browser identifiers. This does not confirm an appointment. Website-controlled source context expires after 30 minutes; Google has its own retention settings. Personalized advertising remains off. <span class="mft-analytics-consent-actions"><button type="button" data-choice="grant-ad" aria-label="Allow Google advertising measurement">Allow Google</button><button type="button" data-choice="deny-ad" aria-label="Decline Google advertising measurement">Decline Google</button></span></span>':window.MFTGoogleMeasurement?'<span data-mft-advertising-status="'+advertisingStatus()+'">Google measurement is off for the rest of this page. You can manage this choice on another page where the option is available. This page will not restart Google.</span>':'<span data-mft-advertising-status="unavailable">Google Analytics and advertising measurement are disabled because scheduling activity can reveal an interest in care.</span>';
+ const advertising=google?'<span data-mft-advertising-status="'+google.status()+'">Google advertising measurement is a separate choice. If allowed, Google receives the public page address and title, visit activity, and a scheduling-link click, linked to ad-click and browser identifiers. Google also receives ordinary connection information, including your IP address, and may use existing Google cookies for measurement. A scheduling click does not confirm an appointment. Website-controlled source context is usable for 30 minutes; Google has separate retention rules. Personalized advertising remains off. <span class="mft-analytics-consent-actions"><button type="button" data-choice="grant-ad" aria-label="Allow Google advertising measurement">Allow Google</button><button type="button" data-choice="deny-ad" aria-label="Decline Google advertising measurement">Decline Google</button></span></span>':window.MFTGoogleMeasurement?'<span data-mft-advertising-status="'+advertisingStatus()+'">Google measurement is off for the rest of this page. You can manage this choice on another page where the option is available. This page will not restart Google.</span>':'<span data-mft-advertising-status="unavailable">Google Analytics and advertising measurement are disabled because scheduling activity can reveal an interest in care.</span>';
  el.innerHTML='<div class="mft-analytics-consent-heading"><strong>Optional website analytics</strong><button type="button" data-choice="dismiss" aria-label="Close analytics notice">Close</button></div><p tabindex="0" role="region" aria-label="How optional analytics work">Allow M.F.T. to record coded scheduling-link clicks with limited traffic-source information. M.F.T. keeps these click records for 30 days, with removal during daily cleanup. A random event ID prevents duplicate counting and is not sent to Google or SimplePractice. Opening scheduling is not an appointment request or booking. This measurement does not include names, contact details, page text, clinician selections, form entries, appointment details, or client records. '+advertising+' You can change these choices using Analytics choices in the footer. Allow analytics changes only the M.F.T. choice.</p><div class="mft-analytics-consent-actions"><button type="button" data-choice="deny">Decline</button><button type="button" data-choice="grant">Allow analytics</button></div>';
  if(privacySignal()){el.querySelector('p').textContent='Your browser privacy signal is on. Optional analytics are disabled. Google Analytics and advertising measurement remain unavailable.';el.querySelector('[data-choice="grant"]').remove();}
  el.addEventListener('click',e=>{

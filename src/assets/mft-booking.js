@@ -29,8 +29,17 @@
     // Measurement is optional and cannot cancel, replace, or delay navigation.
     try{window.MFTSchedulingMeasurement?.track(names,placement(a),undefined,{googleGenericHandoff});}catch{}
   }
-  function handoff(e,a,names,googleGenericHandoff=genericHandoff(a)){
+  // A native link is one handoff per document visit, even when a double click
+  // or repeated new-tab activation produces several trusted DOM events. This
+  // state never leaves the page and never prevents the anchor's default action.
+  let completedNativeLinks=new WeakSet();
+  window.addEventListener('pageshow',e=>{if(e.persisted)completedNativeLinks=new WeakSet();});
+  function handoff(e,a,names,googleGenericHandoff=genericHandoff(a),deduplicateNative=false){
     if(e.defaultPrevented||e.isTrusted!==true||e.button>1)return;
+    if(deduplicateNative){
+      if(completedNativeLinks.has(a))return;
+      completedNativeLinks.add(a);
+    }
     measure(names,a,googleGenericHandoff);
   }
   function bookingLink(e){
@@ -43,7 +52,7 @@
   }
   function normalBookingClick(e){
     const a=bookingLink(e);
-    if(a)handoff(e,a,[diagnostic(a),'simplepractice_exit']);
+    if(a)handoff(e,a,[diagnostic(a),'simplepractice_exit'],genericHandoff(a),true);
   }
   document.addEventListener('click',normalBookingClick);
   document.addEventListener('auxclick',e=>{if(e.button===1)normalBookingClick(e);});

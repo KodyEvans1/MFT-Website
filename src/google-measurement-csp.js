@@ -5,7 +5,12 @@
 // receive the original, stricter policy at the start of <head>. Browsers apply
 // the intersection, avoiding assumptions about overlapping Netlify headers.
 const SCRIPT_ORIGIN = 'https://www.googletagmanager.com';
-const COLLECT_ORIGINS = ['https://www.google-analytics.com', 'https://region1.google-analytics.com'];
+// A GA4 tag linked to Ads has native measurement/identifier destinations beyond
+// google-analytics.com. These are explicit in the unapproved flow and the real
+// vendor probe; a hostname is not evidence that personalization is enabled.
+const COLLECT_ORIGINS = ['https://analytics.google.com', 'https://www.google-analytics.com',
+  'https://region1.google-analytics.com', 'https://www.google.com',
+  'https://stats.g.doubleclick.net', SCRIPT_ORIGIN];
 const META_MARKER = 'data-mft-google-denied="true"';
 function headerPolicy(headers) {
   const matches = [...headers.matchAll(/^\s+Content-Security-Policy:\s*([^\n]+)$/gm)];
@@ -14,10 +19,11 @@ function headerPolicy(headers) {
 }
 function permitGoogle(headers) {
   const original = headerPolicy(headers);
-  if (!/script-src [^;]+;/.test(original) || !/connect-src [^;]+;/.test(original))
-    throw Error('Missing script or connect CSP directive');
+  if (!/script-src [^;]+;/.test(original) || !/connect-src [^;]+;/.test(original) || !/img-src [^;]+;/.test(original))
+    throw Error('Missing script, connect or image CSP directive');
   const allowed = original.replace(/script-src ([^;]+);/, 'script-src $1 '+SCRIPT_ORIGIN+';')
-    .replace(/connect-src ([^;]+);/, 'connect-src $1 '+COLLECT_ORIGINS.join(' ')+';');
+    .replace(/connect-src ([^;]+);/, 'connect-src $1 '+COLLECT_ORIGINS.join(' ')+';')
+    .replace(/img-src ([^;]+);/, 'img-src $1 '+COLLECT_ORIGINS.join(' ')+';');
   return {headers:headers.replace(original, allowed), restrictedPolicy:original};
 }
 function restrictedMeta(policy) {

@@ -8,12 +8,20 @@ const current=document.currentScript;
 if(!current||window.__MFT_GOOGLE_MEASUREMENT__)return;
 const data=current.dataset,id='G-BTK39BBNRE',eventName='simplepractice_exit';
 const routes=new Set(['/','/about/']),route=data.mftGoogleRoute,review=data.mftGoogleApprovedReview;
+// The native Ads-linked conversion leg reads document.title even when GA4's
+// page_title override is set. Admit only the reviewed public page titles;
+// never rewrite a private title to conceal an otherwise ineligible document.
+const reviewedTitles=Object.freeze({
+ '/':'Marriage.Family.Therapy | Woodinville & Online in Washington',
+ '/about/':'About Marriage.Family.Therapy | Woodinville, WA'
+});
 if(location.origin!=='https://www.mft.care'||data.mftGoogleMode!=='approved-main-page'||
  data.mftGoogleMeasurementId!==id||data.mftGoogleEvent!==eventName||
  !routes.has(route)||location.pathname!==route||!/^[a-f0-9]{64}$/.test(review||''))return;
 window.__MFT_GOOGLE_MEASUREMENT__=true;
 window.__MFT_GA4_BASIC__=true; // Never revive the retired iframe controller.
 const consentKey='mft.advertising.consent.v2',sourceKey='mft.google.source.v1',lifetime=1800000;
+const previousGoogleConsentKeys=['mft.analytics.consent.v4','mft.analytics.consent.v3','mft.analytics.consent.v2'];
 const clickKeys=['gclid','gbraid','wbraid'];
 const campaigns=new Set(['24274542446','24362234053','24435101888','24444626634','24449945489','24530528782','24524392745']);
 let permission=null,context=null,loader=null,started=false,ready=false,stopped=false,blocked=false;
@@ -27,9 +35,14 @@ function validGrant(value){return value&&value.choice==='granted'&&value.review=
 const saved=read(localStorage,consentKey);
 if(saved?.choice==='denied')permission={choice:'denied'};
 else if(validGrant(saved))permission={choice:'granted',review,expiresAt:saved.expiresAt};
-function available(){return !blocked&&!(started&&stopped)&&location.pathname===route;}
+function hasReviewedTitle(){return document.title===reviewedTitles[route];}
+function available(){return !blocked&&!(started&&stopped)&&location.pathname===route&&hasReviewedTitle();}
 function status(){if(signal()||permission?.choice==='denied')return 'denied';if(!available())return 'unavailable';return validGrant(permission)?'granted':'unset';}
 function clearCookies(){
+ // The observed vendor uses this unprefixed localStorage backup for native
+ // ad-click state. Its expiry metadata does not physically delete the key in
+ // an inactive browser. Remove only this known Google-owned backup here.
+ remove(localStorage,'_gcl_ls');
  let value='';try{value=document.cookie;}catch{}
  for(const part of value.split(';')){
   const name=part.split('=')[0].trim();
@@ -37,10 +50,23 @@ function clearCookies(){
   for(const domain of ['','www.mft.care','mft.care']){try{document.cookie=name+'=; Max-Age=0; Path=/; SameSite=Lax; Secure'+(domain?'; Domain='+domain:'');}catch{}}
  }
 }
-function halt(){
+function halt(preserveNewerGrant=false){
  window['ga-disable-'+id]=true;
  stopped=true;ready=false;
- remove(sessionStorage,sourceKey);context=null;clearCookies();
+ // A suspended/BFCache document can expire after another document obtained a
+ // fresh, independent grant. Stop this document without erasing that newer
+ // window's context or shared Google cookies. Explicit withdrawal still clears
+ // all measurement state, including state created under a newer grant.
+ const latest=preserveNewerGrant?read(localStorage,consentKey):null;
+ const newer=latest?.choice==='granted'&&/^[a-f0-9]{64}$/.test(latest.review||'')&&
+  Number.isSafeInteger(latest.expiresAt)&&latest.expiresAt>Date.now()&&latest.expiresAt<=Date.now()+lifetime&&
+  Number.isSafeInteger(permission?.expiresAt)&&latest.expiresAt>permission.expiresAt&&
+  Object.keys(latest).sort().join(',')==='choice,expiresAt,review';
+ const stored=newer?read(sessionStorage,sourceKey):null;
+ const newerSource=newer&&stored?.review===latest.review&&stored.expiresAt===latest.expiresAt&&validIds(stored.clickIds)&&
+  Object.keys(stored).sort().join(',')==='clickIds,expiresAt,review';
+ if(!newerSource)remove(sessionStorage,sourceKey);
+ context=null;if(!newer)clearCookies();
  if(ownedQueue){ownedQueue.length=0;window.gtag=function(){};}
  observer?.disconnect();observer=null;
  loader?.remove();loader=null;
@@ -52,14 +78,17 @@ function halt(){
 function deny(){permission={choice:'denied'};write(localStorage,consentKey,permission);halt();}
 function enforceBoundary(){
  if(signal()){deny();return false;}
- if(status()!=='granted'){halt();return false;}
+ if(status()!=='granted'){halt(Number.isSafeInteger(permission?.expiresAt)&&permission.expiresAt<=Date.now());return false;}
+ if(location.hash||hasUnapprovedControls()||!currentQueryContext()){blocked=true;halt();return false;}
  return true;
 }
 function validId(value){return typeof value==='string'&&/^[A-Za-z0-9_~-]{1,255}$/.test(value);}
 function validIds(value){return value&&typeof value==='object'&&!Array.isArray(value)&&
  Object.keys(value).every(key=>clickKeys.includes(key)&&validId(value[key]));}
-function queryContext(){
+function currentQueryContext(){
  // No query access before the separate, current Google-purpose grant.
+ // This parser is also used by lifecycle/DOM enforcement. It must not renew
+ // permission, change attribution storage, or touch vendor cookies.
  const query=new URLSearchParams(location.search),seen=new Set(),clickIds={};
  let explicitSource=false;
  for(const [key,value]of query){
@@ -77,6 +106,11 @@ function queryContext(){
   return null;
  }
  if(location.hash)return null;
+ return {clickIds,explicitSource};
+}
+function queryContext(){
+ const currentQuery=currentQueryContext();if(!currentQuery)return null;
+ const {clickIds,explicitSource}=currentQuery;
  const old=read(sessionStorage,sourceKey);
  const validOld=old&&old.review===review&&old.expiresAt===permission.expiresAt&&
   Number.isSafeInteger(old.expiresAt)&&old.expiresAt>Date.now()&&validIds(old.clickIds)&&
@@ -121,19 +155,22 @@ function start(){
  gtag('set',{...configuration,ads_data_redaction:true,url_passthrough:false});
  gtag('set','linker',{domains:[],accept_incoming:false,decorate_forms:false});
  gtag('consent','update',{analytics_storage:'granted',ad_storage:'granted',ad_user_data:'granted',ad_personalization:'denied'});
- gtag('js',new Date());gtag('config',id,configuration);
+ gtag('js',new Date());
+ if(!enforceBoundary())return false;
+ gtag('config',id,configuration);
  window['ga-disable-'+id]=false;
  loader=document.createElement('script');loader.async=true;loader.referrerPolicy='no-referrer';
  loader.src='https://www.googletagmanager.com/gtag/js?id='+id;
  loader.addEventListener('load',()=>{if(enforceBoundary()&&!stopped)ready=true;});
  loader.addEventListener('error',()=>{blocked=true;halt();});
  if(typeof MutationObserver==='function'){
-  observer=new MutationObserver(()=>{if(hasUnapprovedControls()){blocked=true;halt();}});
-  observer.observe(document.body,{childList:true,subtree:true});
+  observer=new MutationObserver(()=>enforceBoundary());
+  observer.observe(document.documentElement,{childList:true,subtree:true,characterData:true,attributes:true});
  }
+ if(!enforceBoundary())return false;
  started=true;document.head.appendChild(loader);
  const expiresAt=permission.expiresAt;
- setTimeout(()=>{if(permission?.expiresAt===expiresAt&&Date.now()>=expiresAt)halt();},Math.max(0,expiresAt-Date.now()));
+ setTimeout(()=>{if(permission?.expiresAt===expiresAt&&Date.now()>=expiresAt)halt(true);},Math.max(0,expiresAt-Date.now()));
  return true;
 }
 function grant(){
@@ -157,6 +194,11 @@ function handoff(){
 window.MFTGoogleMeasurement={available,status,grant,deny,handoff,enforceBoundary,preferenceVersion:consentKey};
 window.addEventListener('storage',event=>{
  if(event.key===null){deny();return;}
+ // These older choices explicitly covered Google. A new refusal in an open
+ // legacy tab must revoke this sender too. The advertising.v1 value is not
+ // equivalent: excluded-page maintenance automatically writes it as denied.
+ // The current v5 analytics-only preference remains independently controlled.
+ if(previousGoogleConsentKeys.includes(event.key)&&event.newValue==='denied'){deny();return;}
  if(event.key!==consentKey)return;
  const incoming=read(localStorage,consentKey);
  if(incoming?.choice==='denied'){deny();return;}
@@ -164,7 +206,11 @@ window.addEventListener('storage',event=>{
  // stopped document. A normal subsequent page load may use the current grant.
  if(!validGrant(incoming)){permission=null;halt();}
 });
-document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')enforceBoundary();});
-window.addEventListener('pageshow',()=>enforceBoundary());
+// Register before the vendor. A title/control change and a visibility or
+// pagehide event can occur in one task, before MutationObserver callbacks.
+// Capture-phase checks stop that document before vendor engagement listeners.
+document.addEventListener('visibilitychange',()=>enforceBoundary(),true);
+window.addEventListener('pagehide',()=>enforceBoundary(),true);
+window.addEventListener('pageshow',()=>enforceBoundary(),true);
 if(status()==='granted')start();else{window['ga-disable-'+id]=true;remove(sessionStorage,sourceKey);clearCookies();}
 })();

@@ -16,9 +16,36 @@ const GOOGLE_RUNTIME_ASSET = 'mft-google-measurement.js';
 const GOOGLE_RUNTIME_MODE = 'approved-main-page';
 const GOOGLE_EVENT = 'simplepractice_exit';
 const CANDIDATE_GOOGLE_ROUTES = Object.freeze(['/', '/about/']);
+const REVIEWED_DOCUMENT_TITLES = Object.freeze({
+  '/': 'Marriage.Family.Therapy | Woodinville & Online in Washington',
+  '/about/': 'About Marriage.Family.Therapy | Woodinville, WA'
+});
 const fullHash = bytes => crypto.createHash('sha256').update(bytes).digest('hex');
 function flowHash() { return fullHash(fs.readFileSync(path.join(__dirname, '..', GOOGLE_FLOW_FILE))); }
 function runtimeHash() { return fullHash(fs.readFileSync(path.join(__dirname, 'assets', GOOGLE_RUNTIME_ASSET))); }
+function validateReviewedDocumentTitles(titles) {
+  if (!titles || typeof titles !== 'object' || Array.isArray(titles) ||
+      Object.keys(titles).length !== CANDIDATE_GOOGLE_ROUTES.length ||
+      CANDIDATE_GOOGLE_ROUTES.some(route => !Object.hasOwn(titles, route) || titles[route] !== REVIEWED_DOCUMENT_TITLES[route]))
+    throw new Error('Unsupported Google measurement flow: exact reviewed document titles are required');
+  return Object.freeze({...titles});
+}
+function reviewedDocumentTitles() {
+  return validateReviewedDocumentTitles(JSON.parse(fs.readFileSync(path.join(__dirname, '..', GOOGLE_FLOW_FILE), 'utf8')).reviewedDocumentTitles);
+}
+function assertReviewedDocumentTitle(html, route) {
+  const expected = reviewedDocumentTitles()[normalizeRoute(route)];
+  // Only the known canonical title markup is accepted. Ignore comments and
+  // inactive/raw-text containers so a quoted title cannot stand in for the
+  // document title. The runtime independently checks document.title as well.
+  const markup = html.replace(/<!--[\s\S]*?-->|<(script|style|template|noscript)\b[^>]*>[\s\S]*?<\/\1\s*>/gi, '');
+  const heads = [...markup.matchAll(/<head(?:\s[^>]*)?>([\s\S]*?)<\/head\s*>/gi)];
+  const titles = [...markup.matchAll(/<title\b[^>]*>[\s\S]*?<\/title\s*>/gi)];
+  const canonical = expected && '<title>'+expected.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')+'</title>';
+  if (!expected || heads.length !== 1 || titles.length !== 1 || titles[0][0] !== canonical || !heads[0][1].includes(canonical))
+    throw new Error('Google measurement document title differs from the reviewed scope: '+normalizeRoute(route));
+  return expected;
+}
 
 function validateGooglePolicy(policy) {
   const keys = ['version', 'status', 'approvedRoutes', 'approvedEvents', 'reason', 'review'];
@@ -44,6 +71,7 @@ function validateGooglePolicy(policy) {
         !/^[a-f0-9]{64}$/.test(review.networkEvidenceSha256 || '') ||
         review.flowSha256 !== flowHash() || review.runtimeSha256 !== runtimeHash())
       throw new Error('Unsupported Google measurement policy: matching flow, runtime and documented review evidence are required');
+    reviewedDocumentTitles();
   }
   return Object.freeze({
     ...policy,
@@ -113,6 +141,7 @@ function inject(html, route, allowedRoutes, env = process.env, policy = GOOGLE_P
   if (!controllerEnabled(env) || !allowedRoutes.has(p) || isSensitive(p) || /<(?:form|input|textarea)\b/i.test(html)) return { html, injected: false, reason: 'first-party-disabled-or-not-approved' };
   if (/G-BTK39BBNRE|mft-(?:analytics|google-measurement|ga4-bootstrap|ga4-frame|ga4-page)\.js|googletagmanager\.com|google-analytics\.com/.test(html)) throw new Error('Existing measurement integration detected; refusing duplicate installation');
   const google = enabled(env, policy) && isGoogleEligible(p, GOOGLE_EVENT, policy);
+  if (google) assertReviewedDocumentTitle(html, p);
   const googleTag = google ? '<script src="/assets/' + GOOGLE_RUNTIME_ASSET + '?v=' + assetVersion(GOOGLE_RUNTIME_ASSET) +
     '" defer data-mft-google-mode="' + GOOGLE_RUNTIME_MODE + '" data-mft-google-measurement-id="' + MEASUREMENT_ID +
     '" data-mft-google-route="' + p + '" data-mft-google-event="' + GOOGLE_EVENT +
@@ -125,7 +154,7 @@ function inject(html, route, allowedRoutes, env = process.env, policy = GOOGLE_P
   return { html: html.replace('</body>', googleTag + tag + '</body>'), injected: true, googleInjected:google, reason: google ? 'reviewed-google-and-first-party-page' : 'approved-public-first-party-page' };
 }
 module.exports = { MEASUREMENT_ID, SITE, ENABLE_FLAG, HANDOFF_ENABLE_FLAG, HANDOFF_ENDPOINT, GOOGLE_POLICY_FILE,
-  GOOGLE_FLOW_FILE, GOOGLE_RUNTIME_ASSET, GOOGLE_RUNTIME_MODE, GOOGLE_EVENT, CANDIDATE_GOOGLE_ROUTES,
-  flowHash, runtimeHash, googleReviewDigest,
+  GOOGLE_FLOW_FILE, GOOGLE_RUNTIME_ASSET, GOOGLE_RUNTIME_MODE, GOOGLE_EVENT, CANDIDATE_GOOGLE_ROUTES, REVIEWED_DOCUMENT_TITLES,
+  flowHash, runtimeHash, googleReviewDigest, validateReviewedDocumentTitles, reviewedDocumentTitles, assertReviewedDocumentTitle,
   enabled, handoffEnabled, controllerEnabled, googleRequested, googlePolicy, validateGooglePolicy, isGoogleEligible,
   normalizeRoute, isSensitive, pageKey, inject, assetVersion, strip, frameVersion };

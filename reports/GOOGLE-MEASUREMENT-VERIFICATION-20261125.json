@@ -1,0 +1,601 @@
+{
+  "version": 1,
+  "recordedOn": "2026-11-25 America/Los_Angeles",
+  "status": "conditional-engineering-verified-production-Google-blocked",
+  "baselineCommit": "aa6aa751b7fc7401ba51655f58be42be576284f6",
+  "pullRequest": "https://github.com/KodyEvans1/MFT-Website/pull/26",
+  "scope": "Isolated synthetic fixtures only. Every browser request intercepted; DNS denied. No Google delivery, real Ops receipt, paid-ad click, appointment, or Ads credit. This evidence does not authorize production collection.",
+  "sourceSha256": {
+    "content/google-measurement-flow.json": "12dcf5e321e38aae3611db64050f83fd1b457bcd32305b33d1d384c5bb4fa283",
+    "src/assets/mft-google-measurement.js": "d902fbaaf2fc67d0dae42cdd47d77a6a1fd0fea6c3df155d76dc7f57ccbb1146",
+    "src/assets/mft-analytics.js": "2140257e86f5987fd1334a66d5203f7214de9461acf58334a8c04a347452c186",
+    "src/assets/mft-booking.js": "3f51905de07d870e4be99c110d50d87a33b572f432b613663a6b946e6450ffc1",
+    "src/google-measurement-csp.js": "b607b9047b2d8a5c9dcce4913a8b0fb456adede5600e847bb99d457e4792fd31",
+    "tests/google-measurement-network.py": "16a3399ffb47deedd679de32fb588345e9cb3e3ead519b2f659d4f362f282faa"
+  },
+  "vendor": {
+    "downloadedAtUtc": "2026-11-26T05:18:50.950551+00:00",
+    "source": "https://www.googletagmanager.com/gtag/js?id=G-BTK39BBNRE",
+    "method": "GET",
+    "status": 200,
+    "contentType": "application/javascript",
+    "bytes": 528419,
+    "sha256": "9f8e0193cfd6f914ed1ec726517aeefdf63f45577c5e2bd6ac23d3304be3d7dd",
+    "scope": "Public vendor JavaScript download only. Browser collector and event traffic are blocked."
+  },
+  "browserVersion": "158.0.8127.88",
+  "checksPassed": 580,
+  "casesPassed": {
+    "advertising-expired": 9,
+    "advertising-other-review": 9,
+    "advertising-refused": 9,
+    "after-dynamic-gpc": 17,
+    "after-expiry": 12,
+    "after-legacy-cross-tab-withdrawal": 17,
+    "after-withdrawal": 17,
+    "cached-legacy-helper": 8,
+    "clinician-excluded": 11,
+    "current-first-party-grant": 9,
+    "dnt": 8,
+    "duplicate-click-id": 8,
+    "excluded-clinician-route": 8,
+    "existing-client-excluded": 11,
+    "existing-data-layer": 8,
+    "existing-gtag": 8,
+    "form-added-after-permission": 13,
+    "fragment": 8,
+    "free-text-query": 8,
+    "gpc": 8,
+    "grant-only-automatic-activity": 17,
+    "incoming-linker": 8,
+    "legacy-advertising-grant": 9,
+    "legacy-analytics-grant": 9,
+    "native-continue": 21,
+    "native-gbraid": 23,
+    "native-gclid": 36,
+    "native-wbraid": 23,
+    "no-consent": 9,
+    "preexisting-third-party-cookies": 23,
+    "query-change-handoff": 14,
+    "query-change-pagehide": 14,
+    "query-change-visibilitychange": 14,
+    "remembered-ack": 18,
+    "repeat-remembered-ack": 18,
+    "repeat-same-dialog": 18,
+    "reviewed-conditional-csp": 20,
+    "title-change-handoff": 14,
+    "title-change-pagehide": 14,
+    "title-change-visibilitychange": 14,
+    "unknown-contact-query": 8,
+    "unreviewed-document-title": 8,
+    "vendor-blocked": 11,
+    "vendor-timeout": 11
+  },
+  "interceptedRequests": 200,
+  "requestClasses": {
+    "https://www.googletagmanager.com/gtag/js": {
+      "requests": 26,
+      "methods": [
+        "GET"
+      ],
+      "fieldNames": [
+        "id"
+      ],
+      "requestHeaderNames": [
+        "accept",
+        "sec-ch-ua",
+        "sec-ch-ua-mobile",
+        "sec-ch-ua-platform",
+        "user-agent"
+      ],
+      "cookieHeaderNames": [],
+      "eventNames": [],
+      "titles": [],
+      "httpReferrerPresent": false,
+      "privateCanaryPresent": false
+    },
+    "https://www.google.com/measurement/conversion": {
+      "requests": 10,
+      "methods": [
+        "POST"
+      ],
+      "fieldNames": [
+        "_tu",
+        "auid",
+        "cv",
+        "dma",
+        "en",
+        "fmt",
+        "frm",
+        "fst",
+        "gacid",
+        "gcd",
+        "gclaw",
+        "gclaw_src",
+        "gclgb",
+        "gclgb_src",
+        "gcs",
+        "gtm",
+        "gtm_ee",
+        "hn",
+        "ibt",
+        "npa",
+        "pscdl",
+        "random",
+        "rcb",
+        "tag_exp",
+        "tiba",
+        "tid",
+        "top",
+        "u_h",
+        "u_w",
+        "uaa",
+        "uab",
+        "uafvl",
+        "uam",
+        "uamb",
+        "uap",
+        "uapv",
+        "uaw",
+        "url"
+      ],
+      "requestHeaderNames": [
+        "accept",
+        "cookie",
+        "origin",
+        "sec-ch-ua",
+        "sec-ch-ua-mobile",
+        "sec-ch-ua-platform",
+        "user-agent"
+      ],
+      "cookieHeaderNames": [
+        "NID"
+      ],
+      "eventNames": [
+        "simplepractice_exit"
+      ],
+      "titles": [
+        "About Marriage.Family.Therapy | Woodinville, WA",
+        "Marriage.Family.Therapy | Woodinville & Online in Washington"
+      ],
+      "httpReferrerPresent": false,
+      "privateCanaryPresent": false
+    },
+    "https://analytics.google.com/g/collect": {
+      "requests": 12,
+      "methods": [
+        "POST"
+      ],
+      "fieldNames": [
+        "_c",
+        "_ee",
+        "_et",
+        "_eu",
+        "_fv",
+        "_gaz",
+        "_nsi",
+        "_p",
+        "_prs",
+        "_s",
+        "_ss",
+        "_tu",
+        "cid",
+        "dl",
+        "dma",
+        "dr",
+        "dt",
+        "en",
+        "frm",
+        "gcd",
+        "gcs",
+        "gtm",
+        "ibt",
+        "lps",
+        "ngs",
+        "npa",
+        "pscdl",
+        "rcb",
+        "sct",
+        "seg",
+        "sid",
+        "sr",
+        "tag_exp",
+        "tfd",
+        "tid",
+        "uaa",
+        "uab",
+        "uafvl",
+        "uam",
+        "uamb",
+        "uap",
+        "uapv",
+        "uaw",
+        "ul",
+        "v"
+      ],
+      "requestHeaderNames": [
+        "accept",
+        "cookie",
+        "origin",
+        "sec-ch-ua",
+        "sec-ch-ua-mobile",
+        "sec-ch-ua-platform",
+        "user-agent"
+      ],
+      "cookieHeaderNames": [
+        "NID"
+      ],
+      "eventNames": [
+        "simplepractice_exit",
+        "user_engagement"
+      ],
+      "titles": [
+        "M.F.T. Public Website"
+      ],
+      "httpReferrerPresent": false,
+      "privateCanaryPresent": false
+    },
+    "https://stats.g.doubleclick.net/g/collect": {
+      "requests": 10,
+      "methods": [
+        "POST"
+      ],
+      "fieldNames": [
+        "aip",
+        "cid",
+        "dma",
+        "frm",
+        "gcd",
+        "gcs",
+        "gtm",
+        "ibt",
+        "ngs",
+        "npa",
+        "rcb",
+        "tag_exp",
+        "tid",
+        "v"
+      ],
+      "requestHeaderNames": [
+        "accept",
+        "cookie",
+        "origin",
+        "sec-ch-ua",
+        "sec-ch-ua-mobile",
+        "sec-ch-ua-platform",
+        "user-agent"
+      ],
+      "cookieHeaderNames": [
+        "IDE"
+      ],
+      "eventNames": [],
+      "titles": [],
+      "httpReferrerPresent": false,
+      "privateCanaryPresent": false
+    }
+  },
+  "automaticEventsObserved": [
+    "simplepractice_exit",
+    "user_engagement"
+  ],
+  "automaticMarkersObserved": [
+    "_ee",
+    "_fv",
+    "_ss"
+  ],
+  "newFirstPartyCookieMetadata": [
+    {
+      "case": "native-gclid",
+      "cookieMetadata": [
+        {
+          "name": "mftga_aw",
+          "domain": "www.mft.care",
+          "path": "/",
+          "expires": 1795672865,
+          "httpOnly": false,
+          "secure": true,
+          "sameSite": "Lax",
+          "secondsUntilExpiry": 1796.21,
+          "secondsBeyondPermission": -1.17
+        },
+        {
+          "name": "mftga_au",
+          "domain": "www.mft.care",
+          "path": "/",
+          "expires": 1795672865,
+          "httpOnly": false,
+          "secure": true,
+          "sameSite": "Lax",
+          "secondsUntilExpiry": 1796.21,
+          "secondsBeyondPermission": -1.17
+        },
+        {
+          "name": "mftga_ga_BTK39BBNRE",
+          "domain": "www.mft.care",
+          "path": "/",
+          "expires": 1795672865,
+          "httpOnly": false,
+          "secure": true,
+          "sameSite": "Lax",
+          "secondsUntilExpiry": 1796.21,
+          "secondsBeyondPermission": -1.17
+        },
+        {
+          "name": "mftga_ga",
+          "domain": "www.mft.care",
+          "path": "/",
+          "expires": 1795672865,
+          "httpOnly": false,
+          "secure": true,
+          "sameSite": "Lax",
+          "secondsUntilExpiry": 1796.21,
+          "secondsBeyondPermission": -1.17
+        }
+      ],
+      "localStorageKeys": [
+        "mft.advertising.consent.v2",
+        "_gcl_ls"
+      ],
+      "sessionStorageKeys": [
+        "mft.google.source.v1"
+      ]
+    },
+    {
+      "case": "native-gclid",
+      "cookieMetadata": [
+        {
+          "name": "mftga_aw",
+          "domain": "www.mft.care",
+          "path": "/",
+          "expires": 1795672863,
+          "httpOnly": false,
+          "secure": true,
+          "sameSite": "Lax",
+          "secondsUntilExpiry": 1791.77,
+          "secondsBeyondPermission": -3.17
+        },
+        {
+          "name": "mftga_au",
+          "domain": "www.mft.care",
+          "path": "/",
+          "expires": 1795672864,
+          "httpOnly": false,
+          "secure": true,
+          "sameSite": "Lax",
+          "secondsUntilExpiry": 1792.77,
+          "secondsBeyondPermission": -2.17
+        },
+        {
+          "name": "mftga_ga",
+          "domain": "www.mft.care",
+          "path": "/",
+          "expires": 1795672865,
+          "httpOnly": false,
+          "secure": true,
+          "sameSite": "Lax",
+          "secondsUntilExpiry": 1793.77,
+          "secondsBeyondPermission": -1.17
+        },
+        {
+          "name": "mftga_ga_BTK39BBNRE",
+          "domain": "www.mft.care",
+          "path": "/",
+          "expires": 1795672866,
+          "httpOnly": false,
+          "secure": true,
+          "sameSite": "Lax",
+          "secondsUntilExpiry": 1794.77,
+          "secondsBeyondPermission": -0.17
+        }
+      ],
+      "localStorageKeys": [
+        "mft.advertising.consent.v2",
+        "_gcl_ls"
+      ],
+      "sessionStorageKeys": [
+        "mft.google.source.v1"
+      ]
+    },
+    {
+      "case": "native-gbraid",
+      "cookieMetadata": [
+        {
+          "name": "mftga_ag",
+          "domain": "www.mft.care",
+          "path": "/",
+          "expires": 1795672871,
+          "httpOnly": false,
+          "secure": true,
+          "sameSite": "Lax",
+          "secondsUntilExpiry": 1796.55,
+          "secondsBeyondPermission": -0.8
+        },
+        {
+          "name": "mftga_au",
+          "domain": "www.mft.care",
+          "path": "/",
+          "expires": 1795672871,
+          "httpOnly": false,
+          "secure": true,
+          "sameSite": "Lax",
+          "secondsUntilExpiry": 1796.55,
+          "secondsBeyondPermission": -0.8
+        },
+        {
+          "name": "mftga_ga_BTK39BBNRE",
+          "domain": "www.mft.care",
+          "path": "/",
+          "expires": 1795672871,
+          "httpOnly": false,
+          "secure": true,
+          "sameSite": "Lax",
+          "secondsUntilExpiry": 1796.55,
+          "secondsBeyondPermission": -0.8
+        },
+        {
+          "name": "mftga_ga",
+          "domain": "www.mft.care",
+          "path": "/",
+          "expires": 1795672871,
+          "httpOnly": false,
+          "secure": true,
+          "sameSite": "Lax",
+          "secondsUntilExpiry": 1796.55,
+          "secondsBeyondPermission": -0.8
+        }
+      ],
+      "localStorageKeys": [
+        "mft.advertising.consent.v2",
+        "_gcl_ls"
+      ],
+      "sessionStorageKeys": [
+        "mft.google.source.v1"
+      ]
+    },
+    {
+      "case": "native-wbraid",
+      "cookieMetadata": [
+        {
+          "name": "mftga_gb",
+          "domain": "www.mft.care",
+          "path": "/",
+          "expires": 1795672874,
+          "httpOnly": false,
+          "secure": true,
+          "sameSite": "Lax",
+          "secondsUntilExpiry": 1796.32,
+          "secondsBeyondPermission": -1.01
+        },
+        {
+          "name": "mftga_au",
+          "domain": "www.mft.care",
+          "path": "/",
+          "expires": 1795672874,
+          "httpOnly": false,
+          "secure": true,
+          "sameSite": "Lax",
+          "secondsUntilExpiry": 1796.32,
+          "secondsBeyondPermission": -1.01
+        },
+        {
+          "name": "mftga_ga_BTK39BBNRE",
+          "domain": "www.mft.care",
+          "path": "/",
+          "expires": 1795672874,
+          "httpOnly": false,
+          "secure": true,
+          "sameSite": "Lax",
+          "secondsUntilExpiry": 1796.32,
+          "secondsBeyondPermission": -1.01
+        },
+        {
+          "name": "mftga_ga",
+          "domain": "www.mft.care",
+          "path": "/",
+          "expires": 1795672874,
+          "httpOnly": false,
+          "secure": true,
+          "sameSite": "Lax",
+          "secondsUntilExpiry": 1796.32,
+          "secondsBeyondPermission": -1.01
+        }
+      ],
+      "localStorageKeys": [
+        "mft.advertising.consent.v2",
+        "_gcl_ls"
+      ],
+      "sessionStorageKeys": [
+        "mft.google.source.v1"
+      ]
+    },
+    {
+      "case": "preexisting-third-party-cookies",
+      "cookieMetadata": [
+        {
+          "name": "NID",
+          "domain": ".google.com",
+          "path": "/",
+          "expires": 1795757494.751761,
+          "httpOnly": false,
+          "secure": true,
+          "sameSite": "None",
+          "secondsUntilExpiry": 86397.13,
+          "secondsBeyondPermission": 84599.75
+        },
+        {
+          "name": "IDE",
+          "domain": ".doubleclick.net",
+          "path": "/",
+          "expires": 1795757494.751763,
+          "httpOnly": false,
+          "secure": true,
+          "sameSite": "None",
+          "secondsUntilExpiry": 86397.13,
+          "secondsBeyondPermission": 84599.75
+        },
+        {
+          "name": "mftga_aw",
+          "domain": "www.mft.care",
+          "path": "/",
+          "expires": 1795672894,
+          "httpOnly": false,
+          "secure": true,
+          "sameSite": "Lax",
+          "secondsUntilExpiry": 1796.38,
+          "secondsBeyondPermission": -1.0
+        },
+        {
+          "name": "mftga_au",
+          "domain": "www.mft.care",
+          "path": "/",
+          "expires": 1795672894,
+          "httpOnly": false,
+          "secure": true,
+          "sameSite": "Lax",
+          "secondsUntilExpiry": 1796.38,
+          "secondsBeyondPermission": -1.0
+        },
+        {
+          "name": "mftga_ga_BTK39BBNRE",
+          "domain": "www.mft.care",
+          "path": "/",
+          "expires": 1795672894,
+          "httpOnly": false,
+          "secure": true,
+          "sameSite": "Lax",
+          "secondsUntilExpiry": 1796.38,
+          "secondsBeyondPermission": -1.0
+        },
+        {
+          "name": "mftga_ga",
+          "domain": "www.mft.care",
+          "path": "/",
+          "expires": 1795672894,
+          "httpOnly": false,
+          "secure": true,
+          "sameSite": "Lax",
+          "secondsUntilExpiry": 1796.38,
+          "secondsBeyondPermission": -1.0
+        }
+      ],
+      "localStorageKeys": [
+        "mft.advertising.consent.v2",
+        "_gcl_ls"
+      ],
+      "sessionStorageKeys": [
+        "mft.google.source.v1"
+      ]
+    }
+  ],
+  "blockers": [],
+  "interceptorErrors": [],
+  "browserErrors": [],
+  "limits": [
+    "Requests were fulfilled locally; neither Google receipt nor attribution was tested.",
+    "Existing synthetic NID and IDE cookies were observed on Google/DoubleClick requests; site cookie expiry does not bound third-party cookies.",
+    "The unmodified public Google script can change; these results describe the recorded hash and tested scenarios.",
+    "Local expiry stops use at the fixed permission deadline; physical storage cleanup requires an active or subsequently visited controlled document.",
+    "The standard runtime includes automatic engagement and linked advertising/identifier requests, not only the application event.",
+    "The proposed two-route scope does not include the newer individual/couples ad landing routes supplied by the owner."
+  ]
+}

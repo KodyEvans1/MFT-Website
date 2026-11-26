@@ -29,7 +29,7 @@ function validationFixture(env = production) {
   const report = {version:2, enabled:false, measurement:measurementReport(env), allowedRoutes:[], allowedEvents:[],
     controllerEnabled:active, controllerAllowedRoutes:['/'], injected:active?['/']:[], excluded:[], googlePages:[]};
   const html = analytics.inject('<html><body>Approved public page</body></html>', '/', new Set(['/']), env).html;
-  const headers = "/*\n  Content-Security-Policy: default-src 'self'; script-src 'self'; connect-src 'self'"+(active?' https://ops.mft.care':'')+"; frame-src https://clientsecure.me;\n";
+  const headers = "/*\n  Content-Security-Policy: default-src 'self'; script-src 'self'; connect-src 'self'"+(active?' https://ops.mft.care':'')+"; img-src 'self' data:; frame-src https://clientsecure.me;\n";
   const write = (relative, value) => {
     const file = path.join(dist, relative);
     fs.mkdirSync(path.dirname(file), {recursive:true});
@@ -52,7 +52,9 @@ function approvedValidationFixture() {
   const pages = {};
   for (const route of routes) {
     const relative = route === '/' ? 'index.html' : route.slice(1)+'index.html';
-    pages[relative] = analytics.inject(document, route, new Set(routes), env, policy).html;
+    const title = analytics.REVIEWED_DOCUMENT_TITLES[route] || 'Synthetic public page';
+    const page = document.replace('Synthetic public page', title.replace(/&/g, '&amp;'));
+    pages[relative] = analytics.inject(page, route, new Set(routes), env, policy).html;
     f.write(relative, pages[relative]);
   }
   // An inherited draft must lose both integrations and get the strict CSP.
@@ -287,6 +289,30 @@ test('approved artifact validation rejects extra Google destinations, missing no
   }
 });
 
+test('reviewed CSP permits all observed native measurement destinations while excluded documents retain the original policy', () => {
+  const f = approvedValidationFixture();
+  try {
+    const expectedDestinations = [
+      'https://analytics.google.com', 'https://www.google-analytics.com',
+      'https://region1.google-analytics.com', 'https://www.google.com',
+      'https://stats.g.doubleclick.net', 'https://www.googletagmanager.com'
+    ];
+    const directives = Object.fromEntries(csp.headerPolicy(f.headers).split(';').map(value => value.trim().split(/\s+/)).filter(value => value[0]).map(([name,...values]) => [name,values]));
+    assert.deepEqual(directives['script-src'], ["'self'", 'https://www.googletagmanager.com']);
+    assert.deepEqual(directives['connect-src'], ["'self'", 'https://ops.mft.care', ...expectedDestinations]);
+    assert.deepEqual(directives['img-src'], ["'self'", 'data:', ...expectedDestinations]);
+    assert.deepEqual(directives['frame-src'], ['https://clientsecure.me']);
+    assert.equal(csp.removeGooglePermission(f.headers), f.restrictedHeaders+'  Referrer-Policy: no-referrer\n');
+    require('../scripts/validate-analytics').apply(f.dist, f.policy);
+    const strictMeta = csp.restrictedMeta(csp.headerPolicy(f.restrictedHeaders));
+    for (const relative of ['services/index.html', 'draft/index.html', 'check-my-coverage/index.html', 'assets/mft-ga4-frame.html']) {
+      const html = fs.readFileSync(path.join(f.dist, relative), 'utf8');
+      assert.ok(html.includes('<head>'+strictMeta), relative);
+      for (const destination of expectedDestinations) assert.equal(strictMeta.includes(destination), false);
+    }
+  } finally { f.remove(); }
+});
+
 test('approved artifact validation rejects missing, duplicate, reordered or unreviewed runtime tags', () => {
   const googleTag = html => html.match(/<script\b[^>]*src="[^"]*mft-google-measurement\.js[^>]*><\/script>/)[0];
   const cases = [
@@ -304,6 +330,16 @@ test('approved artifact validation rejects missing, duplicate, reordered or unre
     try {
       mutate(f);
       assert.throws(() => require('../scripts/validate-analytics').apply(f.dist, f.policy), /Google runtime/, label);
+    } finally { f.remove(); }
+  }
+});
+
+test('final reviewed artifact validation rejects document title changes after injection', () => {
+  for (const relative of ['index.html', 'about/index.html']) {
+    const f = approvedValidationFixture();
+    try {
+      f.write(relative, f.pages[relative].replace(/<title>[\s\S]*?<\/title>/, '<title>Unreviewed clinical context</title>'));
+      assert.throws(() => require('../scripts/validate-analytics').apply(f.dist, f.policy), /document title differs/);
     } finally { f.remove(); }
   }
 });

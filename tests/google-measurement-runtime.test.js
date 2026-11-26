@@ -7,34 +7,37 @@ const googleCode=fs.readFileSync(path.join(assets,'mft-google-measurement.js'),'
 const opsCode=fs.readFileSync(path.join(assets,'mft-analytics.js'),'utf8');
 const REVIEW='a'.repeat(64),CONSENT='mft.advertising.consent.v2',SOURCE='mft.google.source.v1';
 const OPS_CONSENT='mft.analytics.consent.v5',OPS_SOURCE='mft.analytics.source.v1',LIFETIME=1800000;
+const TITLES={'/':'Marriage.Family.Therapy | Woodinville & Online in Washington','/about/':'About Marriage.Family.Therapy | Woodinville, WA'};
 const copy=value=>JSON.parse(JSON.stringify(value));
 function store(seed={},blocked=false){
  const values=new Map(Object.entries(seed)),writes=[];
  return {getItem:key=>{if(blocked)throw Error('Storage blocked');return values.get(key)??null;},setItem:(key,value)=>{if(blocked)throw Error('Storage blocked');values.set(key,String(value));writes.push({key,value:String(value)});},removeItem:key=>{if(blocked)throw Error('Storage blocked');values.delete(key);},all:()=>Object.fromEntries(values),writes};
 }
-function fixture({route='/',pathname=route,origin='https://www.mft.care',search='',hash='',dataset={},local={},session={},cookies={},clock={now:1800000000000},gpc=false,dnt='0',blockedStorage=false,otherSender=false,controls=[]}={}){
- const listeners={},elements=[],loaders=[],timers=[],ops=[],cookieWrites=[];let queryReads=0,reloads=0,ids=0;
+function fixture({route='/',pathname=route,origin='https://www.mft.care',title=TITLES[route],search='',hash='',dataset={},local={},session={},cookies={},clock={now:1800000000000},gpc=false,dnt='0',blockedStorage=false,otherSender=false,controls=[]}={}){
+ const listeners={},registrations=[],observers=[],elements=[],loaders=[],timers=[],ops=[],cookieWrites=[];let queryReads=0,reloads=0,ids=0;
  const jar=new Map(Object.entries(cookies));
- const listen=(target,name,fn)=>(listeners[target+':'+name]||=[]).push(fn);
- const document={readyState:'loading',visibilityState:'visible',referrer:'https://private.example.invalid/patient',
+ const listen=(target,name,fn,options)=>{(listeners[target+':'+name]||=[]).push(fn);registrations.push({target,name,fn,capture:options===true||options?.capture===true});};
+ const document={readyState:'loading',visibilityState:'visible',title,referrer:'https://private.example.invalid/patient',documentElement:{},
   currentScript:{dataset:{mftGoogleMode:'approved-main-page',mftGoogleMeasurementId:'G-BTK39BBNRE',mftGoogleRoute:route,mftGoogleEvent:'simplepractice_exit',mftGoogleApprovedReview:REVIEW,...dataset}},
   get cookie(){return [...jar].map(([k,v])=>k+'='+v).join('; ');},set cookie(value){cookieWrites.push(value);if(value.includes('Max-Age=0'))jar.delete(value.split('=')[0]);},
   getElementById:id=>elements.find(e=>e.id===id&&!e.removed)||null,querySelector:()=>null,
   querySelectorAll:selector=>selector==='form,input,textarea'?controls:elements.filter(e=>!e.removed&&['script','iframe'].includes(e.tag)),
-  addEventListener:(name,fn)=>listen('document',name,fn),
+  addEventListener:(name,fn,options)=>listen('document',name,fn,options),
   createElement:tag=>{const handlers={};const element={tag,style:{},handlers,src:'',setAttribute(){},addEventListener:(name,fn)=>(handlers[name]||=[]).push(fn),remove(){element.removed=true;},querySelector:()=>({focus(){},remove(){}})};elements.push(element);return element;},
   body:{appendChild(){}},head:{appendChild:element=>loaders.push(element)}};
- const c={document,location:{origin,pathname,get search(){queryReads++;return search;},hash,reload:()=>reloads++},
+ const c={document,location:{origin,pathname,get search(){queryReads++;return search;},set search(value){search=value;},hash,reload:()=>reloads++},
   navigator:{globalPrivacyControl:gpc,doNotTrack:dnt},localStorage:store(local,blockedStorage),sessionStorage:store(session,blockedStorage),URL,URLSearchParams,AbortController,Uint8Array,
   Date:class extends Date{constructor(...args){super(...(args.length?args:[clock.now]));}static now(){return clock.now;}},
-  setTimeout:(fn,delay)=>{timers.push({fn,at:clock.now+delay});return timers.length;},addEventListener:(name,fn)=>listen('window',name,fn),
+  setTimeout:(fn,delay)=>{timers.push({fn,at:clock.now+delay});return timers.length;},addEventListener:(name,fn,options)=>listen('window',name,fn,options),
+  MutationObserver:class{constructor(callback){this.callback=callback;observers.push(this);}observe(target,options){this.target=target;this.options=options;}disconnect(){this.disconnected=true;}},
   crypto:{getRandomValues:b=>b.fill(1),randomUUID:()=> 'a0000000-0000-4000-8000-'+String(++ids).padStart(12,'0')},
   fetch:(url,options)=>{assert.equal(url,'https://ops.mft.care/api/marketing/attribution');ops.push({url,options,body:JSON.parse(options.body)});return Promise.resolve({status:202});}};
  if(otherSender)c.gtag=function(){};
  c.window=c;vm.runInNewContext(googleCode,c);
  const fire=(target,name,event={})=>{for(const fn of listeners[target+':'+name]||[])fn(event);};
- return {c,document,clock,loaders,elements,ops,jar,cookieWrites,queryReads:()=>queryReads,reloads:()=>reloads,
+ return {c,document,clock,loaders,elements,ops,jar,cookieWrites,registrations,observers,queryReads:()=>queryReads,reloads:()=>reloads,
   fire,commands:()=>Array.from(c.dataLayer||[],args=>Array.from(args)),
+  mutate:()=>{for(const observer of observers)if(observer.target&&!observer.disconnected)observer.callback([]);},
   load:()=>{for(const fn of loaders.at(-1)?.handlers.load||[])fn();},
   fail:()=>{for(const fn of loaders.at(-1)?.handlers.error||[])fn();},
   advance:milliseconds=>{clock.now+=milliseconds;for(const timer of timers){if(!timer.ran&&timer.at<=clock.now){timer.ran=true;timer.fn();}}},
@@ -50,6 +53,43 @@ test('a script asset is inert without the exact reviewed route/event/destination
   {dataset:{mftGoogleMeasurementId:'G-OTHER'}},{dataset:{mftGoogleApprovedReview:''}}]){
   const x=fixture(options);assert.equal(x.c.MFTGoogleMeasurement,undefined);assert.equal(x.loaders.length,0);assert.equal(x.queryReads(),0);assert.equal(x.c.dataLayer,undefined);
  }
+});
+test('only exact reviewed public document titles can authorize or load the Google runtime',()=>{
+ for(const route of ['/','/about/']){
+  for(const title of ['', 'Private patient canary', TITLES[route]+' - private canary', TITLES[route].replace('Therapy','THERAPY')]){
+   const x=fixture({route,title,search:'?gclid=synthetic-click'});
+   assert.equal(x.c.MFTGoogleMeasurement.status(),'unavailable');assert.equal(x.c.MFTGoogleMeasurement.grant(),false);
+   assert.equal(x.c.localStorage.getItem(CONSENT),null);assert.equal(x.loaders.length,0);assert.equal(x.queryReads(),0);assert.equal(x.c.dataLayer,undefined);
+  }
+  const saved=fixture({route,title:'Private patient canary',local:{[CONSENT]:grantRecord(1800000000000)},search:'?gclid=synthetic-click'});
+  assert.equal(saved.loaders.length,0);assert.equal(saved.queryReads(),0);assert.equal(saved.c.MFTGoogleMeasurement.handoff(),false);
+  assert.equal(saved.c.localStorage.getItem(CONSENT),grantRecord(1800000000000),'an ineligible document must not rewrite valid purpose permission');
+ }
+});
+test('title changes before consent or vendor readiness fail closed without rewriting the document',()=>{
+ const before=fixture();before.document.title='Private title';assert.equal(before.c.MFTGoogleMeasurement.grant(),false);
+ assert.equal(before.c.localStorage.getItem(CONSENT),null);assert.equal(before.loaders.length,0);
+ const pending=fixture();pending.c.MFTGoogleMeasurement.grant();pending.document.title='Private pending title';pending.load();
+ assert.equal(pending.c.MFTGoogleMeasurement.handoff(),false);assert.equal(pending.c['ga-disable-G-BTK39BBNRE'],true);
+ assert.equal(pending.document.title,'Private pending title');assert.equal(pending.loaders[0].removed,true);
+});
+test('live title and form changes halt immediately on handoff or lifecycle events before observer delivery',()=>{
+ for(const trigger of ['handoff','hidden','pagehide','observer']){
+  const x=fixture();x.c.MFTGoogleMeasurement.grant();x.load();
+  x.document.title='Private changed title';
+  if(trigger==='handoff')assert.equal(x.c.MFTGoogleMeasurement.handoff(),false);
+  else if(trigger==='hidden'){x.document.visibilityState='hidden';x.fire('document','visibilitychange');}
+  else if(trigger==='pagehide')x.fire('window','pagehide');
+  else x.mutate();
+  assert.equal(x.c['ga-disable-G-BTK39BBNRE'],true);assert.equal(x.c.MFTGoogleMeasurement.handoff(),false);
+  x.document.title=TITLES['/'];x.mutate();assert.equal(x.c.MFTGoogleMeasurement.handoff(),false,'restoring the title cannot revive a halted vendor');
+  assert.equal(x.reloads(),0);assert.deepEqual(events(x),[]);
+  for(const [target,name]of [['document','visibilitychange'],['window','pagehide']])assert.ok(x.registrations.find(r=>r.target===target&&r.name===name&&r.capture));
+  const observer=x.observers[0];assert.equal(observer.target,x.document.documentElement);assert.equal(observer.options.characterData,true);assert.equal(observer.options.attributes,true);
+ }
+ const controls=[],x=fixture({controls});x.c.MFTGoogleMeasurement.grant();x.load();
+ controls.push({closest:()=>null,matches:()=>false});x.fire('window','pagehide');
+ assert.equal(x.c['ga-disable-G-BTK39BBNRE'],true);assert.equal(x.c.MFTGoogleMeasurement.handoff(),false);
 });
 test('old analytics grants and the unavailable-purpose v1 default never authorize the new purpose',()=>{
  for(const local of [{[OPS_CONSENT]:'granted'},{'mft.analytics.consent.v4':'granted'},
@@ -96,6 +136,32 @@ test('private, malformed, duplicate and unsupported query or fragment context bl
   const x=fixture(options);assert.equal(x.queryReads(),0);assert.equal(x.c.MFTGoogleMeasurement.grant(),false);
   assert.equal(x.c.MFTGoogleMeasurement.status(),'unavailable');assert.equal(x.loaders.length,0);assert.equal(x.c.dataLayer,undefined);assert.deepEqual(x.c.sessionStorage.all(),{});
  }
+});
+test('a query change after permission halts before lifecycle collection or observer delivery',()=>{
+ for(const search of ['?email=private-query-canary','?utm_content=private-query-canary','?_gl=private-query-canary','?gclid=one&gclid=two']){
+  for(const trigger of ['visibilitychange','pagehide','observer']){
+   const x=fixture({search:'?gclid=synthetic-click'});x.c.MFTGoogleMeasurement.grant();x.load();
+   x.c.localStorage.setItem('_gcl_ls','synthetic-vendor-backup');x.jar.set('mftga_ga','synthetic-cookie');
+   x.c.location.search=search;
+   if(trigger==='observer')x.mutate();
+   else x.fire(trigger==='visibilitychange'?'document':'window',trigger);
+   assert.equal(x.c['ga-disable-G-BTK39BBNRE'],true);assert.equal(x.loaders[0].removed,true);
+   assert.equal(x.c.sessionStorage.getItem(SOURCE),null);assert.equal(x.c.localStorage.getItem('_gcl_ls'),null);assert.equal(x.document.cookie,'');
+   assert.equal(x.c.MFTGoogleMeasurement.handoff(),false);assert.deepEqual(events(x),[]);assert.equal(x.reloads(),0);
+   x.c.location.search='?gclid=synthetic-click';assert.equal(x.c.MFTGoogleMeasurement.handoff(),false,'restoring a permitted query cannot revive the halted vendor');
+  }
+ }
+});
+test('permitted query enforcement is read-only and preserves the original context deadline',()=>{
+ const x=fixture({search:'?gclid=synthetic-click&utm_source=google&utm_medium=cpc'});x.c.MFTGoogleMeasurement.grant();x.load();
+ x.c.localStorage.setItem('_gcl_ls','synthetic-vendor-backup');x.jar.set('mftga_ga','synthetic-cookie');
+ const consent=x.c.localStorage.getItem(CONSENT),source=x.c.sessionStorage.getItem(SOURCE);
+ const localWrites=x.c.localStorage.writes.length,sourceWrites=x.c.sessionStorage.writes.length,cookieWrites=x.cookieWrites.length;
+ x.clock.now+=5000;x.mutate();x.fire('document','visibilitychange');x.fire('window','pagehide');
+ assert.equal(x.c.MFTGoogleMeasurement.status(),'granted');assert.equal(x.c['ga-disable-G-BTK39BBNRE'],false);
+ assert.equal(x.c.localStorage.getItem(CONSENT),consent);assert.equal(x.c.sessionStorage.getItem(SOURCE),source);
+ assert.equal(x.c.localStorage.getItem('_gcl_ls'),'synthetic-vendor-backup');assert.equal(x.jar.get('mftga_ga'),'synthetic-cookie');
+ assert.equal(x.c.localStorage.writes.length,localWrites);assert.equal(x.c.sessionStorage.writes.length,sourceWrites);assert.equal(x.cookieWrites.length,cookieWrites);
 });
 test('unknown forms block eligibility but the unchanged functional scheduling acknowledgments do not',()=>{
  const unapproved={closest:()=>null,matches:()=>false};const x=fixture({controls:[unapproved]});
@@ -161,6 +227,52 @@ test('expiry clears controlled context and cookies without navigating and a late
  const reload=fixture({clock:x.clock,local:x.c.localStorage.all(),search:'?gclid=synthetic-click'});
  assert.equal(reload.loaders.length,0);assert.equal(reload.queryReads(),0);assert.equal(reload.c.MFTGoogleMeasurement.status(),'unset');
 });
+test('the exact native Google backup is cleared at refusal, expiry and the next inactive-runtime load without touching functional storage',()=>{
+ const backup=JSON.stringify({schema:'gcl',version:1,gclid:{value:{value:'synthetic-click'},expires:1800001800000}});
+ for(const choice of [undefined,JSON.stringify({choice:'denied'}),JSON.stringify({choice:'granted',review:REVIEW,expiresAt:1799999999999})]){
+  const x=fixture({local:{_gcl_ls:backup,'functional.preference':'keep',...(choice?{[CONSENT]:choice}:{})}});
+  assert.equal(x.c.localStorage.getItem('_gcl_ls'),null);assert.equal(x.c.localStorage.getItem('functional.preference'),'keep');
+  assert.equal(x.loaders.length,0);assert.equal(x.queryReads(),0);
+ }
+ for(const reason of ['withdrawal','expiry','loader-error','title-change','legacy-refusal']){
+  const x=fixture({local:{'functional.preference':'keep'}});x.c.MFTGoogleMeasurement.grant();x.load();x.c.localStorage.setItem('_gcl_ls',backup);
+  if(reason==='withdrawal')x.c.MFTGoogleMeasurement.deny();
+  if(reason==='expiry')x.advance(LIFETIME);
+  if(reason==='loader-error')x.fail();
+  if(reason==='title-change'){x.document.title='Private title';x.mutate();}
+  if(reason==='legacy-refusal')x.fire('window','storage',{key:'mft.analytics.consent.v4',newValue:'denied'});
+  assert.equal(x.c.localStorage.getItem('_gcl_ls'),null,reason);assert.equal(x.c.localStorage.getItem('functional.preference'),'keep',reason);
+  assert.equal(x.c.MFTGoogleMeasurement.handoff(),false);assert.equal(x.reloads(),0);
+ }
+});
+test('a stale document expiry stops its own sender without deleting a newer independent grant, source or cookies',()=>{
+ for(const expiry of ['timer','handoff','pageshow']){
+  const x=fixture({search:'?gclid=old-click'});x.c.MFTGoogleMeasurement.grant();x.load();
+  const original=JSON.parse(x.c.sessionStorage.getItem(SOURCE));
+  const newerPermission={choice:'granted',review:expiry==='pageshow'?'b'.repeat(64):REVIEW,expiresAt:original.expiresAt+600000};
+  const newerSource={review:newerPermission.review,expiresAt:newerPermission.expiresAt,clickIds:{gclid:'newer-click'}};
+  x.c.localStorage.setItem(CONSENT,JSON.stringify(newerPermission));x.c.sessionStorage.setItem(SOURCE,JSON.stringify(newerSource));
+  x.c.localStorage.setItem('_gcl_ls','synthetic-newer-vendor-backup');
+  x.jar.set('mftga_ga','newer-cookie');x.jar.set('_gcl_au','newer-ad-cookie');x.jar.set('functional','keep');
+  if(expiry==='timer')x.advance(LIFETIME);
+  else{x.clock.now+=LIFETIME;if(expiry==='handoff')assert.equal(x.c.MFTGoogleMeasurement.handoff(),false);else x.fire('window','pageshow');}
+  assert.equal(x.c['ga-disable-G-BTK39BBNRE'],true);assert.equal(x.c.MFTGoogleMeasurement.handoff(),false);
+  assert.deepEqual(JSON.parse(x.c.localStorage.getItem(CONSENT)),newerPermission);
+  assert.deepEqual(JSON.parse(x.c.sessionStorage.getItem(SOURCE)),newerSource);
+  assert.equal(x.c.localStorage.getItem('_gcl_ls'),'synthetic-newer-vendor-backup');
+  assert.equal(x.jar.get('mftga_ga'),'newer-cookie');assert.equal(x.jar.get('_gcl_au'),'newer-ad-cookie');assert.equal(x.jar.get('functional'),'keep');
+ }
+});
+test('expiry removes its own old source but preserves cookies used by a newer other-tab grant; explicit withdrawal clears both',()=>{
+ const x=fixture({search:'?gclid=old-click'});x.c.MFTGoogleMeasurement.grant();x.load();
+ x.c.localStorage.setItem(CONSENT,grantRecord(x.clock.now+600000));x.jar.set('mftga_ga','newer-cookie');
+ x.advance(LIFETIME);assert.equal(x.c.sessionStorage.getItem(SOURCE),null);assert.equal(x.jar.get('mftga_ga'),'newer-cookie');
+ const newerSource={review:REVIEW,expiresAt:x.clock.now+600000,clickIds:{gclid:'newer-click'}};
+ x.c.sessionStorage.setItem(SOURCE,JSON.stringify(newerSource));x.c.localStorage.setItem('_gcl_ls','synthetic-newer-backup');x.c.MFTGoogleMeasurement.deny();
+ assert.equal(x.c.sessionStorage.getItem(SOURCE),null);assert.equal(x.jar.has('mftga_ga'),false);
+ assert.equal(x.c.localStorage.getItem('_gcl_ls'),null);
+ assert.deepEqual(JSON.parse(x.c.localStorage.getItem(CONSENT)),{choice:'denied'});
+});
 test('withdrawal immediately stops future dispatch and clears website state without navigating',()=>{
  const x=fixture({search:'?gclid=synthetic-click'});x.c.MFTGoogleMeasurement.grant();x.load();
  x.jar.set('mftga_ga','synthetic');x.jar.set('_gcl_au','synthetic');
@@ -186,6 +298,21 @@ test('cross-tab withdrawal and storage clear revoke; another-tab grant never rep
  assert.equal(x.c.MFTGoogleMeasurement.status(),'denied');assert.equal(x.reloads(),0);
  const clear=fixture();clear.c.MFTGoogleMeasurement.grant();clear.load();clear.fire('window','storage',{key:null,newValue:null});
  assert.equal(clear.c.MFTGoogleMeasurement.status(),'denied');assert.equal(clear.reloads(),0);
+});
+test('new refusals in prior Google-capable tabs revoke the current Google purpose',()=>{
+ for(const key of ['mft.analytics.consent.v4','mft.analytics.consent.v3','mft.analytics.consent.v2']){
+  const x=fixture({search:'?gclid=synthetic-click'});x.addOps();x.c.MFTGoogleMeasurement.grant();x.load();
+  x.c.localStorage.setItem(key,'denied');x.fire('window','storage',{key,newValue:'denied'});
+  assert.equal(x.c.MFTGoogleMeasurement.status(),'denied');assert.equal(x.c.MFTGoogleMeasurement.handoff(),false);
+  assert.deepEqual(JSON.parse(x.c.localStorage.getItem(CONSENT)),{choice:'denied'});assert.equal(x.c.sessionStorage.getItem(SOURCE),null);
+ }
+});
+test('the auto-written advertising-v1 default and an analytics-only v5 storage event do not revoke a distinct current Google grant',()=>{
+ for(const key of ['mft.advertising.consent.v1',OPS_CONSENT]){
+  const x=fixture();x.addOps();x.c.MFTGoogleMeasurement.grant();x.load();
+  x.c.localStorage.setItem(key,'denied');x.fire('window','storage',{key,newValue:'denied'});
+  assert.equal(x.c.MFTGoogleMeasurement.status(),'granted');assert.equal(x.c.MFTGoogleMeasurement.handoff(),true);
+ }
 });
 test('first-party permission never grants Google, and Google permission need not create an Ops event',()=>{
  const x=fixture({search:'?gclid=synthetic-click'});x.addOps();x.c.MFTAnalyticsConsent.grant();
@@ -229,7 +356,8 @@ test('the existing notice offers distinct Google actions only for an approved av
  const x=fixture({local:{[OPS_CONSENT]:'granted'}});x.addOps();
  const banner=x.elements.find(element=>element.id==='mft-analytics-consent');assert.ok(banner);
  assert.match(banner.innerHTML,/data-choice="grant-ad"/);assert.match(banner.innerHTML,/data-choice="deny-ad"/);
- assert.match(banner.innerHTML,/Google has its own retention settings/);assert.doesNotMatch(banner.innerHTML,/Google[^.]*30 days/);
+ assert.match(banner.innerHTML,/Google has separate retention rules/);assert.doesNotMatch(banner.innerHTML,/Google[^.]*30 days/);
+ assert.match(banner.innerHTML,/public page address and title, visit activity/);assert.match(banner.innerHTML,/IP address/);assert.match(banner.innerHTML,/existing Google cookies/);
  for(const fn of banner.handlers.click)fn({target:{dataset:{choice:'dismiss'}}});
  assert.equal(x.c.MFTGoogleMeasurement.status(),'unset');assert.equal(x.loaders.length,0);assert.equal(x.c.MFTAnalyticsConsent.status(),'granted');
 });

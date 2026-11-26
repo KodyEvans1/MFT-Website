@@ -24,20 +24,41 @@ const consentKey='mft.advertising.consent.v2',sourceKey='mft.google.source.v1',l
 const previousGoogleConsentKeys=['mft.analytics.consent.v4','mft.analytics.consent.v3','mft.analytics.consent.v2'];
 const clickKeys=['gclid','gbraid','wbraid'];
 const campaigns=new Set(['24274542446','24362234053','24435101888','24444626634','24449945489','24530528782','24524392745']);
+// A further CSP intersects with the response policy. Preserve the existing
+// first-party/SimplePractice sources while denying every Google request type,
+// including vendor diagnostics that do not honor the GA disable flag. This
+// policy cannot be loosened again in the same document.
+const stoppedPolicy="default-src 'self'; img-src 'self' https://images.squarespace-cdn.com data:; script-src 'self' https://widget-cdn.simplepractice.com; style-src 'self' 'unsafe-inline'; font-src 'self'; connect-src 'self' https://clientsecure.me https://marriagefamilytherapy.clientsecure.me https://ops.mft.care; frame-src https://clientsecure.me https://marriagefamilytherapy.clientsecure.me https://spwidget-marriagefamilytherapy.clientsecure.me; worker-src 'none'; base-uri 'self'; form-action 'self' https://ops.mft.care https://marriagefamilytherapy.clientsecure.me";
 let permission=null,context=null,loader=null,started=false,ready=false,stopped=false,blocked=false;
-let ownedQueue=null,observer=null;
+let ownedQueue=null,observer=null,networkStopped=false,reloadRequested=false,supersededGrant=false;
 function signal(){return navigator.globalPrivacyControl===true||navigator.doNotTrack==='1';}
 function read(storage,key){try{return JSON.parse(storage.getItem(key)||'null');}catch{return null;}}
 function write(storage,key,value){try{storage.setItem(key,JSON.stringify(value));}catch{}}
 function remove(storage,key){try{storage.removeItem(key);}catch{}}
 function validGrant(value){return value&&value.choice==='granted'&&value.review===review&&
  Number.isSafeInteger(value.expiresAt)&&value.expiresAt>Date.now()&&value.expiresAt<=Date.now()+lifetime;}
+function newerGrant(value){return value?.choice==='granted'&&/^[a-f0-9]{64}$/.test(value.review||'')&&
+ Number.isSafeInteger(value.expiresAt)&&value.expiresAt>Date.now()&&value.expiresAt<=Date.now()+lifetime&&
+ Number.isSafeInteger(permission?.expiresAt)&&value.expiresAt>permission.expiresAt&&
+ Object.keys(value).sort().join(',')==='choice,expiresAt,review';}
 const saved=read(localStorage,consentKey);
 if(saved?.choice==='denied')permission={choice:'denied'};
 else if(validGrant(saved))permission={choice:'granted',review,expiresAt:saved.expiresAt};
 function hasReviewedTitle(){return document.title===reviewedTitles[route];}
-function available(){return !blocked&&!(started&&stopped)&&location.pathname===route&&hasReviewedTitle();}
-function status(){if(signal()||permission?.choice==='denied')return 'denied';if(!available())return 'unavailable';return validGrant(permission)?'granted':'unset';}
+function available(){
+ if(location.origin!=='https://www.mft.care'||location.pathname!==route||!hasReviewedTitle())return false;
+ // The choice may be offered again, but a clamped document cannot resume its
+ // vendor. Only a new explicit grant followed by a fresh document can do so.
+ return networkStopped?!hasUnapprovedControls():!blocked&&!(started&&stopped);
+}
+function status(){if(signal()||permission?.choice==='denied')return 'denied';if(!available()||networkStopped)return 'unavailable';return validGrant(permission)?'granted':'unset';}
+function stopNetwork(){
+ if(!started||networkStopped)return;
+ const policy=document.createElement('meta');
+ policy.httpEquiv='Content-Security-Policy';policy.content=stoppedPolicy;
+ policy.setAttribute('data-mft-google-stopped','true');
+ document.head.appendChild(policy);networkStopped=true;
+}
 function clearCookies(){
  // The observed vendor uses this unprefixed localStorage backup for native
  // ad-click state. Its expiry metadata does not physically delete the key in
@@ -53,15 +74,16 @@ function clearCookies(){
 function halt(preserveNewerGrant=false){
  window['ga-disable-'+id]=true;
  stopped=true;ready=false;
+ // Apply the native browser boundary synchronously, before a vendor listener
+ // later in the same visibility/pagehide task can start another request.
+ // It prevents subsequent requests; it cannot retract an earlier disclosure.
+ stopNetwork();
  // A suspended/BFCache document can expire after another document obtained a
  // fresh, independent grant. Stop this document without erasing that newer
  // window's context or shared Google cookies. Explicit withdrawal still clears
  // all measurement state, including state created under a newer grant.
- const latest=preserveNewerGrant?read(localStorage,consentKey):null;
- const newer=latest?.choice==='granted'&&/^[a-f0-9]{64}$/.test(latest.review||'')&&
-  Number.isSafeInteger(latest.expiresAt)&&latest.expiresAt>Date.now()&&latest.expiresAt<=Date.now()+lifetime&&
-  Number.isSafeInteger(permission?.expiresAt)&&latest.expiresAt>permission.expiresAt&&
-  Object.keys(latest).sort().join(',')==='choice,expiresAt,review';
+ const latest=preserveNewerGrant||supersededGrant?read(localStorage,consentKey):null;
+ const newer=newerGrant(latest);
  const stored=newer?read(sessionStorage,sourceKey):null;
  const newerSource=newer&&stored?.review===latest.review&&stored.expiresAt===latest.expiresAt&&validIds(stored.clickIds)&&
   Object.keys(stored).sort().join(',')==='clickIds,expiresAt,review';
@@ -70,12 +92,11 @@ function halt(preserveNewerGrant=false){
  if(ownedQueue){ownedQueue.length=0;window.gtag=function(){};}
  observer?.disconnect();observer=null;
  loader?.remove();loader=null;
- // Measurement never navigates or reloads a page: a scheduling dialog and its
- // native Continue remain intact. Script removal alone cannot unload vendor
- // listeners, so the actual-vendor network gate must prove the disable flag
- // stops later requests. No denied-consent ping is deliberately emitted here.
+ // Stopping never navigates or reloads: an open scheduling dialog and its
+ // native Continue remain intact. No denied-consent ping is deliberately
+ // emitted. Regranting below requires a separate explicit choice and reload.
 }
-function deny(){permission={choice:'denied'};write(localStorage,consentKey,permission);halt();}
+function deny(){supersededGrant=false;permission={choice:'denied'};write(localStorage,consentKey,permission);halt();}
 function enforceBoundary(){
  if(signal()){deny();return false;}
  if(status()!=='granted'){halt(Number.isSafeInteger(permission?.expiresAt)&&permission.expiresAt<=Date.now());return false;}
@@ -175,7 +196,20 @@ function start(){
 }
 function grant(){
  if(signal()){deny();return false;}
- if(!available()||stopped&&started)return false;
+ if(!available())return false;
+ if(networkStopped){
+  // Only this explicit choice may start a fresh document. Validate the live
+  // context before saving it; never remove the CSP or revive the old queue.
+  if(reloadRequested||hasUnapprovedControls()||!currentQueryContext())return false;
+  const fresh={choice:'granted',review,expiresAt:Date.now()+lifetime};
+  write(localStorage,consentKey,fresh);
+  const persisted=read(localStorage,consentKey);
+  if(!validGrant(persisted)||persisted.expiresAt!==fresh.expiresAt||
+   Object.keys(persisted).sort().join(',')!=='choice,expiresAt,review')return false;
+  permission=fresh;supersededGrant=false;reloadRequested=true;
+  try{location.reload();return true;}catch{reloadRequested=false;return false;}
+ }
+ if(stopped&&started)return false;
  if(!validGrant(permission)){
   permission={choice:'granted',review,expiresAt:Date.now()+lifetime};write(localStorage,consentKey,permission);
  }
@@ -191,7 +225,7 @@ function handoff(){
  window.gtag('event',eventName,{send_to:id,page_location:pageLocation(),page_title:'M.F.T. Public Website',page_referrer:''});
  return true;
 }
-window.MFTGoogleMeasurement={available,status,grant,deny,handoff,enforceBoundary,preferenceVersion:consentKey};
+window.MFTGoogleMeasurement={available,status,grant,deny,handoff,enforceBoundary,requiresReload:()=>networkStopped,preferenceVersion:consentKey};
 window.addEventListener('storage',event=>{
  if(event.key===null){deny();return;}
  // These older choices explicitly covered Google. A new refusal in an open
@@ -204,7 +238,14 @@ window.addEventListener('storage',event=>{
  if(incoming?.choice==='denied'){deny();return;}
  // Other-tab grants cannot replay actions, renew the window, or reactivate a
  // stopped document. A normal subsequent page load may use the current grant.
- if(!validGrant(incoming)){permission=null;halt();}
+ if(!validGrant(incoming)){
+  // A newer review may be active in another document. Keep this document's
+  // original permission snapshot for expiry comparisons; neither adopt that
+  // grant nor erase its shared state on this or later lifecycle callbacks.
+  supersededGrant=newerGrant(incoming);
+  if(!supersededGrant)permission=null;
+  halt(supersededGrant);
+ }
 });
 // Register before the vendor. A title/control change and a visibility or
 // pagehide event can occur in one task, before MutationObserver callbacks.

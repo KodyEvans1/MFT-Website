@@ -1,15 +1,25 @@
 {
   "version": 1,
   "purpose": "Measure a consented public scheduling handoff for non-personalized Google Ads attribution",
-  "candidateRoutes": ["/", "/about/"],
+  "candidateRoutes": [
+    "/",
+    "/about/"
+  ],
   "reviewedDocumentTitles": {
     "/": "Marriage.Family.Therapy | Woodinville & Online in Washington",
     "/about/": "About Marriage.Family.Therapy | Woodinville, WA"
   },
   "event": "simplepractice_exit",
   "eventScope": "The application emits only simplepractice_exit as an acquisition event. Standard GA4 automatic events and first-visit/session markers are separately included in this unapproved flow for review.",
-  "standardRuntimeEvents": ["first_visit", "session_start", "user_engagement"],
-  "disabledAutomaticCollection": ["configuration page_view", "enhanced measurement including history pageviews, outbound clicks, forms, search, scroll, downloads and video"],
+  "standardRuntimeEvents": [
+    "first_visit",
+    "session_start",
+    "user_engagement"
+  ],
+  "disabledAutomaticCollection": [
+    "configuration page_view",
+    "enhanced measurement including history pageviews, outbound clicks, forms, search, scroll, downloads and video"
+  ],
   "meaning": "An intentional new-client navigation to SimplePractice; not an appointment request, appointment, attendance, client acquisition or revenue",
   "recipients": {
     "googleAnalyticsProperty": "558962239",
@@ -18,6 +28,15 @@
     "existingImportedConversionAction": "7911303814"
   },
   "runtime": "One main-page Google tag, loaded only after a fresh advertising-measurement choice on an explicitly reviewed route",
+  "stopBoundary": {
+    "diagnosedIssue": "The unchanged Google tag emitted sampled /td diagnostics after ga-disable-G-BTK39BBNRE during title-change/pagehide enforcement. The application disable flag and removal of the loader alone do not establish that all vendor requests have stopped.",
+    "initialPolicy": "The conditional document starts with worker-src 'none' and no permitted Google frame origins; existing approved SimplePractice frame destinations remain separate. Do not introduce Google workers or frames as an alternate measurement context.",
+    "enforcement": "After vendor loading has started, stopping synchronously appends one fully populated enforced Content-Security-Policy meta element directly to head. Its restrictive default, script, connect, image, frame and worker directives exclude Google while preserving approved first-party, Ops and SimplePractice resources and native scheduling navigation.",
+    "regrant": "Stopping does not navigate or close scheduling. A later explicit advertising-measurement choice must validate the current route, title, controls and query, persist a fresh permission deadline, and reload into a new document. Editing or removing the stop meta is not a supported way to resume the old document; another tab's grant does not revive it.",
+    "timingLimit": "The stop policy governs requests initiated after its enforcement. It cannot retract earlier disclosure, cancel all already initiated requests, terminate already executing vendor code, or retroactively replace a previously created child context's policy.",
+    "mutationLimit": "A MutationObserver callback is asynchronous. Boundary checks before application handoffs and early lifecycle listeners reduce the interval, but requests initiated before stop-policy enforcement remain outside this guarantee.",
+    "browserEvidenceLimit": "Only Chromium has been exercised so far. The corrective stop policy requires updated actual-runtime verification; this contract makes no new passing claim and no Firefox or WebKit verification claim."
+  },
   "observedRuntimeDestinations": {
     "https://www.googletagmanager.com/gtag/js": "The existing property's public Google tag; the browser discloses ordinary request metadata when loading it",
     "https://analytics.google.com/g/collect": "GA4 events, consent, client/session identifiers, canonical location with permitted click identifiers, fixed GA4 title, empty GA4 referrer and browser metadata",
@@ -26,11 +45,15 @@
     "https://www.google.com/g/collect": "Native GA4 collection fallback observed in hosted verification with the same canonical URL, fixed GA4 title, empty referrer and pseudonymous/protocol/browser fields",
     "https://www.google.com/measurement/conversion": "Native Ads-linked GA4 measurement; includes event and advertising identifiers, canonical URL, actual reviewed document title in tiba, consent and browser metadata",
     "https://stats.g.doubleclick.net/g/collect": "Native identifier/consent ping observed without an event name; still a disclosure to Google",
-    "https://www.googletagmanager.com/a": "Sampled Google tag diagnostics observed in an isolated probe; protocol and tag metadata, not a separate application conversion",
-    "https://www.googletagmanager.com/td": "Sampled Google tag diagnostics observed in hosted verification, including the public site/route in dl and protocol/tag fields; GET image and POST transports, no application event name; opaque diagnostic field semantics remain a review limitation"
+    "https://www.googletagmanager.com/a": "Sampled Google tag diagnostics: protocol, tag/container configuration and performance/processing metadata. The observed v=3,t=l variant adds ccid, cid and l; here cid is the script/container identifier, distinct from GA4 visitor cid. Exact observed field checks remain required; other static variants are not approved.",
+    "https://www.googletagmanager.com/td": "Sampled Google tag diagnostics observed in hosted verification, including the public site/route in dl and protocol/tag fields; GET image and POST transports, no application event name. Later title-change/pagehide probes exposed attempts after the GA disable flag, requiring the enforced stop policy; opaque diagnostic field semantics remain a review limitation"
   },
   "advertisingConsentVersion": "mft.advertising.consent.v2",
-  "permittedAdvertisingContextKeys": ["gclid", "gbraid", "wbraid"],
+  "permittedAdvertisingContextKeys": [
+    "gclid",
+    "gbraid",
+    "wbraid"
+  ],
   "localContextLifetimeMinutes": 30,
   "localExpiryRenewsOnNavigation": false,
   "googleVisibleContext": [
@@ -40,15 +63,27 @@
     "Google's pseudonymous client, session and advertising identifiers",
     "Standard first_visit/session_start metadata and user_engagement, separate from the handoff acquisition event",
     "Google protocol and consent fields, request time, IP transport and browser metadata",
-    "Pre-existing Google/DoubleClick cookies may be accessible when advertising storage is granted, subject to browser restrictions"
+    "Pre-existing Google/DoubleClick cookies may be accessible when advertising storage is granted, subject to browser restrictions",
+    "Sampled diagnostic tag/container identifiers and navigation/performance/tag-processing telemetry; exact observed variants are listed separately and no wildcard permission is granted"
   ],
   "excludedData": [
-    "Patient records or identities", "Names or contact information", "Clinician selections",
-    "Page text or any title other than the two exact reviewed public document titles", "Unreviewed routes", "Raw or arbitrary query parameters",
-    "Intake and account-confirmation responses", "SimplePractice destinations or record identifiers",
-    "Appointment requests, outcomes or identifiers", "Payments, refunds, value or currency",
-    "Ops handoff receipt identifiers", "Diagnostic click events", "Custom user IDs",
-    "Enhanced conversions", "Google Signals", "Remarketing", "Advertising personalization"
+    "Patient records or identities",
+    "Names or contact information",
+    "Clinician selections",
+    "Page text or any title other than the two exact reviewed public document titles",
+    "Unreviewed routes",
+    "Raw or arbitrary query parameters",
+    "Intake and account-confirmation responses",
+    "SimplePractice destinations or record identifiers",
+    "Appointment requests, outcomes or identifiers",
+    "Payments, refunds, value or currency",
+    "Ops handoff receipt identifiers",
+    "Diagnostic click events",
+    "Custom user IDs",
+    "Enhanced conversions",
+    "Google Signals",
+    "Remarketing",
+    "Advertising personalization"
   ],
   "retentionBoundary": {
     "websiteContext": "Fixed 30-minute usable consented context, without renewal on navigation; refusal, withdrawal and GPC/DNT stop collection. Cleanup runs on active page enforcement and the next controlled page load; a closed or suspended browser cannot run JavaScript deletion at a guaranteed wall-clock time",
@@ -67,7 +102,16 @@
     "Recorded review of the exact routes, payload, recipients and their retention",
     "Reverify the exact GA4-Ads link, primary/secondary and campaign goals, disabled advertising features, enhanced measurement and required retention settings in the intended accounts",
     "Intercepted actual-runtime evidence for automatic collection, cookies, consent and fixed local expiry",
+    "Actual-runtime evidence that the initial worker/frame restrictions and the additional stop CSP block new Google requests after enforcement, including sampled /td diagnostics and lifecycle activity, while preserving Ops and native scheduling; record timing and browser-coverage limits and explicit regrant/reload behavior",
     "The exact document titles must match at build and runtime; any title, route, form or payload change requires reassessment of automatic vendor collection",
     "Reviewed policy with matching flow and runtime hashes, plus the production build flag"
-  ]
+  ],
+  "observedLoadDiagnostic": {
+    "path": "https://www.googletagmanager.com/a",
+    "variant": "v=3,t=l",
+    "scriptContainerId": "G-BTK39BBNRE",
+    "canonicalContainerId": "267080605",
+    "valueEvidence": "Configuration values from the recorded public vendor snapshot; tests require an emitted load diagnostic to match them. Do not infer fresh request values from a field-name-only report.",
+    "summary": "Navigation/performance and tag/event processing telemetry; the inspected serializer substitutes * for non-gtm event names but is not a universal sanitizer of arbitrary gtm.* names or future tags. No current application code supplies such names."
+  }
 }

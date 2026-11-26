@@ -1,9 +1,12 @@
 'use strict';
-// Candidate UI verification only. External scheduler navigation is intercepted;
-// this does not claim provider availability or a hosted Netlify redirect test.
+// Local UI verification intercepts native scheduler navigation. A supplied live
+// origin is read-only: inspect the popup acknowledgments, then Escape without
+// activating Continue or attempting scheduler navigation. Neither mode establishes
+// provider availability, an appointment request, or Google attribution.
 const fs=require('node:fs'),path=require('node:path'),http=require('node:http'),assert=require('node:assert/strict');
 const {chromium}=require('playwright');
-const dist=path.resolve(__dirname,'../dist'),out=path.resolve(__dirname,'../tmp/'+(process.env.SONIA_BASE_URL?'sonia-profile-live':'sonia-profile'));
+const live=Boolean(process.env.SONIA_BASE_URL);
+const dist=path.resolve(__dirname,'../dist'),out=path.resolve(__dirname,'../tmp/'+(live?'sonia-profile-live':'sonia-profile'));
 fs.mkdirSync(out,{recursive:true});
 async function completeSchedulingDialog(page,expected){
  const gate=page.locator('dialog.mft-consultation-gate[open]');
@@ -19,6 +22,13 @@ async function completeSchedulingDialog(page,expected){
  assert.ok(visible,'The scheduling dialog must expose its required acknowledgment');
  assert.equal(await go.getAttribute('href'),expected,'Confirmation must preserve the native scheduling destination');
  assert.equal(await go.getAttribute('aria-disabled'),'false');
+ if(live){
+  const before=page.url();
+  await page.keyboard.press('Escape');await gate.waitFor({state:'hidden'});
+  assert.equal(page.url(),before,'Popup-only live inspection must remain on the profile');
+  assert.equal(await page.evaluate(()=>localStorage.getItem('mft.newClientAccountAcknowledgment.v1')),null,'Acknowledgment alone must not commit the remembered handoff choice');
+  return true;
+ }
  await go.click();return true;
 }
 const server=http.createServer((req,res)=>{
@@ -36,10 +46,16 @@ const server=http.createServer((req,res)=>{
  try{
  for(const width of [1440,390]){
   const context=await browser.newContext({viewport:{width,height:1000}});
+  const schedulerAttempts=[],blockedWrites=[];
   await context.route('**/*',route=>{
-   const u=new URL(route.request().url());
+   const request=route.request(),u=new URL(request.url());
+   if(u.hostname==='clientsecure.me'||u.hostname==='marriagefamilytherapy.clientsecure.me'){
+    schedulerAttempts.push({method:request.method(),host:u.hostname,path:u.pathname});
+    if(live)return route.abort();
+    return route.fulfill({contentType:'text/html',body:'<h1>Intercepted scheduler navigation</h1>'});
+   }
+   if(live&&!['GET','HEAD'].includes(request.method())){blockedWrites.push({method:request.method(),host:u.hostname,path:u.pathname});return route.abort();}
    if(u.origin===base||u.hostname==='images.squarespace-cdn.com')return route.continue();
-   if(u.hostname==='clientsecure.me'||u.hostname==='marriagefamilytherapy.clientsecure.me')return route.fulfill({contentType:'text/html',body:'<h1>Intercepted scheduler navigation</h1>'});
    return route.abort();
   });
   const page=await context.newPage();
@@ -55,8 +71,11 @@ const server=http.createServer((req,res)=>{
   });assert.deepEqual(geometry,{fit:'contain',overflow:false,loaded:true,treatment:'green-blend'});
   await page.screenshot({path:path.join(out,'sonia-'+width+'.png'),fullPage:true});
   const heroLink=page.locator('[data-clinician-hero] a[data-mft-booking]'),heroDestination=await heroLink.getAttribute('href');
-  await heroLink.click();await completeSchedulingDialog(page,heroDestination);await page.waitForURL('https://clientsecure.me/**');
-  assert.equal(new URL(page.url()).searchParams.get('clinicianId'),'2065412');assert.equal(context.pages().length,1);
+  assert.equal(new URL(heroDestination).hostname,'clientsecure.me');assert.equal(new URL(heroDestination).searchParams.get('clinicianId'),'2065412');
+  await heroLink.click();const heroPopup=await completeSchedulingDialog(page,heroDestination);
+  if(live){assert.equal(heroPopup,true,'Live profile action must open the confirmation popup');assert.equal(schedulerAttempts.length,0,'Live popup inspection must not attempt scheduler navigation');}
+  else{await page.waitForURL('https://clientsecure.me/**');assert.equal(new URL(page.url()).searchParams.get('clinicianId'),'2065412');}
+  assert.equal(context.pages().length,1);
   for(const legacy of ['/new-page-47','/new-page-47/']){
    const response=await context.request.get(base+legacy,{maxRedirects:0});assert.equal(response.status(),301);assert.equal(new URL(response.headers().location,base).pathname,'/sonia-hassan-bio/');
    await page.goto(base+legacy);assert.equal(new URL(page.url()).pathname,'/sonia-hassan-bio/');
@@ -71,18 +90,24 @@ const server=http.createServer((req,res)=>{
    assert.equal(await header.getAttribute('data-mft-booking-intent'),'appointment');
    assert.equal(await header.getAttribute('data-spwidget-clinician-id'),'2065412');
    const destination=await header.getAttribute('href');
-   await header.click();await completeSchedulingDialog(page,destination);await page.waitForURL('https://clientsecure.me/**');
-   assert.equal(new URL(page.url()).searchParams.get('clinicianId'),'2065412');
+   assert.equal(new URL(destination).hostname,'clientsecure.me');assert.equal(new URL(destination).searchParams.get('clinicianId'),'2065412');
+   await header.click();const headerPopup=await completeSchedulingDialog(page,destination);
+   if(live)assert.equal(headerPopup,true,'Live header action must open the confirmation popup');
+   else{await page.waitForURL('https://clientsecure.me/**');assert.equal(new URL(page.url()).searchParams.get('clinicianId'),'2065412');}
   }else{
+   assert.equal(await header.getAttribute('href'),'https://marriagefamilytherapy.clientsecure.me/request');
    await header.click();await page.locator('dialog[open]').waitFor();
    const go=page.locator('[data-consultation-continue]');assert.equal(await go.getAttribute('href'),null);
    assert.ok(await page.locator('dialog[open] [data-mft-consultation-ack]').isVisible());
-   await completeSchedulingDialog(page,'https://marriagefamilytherapy.clientsecure.me/request');await page.waitForURL('https://marriagefamilytherapy.clientsecure.me/request');
+   await completeSchedulingDialog(page,'https://marriagefamilytherapy.clientsecure.me/request');
+   if(!live)await page.waitForURL('https://marriagefamilytherapy.clientsecure.me/request');
   }
+  if(live){assert.equal(schedulerAttempts.length,0,'No live scheduler request may be attempted');assert.equal(blockedWrites.length,0,'Live verification must not attempt any write');assert.equal(new URL(page.url()).pathname,'/sonia-hassan-bio/');}
+  else assert.equal(schedulerAttempts.length,2,'Both local native handoffs must remain covered');
   assert.equal(context.pages().length,1);
-  cases.push({width,pass:true,geometry,legacyRedirects:2,soniaId:'2065412',scheduler:'intercepted native navigation; no provider submission'});await context.close();
+  cases.push({width,pass:true,geometry,legacyRedirects:2,soniaId:'2065412',schedulerAttempts:schedulerAttempts.length,blockedWrites:blockedWrites.length,scheduler:live?'popup acknowledgment and Escape only; Continue never activated; no scheduler attempt':'two intercepted native navigations; no provider submission'});await context.close();
  }
- fs.writeFileSync(path.join(out,'result.json'),JSON.stringify({pass:true,cases,scope:process.env.SONIA_BASE_URL ? 'Live public profile content and HTTP 301 verification; scheduler navigation intercepted.' : 'Local candidate with repository redirect rules emulated; external scheduler responses intercepted.'},null,2)+'\n');
+ fs.writeFileSync(path.join(out,'result.json'),JSON.stringify({pass:true,cases,scope:live ? 'Read-only live public profile content and HTTP 301 verification; popup acknowledgment then Escape, no Continue or scheduler navigation; all attempted writes and scheduler requests blocked.' : 'Local candidate with repository redirect rules emulated; both native handoffs exercised with external scheduler responses intercepted.'},null,2)+'\n');
  console.log(JSON.stringify({pass:true,cases}));
  }finally{await browser.close();await new Promise(r=>server.close(r));}
 })().catch(e=>{console.error(e);server.close();process.exitCode=1;});

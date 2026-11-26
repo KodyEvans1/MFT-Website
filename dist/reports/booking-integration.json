@@ -384,5 +384,100 @@
       "id": "2183370",
       "slug": "autumn-alexander"
     }
-  ]
+  ],
+  "measurementEnabledScope": "legacy booking collector only",
+  "measurement": {
+    "version": 4,
+    "legacyBookingCollector": {
+      "enabled": false,
+      "compatibilityFlag": "MFT_BOOKING_CONFIG.measurementEnabled",
+      "controlsConsentControlledGa4": false
+    },
+    "firstPartyController": {
+      "buildEnabled": false,
+      "runtimeEntryPoint": "MFTSchedulingMeasurement.track",
+      "browserConsentVersion": "mft.analytics.consent.v5",
+      "runtimeConsentRequired": true,
+      "inventoryReport": "/reports/analytics-integration.json"
+    },
+    "consentControlledGa4": {
+      "buildEnabled": false,
+      "requestedByEnvironment": false,
+      "configuredMeasurementId": "G-BTK39BBNRE",
+      "mode": "disabled",
+      "policyFile": "content/google-measurement-policy.json",
+      "policy": {
+        "version": 2,
+        "status": "blocked-sensitive-context",
+        "approvedRoutes": [],
+        "approvedEvents": [],
+        "reason": "The simplepractice_exit handoff combined with advertising/browser identifiers and M.F.T. site identity has not been established as permitted under Google Analytics' sensitive-user-information rule. The exact proposed flow and recipient retention require review; public indexing or deployment approval does not resolve that classification.",
+        "review": null
+      },
+      "runtimeConsentRequired": true,
+      "runtimeEntryPoint": null,
+      "runtimeAsset": null,
+      "candidateRuntime": {
+        "asset": "/assets/mft-google-measurement.js",
+        "sha256": "790bacb66118088109c8ee7284f2bd155a19f6129c930d3b93a488a173d24ecc",
+        "activation": "Requires exact documented review, matching source hashes, network evidence, and the production flag"
+      },
+      "dataFlow": {
+        "file": "content/google-measurement-flow.json",
+        "sha256": "4ccb098a48b0fa44b3b191ef004c45d2a470e63fd75bdf93aace2bb5cc0ae8e5"
+      },
+      "advertisingMeasurement": {
+        "available": false,
+        "status": "unavailable",
+        "preferenceVersion": "mft.advertising.consent.v1",
+        "storedPreference": "denied"
+      },
+      "inventoryReport": "/reports/analytics-integration.json"
+    },
+    "consentControlledOps": {
+      "buildEnabled": false,
+      "endpoint": null,
+      "event": "simplepractice_exit",
+      "consentVersion": "mft.analytics.consent.v4",
+      "consentVersionScope": "existing Ops receiver contract",
+      "browserConsentVersion": "mft.analytics.consent.v5",
+      "runtimeConsentRequired": true,
+      "actionId": "one random UUID per handoff; reused for a bounded retry",
+      "visitorIdentifier": false,
+      "sourceLifetimeMinutes": 30,
+      "eventRetentionDays": 30,
+      "expiredEventDeletion": "daily cleanup and ingestion cleanup after the 30-day reporting cutoff",
+      "appointmentMatching": "unmatched until a supported, demonstrated identifier connection exists"
+    },
+    "schedulingMetric": {
+      "displayName": "Website scheduling-link click",
+      "sourceEvent": "simplepractice_exit",
+      "countingUnit": "one eligible native new-client handoff to SimplePractice",
+      "delivery": "best effort; native navigation never waits for measurement",
+      "diagnosticEvents": [
+        "appointment_request_click",
+        "clinician_schedule_click",
+        "consultation_click"
+      ],
+      "diagnosticEventsCountTowardMetric": false,
+      "excludedActions": [
+        "dialog open",
+        "dialog close or cancel",
+        "dialog acknowledgment",
+        "existing-client sign-in"
+      ],
+      "dialogHandoff": "enabled Continue navigation only",
+      "establishesAppointment": false
+    },
+    "evidenceScope": "website build configuration only",
+    "externalVerification": {
+      "opsHandoffReceipt": "not verified by this build report",
+      "simplePracticeRequestVerification": "existing protected Ops workflow; not established by website activity",
+      "internalRequestAttribution": "requires demonstrated evidence; handoff IDs do not identify a request",
+      "googleCollectorAcceptance": "not verified by this report",
+      "ga4PropertyReceipt": "not verified by this report",
+      "googleAdsAttribution": "not verified by this report",
+      "confirmedAppointments": "not measured"
+    }
+  }
 }

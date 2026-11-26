@@ -6,12 +6,12 @@
   "pullRequest": "https://github.com/KodyEvans1/MFT-Website/pull/26",
   "scope": "Isolated synthetic fixtures only. Every browser request intercepted; DNS denied. No Google delivery, real Ops receipt, paid-ad click, appointment, or Ads credit. This evidence does not authorize production collection.",
   "sourceSha256": {
-    "content/google-measurement-flow.json": "730425e889eb3520532ae8a26670178235758d26b317534112b64ba1d9cb557d",
+    "content/google-measurement-flow.json": "4ccb098a48b0fa44b3b191ef004c45d2a470e63fd75bdf93aace2bb5cc0ae8e5",
     "src/assets/mft-google-measurement.js": "790bacb66118088109c8ee7284f2bd155a19f6129c930d3b93a488a173d24ecc",
     "src/assets/mft-analytics.js": "aa3bccc5765037387b3af3ff6b32926e665d7438fa8044b4cefa555aa367b669",
-    "src/assets/mft-booking.js": "3f51905de07d870e4be99c110d50d87a33b572f432b613663a6b946e6450ffc1",
+    "src/assets/mft-booking.js": "e9a99f51692c6a4dc8200935fdc2b89ed4c7f95c9ebc599cf8fa7fcd00928e5f",
     "src/google-measurement-csp.js": "83b9e795775394ff4b0bacedb78b8e91f3558d968e9a7a876dc1f2f53b512cff",
-    "tests/google-measurement-network.py": "4fe02be64a6c0f8d4955431489b2769af646175e280f7344fda26e6881e09e99",
+    "tests/google-measurement-network.py": "e0f79b3da5910d89ce08a0bef87630414535f30f2cc166122284f485aa370ea9",
     "tests/google-notice-visual.py": "d1c4da590663ee2042590457930dcd63226134f41a47a6f39f34bef18b702e7a",
     "tests/google-measurement-runtime.test.js": "0019ba75c3fe46ec97609ad9ce4683d98fac41c46ff9fa5305f637dffa4c6324",
     "tests/measurement-report.test.js": "bb1551664ceeca1465616797acf25375a5065cba3ef877ef8d6d806dbe128055",
@@ -28,7 +28,7 @@
     "scope": "Public vendor JavaScript download only. Browser collector and event traffic are blocked."
   },
   "browserVersion": "158.0.8127.88",
-  "checksPassed": 742,
+  "checksPassed": 791,
   "casesPassed": {
     "active-reviewed-csp-context-isolation": 19,
     "advertising-expired": 10,
@@ -41,13 +41,15 @@
     "cached-legacy-helper": 9,
     "clinician-excluded": 12,
     "current-first-party-grant": 10,
+    "diagnostic-dispatch-fixture": 8,
     "dnt": 9,
     "duplicate-click-id": 9,
     "excluded-clinician-route": 9,
     "existing-client-excluded": 12,
     "existing-data-layer": 9,
     "existing-gtag": 9,
-    "form-added-after-permission": 14,
+    "forced-diagnostic-native-navigation": 37,
+    "form-added-after-permission": 16,
     "fragment": 9,
     "free-text-query": 9,
     "fresh-regrant-reloads-stopped-document": 39,
@@ -63,7 +65,7 @@
     "no-consent": 10,
     "preexisting-third-party-cookies": 25,
     "query-change-handoff": 15,
-    "query-change-pagehide": 15,
+    "query-change-pagehide": 17,
     "query-change-visibilitychange": 15,
     "refusal-before-first-loader": 14,
     "remembered-ack": 19,
@@ -79,15 +81,27 @@
     "vendor-timeout": 12,
     "withdrawal-csp-preserves-open-scheduling": 20
   },
-  "interceptedRequests": 285,
+  "interceptedRequests": 301,
   "requestClasses": {
     "https://www.googletagmanager.com/gtag/js": {
-      "requests": 31,
+      "requests": 34,
       "methods": [
         "GET"
       ],
       "fieldNames": [
-        "id"
+        "dl",
+        "exp",
+        "fin",
+        "gtm",
+        "id",
+        "is_td",
+        "mde",
+        "pid",
+        "seq",
+        "t",
+        "tdp",
+        "v",
+        "z"
       ],
       "requestHeaderNames": [
         "accept",
@@ -102,8 +116,49 @@
       "httpReferrerPresent": false,
       "privateCanaryPresent": false
     },
+    "https://www.googletagmanager.com/td": {
+      "requests": 2,
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "fieldNames": [
+        "bt",
+        "ct",
+        "dl",
+        "exp",
+        "fin",
+        "frm",
+        "gtm",
+        "hlo",
+        "id",
+        "lst",
+        "mde",
+        "pid",
+        "rtg",
+        "seq",
+        "slo",
+        "t",
+        "tdp",
+        "v",
+        "z"
+      ],
+      "requestHeaderNames": [
+        "accept",
+        "origin",
+        "sec-ch-ua",
+        "sec-ch-ua-mobile",
+        "sec-ch-ua-platform",
+        "user-agent"
+      ],
+      "cookieHeaderNames": [],
+      "eventNames": [],
+      "titles": [],
+      "httpReferrerPresent": false,
+      "privateCanaryPresent": false
+    },
     "https://www.google.com/measurement/conversion": {
-      "requests": 12,
+      "requests": 13,
       "methods": [
         "POST"
       ],
@@ -170,7 +225,7 @@
       "privateCanaryPresent": false
     },
     "https://analytics.google.com/g/collect": {
-      "requests": 21,
+      "requests": 23,
       "methods": [
         "POST"
       ],
@@ -244,7 +299,7 @@
       "privateCanaryPresent": false
     },
     "https://stats.g.doubleclick.net/g/collect": {
-      "requests": 12,
+      "requests": 13,
       "methods": [
         "POST"
       ],
@@ -280,6 +335,38 @@
       "titles": [],
       "httpReferrerPresent": false,
       "privateCanaryPresent": false
+    },
+    "https://www.googletagmanager.com/a": {
+      "requests": 2,
+      "methods": [
+        "GET"
+      ],
+      "fieldNames": [
+        "ccid",
+        "cid",
+        "gtm",
+        "h",
+        "l",
+        "pid",
+        "rv",
+        "t",
+        "tag_exp",
+        "u",
+        "ut",
+        "v"
+      ],
+      "requestHeaderNames": [
+        "accept",
+        "sec-ch-ua",
+        "sec-ch-ua-mobile",
+        "sec-ch-ua-platform",
+        "user-agent"
+      ],
+      "cookieHeaderNames": [],
+      "eventNames": [],
+      "titles": [],
+      "httpReferrerPresent": false,
+      "privateCanaryPresent": false
     }
   },
   "automaticEventsObserved": [
@@ -298,45 +385,45 @@
           "name": "mftga_aw",
           "domain": "www.mft.care",
           "path": "/",
-          "expires": 1795676037,
+          "expires": 1795677513,
           "httpOnly": false,
           "secure": true,
           "sameSite": "Lax",
-          "secondsUntilExpiry": 1796.23,
-          "secondsBeyondPermission": -1.16
+          "secondsUntilExpiry": 1796.18,
+          "secondsBeyondPermission": -1.18
         },
         {
           "name": "mftga_au",
           "domain": "www.mft.care",
           "path": "/",
-          "expires": 1795676037,
+          "expires": 1795677513,
           "httpOnly": false,
           "secure": true,
           "sameSite": "Lax",
-          "secondsUntilExpiry": 1796.23,
-          "secondsBeyondPermission": -1.16
+          "secondsUntilExpiry": 1796.18,
+          "secondsBeyondPermission": -1.18
         },
         {
           "name": "mftga_ga_BTK39BBNRE",
           "domain": "www.mft.care",
           "path": "/",
-          "expires": 1795676037,
+          "expires": 1795677513,
           "httpOnly": false,
           "secure": true,
           "sameSite": "Lax",
-          "secondsUntilExpiry": 1796.23,
-          "secondsBeyondPermission": -1.16
+          "secondsUntilExpiry": 1796.18,
+          "secondsBeyondPermission": -1.18
         },
         {
           "name": "mftga_ga",
           "domain": "www.mft.care",
           "path": "/",
-          "expires": 1795676037,
+          "expires": 1795677513,
           "httpOnly": false,
           "secure": true,
           "sameSite": "Lax",
-          "secondsUntilExpiry": 1796.23,
-          "secondsBeyondPermission": -1.16
+          "secondsUntilExpiry": 1796.18,
+          "secondsBeyondPermission": -1.18
         }
       ],
       "localStorageKeys": [
@@ -354,45 +441,45 @@
           "name": "mftga_aw",
           "domain": "www.mft.care",
           "path": "/",
-          "expires": 1795676035,
+          "expires": 1795677511,
           "httpOnly": false,
           "secure": true,
           "sameSite": "Lax",
-          "secondsUntilExpiry": 1791.91,
-          "secondsBeyondPermission": -3.16
+          "secondsUntilExpiry": 1791.82,
+          "secondsBeyondPermission": -3.18
         },
         {
           "name": "mftga_au",
           "domain": "www.mft.care",
           "path": "/",
-          "expires": 1795676036,
+          "expires": 1795677512,
           "httpOnly": false,
           "secure": true,
           "sameSite": "Lax",
-          "secondsUntilExpiry": 1792.91,
-          "secondsBeyondPermission": -2.16
+          "secondsUntilExpiry": 1792.82,
+          "secondsBeyondPermission": -2.18
         },
         {
           "name": "mftga_ga",
           "domain": "www.mft.care",
           "path": "/",
-          "expires": 1795676037,
+          "expires": 1795677513,
           "httpOnly": false,
           "secure": true,
           "sameSite": "Lax",
-          "secondsUntilExpiry": 1793.91,
-          "secondsBeyondPermission": -1.16
+          "secondsUntilExpiry": 1793.82,
+          "secondsBeyondPermission": -1.18
         },
         {
           "name": "mftga_ga_BTK39BBNRE",
           "domain": "www.mft.care",
           "path": "/",
-          "expires": 1795676037,
+          "expires": 1795677513,
           "httpOnly": false,
           "secure": true,
           "sameSite": "Lax",
-          "secondsUntilExpiry": 1793.91,
-          "secondsBeyondPermission": -1.16
+          "secondsUntilExpiry": 1793.82,
+          "secondsBeyondPermission": -1.18
         }
       ],
       "localStorageKeys": [
@@ -410,45 +497,45 @@
           "name": "mftga_ag",
           "domain": "www.mft.care",
           "path": "/",
-          "expires": 1795676043,
+          "expires": 1795677519,
           "httpOnly": false,
           "secure": true,
           "sameSite": "Lax",
-          "secondsUntilExpiry": 1796.18,
-          "secondsBeyondPermission": -1.22
+          "secondsUntilExpiry": 1796.05,
+          "secondsBeyondPermission": -1.31
         },
         {
           "name": "mftga_au",
           "domain": "www.mft.care",
           "path": "/",
-          "expires": 1795676043,
+          "expires": 1795677519,
           "httpOnly": false,
           "secure": true,
           "sameSite": "Lax",
-          "secondsUntilExpiry": 1796.18,
-          "secondsBeyondPermission": -1.22
+          "secondsUntilExpiry": 1796.05,
+          "secondsBeyondPermission": -1.31
         },
         {
           "name": "mftga_ga_BTK39BBNRE",
           "domain": "www.mft.care",
           "path": "/",
-          "expires": 1795676043,
+          "expires": 1795677519,
           "httpOnly": false,
           "secure": true,
           "sameSite": "Lax",
-          "secondsUntilExpiry": 1796.18,
-          "secondsBeyondPermission": -1.22
+          "secondsUntilExpiry": 1796.05,
+          "secondsBeyondPermission": -1.31
         },
         {
           "name": "mftga_ga",
           "domain": "www.mft.care",
           "path": "/",
-          "expires": 1795676043,
+          "expires": 1795677519,
           "httpOnly": false,
           "secure": true,
           "sameSite": "Lax",
-          "secondsUntilExpiry": 1796.18,
-          "secondsBeyondPermission": -1.22
+          "secondsUntilExpiry": 1796.05,
+          "secondsBeyondPermission": -1.31
         }
       ],
       "localStorageKeys": [
@@ -466,45 +553,45 @@
           "name": "mftga_gb",
           "domain": "www.mft.care",
           "path": "/",
-          "expires": 1795676047,
+          "expires": 1795677523,
           "httpOnly": false,
           "secure": true,
           "sameSite": "Lax",
-          "secondsUntilExpiry": 1796.42,
-          "secondsBeyondPermission": -0.96
+          "secondsUntilExpiry": 1796.24,
+          "secondsBeyondPermission": -1.06
         },
         {
           "name": "mftga_au",
           "domain": "www.mft.care",
           "path": "/",
-          "expires": 1795676047,
+          "expires": 1795677523,
           "httpOnly": false,
           "secure": true,
           "sameSite": "Lax",
-          "secondsUntilExpiry": 1796.42,
-          "secondsBeyondPermission": -0.96
+          "secondsUntilExpiry": 1796.24,
+          "secondsBeyondPermission": -1.06
         },
         {
           "name": "mftga_ga_BTK39BBNRE",
           "domain": "www.mft.care",
           "path": "/",
-          "expires": 1795676047,
+          "expires": 1795677523,
           "httpOnly": false,
           "secure": true,
           "sameSite": "Lax",
-          "secondsUntilExpiry": 1796.42,
-          "secondsBeyondPermission": -0.96
+          "secondsUntilExpiry": 1796.24,
+          "secondsBeyondPermission": -1.06
         },
         {
           "name": "mftga_ga",
           "domain": "www.mft.care",
           "path": "/",
-          "expires": 1795676047,
+          "expires": 1795677523,
           "httpOnly": false,
           "secure": true,
           "sameSite": "Lax",
-          "secondsUntilExpiry": 1796.42,
-          "secondsBeyondPermission": -0.96
+          "secondsUntilExpiry": 1796.24,
+          "secondsBeyondPermission": -1.06
         }
       ],
       "localStorageKeys": [
@@ -522,67 +609,67 @@
           "name": "NID",
           "domain": ".google.com",
           "path": "/",
-          "expires": 1795760670.87231,
+          "expires": 1795762147.023088,
           "httpOnly": false,
           "secure": true,
           "sameSite": "None",
-          "secondsUntilExpiry": 86397.11,
-          "secondsBeyondPermission": 84599.74
+          "secondsUntilExpiry": 86397.13,
+          "secondsBeyondPermission": 84599.75
         },
         {
           "name": "IDE",
           "domain": ".doubleclick.net",
           "path": "/",
-          "expires": 1795760670.872312,
+          "expires": 1795762147.02309,
           "httpOnly": false,
           "secure": true,
           "sameSite": "None",
-          "secondsUntilExpiry": 86397.11,
-          "secondsBeyondPermission": 84599.74
+          "secondsUntilExpiry": 86397.13,
+          "secondsBeyondPermission": 84599.75
         },
         {
           "name": "mftga_aw",
           "domain": "www.mft.care",
           "path": "/",
-          "expires": 1795676070,
+          "expires": 1795677546,
           "httpOnly": false,
           "secure": true,
           "sameSite": "Lax",
-          "secondsUntilExpiry": 1796.23,
-          "secondsBeyondPermission": -1.13
+          "secondsUntilExpiry": 1796.1,
+          "secondsBeyondPermission": -1.27
         },
         {
           "name": "mftga_au",
           "domain": "www.mft.care",
           "path": "/",
-          "expires": 1795676070,
+          "expires": 1795677546,
           "httpOnly": false,
           "secure": true,
           "sameSite": "Lax",
-          "secondsUntilExpiry": 1796.23,
-          "secondsBeyondPermission": -1.13
+          "secondsUntilExpiry": 1796.1,
+          "secondsBeyondPermission": -1.27
         },
         {
           "name": "mftga_ga_BTK39BBNRE",
           "domain": "www.mft.care",
           "path": "/",
-          "expires": 1795676070,
+          "expires": 1795677546,
           "httpOnly": false,
           "secure": true,
           "sameSite": "Lax",
-          "secondsUntilExpiry": 1796.23,
-          "secondsBeyondPermission": -1.13
+          "secondsUntilExpiry": 1796.1,
+          "secondsBeyondPermission": -1.27
         },
         {
           "name": "mftga_ga",
           "domain": "www.mft.care",
           "path": "/",
-          "expires": 1795676070,
+          "expires": 1795677546,
           "httpOnly": false,
           "secure": true,
           "sameSite": "Lax",
-          "secondsUntilExpiry": 1796.23,
-          "secondsBeyondPermission": -1.13
+          "secondsUntilExpiry": 1796.1,
+          "secondsBeyondPermission": -1.27
         }
       ],
       "localStorageKeys": [
@@ -607,7 +694,8 @@
     "The stop CSP restricts requests initiated after enforcement; it cannot retract earlier disclosures or cancel all in-flight requests.",
     "Title mutation observation is asynchronous. Exercised capture-phase lifecycle checks are not a universal same-turn interception mechanism.",
     "This conditional-runtime stop and regrant evidence covers Chromium only, not Firefox or WebKit.",
-    "A stopped document cannot resume Google. Fresh explicit consent saves a new deadline and reloads a new document; withdrawal itself never reloads."
+    "A stopped document cannot resume Google. Fresh explicit consent saves a new deadline and reloads a new document; withdrawal itself never reloads.",
+    "The is_td=1 diagnostic script is fulfilled with inert empty JavaScript in this outbound fixture. Its actual Google response status/body is not established."
   ],
   "initialHostedObservation": {
     "run": "https://github.com/KodyEvans1/MFT-Website/actions/runs/45762541432",
@@ -1095,7 +1183,92 @@
       }
     }
   ],
-  "loadDiagnosticIdentifierEvidence": [],
+  "loadDiagnosticIdentifierEvidence": [
+    {
+      "case": "form-added-after-permission",
+      "method": "GET",
+      "host": "www.googletagmanager.com",
+      "path": "/a",
+      "resourceType": "image",
+      "fixtureResponseRole": "collector",
+      "fieldNames": [
+        "ccid",
+        "cid",
+        "gtm",
+        "h",
+        "l",
+        "pid",
+        "rv",
+        "t",
+        "tag_exp",
+        "u",
+        "ut",
+        "v"
+      ],
+      "metadata": [
+        {
+          "automaticMarkers": {},
+          "loadDiagnostic": {
+            "scriptContainerId": "G-BTK39BBNRE",
+            "canonicalContainerId": "267080605",
+            "summaryCharacters": 403
+          }
+        }
+      ],
+      "httpReferrerPresent": false,
+      "requestHeaderNames": [
+        "accept",
+        "sec-ch-ua",
+        "sec-ch-ua-mobile",
+        "sec-ch-ua-platform",
+        "user-agent"
+      ],
+      "cookieHeaderNames": [],
+      "privateCanaryPresent": false
+    },
+    {
+      "case": "query-change-pagehide",
+      "method": "GET",
+      "host": "www.googletagmanager.com",
+      "path": "/a",
+      "resourceType": "image",
+      "fixtureResponseRole": "collector",
+      "fieldNames": [
+        "ccid",
+        "cid",
+        "gtm",
+        "h",
+        "l",
+        "pid",
+        "rv",
+        "t",
+        "tag_exp",
+        "u",
+        "ut",
+        "v"
+      ],
+      "metadata": [
+        {
+          "automaticMarkers": {},
+          "loadDiagnostic": {
+            "scriptContainerId": "G-BTK39BBNRE",
+            "canonicalContainerId": "267080605",
+            "summaryCharacters": 405
+          }
+        }
+      ],
+      "httpReferrerPresent": false,
+      "requestHeaderNames": [
+        "accept",
+        "sec-ch-ua",
+        "sec-ch-ua-mobile",
+        "sec-ch-ua-platform",
+        "user-agent"
+      ],
+      "cookieHeaderNames": [],
+      "privateCanaryPresent": false
+    }
+  ],
   "previousLocalObservation": {
     "status": "passing-earlier-sample-superseded-by-known-stop-counterexample",
     "sourceSha256": {
@@ -1294,7 +1467,7 @@
   "localChecks": {
     "buildAndUnitTests": {
       "command": "npm run check",
-      "passed": 431,
+      "passed": 437,
       "failed": 0
     },
     "notice": {
@@ -1313,5 +1486,337 @@
       "googleEvents": 0,
       "opsPages": 60
     }
+  },
+  "priorLocalObservations": [
+    {
+      "status": "passing-earlier-sample-before-latest-diagnostic-inventory",
+      "sourceSha256": {
+        "content/google-measurement-flow.json": "730425e889eb3520532ae8a26670178235758d26b317534112b64ba1d9cb557d",
+        "src/assets/mft-google-measurement.js": "790bacb66118088109c8ee7284f2bd155a19f6129c930d3b93a488a173d24ecc",
+        "src/assets/mft-analytics.js": "aa3bccc5765037387b3af3ff6b32926e665d7438fa8044b4cefa555aa367b669",
+        "src/assets/mft-booking.js": "3f51905de07d870e4be99c110d50d87a33b572f432b613663a6b946e6450ffc1",
+        "src/google-measurement-csp.js": "83b9e795775394ff4b0bacedb78b8e91f3558d968e9a7a876dc1f2f53b512cff",
+        "tests/google-measurement-network.py": "4fe02be64a6c0f8d4955431489b2769af646175e280f7344fda26e6881e09e99",
+        "tests/google-notice-visual.py": "d1c4da590663ee2042590457930dcd63226134f41a47a6f39f34bef18b702e7a",
+        "tests/google-measurement-runtime.test.js": "0019ba75c3fe46ec97609ad9ce4683d98fac41c46ff9fa5305f637dffa4c6324",
+        "tests/measurement-report.test.js": "bb1551664ceeca1465616797acf25375a5065cba3ef877ef8d6d806dbe128055",
+        "tests/ops-handoff-browser.py": "ab6a6eee0eb341ac99a855d909048cc40cf29a9344f8d348a2938841c4d17574"
+      },
+      "checksPassed": 742,
+      "interceptedRequests": 285,
+      "scope": "This earlier passing sample is preserved separately from the latest source-bound result."
+    },
+    {
+      "status": "passing-earlier-sample-before-latest-diagnostic-inventory",
+      "sourceSha256": {
+        "content/google-measurement-flow.json": "4ccb098a48b0fa44b3b191ef004c45d2a470e63fd75bdf93aace2bb5cc0ae8e5",
+        "src/assets/mft-google-measurement.js": "790bacb66118088109c8ee7284f2bd155a19f6129c930d3b93a488a173d24ecc",
+        "src/assets/mft-analytics.js": "aa3bccc5765037387b3af3ff6b32926e665d7438fa8044b4cefa555aa367b669",
+        "src/assets/mft-booking.js": "3f51905de07d870e4be99c110d50d87a33b572f432b613663a6b946e6450ffc1",
+        "src/google-measurement-csp.js": "83b9e795775394ff4b0bacedb78b8e91f3558d968e9a7a876dc1f2f53b512cff",
+        "tests/google-measurement-network.py": "e0f79b3da5910d89ce08a0bef87630414535f30f2cc166122284f485aa370ea9",
+        "tests/google-notice-visual.py": "d1c4da590663ee2042590457930dcd63226134f41a47a6f39f34bef18b702e7a",
+        "tests/google-measurement-runtime.test.js": "0019ba75c3fe46ec97609ad9ce4683d98fac41c46ff9fa5305f637dffa4c6324",
+        "tests/measurement-report.test.js": "bb1551664ceeca1465616797acf25375a5065cba3ef877ef8d6d806dbe128055",
+        "tests/ops-handoff-browser.py": "ab6a6eee0eb341ac99a855d909048cc40cf29a9344f8d348a2938841c4d17574"
+      },
+      "checksPassed": 796,
+      "interceptedRequests": 302,
+      "scope": "This earlier passing sample is preserved separately from the latest source-bound result."
+    }
+  ],
+  "diagnosticScriptHostedFailure": {
+    "run": "https://github.com/KodyEvans1/MFT-Website/actions/runs/45768316749",
+    "job": 139734552914,
+    "sourceCommit": "fbd542c168d0688f80eb07dafaa0a6d858203c60",
+    "status": "failed-on-observed-diagnostic-fallback-and-interception-error",
+    "vendor": {
+      "downloadedAtUtc": "2026-11-26T06:28:47.145419+00:00",
+      "source": "https://www.googletagmanager.com/gtag/js?id=G-BTK39BBNRE",
+      "method": "GET",
+      "status": 200,
+      "contentType": "application/javascript; charset=UTF-8",
+      "bytes": 528419,
+      "sha256": "d351f03303c6a0ca84557ba64fe6bcffe17823fdfbbe5c88b39972f9c569b293",
+      "scope": "Public vendor JavaScript only. No cookies, credentials, event calls, advertising clicks or patient data."
+    },
+    "browserVersion": "157.0.8103.78",
+    "failedChecks": [
+      {
+        "case": "native-gclid",
+        "name": "Vendor diagnostic fields stay within the recorded unapproved envelope",
+        "pass": false
+      }
+    ],
+    "blockers": [],
+    "interceptorErrors": [
+      {
+        "message": "CDPSession.send: Protocol error (Fetch.fulfillRequest): Invalid InterceptionId.",
+        "method": "GET",
+        "host": "www.googletagmanager.com",
+        "path": "/gtag/js",
+        "resourceType": "script",
+        "operation": "fulfill"
+      }
+    ],
+    "observedRequests": [
+      {
+        "case": "native-gclid",
+        "method": "GET",
+        "host": "www.googletagmanager.com",
+        "path": "/td",
+        "resourceType": "image",
+        "fieldNames": [
+          "bt",
+          "ct",
+          "dl",
+          "exp",
+          "frm",
+          "gtm",
+          "hlo",
+          "id",
+          "lst",
+          "pid",
+          "rtg",
+          "seq",
+          "slo",
+          "t",
+          "tdp",
+          "v",
+          "z"
+        ],
+        "metadata": [
+          {
+            "dl": {
+              "origin": "://",
+              "path": "www.mft.care/",
+              "queryKeys": [],
+              "hasSyntheticClick": false
+            },
+            "automaticMarkers": {}
+          }
+        ],
+        "httpReferrerPresent": false,
+        "requestHeaderNames": [
+          "accept",
+          "sec-ch-ua",
+          "sec-ch-ua-mobile",
+          "sec-ch-ua-platform",
+          "user-agent"
+        ],
+        "cookieHeaderNames": [],
+        "privateCanaryPresent": false
+      },
+      {
+        "case": "native-gclid",
+        "method": "POST",
+        "host": "www.googletagmanager.com",
+        "path": "/td",
+        "resourceType": "xhr",
+        "fieldNames": [
+          "dl",
+          "exp",
+          "fin",
+          "gtm",
+          "id",
+          "mde",
+          "pid",
+          "seq",
+          "t",
+          "tdp",
+          "v",
+          "z"
+        ],
+        "metadata": [
+          {
+            "dl": {
+              "origin": "://",
+              "path": "www.mft.care/",
+              "queryKeys": [],
+              "hasSyntheticClick": false
+            },
+            "automaticMarkers": {}
+          }
+        ],
+        "httpReferrerPresent": false,
+        "requestHeaderNames": [
+          "accept",
+          "origin",
+          "sec-ch-ua",
+          "sec-ch-ua-mobile",
+          "sec-ch-ua-platform",
+          "user-agent"
+        ],
+        "cookieHeaderNames": [],
+        "privateCanaryPresent": false
+      },
+      {
+        "case": "native-gclid",
+        "method": "GET",
+        "host": "www.googletagmanager.com",
+        "path": "/gtag/js",
+        "resourceType": "script",
+        "fieldNames": [
+          "dl",
+          "exp",
+          "fin",
+          "gtm",
+          "id",
+          "is_td",
+          "mde",
+          "pid",
+          "seq",
+          "t",
+          "tdp",
+          "v",
+          "z"
+        ],
+        "metadata": [
+          {
+            "dl": {
+              "origin": "://",
+              "path": "www.mft.care/",
+              "queryKeys": [],
+              "hasSyntheticClick": false
+            },
+            "automaticMarkers": {}
+          }
+        ],
+        "httpReferrerPresent": false,
+        "requestHeaderNames": [
+          "accept",
+          "sec-ch-ua",
+          "sec-ch-ua-mobile",
+          "sec-ch-ua-platform",
+          "user-agent"
+        ],
+        "cookieHeaderNames": [],
+        "privateCanaryPresent": false
+      }
+    ]
+  },
+  "diagnosticScriptEvidence": [
+    {
+      "case": "forced-diagnostic-native-navigation",
+      "method": "GET",
+      "host": "www.googletagmanager.com",
+      "path": "/gtag/js",
+      "resourceType": "script",
+      "fixtureResponseRole": "diagnostic-script",
+      "fieldNames": [
+        "dl",
+        "exp",
+        "fin",
+        "gtm",
+        "id",
+        "is_td",
+        "mde",
+        "pid",
+        "seq",
+        "t",
+        "tdp",
+        "v",
+        "z"
+      ],
+      "metadata": [
+        {
+          "dl": {
+            "origin": "://",
+            "path": "www.mft.care/",
+            "queryKeys": [],
+            "hasSyntheticClick": false
+          },
+          "automaticMarkers": {},
+          "tagDiagnostic": {
+            "scriptContainerId": "G-BTK39BBNRE",
+            "tagContextMatches": true,
+            "requestCounterSummaryValid": true,
+            "isDiagnosticScript": true,
+            "fixtureResponse": "empty-javascript",
+            "fixtureStatus": 200,
+            "fixtureBodyBytes": 0
+          }
+        }
+      ],
+      "httpReferrerPresent": false,
+      "requestHeaderNames": [
+        "accept",
+        "sec-ch-ua",
+        "sec-ch-ua-mobile",
+        "sec-ch-ua-platform",
+        "user-agent"
+      ],
+      "cookieHeaderNames": [],
+      "privateCanaryPresent": false
+    }
+  ],
+  "fixtureDispatcherChecks": [
+    {
+      "case": "diagnostic-dispatch-fixture",
+      "name": "Only the exact id-only initial script receives the unchanged vendor bundle",
+      "pass": true
+    },
+    {
+      "case": "diagnostic-dispatch-fixture",
+      "name": "The observed diagnostic script shape is distinct from the initial loader",
+      "pass": true
+    },
+    {
+      "case": "diagnostic-dispatch-fixture",
+      "name": "The diagnostic fixture response is empty JavaScript and never reinjects the vendor",
+      "pass": true
+    },
+    {
+      "case": "diagnostic-dispatch-fixture",
+      "name": "The same strict diagnostic envelope accepts the observed td counter variant",
+      "pass": true
+    },
+    {
+      "case": "diagnostic-dispatch-fixture",
+      "name": "Diagnostic classification rejects unknown fields, tags, pages and counter content",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "case": "diagnostic-dispatch-fixture",
+      "name": "Diagnostic classification rejects repeated query keys and non-GET script requests",
+      "pass": true
+    },
+    {
+      "case": "diagnostic-dispatch-fixture",
+      "name": "An extra loader parameter cannot obtain a second executable vendor",
+      "pass": true
+    },
+    {
+      "case": "diagnostic-dispatch-fixture",
+      "name": "Diagnostic fulfillment errors propagate without suppression",
+      "pass": true
+    }
+  ],
+  "controlledDiagnosticSampling": [
+    {
+      "case": "forced-diagnostic-native-navigation",
+      "controlledBrowserInput": {
+        "kind": "one-shot first exact-loader Math.random draw",
+        "value": 0.995,
+        "route": "/",
+        "vendorBytesModified": false,
+        "draws": 1,
+        "restored": true
+      }
+    }
+  ],
+  "auxiliaryObserverFixtureCorrection": {
+    "status": "removed-unsupported-secondary-observer-requirement",
+    "passedAssertions": 786,
+    "totalAssertions": 787,
+    "reason": "The page-level Network observer did not report browser-level intercepted requests. The authoritative browser Fetch interceptor had captured and successfully fulfilled the real diagnostics. The unsupported extra requirement and unused listener were removed; request/response assertions, native navigation and every interception error remained enforced."
+  },
+  "concurrentBookingReturn": {
+    "preservedCommit": "345b8248c53768f4c8df332ca79140cfeb21c55e",
+    "behavior": "One fresh native-link handoff after a trusted hidden-to-visible return; no send on visibility, repeated activation during one visible visit deduplicated, completed-dialog guard preserved.",
+    "unitCasesPassed": 6,
+    "combinedVendorProbePassed": true,
+    "headedBrowserGate": "Required hosted workflow; local headless results are not proof of a foreground tab transition."
   }
 }

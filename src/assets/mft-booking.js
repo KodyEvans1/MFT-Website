@@ -29,11 +29,19 @@
     // Measurement is optional and cannot cancel, replace, or delay navigation.
     try{window.MFTSchedulingMeasurement?.track(names,placement(a),undefined,{googleGenericHandoff});}catch{}
   }
-  // A native link is one handoff per document visit, even when a double click
-  // or repeated new-tab activation produces several trusted DOM events. This
-  // state never leaves the page and never prevents the anchor's default action.
+  // Repeated activations during one visible visit share a native handoff. A
+  // demonstrated hidden-to-visible return permits a new deliberate activation;
+  // a background new tab, focus alone or elapsed time does not reset the set.
+  // This state never leaves the page or prevents the anchor's default action.
   let completedNativeLinks=new WeakSet();
-  window.addEventListener('pageshow',e=>{if(e.persisted)completedNativeLinks=new WeakSet();});
+  let nativeDocumentHidden=false;
+  function newNativeVisit(){completedNativeLinks=new WeakSet();nativeDocumentHidden=false;}
+  window.addEventListener('pageshow',e=>{if(e.persisted)newNativeVisit();});
+  document.addEventListener('visibilitychange',e=>{
+    if(e.isTrusted!==true)return;
+    if(document.visibilityState==='hidden')nativeDocumentHidden=true;
+    else if(document.visibilityState==='visible'&&nativeDocumentHidden)newNativeVisit();
+  });
   function handoff(e,a,names,googleGenericHandoff=genericHandoff(a),deduplicateNative=false){
     if(e.defaultPrevented||e.isTrusted!==true||e.button>1)return;
     if(deduplicateNative){

@@ -38,7 +38,7 @@
     "browserEvidenceLimit": "Only Chromium has been exercised so far. The corrective stop policy requires updated actual-runtime verification; this contract makes no new passing claim and no Firefox or WebKit verification claim."
   },
   "observedRuntimeDestinations": {
-    "https://www.googletagmanager.com/gtag/js": "The existing property's public Google tag; the browser discloses ordinary request metadata when loading it",
+    "https://www.googletagmanager.com/gtag/js": "The exact id-only URL loads the existing property tag once. The same path with is_td=1 is also an observed diagnostic script transport, carrying the separately inventoried public route and request-attempt counters. Both disclose ordinary request metadata; the diagnostic response is not established by the outbound fixture.",
     "https://analytics.google.com/g/collect": "GA4 events, consent, client/session identifiers, canonical location with permitted click identifiers, fixed GA4 title, empty GA4 referrer and browser metadata",
     "https://www.google-analytics.com/g/collect": "Documented GA4 collector, subject to the same reviewed envelope",
     "https://region1.google-analytics.com/g/collect": "Regional GA4 collector, subject to the same reviewed envelope",
@@ -46,7 +46,7 @@
     "https://www.google.com/measurement/conversion": "Native Ads-linked GA4 measurement; includes event and advertising identifiers, canonical URL, actual reviewed document title in tiba, consent and browser metadata",
     "https://stats.g.doubleclick.net/g/collect": "Native identifier/consent ping observed without an event name; still a disclosure to Google",
     "https://www.googletagmanager.com/a": "Sampled Google tag diagnostics: protocol, tag/container configuration and performance/processing metadata. The observed v=3,t=l variant adds ccid, cid and l; here cid is the script/container identifier, distinct from GA4 visitor cid. Exact observed field checks remain required; other static variants are not approved.",
-    "https://www.googletagmanager.com/td": "Sampled Google tag diagnostics observed in hosted verification, including the public site/route in dl and protocol/tag fields; GET image and POST transports, no application event name. Later title-change/pagehide probes exposed attempts after the GA disable flag, requiring the enforced stop policy; opaque diagnostic field semantics remain a review limitation"
+    "https://www.googletagmanager.com/td": "Sampled Google tag diagnostics observed in hosted verification, including the public site/route in dl and protocol/tag fields; GET image and POST transports, no application event name. Later title-change/pagehide probes exposed attempts after the GA disable flag, requiring the enforced stop policy; opaque diagnostic field semantics remain a review limitation A later sample adds mde destination/endpoint attempt counts; the same diagnostic query can also travel by async script to the original tag URL with is_td=1."
   },
   "advertisingConsentVersion": "mft.advertising.consent.v2",
   "permittedAdvertisingContextKeys": [
@@ -113,5 +113,35 @@
     "canonicalContainerId": "267080605",
     "valueEvidence": "Configuration values from the recorded public vendor snapshot; tests require an emitted load diagnostic to match them. Do not infer fresh request values from a field-name-only report.",
     "summary": "Navigation/performance and tag/event processing telemetry; the inspected serializer substitutes * for non-gtm event names but is not a universal sanitizer of arbitrary gtm.* names or future tags. No current application code supplies such names."
+  },
+  "observedTagDiagnostic": {
+    "paths": [
+      "https://www.googletagmanager.com/td",
+      "https://www.googletagmanager.com/gtag/js"
+    ],
+    "scriptVariant": "is_td=1,v=3,t=t,z=0 with the existing measurement tag id",
+    "observedScriptFields": [
+      "dl",
+      "exp",
+      "fin",
+      "gtm",
+      "id",
+      "is_td",
+      "mde",
+      "pid",
+      "seq",
+      "t",
+      "tdp",
+      "v",
+      "z"
+    ],
+    "mde": "Registered request-attempt counts grouped by Google destination identifier and numeric endpoint. It is not an error-only count and does not serialize the internally registered URL, event identifier, page title/body, form values, referrer or cookies.",
+    "tdp": "Script identifier, canonical container identifier, execution-context boolean/source, and destination boolean; validate against the existing tag configuration.",
+    "dl": "Actual hostname plus pathname; this constructor excludes query and fragment and does not use the configured GA4 page_location.",
+    "pid": "Random diagnostic page identifier shared within the document; distinct from the GA4 visitor client id.",
+    "sourceEvidence": "Client-code inspection of recorded 9f8e0193cfd6f914ed1ec726517aeefdf63f45577c5e2bd6ac23d3304be3d7dd; the hosted observation records field names, not raw mde/tdp values. Subsequent interception checks must validate exact values/grammar.",
+    "scriptTrigger": "The client inserts the async diagnostic script when mde or csp is present, independently of the /td request outcome. This is not a second application configuration call.",
+    "responseLimit": "The source supplies no response-value handler. The isolated fixture uses inert empty JavaScript; the actual Google diagnostic response status/body has not been verified.",
+    "unobservedVariants": "Static csp and img variants are not added solely because source supports them. Unreviewed fields and variants remain failures."
   }
 }

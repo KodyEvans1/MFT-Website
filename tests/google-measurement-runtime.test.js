@@ -14,7 +14,7 @@ function store(seed={},blocked=false){
  return {getItem:key=>{if(blocked)throw Error('Storage blocked');return values.get(key)??null;},setItem:(key,value)=>{if(blocked)throw Error('Storage blocked');values.set(key,String(value));writes.push({key,value:String(value)});},removeItem:key=>{if(blocked)throw Error('Storage blocked');values.delete(key);},all:()=>Object.fromEntries(values),writes};
 }
 function fixture({route='/',pathname=route,origin='https://www.mft.care',title=TITLES[route],search='',hash='',dataset={},local={},session={},cookies={},clock={now:1800000000000},gpc=false,dnt='0',blockedStorage=false,otherSender=false,controls=[]}={}){
- const listeners={},registrations=[],observers=[],elements=[],loaders=[],timers=[],ops=[],cookieWrites=[];let queryReads=0,reloads=0,ids=0;
+ const listeners={},registrations=[],observers=[],elements=[],loaders=[],headElements=[],timers=[],ops=[],cookieWrites=[];let queryReads=0,reloads=0,ids=0;
  const jar=new Map(Object.entries(cookies));
  const listen=(target,name,fn,options)=>{(listeners[target+':'+name]||=[]).push(fn);registrations.push({target,name,fn,capture:options===true||options?.capture===true});};
  const document={readyState:'loading',visibilityState:'visible',title,referrer:'https://private.example.invalid/patient',documentElement:{},
@@ -23,8 +23,8 @@ function fixture({route='/',pathname=route,origin='https://www.mft.care',title=T
   getElementById:id=>elements.find(e=>e.id===id&&!e.removed)||null,querySelector:()=>null,
   querySelectorAll:selector=>selector==='form,input,textarea'?controls:elements.filter(e=>!e.removed&&['script','iframe'].includes(e.tag)),
   addEventListener:(name,fn,options)=>listen('document',name,fn,options),
-  createElement:tag=>{const handlers={};const element={tag,style:{},handlers,src:'',setAttribute(){},addEventListener:(name,fn)=>(handlers[name]||=[]).push(fn),remove(){element.removed=true;},querySelector:()=>({focus(){},remove(){}})};elements.push(element);return element;},
-  body:{appendChild(){}},head:{appendChild:element=>loaders.push(element)}};
+  createElement:tag=>{const handlers={},attributes=new Map();const element={tag,style:{},handlers,src:'',setAttribute:(key,value)=>attributes.set(key,String(value)),getAttribute:key=>attributes.get(key)??null,addEventListener:(name,fn)=>(handlers[name]||=[]).push(fn),remove(){element.removed=true;},querySelector:()=>({focus(){},remove(){}})};elements.push(element);return element;},
+  body:{appendChild(){}},head:{appendChild:element=>{headElements.push(element);if(element.tag==='script')loaders.push(element);}}};
  const c={document,location:{origin,pathname,get search(){queryReads++;return search;},set search(value){search=value;},hash,reload:()=>reloads++},
   navigator:{globalPrivacyControl:gpc,doNotTrack:dnt},localStorage:store(local,blockedStorage),sessionStorage:store(session,blockedStorage),URL,URLSearchParams,AbortController,Uint8Array,
   Date:class extends Date{constructor(...args){super(...(args.length?args:[clock.now]));}static now(){return clock.now;}},
@@ -35,7 +35,7 @@ function fixture({route='/',pathname=route,origin='https://www.mft.care',title=T
  if(otherSender)c.gtag=function(){};
  c.window=c;vm.runInNewContext(googleCode,c);
  const fire=(target,name,event={})=>{for(const fn of listeners[target+':'+name]||[])fn(event);};
- return {c,document,clock,loaders,elements,ops,jar,cookieWrites,registrations,observers,queryReads:()=>queryReads,reloads:()=>reloads,
+ return {c,document,clock,loaders,headElements,elements,ops,jar,cookieWrites,registrations,observers,queryReads:()=>queryReads,reloads:()=>reloads,
   fire,commands:()=>Array.from(c.dataLayer||[],args=>Array.from(args)),
   mutate:()=>{for(const observer of observers)if(observer.target&&!observer.disconnected)observer.callback([]);},
   load:()=>{for(const fn of loaders.at(-1)?.handlers.load||[])fn();},
@@ -45,6 +45,7 @@ function fixture({route='/',pathname=route,origin='https://www.mft.care',title=T
   rerunGoogle:()=>vm.runInNewContext(googleCode,c)};
 }
 const events=x=>x.commands().filter(command=>command[0]==='event');
+const stopPolicies=x=>x.headElements.filter(element=>element.tag==='meta'&&element.getAttribute('data-mft-google-stopped')==='true');
 const grantRecord=now=>JSON.stringify({choice:'granted',review:REVIEW,expiresAt:now+LIFETIME});
 
 test('a script asset is inert without the exact reviewed route/event/destination assertion',()=>{
@@ -263,6 +264,31 @@ test('a stale document expiry stops its own sender without deleting a newer inde
   assert.equal(x.jar.get('mftga_ga'),'newer-cookie');assert.equal(x.jar.get('_gcl_au'),'newer-ad-cookie');assert.equal(x.jar.get('functional'),'keep');
  }
 });
+test('a newer review storage event stops only the older document through later lifecycle checks and expiry',()=>{
+ const x=fixture({search:'?gclid=old-click'});x.c.MFTGoogleMeasurement.grant();x.load();
+ const original=JSON.parse(x.c.localStorage.getItem(CONSENT));x.clock.now+=600000;
+ const newerPermission={choice:'granted',review:'b'.repeat(64),expiresAt:original.expiresAt+600000};
+ const newerSource={review:newerPermission.review,expiresAt:newerPermission.expiresAt,clickIds:{gclid:'newer-click'}};
+ x.c.localStorage.setItem(CONSENT,JSON.stringify(newerPermission));x.c.sessionStorage.setItem(SOURCE,JSON.stringify(newerSource));
+ x.c.localStorage.setItem('_gcl_ls','newer-vendor-backup');x.jar.set('mftga_ga','newer-cookie');x.jar.set('functional','keep');
+ x.fire('window','storage',{key:CONSENT,newValue:JSON.stringify(newerPermission)});
+ const preserved=()=>{
+  assert.deepEqual(JSON.parse(x.c.localStorage.getItem(CONSENT)),newerPermission);
+  assert.deepEqual(JSON.parse(x.c.sessionStorage.getItem(SOURCE)),newerSource);
+  assert.equal(x.c.localStorage.getItem('_gcl_ls'),'newer-vendor-backup');assert.equal(x.jar.get('mftga_ga'),'newer-cookie');
+  assert.equal(x.c['ga-disable-G-BTK39BBNRE'],true);assert.equal(x.c.MFTGoogleMeasurement.requiresReload(),true);
+  assert.equal(x.c.MFTGoogleMeasurement.handoff(),false);assert.equal(x.reloads(),0);assert.equal(x.loaders.length,1);assert.equal(stopPolicies(x).length,1);
+ };
+ preserved();
+ for(const [target,name]of [['window','pagehide'],['window','pageshow'],['document','visibilitychange']]){x.fire(target,name);preserved();}
+ assert.equal(x.c.MFTGoogleMeasurement.enforceBoundary(),false);preserved();
+ x.advance(original.expiresAt-x.clock.now);preserved();
+ x.fire('window','pageshow');x.c.MFTGoogleMeasurement.enforceBoundary();preserved();
+ x.c.MFTGoogleMeasurement.deny();
+ assert.deepEqual(JSON.parse(x.c.localStorage.getItem(CONSENT)),{choice:'denied'});
+ assert.equal(x.c.sessionStorage.getItem(SOURCE),null);assert.equal(x.c.localStorage.getItem('_gcl_ls'),null);assert.equal(x.jar.has('mftga_ga'),false);
+ assert.equal(x.jar.get('functional'),'keep');assert.equal(x.reloads(),0);assert.equal(x.c.MFTGoogleMeasurement.status(),'denied');
+});
 test('expiry removes its own old source but preserves cookies used by a newer other-tab grant; explicit withdrawal clears both',()=>{
  const x=fixture({search:'?gclid=old-click'});x.c.MFTGoogleMeasurement.grant();x.load();
  x.c.localStorage.setItem(CONSENT,grantRecord(x.clock.now+600000));x.jar.set('mftga_ga','newer-cookie');
@@ -280,7 +306,86 @@ test('withdrawal immediately stops future dispatch and clears website state with
  assert.equal(x.c.MFTGoogleMeasurement.status(),'denied');assert.equal(x.c.MFTGoogleMeasurement.handoff(),false);
  assert.equal(x.reloads(),0);assert.equal(x.c['ga-disable-G-BTK39BBNRE'],true);assert.equal(x.loaders[0].removed,true);
  assert.deepEqual(events(x),[]);assert.deepEqual(x.c.sessionStorage.all(),{});assert.equal(x.document.cookie,'');
- assert.deepEqual(JSON.parse(x.c.localStorage.getItem(CONSENT)),{choice:'denied'});assert.equal(x.c.MFTGoogleMeasurement.grant(),false,'a stopped vendor cannot be duplicated in the same document');
+ assert.deepEqual(JSON.parse(x.c.localStorage.getItem(CONSENT)),{choice:'denied'});assert.equal(x.c.MFTGoogleMeasurement.requiresReload(),true);
+});
+test('stopping before any vendor request leaves the document usable for an explicit first grant',()=>{
+ const x=fixture({search:'?gclid=synthetic-click'});
+ x.c.MFTGoogleMeasurement.deny();x.fire('window','pagehide');
+ assert.equal(stopPolicies(x).length,0);assert.equal(x.c.MFTGoogleMeasurement.requiresReload(),false);assert.equal(x.queryReads(),0);
+ assert.equal(x.c.MFTGoogleMeasurement.grant(),true);assert.equal(x.loaders.length,1);assert.equal(x.reloads(),0);
+ assert.equal(x.c['ga-disable-G-BTK39BBNRE'],false);x.load();assert.equal(x.c.MFTGoogleMeasurement.handoff(),true);
+});
+test('every post-request stop installs one additional native network policy before later lifecycle listeners',()=>{
+ for(const loaded of [false,true]){
+  for(const reason of ['withdrawal','expiry','loader-error','gpc','cross-tab','title','query','form']){
+   const controls=[],x=fixture({controls});x.c.MFTGoogleMeasurement.grant();if(loaded)x.load();
+   let laterListenerSawPolicy=false;
+   x.c.addEventListener('pagehide',()=>{laterListenerSawPolicy=stopPolicies(x).length===1;});
+   if(reason==='withdrawal')x.c.MFTGoogleMeasurement.deny();
+   if(reason==='expiry')x.advance(LIFETIME);
+   if(reason==='loader-error')x.fail();
+   if(reason==='gpc')x.c.navigator.globalPrivacyControl=true;
+   if(reason==='cross-tab'){x.c.localStorage.setItem(CONSENT,JSON.stringify({choice:'denied'}));x.fire('window','storage',{key:CONSENT,newValue:JSON.stringify({choice:'denied'})});}
+   if(reason==='title')x.document.title='Private title';
+   if(reason==='query')x.c.location.search='?email=private-canary';
+   if(reason==='form')controls.push({closest:()=>null,matches:()=>false});
+   x.fire('window','pagehide');x.fire('document','visibilitychange');x.c.MFTGoogleMeasurement.enforceBoundary();
+   assert.equal(laterListenerSawPolicy,true,reason+' / loaded='+loaded);
+   const policies=stopPolicies(x);assert.equal(policies.length,1,reason+' / loaded='+loaded);
+   assert.equal(policies[0].httpEquiv,'Content-Security-Policy');assert.equal(policies[0].removed,undefined);
+   const directives=Object.fromEntries(policies[0].content.split(';').map(part=>part.trim().split(/\s+/)).map(([name,...sources])=>[name,sources]));
+   assert.deepEqual(directives['default-src'],["'self'"]);assert.deepEqual(directives['worker-src'],["'none'"]);
+   assert.ok(directives['connect-src'].includes('https://ops.mft.care'));
+   assert.ok(directives['script-src'].includes('https://widget-cdn.simplepractice.com'));
+   assert.ok(directives['frame-src'].includes('https://marriagefamilytherapy.clientsecure.me'));
+   assert.ok(directives['img-src'].includes('https://images.squarespace-cdn.com'));
+   assert.ok(directives['form-action'].includes('https://marriagefamilytherapy.clientsecure.me'));
+   assert.doesNotMatch(policies[0].content,/google|doubleclick|https:\s|\*/);
+   assert.equal(x.c['ga-disable-G-BTK39BBNRE'],true);assert.equal(x.c.MFTGoogleMeasurement.handoff(),false);assert.equal(x.reloads(),0);
+   // A pending loader's late load callback must not undo the policy or queue.
+   x.load();assert.equal(x.c.MFTGoogleMeasurement.handoff(),false);assert.equal(x.loaders.length,1);assert.equal(stopPolicies(x).length,1);
+  }
+ }
+});
+test('a later explicit grant persists a fresh deadline and reloads once without reviving the clamped document',()=>{
+ for(const stop of ['withdrawal','expiry','loader-error','title']){
+  const x=fixture({search:'?gclid=synthetic-click'});x.c.MFTGoogleMeasurement.grant();x.load();
+  const original=JSON.parse(x.c.localStorage.getItem(CONSENT));
+  if(stop==='withdrawal')x.c.MFTGoogleMeasurement.deny();
+  if(stop==='expiry')x.advance(LIFETIME);
+  if(stop==='loader-error')x.fail();
+  if(stop==='title'){x.document.title='Private title';x.mutate();x.document.title=TITLES['/'];}
+  x.clock.now+=5000;
+  assert.equal(x.c.MFTGoogleMeasurement.available(),true);assert.equal(x.c.MFTGoogleMeasurement.requiresReload(),true);
+  assert.equal(x.c.MFTGoogleMeasurement.grant(),true);
+  const fresh=JSON.parse(x.c.localStorage.getItem(CONSENT));
+  assert.equal(fresh.choice,'granted');assert.equal(fresh.review,REVIEW);assert.equal(fresh.expiresAt,x.clock.now+LIFETIME);assert.ok(fresh.expiresAt>original.expiresAt);
+  assert.equal(x.reloads(),1);assert.equal(x.c['ga-disable-G-BTK39BBNRE'],true);assert.equal(x.c.MFTGoogleMeasurement.status(),'unavailable');
+  assert.equal(x.c.MFTGoogleMeasurement.handoff(),false);assert.deepEqual(x.commands(),[]);assert.equal(x.loaders.length,1);assert.equal(stopPolicies(x).length,1);
+  x.clock.now+=1000;assert.equal(x.c.MFTGoogleMeasurement.grant(),false);assert.equal(x.reloads(),1);assert.deepEqual(JSON.parse(x.c.localStorage.getItem(CONSENT)),fresh);
+  const next=fixture({clock:x.clock,local:x.c.localStorage.all(),search:'?gclid=synthetic-click'});
+  assert.equal(next.loaders.length,1);assert.equal(stopPolicies(next).length,0);assert.equal(next.c.MFTGoogleMeasurement.requiresReload(),false);
+  assert.equal(next.c.MFTGoogleMeasurement.status(),'granted');assert.equal(next.c.MFTGoogleMeasurement.handoff(),false,'a fresh document never replays the old handoff');
+  next.load();assert.equal(next.c.MFTGoogleMeasurement.handoff(),true);
+ }
+});
+test('a clamped document rejects unsafe or unpersistable regrants without reloading or extending permission',()=>{
+ for(const unsafe of ['route','origin','title','query','hash','form','gpc','dnt']){
+  const controls=[],x=fixture({controls});x.c.MFTGoogleMeasurement.grant();x.load();x.c.MFTGoogleMeasurement.deny();x.clock.now+=5000;
+  if(unsafe==='route')x.c.location.pathname='/gary-ashley/';
+  if(unsafe==='origin')x.c.location.origin='https://preview.example.invalid';
+  if(unsafe==='title')x.document.title='Private title';
+  if(unsafe==='query')x.c.location.search='?email=private-canary';
+  if(unsafe==='hash')x.c.location.hash='#private-canary';
+  if(unsafe==='form')controls.push({closest:()=>null,matches:()=>false});
+  if(unsafe==='gpc')x.c.navigator.globalPrivacyControl=true;
+  if(unsafe==='dnt')x.c.navigator.doNotTrack='1';
+  assert.equal(x.c.MFTGoogleMeasurement.grant(),false,unsafe);assert.equal(x.reloads(),0);assert.equal(x.loaders.length,1);assert.equal(stopPolicies(x).length,1);
+  assert.deepEqual(JSON.parse(x.c.localStorage.getItem(CONSENT)),{choice:'denied'},unsafe);
+  assert.equal(x.c.MFTGoogleMeasurement.handoff(),false);assert.equal(x.c['ga-disable-G-BTK39BBNRE'],true);
+ }
+ const blocked=fixture({blockedStorage:true});blocked.c.MFTGoogleMeasurement.grant();blocked.load();blocked.c.MFTGoogleMeasurement.deny();
+ assert.equal(blocked.c.MFTGoogleMeasurement.grant(),false);assert.equal(blocked.reloads(),0);assert.equal(blocked.c.MFTGoogleMeasurement.status(),'denied');assert.equal(stopPolicies(blocked).length,1);
 });
 test('GPC and DNT override stored permission and later changes revoke an already started vendor',()=>{
  for(const options of [{gpc:true},{dnt:'1'}]){
@@ -361,7 +466,7 @@ test('the existing notice offers distinct Google actions only for an approved av
  for(const fn of banner.handlers.click)fn({target:{dataset:{choice:'dismiss'}}});
  assert.equal(x.c.MFTGoogleMeasurement.status(),'unset');assert.equal(x.loaders.length,0);assert.equal(x.c.MFTAnalyticsConsent.status(),'granted');
 });
-test('a halted vendor cannot be silently re-enabled and the notice stops offering an unusable Google grant',()=>{
+test('a halted vendor stays stopped while the notice offers only a fresh explicit grant with reload',()=>{
  for(const stop of ['expiry','withdrawal','error']){
   const x=fixture();x.addOps();const original=x.elements.find(element=>element.id==='mft-analytics-consent');
   for(const fn of original.handlers.click)fn({target:{dataset:{choice:'dismiss'}}});
@@ -369,11 +474,11 @@ test('a halted vendor cannot be silently re-enabled and the notice stops offerin
   if(stop==='expiry')x.advance(LIFETIME);
   if(stop==='withdrawal')x.c.MFTGoogleMeasurement.deny();
   if(stop==='error')x.fail();
-  assert.equal(x.c.MFTGoogleMeasurement.available(),false);assert.equal(x.c.MFTGoogleMeasurement.grant(),false);
+  assert.equal(x.c.MFTGoogleMeasurement.available(),true);assert.equal(x.c.MFTGoogleMeasurement.requiresReload(),true);assert.equal(x.c.MFTGoogleMeasurement.handoff(),false);
   assert.equal(x.c.MFTAdvertisingConsent.status(),stop==='withdrawal'?'denied':'unavailable');
   assert.equal(x.loaders.length,1);assert.equal(x.reloads(),0);x.c.MFTAnalyticsConsent.show();
   const banner=x.elements.find(element=>element.id==='mft-analytics-consent'&&!element.removed);
-  assert.doesNotMatch(banner.innerHTML,/data-choice="grant-ad"/);assert.match(banner.innerHTML,/This page will not restart Google/);
+  assert.match(banner.innerHTML,/data-choice="grant-ad"/);assert.match(banner.innerHTML,/Allow Google and reload/);
   assert.match(banner.innerHTML,new RegExp('data-mft-advertising-status="'+(stop==='withdrawal'?'denied':'unavailable')+'"'));
  }
 });
@@ -443,7 +548,6 @@ test('cancel, dismissal and existing-client sign-in have no handoff; remembered 
  assert.equal(remembered.calls.length,1);assert.deepEqual(copy(remembered.calls[0][3]),{googleGenericHandoff:true});
 });
 test('Google expiry, withdrawal and loader failure preserve an open acknowledged dialog and native Continue',()=>{
- assert.doesNotMatch(googleCode,/location\s*(?:\.(?:reload|assign|replace|href)|=)|history\.(?:go|back|forward|replaceState|pushState)/);
  for(const failure of ['expiry','late-expiry','withdrawal','loader-error']){
   const x=fixture({local:{[OPS_CONSENT]:'granted'}});x.addOps();x.c.MFTGoogleMeasurement.grant();x.load();
   const booking=bookingFixture({track:(...args)=>x.c.MFTSchedulingMeasurement.track(...args)});

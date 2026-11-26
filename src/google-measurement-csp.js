@@ -21,9 +21,15 @@ function permitGoogle(headers) {
   const original = headerPolicy(headers);
   if (!/script-src [^;]+;/.test(original) || !/connect-src [^;]+;/.test(original) || !/img-src [^;]+;/.test(original))
     throw Error('Missing script, connect or image CSP directive');
-  const allowed = original.replace(/script-src ([^;]+);/, 'script-src $1 '+SCRIPT_ORIGIN+';')
+  const workers = [...original.matchAll(/(?:^|;\s*)worker-src\s+([^;]*)(?=;|$)/g)];
+  if (workers.length > 1 || workers.some(match => match[1].trim() !== "'none'"))
+    throw Error('Google CSP must disable workers from first load');
+  let allowed = original.replace(/script-src ([^;]+);/, 'script-src $1 '+SCRIPT_ORIGIN+';')
     .replace(/connect-src ([^;]+);/, 'connect-src $1 '+COLLECT_ORIGINS.join(' ')+';')
     .replace(/img-src ([^;]+);/, 'img-src $1 '+COLLECT_ORIGINS.join(' ')+';');
+  // A later stop policy cannot change a worker's inherited policy snapshot.
+  // Prevent vendor worker contexts before any Google script can run.
+  if (!workers.length) allowed += (allowed.trimEnd().endsWith(';') ? ' ' : '; ')+"worker-src 'none';";
   return {headers:headers.replace(original, allowed), restrictedPolicy:original};
 }
 function restrictedMeta(policy) {

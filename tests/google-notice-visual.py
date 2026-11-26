@@ -75,10 +75,28 @@ try:
             page.locator('dialog button[value="cancel"]').last.click()
             expect(page.locator('#mft-analytics-consent')).to_be_visible()
             assert page.evaluate('MFTGoogleMeasurement.status()')=='unset'
+            # This production-denied fixture rejects the explicitly requested
+            # loader at CSP, exercising the real stopped-runtime notice without
+            # downloading a tag or sending an event. A later choice must explain
+            # its reload and fit the same narrow screens.
+            banner.locator('[data-choice="grant-ad"]').click()
+            page.wait_for_function('()=>window.MFTGoogleMeasurement.requiresReload()===true')
+            page.evaluate('()=>MFTAnalyticsConsent.show()')
+            reload_choice=banner.locator('[data-choice="grant-ad"]')
+            expect(reload_choice).to_have_text('Allow Google and reload')
+            expect(banner).to_contain_text('Allowing Google again reloads this page')
+            reload_choice.scroll_into_view_if_needed()
+            reload_box=reload_choice.bounding_box()
+            assert reload_box and reload_box['x']>=0 and reload_box['y']>=0 and reload_box['x']+reload_box['width']<=width+1 and reload_box['y']+reload_box['height']<=height+1,reload_box
+            reload_choice.focus()
+            expect(reload_choice).to_be_focused()
+            banner.screenshot(path=str(OUT/f'notice-regrant-{width}.png'))
+            banner.locator('[data-choice="deny-ad"]').click()
+            assert page.evaluate('MFTGoogleMeasurement.status()')=='denied'
             interceptor.assert_ok()
             assert not errors,errors
             assert not report['networkAttempts'],report['networkAttempts']
-            report['checks'].append({'viewport':[width,height],'noticeBounds':metrics,'distinctChoices':True,'dialogSuppressionAndRestore':True,'noImplicitConsent':True})
+            report['checks'].append({'viewport':[width,height],'noticeBounds':metrics,'distinctChoices':True,'dialogSuppressionAndRestore':True,'noImplicitConsent':True,'explicitRegrantReloadLabel':True,'regrantButtonBounds':reload_box,'regrantKeyboardFocus':True})
             context.close()
         browser.close()
         report['pass']=True

@@ -1,17 +1,21 @@
 {
-  "version": 1,
+  "version": 2,
   "recordedOn": "2026-11-25 America/Los_Angeles",
   "status": "conditional-engineering-verified-production-Google-blocked",
   "baselineCommit": "aa6aa751b7fc7401ba51655f58be42be576284f6",
   "pullRequest": "https://github.com/KodyEvans1/MFT-Website/pull/26",
   "scope": "Isolated synthetic fixtures only. Every browser request intercepted; DNS denied. No Google delivery, real Ops receipt, paid-ad click, appointment, or Ads credit. This evidence does not authorize production collection.",
   "sourceSha256": {
-    "content/google-measurement-flow.json": "45761ecdacba8192331d577b6a0adc240ef65dc49e38c6d7fe940482d13d2cef",
-    "src/assets/mft-google-measurement.js": "d902fbaaf2fc67d0dae42cdd47d77a6a1fd0fea6c3df155d76dc7f57ccbb1146",
-    "src/assets/mft-analytics.js": "2140257e86f5987fd1334a66d5203f7214de9461acf58334a8c04a347452c186",
+    "content/google-measurement-flow.json": "730425e889eb3520532ae8a26670178235758d26b317534112b64ba1d9cb557d",
+    "src/assets/mft-google-measurement.js": "790bacb66118088109c8ee7284f2bd155a19f6129c930d3b93a488a173d24ecc",
+    "src/assets/mft-analytics.js": "aa3bccc5765037387b3af3ff6b32926e665d7438fa8044b4cefa555aa367b669",
     "src/assets/mft-booking.js": "3f51905de07d870e4be99c110d50d87a33b572f432b613663a6b946e6450ffc1",
-    "src/google-measurement-csp.js": "b607b9047b2d8a5c9dcce4913a8b0fb456adede5600e847bb99d457e4792fd31",
-    "tests/google-measurement-network.py": "24bfc40696ab8d310074f0a95d6d525ed929a50842753f8c0ef2e048449ac9d3"
+    "src/google-measurement-csp.js": "83b9e795775394ff4b0bacedb78b8e91f3558d968e9a7a876dc1f2f53b512cff",
+    "tests/google-measurement-network.py": "4fe02be64a6c0f8d4955431489b2769af646175e280f7344fda26e6881e09e99",
+    "tests/google-notice-visual.py": "d1c4da590663ee2042590457930dcd63226134f41a47a6f39f34bef18b702e7a",
+    "tests/google-measurement-runtime.test.js": "0019ba75c3fe46ec97609ad9ce4683d98fac41c46ff9fa5305f637dffa4c6324",
+    "tests/measurement-report.test.js": "bb1551664ceeca1465616797acf25375a5065cba3ef877ef8d6d806dbe128055",
+    "tests/ops-handoff-browser.py": "ab6a6eee0eb341ac99a855d909048cc40cf29a9344f8d348a2938841c4d17574"
   },
   "vendor": {
     "downloadedAtUtc": "2026-11-26T05:18:50.950551+00:00",
@@ -24,15 +28,16 @@
     "scope": "Public vendor JavaScript download only. Browser collector and event traffic are blocked."
   },
   "browserVersion": "158.0.8127.88",
-  "checksPassed": 647,
+  "checksPassed": 742,
   "casesPassed": {
+    "active-reviewed-csp-context-isolation": 19,
     "advertising-expired": 10,
     "advertising-other-review": 10,
     "advertising-refused": 10,
-    "after-dynamic-gpc": 18,
-    "after-expiry": 13,
-    "after-legacy-cross-tab-withdrawal": 18,
-    "after-withdrawal": 18,
+    "after-dynamic-gpc": 19,
+    "after-expiry": 14,
+    "after-legacy-cross-tab-withdrawal": 19,
+    "after-withdrawal": 19,
     "cached-legacy-helper": 9,
     "clinician-excluded": 12,
     "current-first-party-grant": 10,
@@ -45,6 +50,7 @@
     "form-added-after-permission": 14,
     "fragment": 9,
     "free-text-query": 9,
+    "fresh-regrant-reloads-stopped-document": 39,
     "gpc": 9,
     "grant-only-automatic-activity": 18,
     "incoming-linker": 9,
@@ -55,26 +61,28 @@
     "native-gclid": 40,
     "native-wbraid": 27,
     "no-consent": 10,
-    "preexisting-third-party-cookies": 24,
+    "preexisting-third-party-cookies": 25,
     "query-change-handoff": 15,
     "query-change-pagehide": 15,
     "query-change-visibilitychange": 15,
+    "refusal-before-first-loader": 14,
     "remembered-ack": 19,
     "repeat-remembered-ack": 22,
-    "repeat-same-dialog": 27,
+    "repeat-same-dialog": 22,
     "reviewed-conditional-csp": 24,
     "title-change-handoff": 15,
-    "title-change-pagehide": 15,
+    "title-change-pagehide": 18,
     "title-change-visibilitychange": 15,
     "unknown-contact-query": 9,
     "unreviewed-document-title": 9,
     "vendor-blocked": 12,
-    "vendor-timeout": 12
+    "vendor-timeout": 12,
+    "withdrawal-csp-preserves-open-scheduling": 20
   },
-  "interceptedRequests": 256,
+  "interceptedRequests": 285,
   "requestClasses": {
     "https://www.googletagmanager.com/gtag/js": {
-      "requests": 26,
+      "requests": 31,
       "methods": [
         "GET"
       ],
@@ -95,7 +103,7 @@
       "privateCanaryPresent": false
     },
     "https://www.google.com/measurement/conversion": {
-      "requests": 10,
+      "requests": 12,
       "methods": [
         "POST"
       ],
@@ -162,7 +170,7 @@
       "privateCanaryPresent": false
     },
     "https://analytics.google.com/g/collect": {
-      "requests": 18,
+      "requests": 21,
       "methods": [
         "POST"
       ],
@@ -236,7 +244,7 @@
       "privateCanaryPresent": false
     },
     "https://stats.g.doubleclick.net/g/collect": {
-      "requests": 10,
+      "requests": 12,
       "methods": [
         "POST"
       ],
@@ -272,49 +280,9 @@
       "titles": [],
       "httpReferrerPresent": false,
       "privateCanaryPresent": false
-    },
-    "https://www.googletagmanager.com/a": {
-      "requests": 5,
-      "methods": [
-        "GET"
-      ],
-      "fieldNames": [
-        "cv",
-        "e",
-        "eid",
-        "epr",
-        "es",
-        "gtm",
-        "h",
-        "id",
-        "pid",
-        "rv",
-        "t",
-        "tag_exp",
-        "tc",
-        "ti",
-        "tr",
-        "u",
-        "ut",
-        "v",
-        "z"
-      ],
-      "requestHeaderNames": [
-        "accept",
-        "sec-ch-ua",
-        "sec-ch-ua-mobile",
-        "sec-ch-ua-platform",
-        "user-agent"
-      ],
-      "cookieHeaderNames": [],
-      "eventNames": [],
-      "titles": [],
-      "httpReferrerPresent": false,
-      "privateCanaryPresent": false
     }
   },
   "automaticEventsObserved": [
-    "simplepractice_exit",
     "user_engagement"
   ],
   "automaticMarkersObserved": [
@@ -330,45 +298,45 @@
           "name": "mftga_aw",
           "domain": "www.mft.care",
           "path": "/",
-          "expires": 1795673711,
+          "expires": 1795676037,
           "httpOnly": false,
           "secure": true,
           "sameSite": "Lax",
-          "secondsUntilExpiry": 1796.79,
-          "secondsBeyondPermission": -0.57
+          "secondsUntilExpiry": 1796.23,
+          "secondsBeyondPermission": -1.16
         },
         {
           "name": "mftga_au",
           "domain": "www.mft.care",
           "path": "/",
-          "expires": 1795673710,
+          "expires": 1795676037,
           "httpOnly": false,
           "secure": true,
           "sameSite": "Lax",
-          "secondsUntilExpiry": 1795.79,
-          "secondsBeyondPermission": -1.57
+          "secondsUntilExpiry": 1796.23,
+          "secondsBeyondPermission": -1.16
         },
         {
           "name": "mftga_ga_BTK39BBNRE",
           "domain": "www.mft.care",
           "path": "/",
-          "expires": 1795673710,
+          "expires": 1795676037,
           "httpOnly": false,
           "secure": true,
           "sameSite": "Lax",
-          "secondsUntilExpiry": 1795.79,
-          "secondsBeyondPermission": -1.57
+          "secondsUntilExpiry": 1796.23,
+          "secondsBeyondPermission": -1.16
         },
         {
           "name": "mftga_ga",
           "domain": "www.mft.care",
           "path": "/",
-          "expires": 1795673710,
+          "expires": 1795676037,
           "httpOnly": false,
           "secure": true,
           "sameSite": "Lax",
-          "secondsUntilExpiry": 1795.79,
-          "secondsBeyondPermission": -1.57
+          "secondsUntilExpiry": 1796.23,
+          "secondsBeyondPermission": -1.16
         }
       ],
       "localStorageKeys": [
@@ -386,45 +354,45 @@
           "name": "mftga_aw",
           "domain": "www.mft.care",
           "path": "/",
-          "expires": 1795673709,
+          "expires": 1795676035,
           "httpOnly": false,
           "secure": true,
           "sameSite": "Lax",
-          "secondsUntilExpiry": 1792.43,
-          "secondsBeyondPermission": -2.57
+          "secondsUntilExpiry": 1791.91,
+          "secondsBeyondPermission": -3.16
         },
         {
           "name": "mftga_au",
           "domain": "www.mft.care",
           "path": "/",
-          "expires": 1795673709,
+          "expires": 1795676036,
           "httpOnly": false,
           "secure": true,
           "sameSite": "Lax",
-          "secondsUntilExpiry": 1792.43,
-          "secondsBeyondPermission": -2.57
+          "secondsUntilExpiry": 1792.91,
+          "secondsBeyondPermission": -2.16
         },
         {
           "name": "mftga_ga",
           "domain": "www.mft.care",
           "path": "/",
-          "expires": 1795673710,
+          "expires": 1795676037,
           "httpOnly": false,
           "secure": true,
           "sameSite": "Lax",
-          "secondsUntilExpiry": 1793.43,
-          "secondsBeyondPermission": -1.57
+          "secondsUntilExpiry": 1793.91,
+          "secondsBeyondPermission": -1.16
         },
         {
           "name": "mftga_ga_BTK39BBNRE",
           "domain": "www.mft.care",
           "path": "/",
-          "expires": 1795673711,
+          "expires": 1795676037,
           "httpOnly": false,
           "secure": true,
           "sameSite": "Lax",
-          "secondsUntilExpiry": 1794.43,
-          "secondsBeyondPermission": -0.57
+          "secondsUntilExpiry": 1793.91,
+          "secondsBeyondPermission": -1.16
         }
       ],
       "localStorageKeys": [
@@ -442,45 +410,45 @@
           "name": "mftga_ag",
           "domain": "www.mft.care",
           "path": "/",
-          "expires": 1795673717,
+          "expires": 1795676043,
           "httpOnly": false,
           "secure": true,
           "sameSite": "Lax",
-          "secondsUntilExpiry": 1796.7,
-          "secondsBeyondPermission": -0.69
+          "secondsUntilExpiry": 1796.18,
+          "secondsBeyondPermission": -1.22
         },
         {
           "name": "mftga_au",
           "domain": "www.mft.care",
           "path": "/",
-          "expires": 1795673717,
+          "expires": 1795676043,
           "httpOnly": false,
           "secure": true,
           "sameSite": "Lax",
-          "secondsUntilExpiry": 1796.7,
-          "secondsBeyondPermission": -0.69
+          "secondsUntilExpiry": 1796.18,
+          "secondsBeyondPermission": -1.22
         },
         {
           "name": "mftga_ga_BTK39BBNRE",
           "domain": "www.mft.care",
           "path": "/",
-          "expires": 1795673717,
+          "expires": 1795676043,
           "httpOnly": false,
           "secure": true,
           "sameSite": "Lax",
-          "secondsUntilExpiry": 1796.7,
-          "secondsBeyondPermission": -0.69
+          "secondsUntilExpiry": 1796.18,
+          "secondsBeyondPermission": -1.22
         },
         {
           "name": "mftga_ga",
           "domain": "www.mft.care",
           "path": "/",
-          "expires": 1795673717,
+          "expires": 1795676043,
           "httpOnly": false,
           "secure": true,
           "sameSite": "Lax",
-          "secondsUntilExpiry": 1796.7,
-          "secondsBeyondPermission": -0.69
+          "secondsUntilExpiry": 1796.18,
+          "secondsBeyondPermission": -1.22
         }
       ],
       "localStorageKeys": [
@@ -498,45 +466,45 @@
           "name": "mftga_gb",
           "domain": "www.mft.care",
           "path": "/",
-          "expires": 1795673721,
+          "expires": 1795676047,
           "httpOnly": false,
           "secure": true,
           "sameSite": "Lax",
-          "secondsUntilExpiry": 1796.92,
-          "secondsBeyondPermission": -0.42
+          "secondsUntilExpiry": 1796.42,
+          "secondsBeyondPermission": -0.96
         },
         {
           "name": "mftga_au",
           "domain": "www.mft.care",
           "path": "/",
-          "expires": 1795673720,
+          "expires": 1795676047,
           "httpOnly": false,
           "secure": true,
           "sameSite": "Lax",
-          "secondsUntilExpiry": 1795.92,
-          "secondsBeyondPermission": -1.42
+          "secondsUntilExpiry": 1796.42,
+          "secondsBeyondPermission": -0.96
         },
         {
           "name": "mftga_ga_BTK39BBNRE",
           "domain": "www.mft.care",
           "path": "/",
-          "expires": 1795673720,
+          "expires": 1795676047,
           "httpOnly": false,
           "secure": true,
           "sameSite": "Lax",
-          "secondsUntilExpiry": 1795.92,
-          "secondsBeyondPermission": -1.42
+          "secondsUntilExpiry": 1796.42,
+          "secondsBeyondPermission": -0.96
         },
         {
           "name": "mftga_ga",
           "domain": "www.mft.care",
           "path": "/",
-          "expires": 1795673720,
+          "expires": 1795676047,
           "httpOnly": false,
           "secure": true,
           "sameSite": "Lax",
-          "secondsUntilExpiry": 1795.92,
-          "secondsBeyondPermission": -1.42
+          "secondsUntilExpiry": 1796.42,
+          "secondsBeyondPermission": -0.96
         }
       ],
       "localStorageKeys": [
@@ -554,29 +522,29 @@
           "name": "NID",
           "domain": ".google.com",
           "path": "/",
-          "expires": 1795758342.87806,
+          "expires": 1795760670.87231,
           "httpOnly": false,
           "secure": true,
           "sameSite": "None",
           "secondsUntilExpiry": 86397.11,
-          "secondsBeyondPermission": 84599.75
+          "secondsBeyondPermission": 84599.74
         },
         {
           "name": "IDE",
           "domain": ".doubleclick.net",
           "path": "/",
-          "expires": 1795758342.878061,
+          "expires": 1795760670.872312,
           "httpOnly": false,
           "secure": true,
           "sameSite": "None",
           "secondsUntilExpiry": 86397.11,
-          "secondsBeyondPermission": 84599.75
+          "secondsBeyondPermission": 84599.74
         },
         {
           "name": "mftga_aw",
           "domain": "www.mft.care",
           "path": "/",
-          "expires": 1795673742,
+          "expires": 1795676070,
           "httpOnly": false,
           "secure": true,
           "sameSite": "Lax",
@@ -587,7 +555,7 @@
           "name": "mftga_au",
           "domain": "www.mft.care",
           "path": "/",
-          "expires": 1795673742,
+          "expires": 1795676070,
           "httpOnly": false,
           "secure": true,
           "sameSite": "Lax",
@@ -598,7 +566,7 @@
           "name": "mftga_ga_BTK39BBNRE",
           "domain": "www.mft.care",
           "path": "/",
-          "expires": 1795673742,
+          "expires": 1795676070,
           "httpOnly": false,
           "secure": true,
           "sameSite": "Lax",
@@ -609,7 +577,7 @@
           "name": "mftga_ga",
           "domain": "www.mft.care",
           "path": "/",
-          "expires": 1795673742,
+          "expires": 1795676070,
           "httpOnly": false,
           "secure": true,
           "sameSite": "Lax",
@@ -635,7 +603,11 @@
     "The unmodified public Google script can change; these results describe the recorded hash and tested scenarios.",
     "Local expiry stops use at the fixed permission deadline; physical storage cleanup requires an active or subsequently visited controlled document.",
     "The standard runtime includes automatic engagement and linked advertising/identifier requests, not only the application event.",
-    "The proposed two-route scope does not include the newer individual/couples ad landing routes supplied by the owner."
+    "The proposed two-route scope does not include the newer individual/couples ad landing routes supplied by the owner.",
+    "The stop CSP restricts requests initiated after enforcement; it cannot retract earlier disclosures or cancel all in-flight requests.",
+    "Title mutation observation is asynchronous. Exercised capture-phase lifecycle checks are not a universal same-turn interception mechanism.",
+    "This conditional-runtime stop and regrant evidence covers Chromium only, not Firefox or WebKit.",
+    "A stopped document cannot resume Google. Fresh explicit consent saves a new deadline and reloads a new document; withdrawal itself never reloads."
   ],
   "initialHostedObservation": {
     "run": "https://github.com/KodyEvans1/MFT-Website/actions/runs/45762541432",
@@ -981,5 +953,365 @@
       }
     }
   },
-  "teardownVerification": "Navigate each active document to a script-free locally fulfilled same-origin document, inspect real unload traffic and drain before disposal; every fulfillment error and any Google request during inert-context disposal fails."
+  "teardownVerification": "Navigate each active document to a script-free locally fulfilled same-origin document, inspect real unload traffic and drain before disposal; every fulfillment error and any Google request during inert-context disposal fails.",
+  "stopPolicyEvidence": [
+    {
+      "case": "active-reviewed-csp-context-isolation",
+      "futureTransportCspProbe": {
+        "transports": [
+          "frame",
+          "worker"
+        ],
+        "policySha256": "688f66bd20c8d2d9c6a6f7130c058f6cf98eb9fca3570e3a0ddc1e32523ec0b6",
+        "violations": [
+          {
+            "directive": "worker-src",
+            "blockedOrigin": "blob",
+            "matchesSpecifiedPolicy": true
+          },
+          {
+            "directive": "frame-src",
+            "blockedOrigin": "www.google.com",
+            "matchesSpecifiedPolicy": true
+          }
+        ],
+        "fetchRejected": false,
+        "beaconQueued": null,
+        "imageError": false,
+        "scriptError": false,
+        "workerExecuted": false
+      }
+    },
+    {
+      "case": "withdrawal-csp-preserves-open-scheduling",
+      "futureTransportCspProbe": {
+        "transports": [
+          "fetch",
+          "beacon",
+          "image",
+          "script",
+          "frame",
+          "worker"
+        ],
+        "policySha256": "6f6416ef5567f2b32d6591f197f4255a1104005afda860b9451708d9ff718087",
+        "violations": [
+          {
+            "directive": "connect-src",
+            "blockedOrigin": "analytics.google.com",
+            "matchesSpecifiedPolicy": true
+          },
+          {
+            "directive": "connect-src",
+            "blockedOrigin": "www.google-analytics.com",
+            "matchesSpecifiedPolicy": true
+          },
+          {
+            "directive": "script-src-elem",
+            "blockedOrigin": "www.googletagmanager.com",
+            "matchesSpecifiedPolicy": true
+          },
+          {
+            "directive": "worker-src",
+            "blockedOrigin": "blob",
+            "matchesSpecifiedPolicy": false
+          },
+          {
+            "directive": "worker-src",
+            "blockedOrigin": "blob",
+            "matchesSpecifiedPolicy": true
+          },
+          {
+            "directive": "img-src",
+            "blockedOrigin": "stats.g.doubleclick.net",
+            "matchesSpecifiedPolicy": true
+          },
+          {
+            "directive": "frame-src",
+            "blockedOrigin": "www.google.com",
+            "matchesSpecifiedPolicy": true
+          }
+        ],
+        "fetchRejected": true,
+        "beaconQueued": true,
+        "imageError": true,
+        "scriptError": true,
+        "workerExecuted": false
+      }
+    },
+    {
+      "case": "title-change-pagehide",
+      "futureTransportCspProbe": {
+        "transports": [
+          "fetch",
+          "beacon",
+          "image",
+          "script",
+          "frame",
+          "worker"
+        ],
+        "policySha256": "6f6416ef5567f2b32d6591f197f4255a1104005afda860b9451708d9ff718087",
+        "violations": [
+          {
+            "directive": "connect-src",
+            "blockedOrigin": "analytics.google.com",
+            "matchesSpecifiedPolicy": true
+          },
+          {
+            "directive": "connect-src",
+            "blockedOrigin": "www.google-analytics.com",
+            "matchesSpecifiedPolicy": true
+          },
+          {
+            "directive": "script-src-elem",
+            "blockedOrigin": "www.googletagmanager.com",
+            "matchesSpecifiedPolicy": true
+          },
+          {
+            "directive": "worker-src",
+            "blockedOrigin": "blob",
+            "matchesSpecifiedPolicy": false
+          },
+          {
+            "directive": "worker-src",
+            "blockedOrigin": "blob",
+            "matchesSpecifiedPolicy": true
+          },
+          {
+            "directive": "img-src",
+            "blockedOrigin": "stats.g.doubleclick.net",
+            "matchesSpecifiedPolicy": true
+          },
+          {
+            "directive": "frame-src",
+            "blockedOrigin": "www.google.com",
+            "matchesSpecifiedPolicy": true
+          }
+        ],
+        "fetchRejected": true,
+        "beaconQueued": true,
+        "imageError": true,
+        "scriptError": true,
+        "workerExecuted": false
+      }
+    }
+  ],
+  "loadDiagnosticIdentifierEvidence": [],
+  "previousLocalObservation": {
+    "status": "passing-earlier-sample-superseded-by-known-stop-counterexample",
+    "sourceSha256": {
+      "content/google-measurement-flow.json": "45761ecdacba8192331d577b6a0adc240ef65dc49e38c6d7fe940482d13d2cef",
+      "src/assets/mft-google-measurement.js": "d902fbaaf2fc67d0dae42cdd47d77a6a1fd0fea6c3df155d76dc7f57ccbb1146",
+      "src/assets/mft-analytics.js": "2140257e86f5987fd1334a66d5203f7214de9461acf58334a8c04a347452c186",
+      "src/assets/mft-booking.js": "3f51905de07d870e4be99c110d50d87a33b572f432b613663a6b946e6450ffc1",
+      "src/google-measurement-csp.js": "b607b9047b2d8a5c9dcce4913a8b0fb456adede5600e847bb99d457e4792fd31",
+      "tests/google-measurement-network.py": "24bfc40696ab8d310074f0a95d6d525ed929a50842753f8c0ef2e048449ac9d3"
+    },
+    "checksPassed": 647,
+    "interceptedRequests": 256,
+    "scope": "This earlier passing sample did not establish the future-request stop boundary."
+  },
+  "preCspStopFailure": {
+    "status": "failed-and-corrected-with-enforced-stop-policy",
+    "vendor": {
+      "downloadedAtUtc": "2026-11-26T05:18:50.950551+00:00",
+      "source": "https://www.googletagmanager.com/gtag/js?id=G-BTK39BBNRE",
+      "method": "GET",
+      "status": 200,
+      "contentType": "application/javascript",
+      "bytes": 528419,
+      "sha256": "9f8e0193cfd6f914ed1ec726517aeefdf63f45577c5e2bd6ac23d3304be3d7dd",
+      "scope": "Public vendor JavaScript download only. Browser collector and event traffic are blocked."
+    },
+    "browserVersion": "158.0.8127.88",
+    "failedChecks": [
+      {
+        "case": "title-change-pagehide",
+        "name": "Title change followed immediately by activity creates no post-boundary request",
+        "pass": false
+      }
+    ],
+    "interceptedRequests": 253,
+    "observedTitleChangeDiagnostics": [
+      {
+        "case": "title-change-pagehide",
+        "method": "GET",
+        "host": "www.googletagmanager.com",
+        "path": "/td",
+        "resourceType": "image",
+        "fieldNames": [
+          "bt",
+          "ct",
+          "dl",
+          "exp",
+          "frm",
+          "gtm",
+          "hlo",
+          "id",
+          "lst",
+          "pid",
+          "rtg",
+          "seq",
+          "slo",
+          "t",
+          "tdp",
+          "v",
+          "z"
+        ],
+        "metadata": [
+          {
+            "dl": {
+              "origin": "://",
+              "path": "www.mft.care/",
+              "queryKeys": [],
+              "hasSyntheticClick": false
+            },
+            "automaticMarkers": {}
+          }
+        ],
+        "httpReferrerPresent": false,
+        "requestHeaderNames": [
+          "accept",
+          "sec-ch-ua",
+          "sec-ch-ua-mobile",
+          "sec-ch-ua-platform",
+          "user-agent"
+        ],
+        "cookieHeaderNames": [],
+        "privateCanaryPresent": false
+      },
+      {
+        "case": "title-change-pagehide",
+        "method": "POST",
+        "host": "www.googletagmanager.com",
+        "path": "/td",
+        "resourceType": "xhr",
+        "fieldNames": [
+          "dl",
+          "exp",
+          "fin",
+          "gtm",
+          "id",
+          "pid",
+          "seq",
+          "t",
+          "tdp",
+          "v",
+          "z"
+        ],
+        "metadata": [
+          {
+            "dl": {
+              "origin": "://",
+              "path": "www.mft.care/",
+              "queryKeys": [],
+              "hasSyntheticClick": false
+            },
+            "automaticMarkers": {}
+          }
+        ],
+        "httpReferrerPresent": false,
+        "requestHeaderNames": [
+          "accept",
+          "origin",
+          "sec-ch-ua",
+          "sec-ch-ua-mobile",
+          "sec-ch-ua-platform",
+          "user-agent"
+        ],
+        "cookieHeaderNames": [],
+        "privateCanaryPresent": false
+      }
+    ],
+    "scope": "Sampled diagnostics after the GA disable flag violated the stop boundary. No private canary or HTTP referrer was exposed. Assertions were retained; the runtime gained browser-enforced future-request restrictions."
+  },
+  "supplementalDiagnosticInventoryFailure": {
+    "run": "https://github.com/KodyEvans1/MFT-Website/actions/runs/45765379684",
+    "sourceCommit": "81bd38dedc4f9ba8ad9485117ca445888817ab43",
+    "status": "failed-on-new-diagnostic-fields; exact variant inventoried in subsequent source",
+    "vendor": {
+      "downloadedAtUtc": "2026-11-26T06:02:40.803138+00:00",
+      "source": "https://www.googletagmanager.com/gtag/js?id=G-BTK39BBNRE",
+      "method": "GET",
+      "status": 200,
+      "contentType": "application/javascript; charset=UTF-8",
+      "bytes": 528419,
+      "sha256": "a5b26b04ddc46a9076fcea4c50c607e76ad1a1f16f268458f91303366603842c",
+      "scope": "Public vendor JavaScript only. No cookies, credentials, event calls, advertising clicks or patient data."
+    },
+    "failedChecks": [
+      {
+        "case": "after-legacy-cross-tab-withdrawal",
+        "name": "Vendor diagnostic fields stay within the recorded unapproved envelope",
+        "pass": false
+      }
+    ],
+    "observedRequests": [
+      {
+        "case": "after-legacy-cross-tab-withdrawal",
+        "method": "GET",
+        "host": "www.googletagmanager.com",
+        "path": "/a",
+        "resourceType": "image",
+        "fieldNames": [
+          "ccid",
+          "cid",
+          "gtm",
+          "h",
+          "l",
+          "pid",
+          "rv",
+          "t",
+          "tag_exp",
+          "u",
+          "ut",
+          "v"
+        ],
+        "metadata": [
+          {
+            "automaticMarkers": {}
+          }
+        ],
+        "httpReferrerPresent": false,
+        "requestHeaderNames": [
+          "accept",
+          "sec-ch-ua",
+          "sec-ch-ua-mobile",
+          "sec-ch-ua-platform",
+          "user-agent"
+        ],
+        "cookieHeaderNames": [],
+        "privateCanaryPresent": false
+      }
+    ],
+    "limits": "This earlier sanitized request report recorded field names, not raw ccid/cid/l values. Source-derived semantics are separately documented; subsequent checks validate the exact expected tag identifiers. Other unobserved static emitters remain excluded."
+  },
+  "fixturePredicateCorrection": {
+    "status": "corrected-before-final-run",
+    "earlierVendorSha256": "3a9320da36fb2e667757d39e7981802473574b97315a0ab4fcec5632f943ca96",
+    "checksPassedBeforeFixtureFailure": 463,
+    "reason": "A bare-string Playwright wait attempted eval prohibited by the enforced CSP. Function predicates replaced both waits; CSP and assertions were unchanged. The full final run used the recorded 9f vendor snapshot."
+  },
+  "localChecks": {
+    "buildAndUnitTests": {
+      "command": "npm run check",
+      "passed": 431,
+      "failed": 0
+    },
+    "notice": {
+      "viewports": [
+        1440,
+        360,
+        320
+      ],
+      "explicitRegrantLabelAndFocus": true,
+      "networkAttempts": 0,
+      "screenshotsInspected": true
+    },
+    "productionPolicy": {
+      "googlePages": 0,
+      "googleRoutes": 0,
+      "googleEvents": 0,
+      "opsPages": 60
+    }
+  }
 }

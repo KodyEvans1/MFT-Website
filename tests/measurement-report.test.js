@@ -63,14 +63,15 @@ function approvedValidationFixture() {
   pages['assets/mft-ga4-frame.html'] = '<html><head><meta name="robots" content="noindex,nofollow"></head><body></body></html>';
   for (const relative of ['draft/index.html', 'check-my-coverage/index.html', 'assets/mft-ga4-frame.html'])
     f.write(relative, pages[relative]);
-  const headers = csp.permitGoogle(f.headers).headers+'  Referrer-Policy: no-referrer\n';
+  const permittedHeaders = csp.permitGoogle(f.headers).headers;
+  const headers = permittedHeaders+'  Referrer-Policy: no-referrer\n';
   const report = {...f.report, enabled:true, measurement:measurementReport(env, policy),
     allowedRoutes:[...policy.approvedRoutes], allowedEvents:[...policy.approvedEvents],
     controllerAllowedRoutes:routes, injected:routes};
   f.write('_headers', headers);
   f.write('sitemap.xml', '<urlset>'+routes.map(route => '<url><loc>https://www.mft.care'+route+'</loc></url>').join('')+'</urlset>');
   f.write('reports/analytics-integration.json', report);
-  return {...f, policy, pages, report, headers, restrictedHeaders:f.headers};
+  return {...f, policy, pages, report, headers, restrictedHeaders:csp.removeGooglePermission(permittedHeaders)};
 }
 
 test('reports separate first-party collection from the blocked Google runtime and retired collector', () => {
@@ -274,6 +275,8 @@ test('approved artifact validation rejects extra Google destinations, missing no
     ['additional Ads endpoint', f => f.write('_headers', f.headers.replace("connect-src 'self'", "connect-src 'self' https://www.googleadservices.com"))],
     ['wildcard collector', f => f.write('_headers', f.headers.replace('https://region1.google-analytics.com', 'https://*.google-analytics.com'))],
     ['missing collector', f => f.write('_headers', f.headers.replace(' https://region1.google-analytics.com', ''))],
+    ['missing worker restriction', f => f.write('_headers', f.headers.replace(" worker-src 'none';", ''))],
+    ['permitted worker context', f => f.write('_headers', f.headers.replace("worker-src 'none'", "worker-src 'self'"))],
     ['weakened page CSP', f => f.write('services/index.html', csp.restrictHtml(f.pages['services/index.html'], csp.headerPolicy(f.headers)))],
     ['late page CSP', f => {
       const restricted = csp.restrictHtml(f.pages['services/index.html'], csp.headerPolicy(f.restrictedHeaders));
@@ -302,6 +305,7 @@ test('reviewed CSP permits all observed native measurement destinations while ex
     assert.deepEqual(directives['connect-src'], ["'self'", 'https://ops.mft.care', ...expectedDestinations]);
     assert.deepEqual(directives['img-src'], ["'self'", 'data:', ...expectedDestinations]);
     assert.deepEqual(directives['frame-src'], ['https://clientsecure.me']);
+    assert.deepEqual(directives['worker-src'], ["'none'"]);
     assert.equal(csp.removeGooglePermission(f.headers), f.restrictedHeaders+'  Referrer-Policy: no-referrer\n');
     require('../scripts/validate-analytics').apply(f.dist, f.policy);
     const strictMeta = csp.restrictedMeta(csp.headerPolicy(f.restrictedHeaders));

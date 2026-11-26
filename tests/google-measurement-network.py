@@ -25,6 +25,7 @@ OUT = ROOT / 'tmp/google-measurement-network'
 OUT.mkdir(parents=True, exist_ok=True)
 BASE = 'https://www.mft.care'
 ID = 'G-BTK39BBNRE'
+TAG_CANONICAL_CONTAINER_ID = '267080605'
 VENDOR_URL = 'https://www.googletagmanager.com/gtag/js?id=' + ID
 VENDOR = None
 VENDOR_METADATA = None
@@ -135,6 +136,14 @@ def summarized(item):
             if key in row:
                 entry[key] = row[key] if row[key] in ('', 'M.F.T. Public Website', *PUBLIC_TITLES.values()) else 'UNEXPECTED_VALUE'
         entry['automaticMarkers'] = {key: row[key] for key in ('_fv', '_ss', '_ee', 'seg') if key in row}
+        if item['host']=='www.googletagmanager.com' and item['path']=='/a' and row.get('t')=='l':
+            # These are tag configuration identifiers in the v=3,t=l variant,
+            # not the unrelated visitor cid used by the GA4 collector.
+            entry['loadDiagnostic'] = {
+                'scriptContainerId': row.get('cid') if row.get('cid')==ID else 'UNEXPECTED_VALUE',
+                'canonicalContainerId': row.get('ccid') if row.get('ccid')==TAG_CANONICAL_CONTAINER_ID else 'UNEXPECTED_VALUE',
+                'summaryCharacters': len(row.get('l','')),
+            }
         metadata.append(entry)
     return {key: item[key] for key in ('case','method','host','path','resourceType')} | {
         'fieldNames': sorted({key for row in rows for key in row}), 'metadata': metadata,
@@ -275,7 +284,7 @@ def new_context(browser, seed=None, signal=None, existing=None):
     context.add_init_script("""(() => {
       const original=Node.prototype.appendChild;
       window.__cspViolations=[];
-      document.addEventListener('securitypolicyviolation',event=>window.__cspViolations.push({directive:event.effectiveDirective,blockedURI:event.blockedURI}));
+      document.addEventListener('securitypolicyviolation',event=>window.__cspViolations.push({directive:event.effectiveDirective,blockedURI:event.blockedURI,originalPolicy:event.originalPolicy}));
       Node.prototype.appendChild=function(node){
         if(node?.tagName==='SCRIPT' && String(node.src).startsWith('https://www.googletagmanager.com/gtag/js')) {
           window.__queueBeforeVendor=JSON.parse(JSON.stringify((window.dataLayer||[]).map(item=>Array.from(item))));
@@ -339,11 +348,13 @@ def assess_requests(start=0):
             check('Supplemental identifier ping remains non-personalized and has no additional event',all(row.get('npa')=='1' and not row.get('en') for row in item['rows']))
         if item['host']=='www.googletagmanager.com' and item['path'] in ('/a','/td'):
             fields = {
-                '/a': {'cv','e','eid','epr','es','gtm','h','id','pid','rv','t','tag_exp','tc','ti','tr','u','ut','v','z'},
+                '/a': {'ccid','cid','cv','e','eid','epr','es','gtm','h','id','l','pid','rv','t','tag_exp','tc','ti','tr','u','ut','v','z'},
                 '/td': {'bt','ct','dl','exp','fin','frm','gtm','hlo','id','lst','pid','rtg','seq','slo','t','tdp','v','z'},
             }
             check('Vendor diagnostic fields stay within the recorded unapproved envelope',all(set(row)<=fields[item['path']] and not row.get('en') for row in item['rows']))
             for row in item['rows']:
+                if item['path']=='/a' and any(key in row for key in ('ccid','cid','l')):
+                    check('Load diagnostics belong to the existing tag configuration',row.get('v')=='3' and row.get('t')=='l' and row.get('cid')==ID and row.get('ccid')==TAG_CANONICAL_CONTAINER_ID)
                 if 'dl' in row:
                     location=row['dl']
                     url=urlsplit(location if location.startswith('https://') else 'https://'+location)
@@ -418,6 +429,75 @@ def exercise_after_stop(page):
     page.evaluate('()=>{window.focus();document.dispatchEvent(new Event("visibilitychange"));window.dispatchEvent(new Event("pageshow"));document.body.click()}')
     page.wait_for_timeout(600)
     check('Stopped handoff stays unavailable', page.evaluate('window.MFTGoogleMeasurement.handoff()') is False)
+    check('A previously loaded stopped sender installs one restrictive document policy',page.locator('meta[data-mft-google-stopped="true"]').count()==1 and page.evaluate('window.MFTGoogleMeasurement.requiresReload()') is True)
+
+
+def prove_csp_blocks_future_transports(page, policy, transports=('fetch','beacon','image','script','frame','worker')):
+    """Fixture-only attempts: CSP must reject them before the browser interceptor.
+
+    The unchanged DNS backstop and Fetch guard still protect a failed assertion.
+    Matching originalPolicy distinguishes this barrier from any earlier CSP.
+    A blob worker would attempt a Google fetch if it could execute; its creation
+    must be blocked, so it cannot become a context that outlives the document.
+    """
+    expected = {
+        'fetch': {'directives':['connect-src'],'host':'analytics.google.com'},
+        'beacon': {'directives':['connect-src'],'host':'www.google-analytics.com'},
+        'image': {'directives':['img-src'],'host':'stats.g.doubleclick.net'},
+        'script': {'directives':['script-src','script-src-elem'],'host':'www.googletagmanager.com'},
+        'frame': {'directives':['frame-src'],'host':'www.google.com'},
+        'worker': {'directives':['worker-src'],'blob':True},
+    }
+    selected = {kind:expected[kind] for kind in transports}
+    before_requests, before_interceptions = len(current_requests()), interceptor.request_count
+    violation_start = page.evaluate('window.__cspViolations.length')
+    page.evaluate('''([kinds,id])=>{
+      const probe={attempted:[],fetchRejected:false,beaconQueued:null,imageError:false,scriptError:false,workerRan:false,workerError:false};
+      const elements=[];let worker=null,blobUrl=null;
+      window.__futureTransportProbe=probe;
+      window.__cleanupFutureTransportProbe=()=>{for(const element of elements)element.remove();worker?.terminate();if(blobUrl)URL.revokeObjectURL(blobUrl);};
+      for(const kind of kinds){
+        probe.attempted.push(kind);
+        if(kind==='fetch')fetch('https://analytics.google.com/g/collect?fixture_probe=fetch',{method:'POST',mode:'no-cors',body:'Synthetic CSP rejection probe'}).catch(()=>{probe.fetchRejected=true;});
+        if(kind==='beacon')probe.beaconQueued=navigator.sendBeacon('https://www.google-analytics.com/g/collect?fixture_probe=beacon','Synthetic CSP rejection probe');
+        if(kind==='image'){
+          const img=new Image();img.onerror=()=>{probe.imageError=true;};img.src='https://stats.g.doubleclick.net/g/collect?fixture_probe=image';elements.push(img);
+        }
+        if(kind==='script'){
+          const script=document.createElement('script');script.onerror=()=>{probe.scriptError=true;};script.src='https://www.googletagmanager.com/gtag/js?id='+id+'&fixture_probe=script';elements.push(script);document.head.appendChild(script);
+        }
+        if(kind==='frame'){
+          const frame=document.createElement('iframe');frame.hidden=true;frame.src='https://www.google.com/measurement/conversion?fixture_probe=frame';elements.push(frame);document.body.appendChild(frame);
+        }
+        if(kind==='worker'){
+          blobUrl=URL.createObjectURL(new Blob(['postMessage("fixture-worker-executed");fetch("https://analytics.google.com/g/collect?fixture_probe=worker",{mode:"no-cors"}).catch(()=>{});'],{type:'application/javascript'}));
+          try{worker=new Worker(blobUrl);worker.onmessage=()=>{probe.workerRan=true;};worker.onerror=event=>{event.preventDefault();probe.workerError=true;};}
+          catch(error){probe.workerError=true;}
+        }
+      }
+    }''',[list(transports),ID])
+    try:
+        page.wait_for_function('''([start,policy,expected])=>{
+          const events=window.__cspViolations.slice(start);
+          return Object.values(expected).every(want=>events.some(event=>{
+            if(event.originalPolicy!==policy||!want.directives.includes(event.directive))return false;
+            if(want.blob)return event.blockedURI.startsWith('blob');
+            try{return new URL(event.blockedURI).hostname===want.host;}catch{return false;}
+          }));
+        }''',arg=[violation_start,policy,selected],timeout=5000)
+        observed=page.evaluate('window.__futureTransportProbe')
+        violations=page.evaluate('start=>window.__cspViolations.slice(start)',violation_start)
+        check('Every fixture transport is rejected by the specified CSP before interception',len(current_requests())==before_requests and interceptor.request_count==before_interceptions,{'transports':list(transports),'googleRequests':len(current_requests())-before_requests,'interceptorRequests':interceptor.request_count-before_interceptions})
+        check('The rejected worker cannot execute or outlive the stopped document',not observed['workerRan'])
+        check('The fixture attempted every requested future transport',observed['attempted']==list(transports))
+        report['cases'].append({'case':case,'futureTransportCspProbe':{
+            'transports':list(transports),'policySha256':hashlib.sha256(policy.encode()).hexdigest(),
+            'violations':[{'directive':v['directive'],'blockedOrigin':urlsplit(v['blockedURI']).netloc or v['blockedURI'].split(':')[0],'matchesSpecifiedPolicy':v['originalPolicy']==policy} for v in violations],
+            'fetchRejected':observed['fetchRejected'],'beaconQueued':observed['beaconQueued'],
+            'imageError':observed['imageError'],'scriptError':observed['scriptError'],'workerExecuted':observed['workerRan']}})
+        interceptor.assert_ok()
+    finally:
+        page.evaluate('window.__cleanupFutureTransportProbe()')
 
 
 def click_continue(page, selector='#scheduler'):
@@ -458,6 +538,12 @@ try:
             check('No unconsented handoff is queued',page.evaluate('window.MFTGoogleMeasurement.handoff()') is False)
             check('Native source is not stored before permission',page.evaluate('key=>sessionStorage.getItem(key)',GOOGLE_SOURCE) is None)
             close_case(context,pump)
+        context,page=open_case(browser,'refusal-before-first-loader')
+        page.evaluate('()=>{window.__initialDocumentSentinel=true;window.MFTGoogleMeasurement.deny();}')
+        check('Refusal before any vendor request does not impose a document CSP or reload requirement',not page.locator('meta[data-mft-google-stopped="true"]').count() and page.evaluate('window.MFTGoogleMeasurement.requiresReload()') is False and not current_requests())
+        ready(page)
+        check('A later first grant can start in the same never-loaded document',page.evaluate('window.__initialDocumentSentinel===true') and not page.locator('meta[data-mft-google-stopped="true"]').count())
+        close_case(context,pump)
         for name,signal in [('gpc','globalPrivacyControl'),('dnt','doNotTrack')]:
             context,page=open_case(browser,name,'/?gclid='+SYNTHETIC_CLICK,signal=signal)
             check('Privacy signal refuses a requested advertising grant',page.evaluate('window.MFTGoogleMeasurement.grant()') is False)
@@ -523,6 +609,16 @@ try:
         check('Proposed CSP creates no blocked vendor requests',not page.evaluate('window.__cspViolations'),page.evaluate('window.__cspViolations'))
         close_case(context,pump)
 
+        context,page=open_case(browser,'active-reviewed-csp-context-isolation',options={'reviewed_csp':True})
+        directives={part.split()[0]:part.split()[1:] for part in REVIEWED_CSP.split(';') if part.strip()}
+        check('Approved-page HTTP policy forbids workers from the initial document response',directives.get('worker-src')==["'none'"])
+        check('Approved-page HTTP policy admits only the existing SimplePractice frame origins',set(directives.get('frame-src',[]))=={'https://clientsecure.me','https://marriagefamilytherapy.clientsecure.me','https://spwidget-marriagefamilytherapy.clientsecure.me'})
+        prove_csp_blocks_future_transports(page,REVIEWED_CSP,transports=('frame','worker'))
+        check('Initial worker and Google-frame rejection does not request a Google loader',not current_requests())
+        ready(page)
+        check('Blocking persistent child contexts preserves the eligible main-page vendor loader',page.evaluate('window.__vendorLoaded===true'))
+        close_case(context,pump)
+
         # Observe enough active time and pagehide for engagement behavior;
         # send_page_view:false alone is not evidence of no automatic events.
         context,page=open_case(browser,'grant-only-automatic-activity')
@@ -579,6 +675,65 @@ try:
             close_case(context,pump)
             check('No vendor request after stop, activity, native navigation or pagehide',len(current_requests())==before)
 
+        context,page=open_case(browser,'withdrawal-csp-preserves-open-scheduling',options={'controller':True,'booking':True})
+        ready(page)
+        page.evaluate('window.MFTAnalyticsConsent.grant()')
+        page.locator('#scheduler').click()
+        gate=page.locator('dialog.mft-consultation-gate[open]')
+        gate.locator('[data-mft-account-ack]').check()
+        before=len(current_requests())
+        page.evaluate('()=>{window.__stoppedDocumentSentinel=true;window.MFTGoogleMeasurement.deny();}')
+        policy=page.locator('meta[data-mft-google-stopped="true"]').get_attribute('content')
+        prove_csp_blocks_future_transports(page,policy)
+        check('Withdrawal and the document barrier preserve the open acknowledged scheduling dialog',page.evaluate('window.__stoppedDocumentSentinel===true') and page.url==BASE+'/' and gate.is_visible() and gate.locator('[data-mft-account-ack]').is_checked())
+        check('Withdrawal leaves the permitted first-party choice intact',page.evaluate('window.MFTAnalyticsConsent.status()')=='granted')
+        check('Opening and acknowledging under the barrier still produce no handoff',not current_handoffs() and not [r for r in ops_requests if r['case']==case])
+        gate.locator('[data-consultation-continue]').click()
+        page.wait_for_url(lambda url:urlsplit(url).hostname=='marriagefamilytherapy.clientsecure.me',timeout=10000)
+        page.wait_for_timeout(300)
+        check('The stop policy permits one native scheduler navigation and the independent Ops handoff',len([r for r in ops_requests if r['case']==case])==1 and len([r for r in destinations if r['case']==case and r['path']=='/request'])==1)
+        close_case(context,pump)
+        check('The stopped vendor sends nothing through the probes, Continue or native unload',len(current_requests())==before)
+
+        context,page=open_case(browser,'fresh-regrant-reloads-stopped-document',options={'controller':True})
+        page.evaluate('window.__preRegrantDocumentSentinel=true')
+        page.get_by_role('button',name='Allow Google advertising measurement',exact=True).click()
+        page.wait_for_function('()=>window.__vendorLoaded===true',timeout=10000)
+        default_order(page)
+        first_permission=page.evaluate('key=>JSON.parse(localStorage.getItem(key))',AD_CHOICE)
+        page.evaluate('window.MFTGoogleMeasurement.handoff()')
+        page.wait_for_timeout(2200)
+        check('The first explicit grant and handoff produce one acquisition event',len(current_handoffs())==1)
+        page.get_by_role('button',name='Analytics choices',exact=True).click()
+        page.get_by_role('button',name='Decline Google advertising measurement',exact=True).click()
+        before=len(current_requests())
+        exercise_after_stop(page)
+        check('Refusal alone does not reload or resume the existing document',page.evaluate('window.__preRegrantDocumentSentinel===true') and page.evaluate('window["ga-disable-G-BTK39BBNRE"]') is True and len(current_requests())==before)
+        page.evaluate('''()=>window.addEventListener('beforeunload',()=>sessionStorage.setItem('mft.probe.regrant-state',JSON.stringify({
+          disabled:window['ga-disable-G-BTK39BBNRE'],requiresReload:window.MFTGoogleMeasurement.requiresReload(),
+          handoffAccepted:window.MFTGoogleMeasurement.handoff(),barriers:document.querySelectorAll('meta[data-mft-google-stopped="true"]').length
+        })),{once:true})''')
+        page.get_by_role('button',name='Analytics choices',exact=True).click()
+        regrant=page.get_by_role('button',name=re.compile(r'Allow Google.*reload',re.I))
+        check('The separate regrant choice explicitly discloses the required reload',regrant.count()==1 and regrant.is_visible() and 'reload' in regrant.inner_text().lower())
+        with page.expect_navigation(wait_until='domcontentloaded',timeout=10000):
+            regrant.click()
+        page.wait_for_function('()=>window.__vendorLoaded===true',timeout=10000)
+        page.wait_for_timeout(300)
+        old_document=page.evaluate('JSON.parse(sessionStorage.getItem("mft.probe.regrant-state"))')
+        second_permission=page.evaluate('key=>JSON.parse(localStorage.getItem(key))',AD_CHOICE)
+        check('The departing document stays disabled and cannot replay a handoff after regrant',old_document=={'disabled':True,'requiresReload':True,'handoffAccepted':False,'barriers':1})
+        check('Regrant creates a new document rather than loosening the stopped document policy',page.evaluate('window.__preRegrantDocumentSentinel===undefined') and page.evaluate('performance.getEntriesByType("navigation")[0].type')=='reload' and page.evaluate('window.MFTGoogleMeasurement.requiresReload()') is False and not page.locator('meta[data-mft-google-stopped="true"]').count())
+        check('The fresh explicit choice persists a new current consent window',second_permission.get('choice')=='granted' and second_permission.get('review')==REVIEW and second_permission.get('expiresAt',0)>first_permission['expiresAt'])
+        loaders=[r for r in current_requests() if r['host']=='www.googletagmanager.com' and r['path']=='/gtag/js']
+        check('Regrant loads one vendor in each of the two documents without replaying the prior event',len(loaders)==2 and len(current_handoffs())==1)
+        default_order(page)
+        page.evaluate('sessionStorage.removeItem("mft.probe.regrant-state")')
+        check('Only a new handoff in the new consented document is accepted',page.evaluate('window.MFTGoogleMeasurement.handoff()') is True)
+        page.wait_for_timeout(2200)
+        check('The new document records exactly one additional explicit handoff',len(current_handoffs())==2)
+        close_case(context,pump)
+
         context,page=open_case(browser,'form-added-after-permission')
         ready(page)
         before=len(current_requests())
@@ -598,6 +753,9 @@ try:
             check('Same-turn title change cannot qualify a handoff',result is False)
             page.wait_for_timeout(1200)
             check('A changed actual title stops the conditional sender',page.evaluate('window.MFTGoogleMeasurement.handoff()') is False)
+            if action=='pagehide':
+                policy=page.locator('meta[data-mft-google-stopped="true"]').get_attribute('content')
+                prove_csp_blocks_future_transports(page,policy)
             close_case(context,pump)
             check('Title change followed immediately by activity creates no post-boundary request',len(current_requests())==before)
 

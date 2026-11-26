@@ -12,7 +12,10 @@ for(const [slug,needle] of [['dr-nolan','Johns Hopkins University'],['emily-john
 test('benefits page contains approved carriers, routing information and no sensitive public form',()=>{
   const h=page('check-my-coverage'),t=text(h); for(const carrier of ['Premera','Aetna','Regence','Cigna'])assert.match(t,new RegExp(carrier));
   assert.match(t,/Couples consultations and couples sessions are private pay/); assert.match(h,/mailto:support@mft.care\?subject=Benefits%20verification/);
-  assert.match(h,/Best%20phone%20number/);assert.match(h,/Insurance%20company/);assert.match(h,/Service%20I%20am%20seeking/);
+  assert.match(t,/first step is an email inquiry, not instant benefits verification/);
+  assert.match(t,/Support will send the appropriate secure next step/);
+  assert.match(h,/data-benefits-step="email"/);assert.match(h,/data-benefits-step="secure"/);assert.match(h,/data-benefits-step="review"/);
+  assert.doesNotMatch(h,/My%20name%3A|Best%20phone%20number%3A|Insurance%20company%3A|Service%20I%20am%20seeking%3A/);
   assert.doesNotMatch(h,/<input[^>]+(?:member|diagnos|birth)/i);
 });
 test('contact page has current office hours and office identity',()=>{
@@ -25,8 +28,8 @@ test('individual and couples consultation choices use the approved different sta
   // Shared appointment shortcuts offer both services; the service bodies stay distinct.
   const body=h=>h.match(/<main\b[^>]*>[\s\S]*?<\/main>/)[0];
   const individual=text(body(page('new-page'))),couples=text(body(page('marriage-and-couples-therapy-counseling')));
-  assert.match(individual,/30-minute private-pay/);assert.match(individual,/Diagnostic evaluation \(90791\)/);assert.doesNotMatch(individual,/30-minute couples consultation/);
-  assert.match(couples,/30-minute couples consultation/);assert.match(couples,/couples therapy/i);assert.match(couples,/Couples consultations and couples sessions are private pay/);assert.doesNotMatch(couples,/53-minute first clinical session/);
+  assert.match(individual,/26-minute private-pay individual consultation/);assert.match(individual,/30-minute booking block/);assert.match(individual,/Diagnostic evaluation \(90791\)/);assert.doesNotMatch(individual,/30-minute couples consultation/);
+  assert.match(couples,/short couples consultation/i);assert.match(couples,/26-minute[\s\S]*30-minute booking block/);assert.match(couples,/couples therapy/i);assert.match(couples,/Couples consultations and couples sessions are private pay/);assert.doesNotMatch(couples,/53-minute first clinical session/);
 });
 test('free consultation links are gated before direct SimplePractice scheduling',()=>{
   for(const slug of ['new-page','marriage-and-couples-therapy-counseling']){const h=page(slug);assert.match(text(h),/10-minute/);assert.match(h,/https:\/\/marriagefamilytherapy\.clientsecure\.me/);}

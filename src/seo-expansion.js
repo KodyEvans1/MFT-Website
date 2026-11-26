@@ -14,7 +14,7 @@ const updates = [];
 for (const route of ['/how-to-start-therapy/', '/', '/marriagereset/']) {
   const file = path.join(dist, route.replace(/^\/+|\/+$/g,''), 'index.html');
   const before = fs.readFileSync(file,'utf8');
-  const result = decorateHtml(applyPlaudEdits(before,route),route);
+  const result = decorateHtml(require('./acquisition-ux').apply(applyPlaudEdits(before,route),route),route);
   fs.writeFileSync(file,result.html);
   const row = booking.pages.find(p => p.route === route);
   if (!row) throw new Error('Missing booking inventory for edited page: ' + route);

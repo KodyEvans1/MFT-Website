@@ -15,7 +15,7 @@ const people = require('../content/clinician-registry.json').clinicians;
 const ROOT = path.resolve(__dirname, '..');
 const CSS = 'marketing-improvements.css';
 const revisionFiles = [
-  'src/build.js', 'src/site-urls.js',
+  'src/build.js', 'src/site-urls.js', 'src/redesign.js',
   'content/marketing-improvements.json', 'src/marketing-improvements.js',
   'src/assets/marketing-improvements.css', 'src/scheduling-actions.js',
   'content/clinician-registry.json', 'content/clinician-evidence.json',
@@ -23,6 +23,8 @@ const revisionFiles = [
   'content/site-experience.json', 'content/reference-pages/individual.json',
   'content/service-guides/marriage-and-couples-therapy-counseling.json',
   'src/ui/home-components.js', 'src/site-experience.js', 'src/launch-content.js',
+  'content/appointment-starting-costs.json', 'src/appointment-costs.js',
+  'src/acquisition-ux.js', 'src/assets/acquisition-ux.css', 'src/start-page.js', 'src/seo-expansion.js',
   'src/booking-core.js', 'src/booking-build.js',
   'scripts/prepare-booking.js', 'src/seo-expansion-engine.js'
 ];

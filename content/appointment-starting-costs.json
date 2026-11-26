@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "currency": "USD",
+  "provenance": {
+    "source": "Practice owner pricing and starting-care baseline supplied for the authorized website UX clarification",
+    "ownerProvidedOn": "2026-11-25",
+    "baseline": "Complimentary 10-minute phone or virtual consultation; 26-minute consultation scheduled in a 30-minute block for $75; a separate one-hour couples consultation for $150; an initial individual evaluation for $150 private pay or applicable insurance; a separate $150 reduced-cost couples/family program, not a general fee for all ongoing sessions.",
+    "repositoryEvidence": [
+      "content/simplepractice-booking.json",
+      "content/reference-pages/individual.json",
+      "content/service-guides/marriage-and-couples-therapy-counseling.json",
+      "src/start-page.js"
+    ],
+    "verificationLimit": "The repository previously supplied scheduling guidance and practice/clinician destinations, but no priced service catalog or service IDs for these amounts. This record preserves owner-supplied public information; it does not claim a fresh SimplePractice appointment-menu, payer-participation, availability, or clinical review.",
+    "scope": "Clarify starting costs and distinguish services. Preserve the short couples consultation, separate partner evaluations, and then joint-session sequence. Do not infer that the separate one-hour consultation replaces required preparation or that the reduced-cost program is the rate for every ongoing session."
+  },
+  "services": {
+    "introduction": {
+      "durationMinutes": 10,
+      "feeUsd": 0,
+      "formats": ["phone", "virtual"],
+      "optional": true
+    },
+    "shortConsultation": {
+      "durationMinutes": 26,
+      "bookingBlockMinutes": 30,
+      "feeUsd": 75,
+      "payment": "private-pay",
+      "optionalForIndividualCare": true,
+      "requiredFirstStepForCouples": true
+    },
+    "couplesHourConsultation": {
+      "durationMinutes": 60,
+      "feeUsd": 150,
+      "payment": "private-pay",
+      "scope": "separate-consultation-option",
+      "replacementForRequiredShortConsultationConfirmed": false
+    },
+    "individualEvaluation": {
+      "feeUsd": 150,
+      "insuranceMayApply": true,
+      "scope": "initial-individual-evaluation",
+      "consultationRequired": false
+    },
+    "reducedCostCouplesFamily": {
+      "feeUsd": 150,
+      "scope": "separate-program",
+      "generalOngoingSessionFee": false
+    }
+  }
+}

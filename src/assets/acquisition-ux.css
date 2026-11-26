@@ -1,0 +1,69 @@
+/* Targeted acquisition choices use the existing M.F.T. palette and type system. */
+body[data-acquisition-ux] .button{max-width:100%;min-height:44px;white-space:normal;text-align:center;overflow-wrap:break-word}
+body[data-acquisition-ux] a:focus-visible,body[data-acquisition-ux] summary:focus-visible{outline:3px solid #a67831;outline-offset:5px}
+body[data-acquisition-ux] header [data-acquisition-appointment]{font-size:.78rem;line-height:1.4;max-width:20rem;padding:.65rem .9rem}
+body[data-acquisition-ux] .marketing-returning{padding:.35rem clamp(1rem,4vw,4rem);text-align:right;background:var(--mist,#eef3ed);font-size:.8rem;line-height:1.5}
+body[data-acquisition-ux] .marketing-returning a{display:inline-block;padding:.35rem .4rem;text-underline-offset:.2em}
+body[data-acquisition-ux] .acquisition-format{max-width:58ch;font-size:.94rem;line-height:1.65;margin:1rem 0}
+.acquisition-payment{max-width:64ch;padding:1rem 1.15rem;border-left:3px solid var(--gold,#b88b32);background:var(--mist,#eef3ed);color:var(--ink,#143d3a);margin:1.25rem 0}
+.acquisition-payment p{font-size:.94rem;line-height:1.65;margin:0}
+.acquisition-payment p+p{margin-top:.45rem;font-size:.86rem}
+.acquisition-payment a,.acquisition-optional a,.acquisition-secondary a,.acquisition-online-path a{text-decoration:underline;text-underline-offset:.2em}
+body[data-acquisition-ux] .mft-clinician-hero .acquisition-payment{background:rgba(255,255,255,.09);color:#fff;border-color:#dfbc7a}
+body[data-acquisition-ux] .mft-clinician-hero .acquisition-payment a,body[data-acquisition-ux] .mft-clinician-hero .acquisition-optional a{color:#fff}
+body[data-acquisition-ux] .mft-clinician-hero .acquisition-format{color:#e0ece7}
+body[data-acquisition-ux] .mft-clinician-hero .actions{margin:1.15rem 0 .8rem}
+body[data-acquisition-ux] .acquisition-optional{max-width:60ch;font-size:.88rem;line-height:1.65;margin:0}
+body[data-acquisition-ux] .mft-clinician-hero .acquisition-optional{color:#e0ece7}
+.acquisition-entry-details{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:1.25rem;padding:1.3rem clamp(1.25rem,6vw,6rem);background:var(--cream,#f7f3ea);align-items:start}
+.acquisition-booking-help{padding:1rem 1.15rem;border:1px solid var(--line,#b8cbc5);border-radius:10px;background:#fff;color:var(--ink,#143d3a)}
+.acquisition-booking-help summary{cursor:pointer;font-size:.93rem;line-height:1.5;font-weight:650;min-height:24px}
+.acquisition-booking-help p{font-size:.9rem;line-height:1.7;margin:.8rem 0 0}
+.acquisition-secondary{padding:.25rem 0}
+.acquisition-secondary p{font-size:.9rem;line-height:1.7;margin:.4rem 0}
+.acquisition-secondary a{display:inline;padding:.2rem 0}
+.acquisition-next-step{background:var(--mist,#eef3ed)}
+.acquisition-next-step p{max-width:72ch;line-height:1.75}
+.acquisition-next-step .button{margin:.6rem 0}
+.experience-prose.acquisition-next-step{padding:clamp(1.2rem,3vw,2rem);border-radius:12px}
+body[data-acquisition-ux] .mft-footer-scheduling .actions{display:flex;align-items:center;flex-wrap:wrap;gap:1rem}
+.acquisition-online-path{font-size:.95rem;line-height:1.75;max-width:72ch;margin-top:1.2rem}
+
+/* Shared cost catalogue is also used on the starting guide and benefits page. */
+.mft-starting-costs{background:var(--cream,#f7f3ea);color:var(--ink,#143d3a)}
+.mft-starting-costs .section-heading{max-width:78ch}
+.mft-starting-costs h2{font-size:clamp(1.8rem,3.2vw,2.8rem);line-height:1.15}
+.mft-starting-cost-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1.1rem;margin-top:1.5rem;align-items:stretch}
+.mft-starting-costs[data-starting-costs="couples"] .mft-starting-cost-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.mft-starting-cost-card{min-width:0;padding:clamp(1.25rem,2.5vw,1.9rem);background:#fff;border:1px solid var(--line,#b8cbc5);border-top:3px solid var(--gold,#b88b32);border-radius:10px}
+.mft-starting-cost-card h3{font-family:var(--serif,Georgia,serif);font-size:clamp(1.3rem,1.8vw,1.65rem);line-height:1.25;margin:0 0 1rem}
+.mft-starting-cost-card p{font-size:.93rem;line-height:1.75;margin:.6rem 0 0}
+.mft-starting-cost-card .mft-starting-cost-price{font-size:clamp(1.2rem,1.6vw,1.55rem);font-weight:700;line-height:1.45;color:var(--ink,#143d3a)}
+.mft-starting-cost-card .mft-starting-cost-detail{font-size:.86rem;font-weight:650;line-height:1.6;color:#456866}
+.mft-starting-cost-card.mft-starting-cost-program{background:var(--mist,#eef3ed)}
+.mft-starting-cost-note{font-size:.87rem;line-height:1.75;max-width:95ch;margin:1.5rem 0 0}
+.mft-starting-cost-note a{text-underline-offset:.2em}
+.mft-starting-costs :is(a,h2,h3){overflow-wrap:break-word}
+.mft-insurance-detail .mft-benefits-steps{margin:1rem 0;padding-left:1.3rem;max-width:84ch}
+.mft-insurance-detail .mft-benefits-steps li{padding-left:.25rem;margin:.8rem 0;line-height:1.8}
+.mft-insurance-detail .mft-benefits-steps a{text-underline-offset:.2em;overflow-wrap:break-word}
+
+@media(max-width:1000px){.mft-starting-cost-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:900px){
+ .acquisition-entry-details{grid-template-columns:1fr;gap:.6rem}
+ /* Present the individual path before the large portrait on smaller screens.
+    Keep the complete approved source image and its existing blend treatment. */
+ body.page-clinician[data-acquisition-ux] .mft-clinician-hero .hero-copy{order:0;padding-top:2rem}
+ body.page-clinician[data-acquisition-ux] .mft-clinician-hero .mft-portrait--hero{order:1;margin:0 auto 1.5rem}
+}
+@media(max-width:600px){
+ .mft-starting-cost-grid,.mft-starting-costs[data-starting-costs="couples"] .mft-starting-cost-grid{grid-template-columns:1fr}
+ body[data-acquisition-ux] .hero .actions,body[data-acquisition-ux] .home-hero .actions{align-items:stretch;flex-direction:column;gap:.75rem}
+ body[data-acquisition-ux] .hero .actions .button,body[data-acquisition-ux] .home-hero .actions .button{width:100%}
+ body[data-acquisition-ux] .marketing-returning{text-align:left}
+ .acquisition-payment{padding:.9rem 1rem}
+ .acquisition-entry-details{padding:1rem 1.25rem}
+ .acquisition-secondary p{margin:.6rem 0}
+ body[data-acquisition-ux] .mft-footer-scheduling .actions{align-items:stretch;flex-direction:column}
+}
+@media(prefers-reduced-motion:reduce){body[data-acquisition-ux] *{scroll-behavior:auto!important}}

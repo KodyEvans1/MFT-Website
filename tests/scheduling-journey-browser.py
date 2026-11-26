@@ -96,7 +96,7 @@ try:
             for section in ['individual-journey','couples-journey','consultation-call']:
                 assert page.locator('#'+section).count()==1
             text=page.locator('main').inner_text()
-            for phrase in ['Neither consultation is required','paid 30-minute individual consultation','90791','All couples begin','One diagnostic evaluation per partner','53-minute couples sessions','do not establish ongoing individual therapy','does not work immediately','hidden, private, or unknown']:
+            for phrase in ['Neither consultation is required','paid 26-minute individual consultation','30-minute block for $75','90791','All couples begin','One diagnostic evaluation per partner','53-minute couples sessions','do not establish ongoing individual therapy','does not work immediately','hidden, private, or unknown']:
                 assert phrase in text,phrase
             ids=page.locator('[id]').evaluate_all('(els)=>els.map(e=>e.id)');assert len(ids)==len(set(ids))
             nav=page.locator('header .primary-nav')
@@ -126,7 +126,9 @@ try:
                 assert page.locator('header a[href="/how-to-start-therapy/"]').count()==1
                 assert page.locator('footer a[href="/how-to-start-therapy/"]').count()==1
                 text=page.locator('main').inner_text()
-                assert not re.search(r'26[ -]minute|Three ways to begin couples|One per new client',text)
+                assert not re.search(r'Three ways to begin couples|One per new client',text)
+                if re.search(r'26[ -]minute',text):
+                    assert re.search(r'30-minute (?:booking )?block',text), 'Consultation duration needs its distinct booking-block explanation'
                 if route=='/marriage-and-couples-therapy-counseling/':
                     for phrase in ['30-minute','diagnostic evaluation per partner','53-minute couples sessions']:assert phrase.lower() in text.lower()
                 if route=='/new-page/':assert '90791' in text and '30-minute' in text

@@ -3,8 +3,20 @@ on:
   pull_request:
     paths:
       - 'content/marketing-improvements*.json'
+      - 'content/appointment-starting-costs.json'
+      - 'content/reference-pages/individual.json'
+      - 'content/service-guides/marriage-and-couples-therapy-counseling.json'
       - 'content/simplepractice-booking.json'
       - 'src/marketing-improvements.js'
+      - 'src/acquisition-ux.js'
+      - 'src/appointment-costs.js'
+      - 'src/assets/acquisition-ux.css'
+      - 'src/start-page.js'
+      - 'src/launch-content.js'
+      - 'src/build.js'
+      - 'src/redesign.js'
+      - 'src/seo-expansion.js'
+      - 'src/seo-expansion-engine.js'
       - 'src/assets/marketing-improvements.css'
       - 'src/scheduling-actions.js'
       - 'src/booking-core.js'
@@ -12,6 +24,8 @@ on:
       - 'src/assets/mft-booking.js'
       - 'scripts/prepare-booking.js'
       - 'tests/marketing-improvements*'
+      - 'tests/acquisition-ux*'
+      - 'tests/appointment-costs*'
       - '.github/workflows/marketing-improvements.yml'
   workflow_dispatch:
     inputs:
@@ -51,9 +65,22 @@ jobs:
         run: |
           export CHROME_PATH="$(command -v google-chrome || command -v chromium)"
           python tests/marketing-improvements-browser.py
+      - name: Build production-policy acquisition fixture; Google remains blocked
+        env:
+          CONTEXT: production
+          SITE_INDEXING_ENABLED: 'true'
+          GA4_BASIC_MEASUREMENT_ENABLED: 'false'
+          OPS_HANDOFF_COLLECTION_ENABLED: 'true'
+        run: npm run build
+      - name: Acquisition pages on desktop and mobile; all handoffs intercepted
+        run: |
+          export CHROME_PATH="$(command -v google-chrome || command -v chromium)"
+          python tests/acquisition-ux-browser.py
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: marketing-improvements-acceptance
-          path: tmp/marketing-improvements/
+          path: |
+            tmp/marketing-improvements/
+            tmp/acquisition-ux/
           retention-days: 7

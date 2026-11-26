@@ -33,7 +33,12 @@ test('Plaud: three steps use the requested language and actual links',()=>{
 test('Plaud: benefits and questions are email links, never public intake forms',()=>{
  const html=startMain(); assert.ok(html.includes('href="'+BENEFITS+'"'));assert.ok(html.includes('href="'+QUESTION+'"'));
  assert.doesNotMatch(html,/<form\b|<input\b|<textarea\b|mailto:support@mftcare/i);
- assert.match(html,/Opens your email app/);
+ const inquiry=html.match(/<div class="start-benefits" data-benefits-inquiry>[\s\S]*?<\/div>/)?.[0];
+ assert.ok(inquiry,'The benefits inquiry must explain its email-first workflow');
+ assert.match(inquiry,/This opens an email to support@mft\.care/);
+ assert.match(inquiry,/not an instant benefits result/);assert.match(inquiry,/secure next step/);
+ assert.match(inquiry,/Do not include insurance numbers or clinical details in ordinary email/);
+ assert.match(inquiry,/href="\/check-my-coverage\/"/);
 });
 test('Plaud: starting-care scheduling uses the native request page without an embedded widget',()=>{
  const html=decorateHtml(applyPlaudEdits(fixture,'/how-to-start-therapy/'),'/how-to-start-therapy/').html;

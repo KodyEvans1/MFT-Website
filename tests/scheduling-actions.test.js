@@ -13,8 +13,9 @@ test('Care pages keep native existing-client access and service-appropriate cons
   assert.match(h,/data-mft-existing-client="true"[^>]*href="https:\/\/marriagefamilytherapy\.clientsecure\.me\/sign-in"/,f);
   if(f===path.join(dist,'autumn-alexander','index.html')) {
    assert.doesNotMatch(h,/data-mft-couples-consultation="true"/,f);
-   assert.match(h,/Request an appointment with Autumn/,f);
-  } else if(h.includes('data-marketing-candidate=')&&!f.includes('/marriage-and-couples-therapy-counseling/')) {
+   assert.ok(h.includes('Request an Individual Evaluation With Autumn'),f+': individual-evaluation action missing');
+   assert.match(h,/data-acquisition-appointment="primary"[^>]*data-mft-booking-intent="appointment"[^>]*data-mft-clinician="autumn"/,f);
+  } else if((h.includes('data-marketing-candidate=')&&!f.includes('/marriage-and-couples-therapy-counseling/'))||f===path.join(dist,'emily-johnsrud-bio','index.html')) {
    assert.doesNotMatch(h,/data-mft-couples-consultation="true"/,f);
    assert.match(h,/href="\/marriage-and-couples-therapy-counseling\/"/,f);
    const top=h.match(/<aside class="marketing-returning"[\s\S]*?<\/aside>/)?.[0];

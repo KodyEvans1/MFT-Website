@@ -28,10 +28,16 @@ test('Autumn is visible in team, homepage and appropriate age-based services wit
 });
 test('Autumn uses the owner-supplied calendar and retains secondary practice contact',()=>{
  const h=read(profile.slug),hero=h.match(/<section class="hero mft-clinician-hero"[\s\S]*?<\/section>/)[0];
- assert.match(hero,/clinicianId=2183370/);assert.ok(hero.includes(profile.booking.label));
+ const primary=hero.match(/<a\b([^>]*data-acquisition-appointment="primary"[^>]*)>([\s\S]*?)<\/a>/);
+ assert.ok(primary,'The requested individual-evaluation action must remain in the hero');
+ assert.equal(plain(primary[2]),'Request an Individual Evaluation With Autumn');
+ const destination=new URL(primary[1].match(/href="([^"]+)"/)[1].replace(/&amp;/g,'&'));
+ assert.equal(destination.origin,'https://clientsecure.me');assert.equal(destination.pathname,'/widget-redirect');
+ assert.equal(destination.searchParams.get('clinicianId'),'2183370');assert.equal(destination.searchParams.get('channel'),'client_portal');
+ assert.match(primary[1],/data-mft-booking="true"/);assert.match(primary[1],/data-mft-booking-intent="appointment"/);
  assert.equal(booking.clinicians.find(p=>p.slug===profile.slug).id,'2183370');
  assert.doesNotMatch(hero,/mailto:|https:\/\/ops\./);
- assert.ok(h.includes(profile.booking.contactUrl));assert.match(h,/A request is not a confirmed booking/);
+ assert.ok(h.includes(profile.booking.contactUrl));assert.match(h,/An appointment request is not a confirmed appointment/);
 });
 test('Taylor adult-only scope is explicit and does not imply child or play-therapy services',()=>{
  const p=registry.find(p=>p.slug==='dr-nolan'),h=read(p.slug),main=h.match(/<main\b[^>]*>[\s\S]*?<\/main>/)[0];

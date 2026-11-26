@@ -1,0 +1,219 @@
+{
+  "version": 1,
+  "recordedOn": "2026-11-25 America/Los_Angeles",
+  "status": "local acquisition acceptance passed; hosted and production results belong to the pull request closeout",
+  "scope": "Focused acquisition UX, layered on PR #26. No change to Google eligibility, account settings, campaign budgets, CPC ceilings, routes, or Ops receiver contract.",
+  "renderedContentRevision": "8733eaff9527c74ce66e08499dda8ef0539e83d7cce02e640d6cf302386b8de8",
+  "factSource": "reports/ACQUISITION-UX-FACTS-20261125.md",
+  "publicationChecks": {
+    "passed": 4,
+    "productionFirstPartyPages": 60,
+    "productionGooglePages": 0,
+    "productionSitemapUrls": 63,
+    "excludedDraftRoutes": 757
+  },
+  "isolatedBrowser": {
+    "environment": "built candidate at production origin",
+    "scope": "Browser DNS denied; all requests fulfilled or aborted before egress. Live interactions stop before Continue. Local Continue and synthetic Ops receipts do not establish an appointment, production lead, Google receipt, or Ads credit.",
+    "checks": [
+      {
+        "case": "emily-johnsrud-bio-1440",
+        "pass": true,
+        "route": "/emily-johnsrud-bio/",
+        "viewportWidth": 1440,
+        "screenshot": "built-emily-johnsrud-bio-1440.png"
+      },
+      {
+        "case": "autumn-alexander-1440",
+        "pass": true,
+        "route": "/autumn-alexander/",
+        "viewportWidth": 1440,
+        "screenshot": "built-autumn-alexander-1440.png"
+      },
+      {
+        "case": "new-page-1440",
+        "pass": true,
+        "route": "/new-page/",
+        "viewportWidth": 1440,
+        "screenshot": "built-new-page-1440.png"
+      },
+      {
+        "case": "marriage-and-couples-therapy-counseling-1440",
+        "pass": true,
+        "route": "/marriage-and-couples-therapy-counseling/",
+        "viewportWidth": 1440,
+        "screenshot": "built-marriage-and-couples-therapy-counseling-1440.png"
+      },
+      {
+        "case": "check-my-coverage-1440",
+        "pass": true,
+        "route": "/check-my-coverage/",
+        "viewportWidth": 1440,
+        "screenshot": "built-check-my-coverage-1440.png"
+      },
+      {
+        "case": "how-to-start-therapy-1440",
+        "pass": true,
+        "route": "/how-to-start-therapy/",
+        "viewportWidth": 1440,
+        "screenshot": "built-how-to-start-therapy-1440.png"
+      },
+      {
+        "case": "online-therapy-washington-1440",
+        "pass": true,
+        "route": "/online-therapy-washington/",
+        "viewportWidth": 1440,
+        "screenshot": "built-online-therapy-washington-1440.png"
+      },
+      {
+        "case": "emily-johnsrud-bio-390",
+        "pass": true,
+        "route": "/emily-johnsrud-bio/",
+        "viewportWidth": 390,
+        "screenshot": "built-emily-johnsrud-bio-390.png"
+      },
+      {
+        "case": "autumn-alexander-390",
+        "pass": true,
+        "route": "/autumn-alexander/",
+        "viewportWidth": 390,
+        "screenshot": "built-autumn-alexander-390.png"
+      },
+      {
+        "case": "new-page-390",
+        "pass": true,
+        "route": "/new-page/",
+        "viewportWidth": 390,
+        "screenshot": "built-new-page-390.png"
+      },
+      {
+        "case": "marriage-and-couples-therapy-counseling-390",
+        "pass": true,
+        "route": "/marriage-and-couples-therapy-counseling/",
+        "viewportWidth": 390,
+        "screenshot": "built-marriage-and-couples-therapy-counseling-390.png"
+      },
+      {
+        "case": "check-my-coverage-390",
+        "pass": true,
+        "route": "/check-my-coverage/",
+        "viewportWidth": 390,
+        "screenshot": "built-check-my-coverage-390.png"
+      },
+      {
+        "case": "how-to-start-therapy-390",
+        "pass": true,
+        "route": "/how-to-start-therapy/",
+        "viewportWidth": 390,
+        "screenshot": "built-how-to-start-therapy-390.png"
+      },
+      {
+        "case": "online-therapy-washington-390",
+        "pass": true,
+        "route": "/online-therapy-washington/",
+        "viewportWidth": 390,
+        "screenshot": "built-online-therapy-washington-390.png"
+      },
+      {
+        "case": "emily-johnsrud-bio-nonconverting-keyboard-popup",
+        "pass": true,
+        "qualifyingHandoffs": 0,
+        "schedulerNavigations": 0,
+        "keyboardFocusRestored": true
+      },
+      {
+        "case": "emily-johnsrud-bio-declined-native-continue",
+        "pass": true,
+        "schedulerNavigations": 1,
+        "opsHandoffs": 0,
+        "clinician": "emily"
+      },
+      {
+        "case": "emily-johnsrud-bio-remembered-handoff-dedup",
+        "pass": true,
+        "trustedActivations": 3,
+        "opsHandoffs": 1,
+        "googleRequests": 0,
+        "clinician": "emily"
+      },
+      {
+        "case": "autumn-alexander-nonconverting-keyboard-popup",
+        "pass": true,
+        "qualifyingHandoffs": 0,
+        "schedulerNavigations": 0,
+        "keyboardFocusRestored": true
+      },
+      {
+        "case": "autumn-alexander-declined-native-continue",
+        "pass": true,
+        "schedulerNavigations": 1,
+        "opsHandoffs": 0,
+        "clinician": "autumn"
+      },
+      {
+        "case": "autumn-alexander-remembered-handoff-dedup",
+        "pass": true,
+        "trustedActivations": 3,
+        "opsHandoffs": 1,
+        "googleRequests": 0,
+        "clinician": "autumn"
+      }
+    ],
+    "interceptedRequests": 236,
+    "interceptorErrors": [],
+    "googleRequests": [],
+    "blockedWrites": [],
+    "errors": [],
+    "screenshots": [
+      "built-emily-johnsrud-bio-1440.png",
+      "built-autumn-alexander-1440.png",
+      "built-new-page-1440.png",
+      "built-marriage-and-couples-therapy-counseling-1440.png",
+      "built-check-my-coverage-1440.png",
+      "built-how-to-start-therapy-1440.png",
+      "built-online-therapy-washington-1440.png",
+      "built-emily-johnsrud-bio-390.png",
+      "built-autumn-alexander-390.png",
+      "built-new-page-390.png",
+      "built-new-page-390-details.png",
+      "built-marriage-and-couples-therapy-counseling-390.png",
+      "built-marriage-and-couples-therapy-counseling-390-details.png",
+      "built-check-my-coverage-390.png",
+      "built-check-my-coverage-390-details.png",
+      "built-how-to-start-therapy-390.png",
+      "built-how-to-start-therapy-390-details.png",
+      "built-online-therapy-washington-390.png"
+    ]
+  },
+  "visualReview": "All seven routes reviewed at 1440px and 390px; narrow fee and benefits panels reviewed. No clipping, horizontal overflow, CTA-order, contrast or focus-visibility defect found. Long panel screenshots hide fixed chrome for capture only.",
+  "preservedBehavior": [
+    "Existing native clinician-specific destinations, without service/format/time preselection",
+    "No handoff on popup open, acknowledgment, Cancel, Close, Escape, or existing-client sign-in",
+    "Continue works when measurement is declined; same remembered-link double click plus aux click yields one isolated Ops receipt",
+    "Returning-document behavior and failure independence covered by the underlying PR #26 Ops suite",
+    "Individual-care journey anchor and canonical Ads landing URLs remain unchanged"
+  ],
+  "productionVerificationMethod": "After deployment use tests/acquisition-ux-browser.py --live --expected-commit SHA. It fetches public pages/assets without credentials and exercises only nonconverting popup actions under browser interception and DNS denial. Synthetic Continue cases are local-only.",
+  "measurementStatus": {
+    "googleCollection": "BLOCKED; zero approved routes/events, production flag false",
+    "googleReceipt": "Not established by UX tests",
+    "googleAdsCredit": "Not established by UX tests",
+    "ops": "Existing permitted first-party measurement retained; local synthetic receipts do not prove a new production lead"
+  },
+  "sourceSha256": {
+    "content/appointment-starting-costs.json": "5575613285cd7db615eeabb87d0a5b79c768d96f8afa1c2bb896768e79a0d266",
+    "src/acquisition-ux.js": "44dcba5889e80d9807c988022e7b2655659e51e99b58425f87e6a704988b8943",
+    "src/appointment-costs.js": "91dc19dddd870aa7499d42a9d1b68a33968f0bfddba64451b7a27076b19b7116",
+    "src/assets/acquisition-ux.css": "31f8dabf0d0fb44b7d5359427cb2241a484f7487197106102d4757da698042e3",
+    "src/start-page.js": "1b73bec67564a934ec4703d7bb458be2b451986de1b19c12d6883db5010acd33",
+    "src/launch-content.js": "ddb452755794f4b013a8da50cfde1f899976c7852719439d3c68b0b33de0bed3",
+    "tests/acquisition-ux-browser.py": "0dd70d6f68684eadb0f4234d2f9df336d8a85d865cb4ce4699c86a1814baba90"
+  },
+  "fullBuildAndUnitChecks": {
+    "command": "npm run check",
+    "passed": 440,
+    "failed": 0,
+    "skipped": 0,
+    "validationErrors": 0
+  }
+}

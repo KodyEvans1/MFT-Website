@@ -6,13 +6,13 @@ const text=h=>h.replace(/<[^>]+>/g,' ').replace(/&rsquo;|&#39;/g,"'").replace(/\
 const guide=startMain();
 test('Individual consultations are optional and the direct evaluation is named',()=>{
  const section=text(guide.match(/<section[^>]*id="individual-journey"[\s\S]*?<\/section>/)[0]);
- for(const phrase of ['Neither consultation is required','90791','free 10-minute','paid 30-minute individual consultation','measurable treatment plan','evidence-based'])assert.ok(section.includes(phrase),phrase);
+ for(const phrase of ['Neither consultation is required','90791','free 10-minute','paid 26-minute individual consultation','30-minute block for $75','$150 private pay, or applicable insurance benefits','measurable treatment plan','evidence-based'])assert.ok(section.includes(phrase),phrase);
 });
 test('Couples sequence is required consultation, separate partner evaluations, then joint sessions',()=>{
  const section=text(guide.match(/<section[^>]*id="couples-journey"[\s\S]*?<\/section>/)[0]);
- const a=section.indexOf('30-minute couples consultation'),b=section.indexOf('One diagnostic evaluation per partner'),c=section.indexOf('53-minute couples sessions');
+ const a=section.indexOf('Short couples consultation'),b=section.indexOf('One diagnostic evaluation per partner'),c=section.indexOf('53-minute couples sessions');
  assert.ok(a>=0&&b>a&&c>b);
- for(const phrase of ['All couples begin','does not replace','one-time diagnostic evaluation','do not establish ongoing individual therapy','separate individual therapist','privacy, records','measurable treatment plan'])assert.ok(section.includes(phrase),phrase);
+ for(const phrase of ['All couples begin','26-minute conversation in a 30-minute booking block','does not replace','one-time diagnostic evaluation','do not establish ongoing individual therapy','separate individual therapist','privacy, records','measurable treatment plan'])assert.ok(section.includes(phrase),phrase);
 });
 test('Phone introduction includes immediate fallback and private caller ID, without extending fallback to therapy',()=>{
  const section=text(guide.match(/<section[^>]*id="consultation-call"[\s\S]*?<\/section>/)[0]);
@@ -21,10 +21,11 @@ test('Phone introduction includes immediate fallback and private caller ID, with
 test('Homepage and both service pages explain and link to the same journey',()=>{
  for(const slug of ['','new-page','marriage-and-couples-therapy-counseling']){
   const h=read(slug);assert.match(h,/href="\/how-to-start-therapy\/(?:#[a-z-]+)?"/);
-  assert.doesNotMatch(text(h),/26[ -]minute|one time for new clients only|Three ways to begin couples/);
+  assert.doesNotMatch(text(h),/one time for new clients only|Three ways to begin couples/);
+  if(slug)assert.match(text(h),/26-minute[\s\S]*30-minute (?:booking )?block/);
  }
  const couples=text(read('marriage-and-couples-therapy-counseling'));
- assert.match(couples,/All couples start with a paid 30-minute consultation/);
+ assert.match(couples,/All couples start with a paid short consultation/);
  assert.match(couples,/One diagnostic evaluation per partner/);
  assert.match(couples,/53-minute couples sessions/);
 });
@@ -34,9 +35,16 @@ test('Guide links appear in shared header and footer without duplication',()=>{
   assert.equal(addJourneyLinks(h),h);
  }
 });
-test('No rendered public or draft page retains obsolete consultation policy',()=>{
+test('rendered consultation wording distinguishes the owner-corrected duration from the booking block',()=>{
  const walk=d=>fs.readdirSync(d,{withFileTypes:true}).flatMap(e=>e.isDirectory()?walk(path.join(d,e.name)):[path.join(d,e.name)]);
- const failures=walk(path.join(root,'dist')).filter(p=>p.endsWith('.html')).filter(p=>/26[ -]minute|one time for new clients only|Three ways to begin couples/.test(text(fs.readFileSync(p,'utf8'))));
+ const failures=[];
+ for(const file of walk(path.join(root,'dist')).filter(p=>p.endsWith('.html'))){
+  const content=text(fs.readFileSync(file,'utf8'));
+  if(/one time for new clients only|Three ways to begin couples/.test(content))failures.push(file);
+  // The owner's current correction supersedes only the old blanket ban on
+  // 26 minutes. Any use must distinguish it from the 30-minute calendar block.
+  if(/26[ -]minute/.test(content)&&!/30-minute (?:booking )?block/.test(content))failures.push(file+': missing booking-block clarification');
+ }
  assert.deepEqual(failures,[]);
 });
 test('Journey has usable fragments, no public intake, and native scheduling destinations',()=>{

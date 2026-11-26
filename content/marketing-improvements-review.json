@@ -1,30 +1,30 @@
 {
   "version": 1,
-  "contentRevision": "9d8304a94d1685af1a4eb4905182f6b8767de5fbbb92031aac4b7db7922f3786",
+  "contentRevision": "8733eaff9527c74ce66e08499dda8ef0539e83d7cce02e640d6cf302386b8de8",
   "brief": "MFT_Website_Marketing_Improvements_2026-11-17.md",
   "approvals": {
     "clinical": {
       "status": "approved",
       "reviewer": "Practice owner",
-      "evidence": "The public marketing introductions and scheduling instructions are authorized for this revision. The existing clinical content and scheduling destinations are unchanged from approved revision a0384330504791dd1d536059871befc45672776d2a24df8acee4ef4c231a1c36. This is a technical carry-forward under the owner's 2026-11-20 website integration and URL-correction request; it records no new clinical review or appointment-menu verification.",
-      "reviewedRevision": "9d8304a94d1685af1a4eb4905182f6b8767de5fbbb92031aac4b7db7922f3786"
+      "evidence": "The practice owner explicitly authorized the focused November 25 acquisition UX changes. Existing clinical biographies, treatment descriptions and care sequencing are carried forward from the previously approved revision. Ages use clinician-specific approved profiles. In-person and telehealth wording for Emily and Autumn is supported by the live public SimplePractice clinician and service-location menus inspected November 25. This records no new independent credential, clinical-outcome, or availability review.",
+      "reviewedRevision": "8733eaff9527c74ce66e08499dda8ef0539e83d7cce02e640d6cf302386b8de8"
     },
     "operational": {
       "status": "approved",
       "reviewer": "Practice owner",
-      "evidence": "The initial-evaluation appointment options linked by the public pages are confirmed for this release. The existing operational content and scheduling destinations are unchanged from approved revision a0384330504791dd1d536059871befc45672776d2a24df8acee4ef4c231a1c36. This is a technical carry-forward under the owner's 2026-11-20 website integration and URL-correction request; it records no new clinical review or appointment-menu verification.",
-      "reviewedRevision": "9d8304a94d1685af1a4eb4905182f6b8767de5fbbb92031aac4b7db7922f3786"
+      "evidence": "The owner supplied and authorized the November 25 starting-fee baseline recorded in content/appointment-starting-costs.json: complimentary 10-minute introduction; 26-minute consultation in a 30-minute calendar block at $75; distinct one-hour couples consultation at $150; initial individual evaluation at $150 private pay or applicable insurance; separate $150 reduced-cost couples/family program. Current clinician destinations are reused. Public service menus confirm labels, booking blocks and format choices but do not display clinician-specific fees; no appointment-type IDs, fee-menu mapping or openings are invented. Benefits begin with support email, followed by the existing secure workflow.",
+      "reviewedRevision": "8733eaff9527c74ce66e08499dda8ef0539e83d7cce02e640d6cf302386b8de8"
     },
     "publication": {
       "status": "approved",
       "reviewer": "Practice owner",
-      "evidence": "The practice owner explicitly requested implementation and deployment of the website handoff integration and canonical URL correction on 2026-11-20. Existing approved marketing content is preserved.",
-      "reviewedRevision": "9d8304a94d1685af1a4eb4905182f6b8767de5fbbb92031aac4b7db7922f3786"
+      "evidence": "Current owner request: implement, verify, merge and deploy the focused website acquisition improvements without another general approval. Preserve the newly saved individual/couples Ads destinations, individual-journey anchor, clinician destinations, scheduling and measurement boundaries. This authorization applies to the exact source revision recorded here.",
+      "reviewedRevision": "8733eaff9527c74ce66e08499dda8ef0539e83d7cce02e640d6cf302386b8de8"
     }
   },
-  "clinicalScope": "Review the five proposed page introductions and scheduling instructions. Existing service-guide clinical publication notices and safety information remain intact.",
-  "operationalScope": "Clinic Manager confirms the adult telehealth roster, appointment types, and current payer participation by clinician. Gary and Sonia cards use maintained profiles and identifiers, not a claim of openings or approved Tri-Cities availability. Verify the intended evaluation and telehealth options in SimplePractice.",
-  "publicationScope": "Owner approves the exact reviewed candidate revision and production release. Existing rich-route authorization does not approve this new marketing copy. Pending or stale approval leaves current production page content unchanged.",
+  "clinicalScope": "Preserve approved clinical content and couples care sequence; clarify individual entry, verified age/format information and separate paths on the seven named acquisition pages.",
+  "operationalScope": "Publish the named owner-provided starting costs with service/calendar distinctions and payer qualifications. Keep exact clinician links and native appointment-request behavior. Do not assert openings, appointment confirmation, unspecified ongoing fees or a service preselection; disclose the limits of public menu verification.",
+  "publicationScope": "Owner authorizes this exact scoped acquisition UX revision and production release. Existing canonical routes, indexing and newer work remain intact. Measurement has a separate policy and authorization.",
   "measurement": "Scheduling measurement has its separate existing privacy and release gate. This review record grants no new analytics or advertising permission.",
   "preserved": [
     "/online-therapy-tri-cities-wa/",
@@ -41,9 +41,12 @@
     "content/sonia-profile.json",
     "content/simplepractice-booking.json",
     "content/launch-release.json",
-    "PR #14 Tri-Cities draft"
+    "PR #14 Tri-Cities draft",
+    "content/appointment-starting-costs.json",
+    "reports/ACQUISITION-UX-FACTS-20261125.md",
+    "Practice owner acquisition UX request, November 25, 2026"
   ],
-  "recordedOn": "2026-11-20",
+  "recordedOn": "2026-11-25",
   "technicalContinuation": {
     "fromRevision": "a0384330504791dd1d536059871befc45672776d2a24df8acee4ef4c231a1c36",
     "baseCommit": "13cf8b2e694f382f5fe41d770367caa1765749e2",
@@ -61,5 +64,28 @@
       "Approved public routes and draft exclusions"
     ],
     "evidence": "Current owner request: Update mft.care; reuse the existing Ops verification workflow; preserve the scheduling popup; correct shared canonical URL generation; return the deployed version and verification results."
+  },
+  "acquisitionUxAuthorization": {
+    "fromRevision": "9d8304a94d1685af1a4eb4905182f6b8767de5fbbb92031aac4b7db7922f3786",
+    "authorizedBy": "Practice owner",
+    "authorizedOn": "2026-11-25",
+    "routes": [
+      "/emily-johnsrud-bio/",
+      "/autumn-alexander/",
+      "/new-page/",
+      "/marriage-and-couples-therapy-counseling/",
+      "/check-my-coverage/",
+      "/how-to-start-therapy/",
+      "/online-therapy-washington/"
+    ],
+    "preserved": [
+      "Existing Ads final URLs and individual-journey anchor",
+      "Clinician IDs, scheduling popup and acknowledgment",
+      "First-party Ops receiver contract",
+      "Google measurement policy and disabled production flag",
+      "Approved public routes and draft exclusions",
+      "Campaign budgets, $10 maximum CPC, goals and negatives"
+    ],
+    "feeVerification": "Owner-provided baseline; public clinician service/location menus did not display fees; no synthetic appointment request was submitted."
   }
 }

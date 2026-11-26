@@ -11,6 +11,7 @@ const CLIN=JSON.parse(fs.readFileSync(path.join(ROOT,'content','clinician-regist
 const editorial=require('./editorial-library');
 const experience=require('./site-experience');
 const launchContent=require('./launch-content');
+const acquisitionUx=require('./acquisition-ux');
 const CORE=JSON.parse(fs.readFileSync(path.join(ROOT,'content','seo-core-routes.json'),'utf8'));
 const {buildGraph}=require('./geography-graph');
 const geoRender=require('./geography-render');
@@ -23,7 +24,8 @@ const coreSitemapUrls=sitemapUrls(fs.readFileSync(path.join(DIST,'sitemap.xml'),
 const coreSlugs=fs.readdirSync(DIST,{withFileTypes:true}).filter(e=>e.isDirectory()&&fs.existsSync(path.join(DIST,e.name,'index.html'))).map(e=>e.name);
 const sourceTemplates=new Map(coreSlugs.map(slug=>[slug,fs.readFileSync(path.join(DIST,slug,'index.html'),'utf8')]));
 const EXPERIENCE=experience.createContext(DIST,REG,process.env.CONTEXT==='production'||indexingEnabled());
-const finish=(html,slug)=>require('./marketing-improvements').apply(launchContent.apply(experience.applyExperience(html,slug?'/'+slug+'/':'/',EXPERIENCE),slug),slug?'/'+slug+'/':'/');
+acquisitionUx.prepare(DIST);
+const finish=(html,slug)=>acquisitionUx.apply(require('./marketing-improvements').apply(launchContent.apply(experience.applyExperience(html,slug?'/'+slug+'/':'/',EXPERIENCE),slug),slug?'/'+slug+'/':'/'),slug);
 const LIBRARY=editorial.createLibrary({content:require('../content/editorial-library.json'),registry:REG,clinicians:CLIN,evidence:require('../content/clinician-evidence.json'),coreSlugs,production:process.env.CONTEXT==='production'||indexingEnabled()});
 const familyMeta={
   modalities:{type:'modality',source:'cognitive-behavioral-therapy-cbt',hub:'/therapy-approaches/',label:'Therapy approach'},

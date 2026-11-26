@@ -38,6 +38,8 @@ FLOW = json.loads((ROOT / 'content/google-measurement-flow.json').read_text())
 PUBLIC_TITLES = FLOW['reviewedDocumentTitles']
 GA4_HOSTS = ('analytics.google.com', 'www.google-analytics.com', 'region1.google-analytics.com', 'www.google.com')
 AUTOMATIC_EVENTS = set(FLOW['standardRuntimeEvents'])
+TD_FIELDS = {'bt','ct','dl','exp','fin','frm','gtm','hlo','id','lst','mde','pid','rtg','seq','slo','t','tdp','v','z'}
+DIAGNOSTIC_SCRIPT_FIELDS = {'dl','exp','fin','gtm','id','is_td','mde','pid','seq','t','tdp','v','z'}
 OPS = 'https://ops.mft.care/api/marketing/attribution'
 # A permissive isolated fixture exposes unexpected vendor destinations to the
 # interceptor. Production remains Google-denied; this is not its CSP.
@@ -122,6 +124,74 @@ def parse_request(request):
             'resourceType': request.resource_type, 'rows': rows}
 
 
+def initial_loader(item):
+    url = urlsplit(item['url'])
+    return (url.scheme=='https' and url.netloc=='www.googletagmanager.com' and url.path=='/gtag/js'
+            and item['method']=='GET' and item['resourceType']=='script' and not item['body']
+            and parse_qsl(url.query,keep_blank_values=True)==[('id',ID)])
+
+
+def diagnostic_counters(value):
+    # The vendor serializes request-registration counts by destination and
+    # numeric endpoint. Only this existing tag is in the proposed flow.
+    parts=value.split(';')
+    if len(parts)<2 or parts[0]!=ID:return False
+    endpoints=[]
+    for part in parts[1:]:
+        match=re.fullmatch(r'(0|[1-9]\d*)_([1-9]\d*)',part)
+        if not match:return False
+        endpoints.append(int(match[1]))
+    return endpoints==sorted(set(endpoints))
+
+
+def diagnostic_row(row, *, script=False):
+    fields=DIAGNOSTIC_SCRIPT_FIELDS if script else TD_FIELDS
+    if not set(row)<=fields:return False
+    if any(row.get(key)!=value for key,value in {'id':ID,'v':'3','t':'t','z':'0',
+            'tdp':ID+';'+TAG_CANONICAL_CONTAINER_ID+';0;0;0'}.items()):return False
+    if row.get('dl') not in {'www.mft.care'+path for path in PUBLIC_TITLES}:return False
+    if 'fin' in row and row['fin']!='1':return False
+    if not re.fullmatch(r'[1-9]\d*',row.get('seq','')):return False
+    if not re.fullmatch(r'0|[1-9]\d*',row.get('pid','')) or int(row['pid'])>2147483647:return False
+    if 'mde' in row and not diagnostic_counters(row['mde']):return False
+    return not script or row.get('is_td')=='1' and 'mde' in row
+
+
+def diagnostic_script(item):
+    url=urlsplit(item['url'])
+    pairs=parse_qsl(url.query,keep_blank_values=True)
+    row=dict(pairs)
+    return (url.scheme=='https' and url.netloc=='www.googletagmanager.com' and url.path=='/gtag/js'
+            and item['method']=='GET' and item['resourceType']=='script' and not item['body']
+            and len(row)==len(pairs) and diagnostic_row(row,script=True))
+
+
+def google_response_role(item):
+    if initial_loader(item):return 'initial-loader'
+    if diagnostic_script(item):return 'diagnostic-script'
+    return 'unreviewed-script' if item['resourceType']=='script' else 'collector'
+
+
+def fulfill_google_fixture(route, item):
+    role=google_response_role(item)
+    item['fixtureResponseRole']=role
+    if role=='initial-loader':
+        if fixture_options.get('vendor_blocked'):route.abort()
+        elif fixture_options.get('vendor_timeout'):route.fulfill(status=408,body='Request Timeout',content_type='text/plain')
+        else:route.fulfill(status=200,body=VENDOR.read_bytes(),content_type='application/javascript')
+    elif role=='diagnostic-script':
+        # The native tag appends is_td=1 plus diagnostics to currentScript.src.
+        # This intercepted sink is deliberately inert, not a claim about the
+        # real server's response. Never inject the vendor a second time here.
+        route.fulfill(status=200,body='',content_type='application/javascript')
+        item['fixtureResponseStatus']=200
+        item['fixtureResponseBodyBytes']=0
+    else:
+        if role=='unreviewed-script':
+            report['blockers'].append({'case':case,'reason':'Additional vendor script was requested but is not available as an inspected local fixture','host':item['host'],'path':item['path']})
+        route.fulfill(status=204)
+
+
 def summarized(item):
     rows = item['rows']
     metadata = []
@@ -144,8 +214,16 @@ def summarized(item):
                 'canonicalContainerId': row.get('ccid') if row.get('ccid')==TAG_CANONICAL_CONTAINER_ID else 'UNEXPECTED_VALUE',
                 'summaryCharacters': len(row.get('l','')),
             }
+        if item['host']=='www.googletagmanager.com' and (item['path']=='/td' or diagnostic_script(item)):
+            entry['tagDiagnostic']={'scriptContainerId':row.get('id') if row.get('id')==ID else 'UNEXPECTED_VALUE',
+                'tagContextMatches':row.get('tdp')==ID+';'+TAG_CANONICAL_CONTAINER_ID+';0;0;0',
+                'requestCounterSummaryValid':diagnostic_counters(row['mde']) if 'mde' in row else None,
+                'isDiagnosticScript':diagnostic_script(item),
+                'fixtureResponse':'empty-javascript' if diagnostic_script(item) else 'no-content',
+                **({'fixtureStatus':item.get('fixtureResponseStatus'),'fixtureBodyBytes':item.get('fixtureResponseBodyBytes')} if diagnostic_script(item) else {})}
         metadata.append(entry)
     return {key: item[key] for key in ('case','method','host','path','resourceType')} | {
+        'fixtureResponseRole':item.get('fixtureResponseRole'),
         'fieldNames': sorted({key for row in rows for key in row}), 'metadata': metadata,
         'httpReferrerPresent': bool(item['headers'].get('referer')),
         'requestHeaderNames': sorted(item['headers']),
@@ -181,17 +259,7 @@ def guard(route):
         item['probePhase'] = fixture_options.get('_probe_phase', 'exercise')
         requests.append(item)
         try:
-            if url.hostname == 'www.googletagmanager.com' and url.path == '/gtag/js' and parse_qs(url.query).get('id') == [ID]:
-                if fixture_options.get('vendor_blocked'):
-                    route.abort()
-                elif fixture_options.get('vendor_timeout'):
-                    route.fulfill(status=408, body='Request Timeout', content_type='text/plain')
-                else:
-                    route.fulfill(status=200, body=VENDOR.read_bytes(), content_type='application/javascript')
-            else:
-                if request.resource_type == 'script':
-                    report['blockers'].append({'case': case, 'reason': 'Additional vendor script was requested but is not available as an inspected local fixture', 'host': url.hostname, 'path': url.path})
-                route.fulfill(status=204)
+            fulfill_google_fixture(route,item)
         except Exception as error:
             failure = {'case':case, 'phase':item['probePhase'], 'method':request.method,
                        'host':url.hostname, 'path':url.path, 'resourceType':request.resource_type,
@@ -244,6 +312,61 @@ def check(name, passed, detail=None):
     report['checks'].append({'case': case, 'name': name, 'pass': bool(passed), **({'detail':detail} if detail is not None else {})})
 
 
+def verify_diagnostic_dispatch():
+    """Deterministic local dispatcher checks; no browser/network request."""
+    global case
+    case='diagnostic-dispatch-fixture'
+    class ResponseRecorder:
+        def __init__(self):self.response=None
+        def fulfill(self,**response):self.response=response
+        def abort(self):raise AssertionError('Unexpected fixture abort')
+    def item(pairs,**overrides):
+        return {'url':'https://www.googletagmanager.com/gtag/js?'+urlencode(pairs),
+                'host':'www.googletagmanager.com','path':'/gtag/js','method':'GET',
+                'resourceType':'script','body':'','rows':[dict(pairs)],**overrides}
+    loader=item([('id',ID)])
+    load_response=ResponseRecorder();fulfill_google_fixture(load_response,loader)
+    check('Only the exact id-only initial script receives the unchanged vendor bundle',
+          initial_loader(loader) and load_response.response=={'status':200,'body':VENDOR.read_bytes(),'content_type':'application/javascript'})
+    row={'id':ID,'is_td':'1','v':'3','t':'t','z':'0','dl':'www.mft.care/',
+         'tdp':ID+';'+TAG_CANONICAL_CONTAINER_ID+';0;0;0','pid':'123','seq':'2',
+         'mde':ID+';5_2;61_1','fin':'1','gtm':'synthetic','exp':'1'}
+    fallback=item(list(row.items()))
+    response=ResponseRecorder();fulfill_google_fixture(response,fallback)
+    check('The observed diagnostic script shape is distinct from the initial loader',
+          diagnostic_script(fallback) and not initial_loader(fallback))
+    check('The diagnostic fixture response is empty JavaScript and never reinjects the vendor',
+          response.response=={'status':200,'body':'','content_type':'application/javascript'})
+    check('The same strict diagnostic envelope accepts the observed td counter variant',
+          diagnostic_row({key:value for key,value in row.items() if key!='is_td'}))
+    invalid={
+        'unreviewed-field':row|{'email':PRIVATE_CANARY},
+        'other-tag':row|{'id':'G-OTHER'},
+        'other-canonical-container':row|{'tdp':ID+';999;0;0;0'},
+        'unreviewed-page':row|{'dl':'www.mft.care/gary-ashley/'},
+        'page-query':row|{'dl':'www.mft.care/?email='+PRIVATE_CANARY},
+        'other-counter-destination':row|{'mde':'G-OTHER;5_1'},
+        'free-text-counter':row|{'mde':PRIVATE_CANARY},
+        'repeated-endpoint-counter':row|{'mde':ID+';5_1;5_2'},
+        'no-diagnostic-marker':row|{'is_td':'0'},
+    }
+    failures=[name for name,value in invalid.items() if diagnostic_script(item(list(value.items())))]
+    check('Diagnostic classification rejects unknown fields, tags, pages and counter content',not failures,failures)
+    check('Diagnostic classification rejects repeated query keys and non-GET script requests',
+          not diagnostic_script(item(list(row.items())+[('id',ID)])) and
+          not diagnostic_script(item(list(row.items()),method='POST')))
+    check('An extra loader parameter cannot obtain a second executable vendor',
+          not initial_loader(item([('id',ID),('unknown','1')])) and
+          not initial_loader(item([('id',ID),('id',ID)])))
+    class FailingResponse:
+        def fulfill(self,**response):raise RuntimeError('Synthetic fatal interception failure')
+    propagated=False
+    try:fulfill_google_fixture(FailingResponse(),fallback)
+    except RuntimeError as error:propagated=str(error)=='Synthetic fatal interception failure'
+    check('Diagnostic fulfillment errors propagate without suppression',propagated)
+    report['cases'].append({'case':case,'scope':'Local dispatcher objects only; no browser or remote requests. The synthetic diagnostic response does not establish the real server response.'})
+
+
 def current_requests(start=0):
     return [item for item in requests[start:] if item['case'] == case]
 
@@ -275,6 +398,22 @@ def inspect_cookies(context, page):
 
 def new_context(browser, seed=None, signal=None, existing=None):
     context = browser.new_context()
+    if fixture_options.get('force_diagnostic_sample'):
+        context.add_init_script("""(() => {
+          // A single controlled input selects the native 1% diagnostics path
+          // on the first page only. Restore the actual native function inside
+          // that first vendor call; neither vendor bytes nor toString change.
+          if(location.origin!=='https://www.mft.care'||location.pathname!=='/')return;
+          const original=Math.random;
+          const state={draws:0,restored:()=>Math.random===original};
+          window.__diagnosticSamplingFixture=state;
+          Math.random=function(){
+            if(document.currentScript?.src==='https://www.googletagmanager.com/gtag/js?id=G-BTK39BBNRE'){
+              Math.random=original;state.draws+=1;return 0.995;
+            }
+            return original();
+          };
+        })();""")
     if fixture_options.get('existing_google_cookies'):
         context.add_cookies([
             {'name':'NID','value':'SYNTHETIC_GOOGLE_COOKIE_TEST_ONLY','domain':'.google.com','path':'/','secure':True,'sameSite':'None','expires':time.time()+86400},
@@ -286,7 +425,7 @@ def new_context(browser, seed=None, signal=None, existing=None):
       window.__cspViolations=[];
       document.addEventListener('securitypolicyviolation',event=>window.__cspViolations.push({directive:event.effectiveDirective,blockedURI:event.blockedURI,originalPolicy:event.originalPolicy}));
       Node.prototype.appendChild=function(node){
-        if(node?.tagName==='SCRIPT' && String(node.src).startsWith('https://www.googletagmanager.com/gtag/js')) {
+        if(node?.tagName==='SCRIPT' && node.src==='https://www.googletagmanager.com/gtag/js?id=G-BTK39BBNRE') {
           window.__queueBeforeVendor=JSON.parse(JSON.stringify((window.dataLayer||[]).map(item=>Array.from(item))));
           node.addEventListener('load',()=>window.__vendorLoaded=true);
         }
@@ -315,7 +454,7 @@ def default_order(page):
 def assess_requests(start=0):
     items = current_requests(start)
     unexpected_destinations = [{'host':item['host'],'path':item['path'],'resourceType':item['resourceType']} for item in items if not (
-        item['host']=='www.googletagmanager.com' and item['path']=='/gtag/js' and item['method']=='GET' and parse_qs(urlsplit(item['url']).query).get('id')==[ID]
+        initial_loader(item) or diagnostic_script(item)
         or item['host'] in GA4_HOSTS and item['path']=='/g/collect' and item['method'] in ('GET','POST')
         or item['host']=='www.google.com' and item['path']=='/measurement/conversion' and item['method'] in ('GET','POST')
         or item['host']=='stats.g.doubleclick.net' and item['path']=='/g/collect' and item['method'] in ('GET','POST')
@@ -346,13 +485,16 @@ def assess_requests(start=0):
                 check('Linked measurement carries non-personalization and no referrer',row.get('npa')=='1' and not any(row.get(key) for key in ('ref','referrer','dr','page_referrer')))
         if item['host']=='stats.g.doubleclick.net':
             check('Supplemental identifier ping remains non-personalized and has no additional event',all(row.get('npa')=='1' and not row.get('en') for row in item['rows']))
-        if item['host']=='www.googletagmanager.com' and item['path'] in ('/a','/td'):
+        if item['host']=='www.googletagmanager.com' and (item['path'] in ('/a','/td') or diagnostic_script(item)):
             fields = {
                 '/a': {'ccid','cid','cv','e','eid','epr','es','gtm','h','id','l','pid','rv','t','tag_exp','tc','ti','tr','u','ut','v','z'},
-                '/td': {'bt','ct','dl','exp','fin','frm','gtm','hlo','id','lst','pid','rtg','seq','slo','t','tdp','v','z'},
+                '/td': TD_FIELDS,
+                '/gtag/js': DIAGNOSTIC_SCRIPT_FIELDS,
             }
             check('Vendor diagnostic fields stay within the recorded unapproved envelope',all(set(row)<=fields[item['path']] and not row.get('en') for row in item['rows']))
             for row in item['rows']:
+                if item['path'] in ('/td','/gtag/js'):
+                    check('Tag diagnostics contain only the existing tag context, public route and structured counters',diagnostic_row(row,script=item['path']=='/gtag/js'))
                 if item['path']=='/a' and any(key in row for key in ('ccid','cid','l')):
                     check('Load diagnostics belong to the existing tag configuration',row.get('v')=='3' and row.get('t')=='l' and row.get('cid')==ID and row.get('ccid')==TAG_CANONICAL_CONTAINER_ID)
                 if 'dl' in row:
@@ -517,11 +659,37 @@ try:
     assert hashlib.sha256(VENDOR.read_bytes()).hexdigest()==metadata['sha256'], 'Vendor bundle differs from its recorded download'
     assert metadata['source']=='https://www.googletagmanager.com/gtag/js?id='+ID and metadata['status']==200
     report['vendor']=metadata
+    verify_diagnostic_dispatch()
     with sync_playwright() as playwright:
         browser=harness.launch_isolated_chromium(playwright)
         report['browserVersion']=browser.version
         interceptor=harness.install_browser_interceptor(browser,guard)
         control=browser.new_context(); pump=control.new_page()
+        context,page=open_case(browser,'forced-diagnostic-native-navigation','/?gclid='+SYNTHETIC_CLICK,options={'force_diagnostic_sample':True})
+        ready(page)
+        sampling=page.evaluate('()=>({draws:window.__diagnosticSamplingFixture.draws,restored:window.__diagnosticSamplingFixture.restored()})')
+        check('The diagnostic fixture consumes one vendor-only random draw and immediately restores native Math.random',sampling=={'draws':1,'restored':True})
+        report['cases'].append({'case':case,'controlledBrowserInput':{'kind':'one-shot first exact-loader Math.random draw','value':0.995,'route':'/','vendorBytesModified':False,**sampling}})
+        page.evaluate('window.MFTGoogleMeasurement.handoff()')
+        page.wait_for_timeout(2200)
+        check('The sampled native tag records exactly one explicit acquisition event before navigation',len(current_handoffs())==1)
+        before_navigation=len(requests)
+        fixture_options['_probe_phase']='forced-diagnostic-native-navigation'
+        page.locator('#internal').click()
+        page.wait_for_url(BASE+'/about/',timeout=10000)
+        page.wait_for_function('()=>window.__vendorLoaded===true',timeout=10000)
+        page.wait_for_timeout(300)
+        interceptor.assert_ok()
+        after=current_requests(before_navigation)
+        finals=[item for item in after if item['host']=='www.googletagmanager.com' and item['path']=='/td' and item['method']=='POST' and any(row.get('fin')=='1' and 'mde' in row for row in item['rows'])]
+        scripts=[item for item in after if diagnostic_script(item)]
+        check('Native internal navigation emits the actual final td and diagnostic script attempts',bool(finals) and bool(scripts))
+        check('Each native diagnostic script is fulfilled only with the empty local JavaScript fixture',bool(scripts) and all(item.get('fixtureResponseRole')=='diagnostic-script' and item.get('fixtureResponseStatus')==200 and item.get('fixtureResponseBodyBytes')==0 for item in scripts))
+        check('The controlled draw does not persist into the next native document',page.url==BASE+'/about/' and page.evaluate('window.__diagnosticSamplingFixture===undefined'))
+        fixture_options['_probe_phase']='exercise'
+        close_case(context,pump)
+        check('Diagnostic native navigation and normal teardown retain zero interception errors',not interceptor.errors)
+
         # None of these historic or refused choices authorizes this purpose.
         choices = [
             ('no-consent',{}),
@@ -725,7 +893,7 @@ try:
         check('The departing document stays disabled and cannot replay a handoff after regrant',old_document=={'disabled':True,'requiresReload':True,'handoffAccepted':False,'barriers':1})
         check('Regrant creates a new document rather than loosening the stopped document policy',page.evaluate('window.__preRegrantDocumentSentinel===undefined') and page.evaluate('performance.getEntriesByType("navigation")[0].type')=='reload' and page.evaluate('window.MFTGoogleMeasurement.requiresReload()') is False and not page.locator('meta[data-mft-google-stopped="true"]').count())
         check('The fresh explicit choice persists a new current consent window',second_permission.get('choice')=='granted' and second_permission.get('review')==REVIEW and second_permission.get('expiresAt',0)>first_permission['expiresAt'])
-        loaders=[r for r in current_requests() if r['host']=='www.googletagmanager.com' and r['path']=='/gtag/js']
+        loaders=[r for r in current_requests() if initial_loader(r)]
         check('Regrant loads one vendor in each of the two documents without replaying the prior event',len(loaders)==2 and len(current_handoffs())==1)
         default_order(page)
         page.evaluate('sessionStorage.removeItem("mft.probe.regrant-state")')

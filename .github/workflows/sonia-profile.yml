@@ -77,7 +77,9 @@ jobs:
     # Playwright 1.57 supports this explicit dependency baseline. Keep WebKit a
     # required separately reported gate; an installation error remains a failure.
     runs-on: ubuntu-22.04
-    timeout-minutes: 12
+    # Dependency downloads alone exceeded 11 minutes on the hosted mirror.
+    # Keep the complete browser gate and allow its installation to finish.
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
